@@ -30,10 +30,6 @@
 }
 static ViewController *instance;
 
-+ (id)sharedInstance {
-    return instance;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -90,7 +86,7 @@ static ViewController *instance;
     //	[fileMenu setAutoenablesItems:NO];
     double delayInSeconds = 2.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^(void){
+    dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
         rogueMain();
     });
     
@@ -102,5 +98,24 @@ static ViewController *instance;
 - (IBAction)fuckyoutouched:(id)sender {
     [self.theDisplay setNeedsDisplay];
 }
+
+/*
+- (void) plotChar:(char)inputChar xLoc:(short)xLoc yLoc:(short)yLoc forered:(short)foreRed foregreen:(short)foreGreen foreBlue:(short)foreBlue backRed:(short)backRed backGreen:(short)backGreen backBlue:(short)backBlue {
+
+   // @autoreleasepool {
+        UIColor *backgroundColor = [[UIColor alloc] initWithRed:(float)backRed/100. green:(float)backGreen/100. blue:(float)backBlue/100. alpha:1.];
+                                                                                                                    
+        UIColor *foreGroundColor = [[UIColor alloc] initWithRed:(float)foreRed/100. green:(float)foreGreen/100. blue:(float)foreBlue/100. alpha:1.];
+    
+        [self.theDisplay setString:nil
+                   withBackground:backgroundColor
+                  withLetterColor:foreGroundColor
+                       atLocationX:xLoc locationY:yLoc
+                    withFancyFont:(inputChar == FOLIAGE_CHAR)];
+    
+        backgroundColor = nil;
+        foreGroundColor = nil;
+   // }
+}*/
 
 @end

@@ -27,6 +27,8 @@
 #include <time.h>
 #include <limits.h>
 
+#include <unistd.h>
+
 #define MENU_FLAME_PRECISION_FACTOR		10
 #define MENU_FLAME_RISE_SPEED			50
 #define MENU_FLAME_SPREAD_SPEED			20
@@ -341,6 +343,7 @@ void titleMenu() {
 	initializeMenuFlames(true, colors, colorSources, flames, mask);
     rogue.creaturesWillFlashThisTurn = false; // total unconscionable hack
 	
+    
 	do {
 		if (!controlKeyWasDown && controlKeyIsDown()) {
 			strcpy(state.buttons[0].text, customNewGameText);
@@ -361,6 +364,8 @@ void titleMenu() {
 		overlayDisplayBuffer(state.dbuf, NULL);
 		
 		// Pause briefly.
+        usleep(1000);
+        
 		if (pauseBrogue(MENU_FLAME_UPDATE_DELAY)) {
 			// There was input during the pause! Get the input.
 	//		nextBrogueEvent(&theEvent, true, false, true);

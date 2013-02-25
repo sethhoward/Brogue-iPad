@@ -11,7 +11,7 @@
 @class Viewport;
 @interface ViewController : UIViewController
 
-+ (id)sharedInstance;
+- (void) plotChar:(char)inputChar xLoc:(short)xLoc yLoc:(short)yLoc forered:(short)foreRed foregreen:(short)foreGreen foreBlue:(short)foreBlue backRed:(short)backRed backGreen:(short)backGreen backBlue:(short)backBlue;
 
 @property (nonatomic, strong) IBOutlet Viewport *theDisplay;
 - (IBAction)fuckyoutouched:(id)sender;

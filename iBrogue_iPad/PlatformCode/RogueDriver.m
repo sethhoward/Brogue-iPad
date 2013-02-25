@@ -26,6 +26,7 @@
 #include "CoreFoundation/CoreFoundation.h"
 #import "RogueDriver.h"
 #import "ViewController.h"
+#import "AppDelegate.h"
 
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
@@ -137,30 +138,48 @@ short mouseX, mouseY;
 
 //  plotChar: plots inputChar at (xLoc, yLoc) with specified background and foreground colors.
 //  Color components are given in ints from 0 to 100.
+static Viewport *theMainDisplay;
+
+static ViewController *viewController;
 
 void plotChar(uchar inputChar,
 			  short xLoc, short yLoc,
 			  short foreRed, short foreGreen, short foreBlue,
 			  short backRed, short backGreen, short backBlue) {
-	@autoreleasepool {
-        Viewport *theMainDisplay = [[ViewController sharedInstance] theDisplay];
-        
+    if (!viewController) {
+        viewController = [[(AppDelegate *)[[UIApplication sharedApplication] delegate] viewController] retain];
+    }
+
+    @autoreleasepool {
         [theMainDisplay setString:[NSString stringWithCharacters:&inputChar length:1]
-                   withBackground:[UIColor colorWithRed:((float)backRed/100.)
-                                                        green:((float)backGreen/100.)
-                                                         blue:((float)backBlue/100.)
-                                                        alpha:(float)1]
-                  withLetterColor:[UIColor colorWithRed:((float)foreRed/100.)
-                                                        green:((float)foreGreen/100.)
-                                                         blue:((float)foreBlue/100.)
-                                                        alpha:(float)1]
+                   withBackground:[UIColor colorWithRed:((float)backRed/100)
+                                                  green:((float)backGreen/100)
+                                                   blue:((float)backBlue/100)
+                                                  alpha:(float)1]
+                  withLetterColor:[UIColor colorWithRed:((float)foreRed/100)
+                                                  green:((float)foreGreen/100)
+                                                   blue:((float)foreBlue/100)
+                                                  alpha:(float)1]
                       atLocationX:xLoc locationY:yLoc
                     withFancyFont:(inputChar == FOLIAGE_CHAR)];
     }
+    
+    
+   // return;
+    
+  //  NSString *temp = [[NSString alloc] initWithCharactersNoCopy:&inputChar length:1 freeWhenDone:NO];
+  //  temp = nil;
+   // [NSString stringWithCharacters:&inputChar length:1];
+  //  return;
+ //   dispatch_async(dispatch_get_main_queue(), ^{
+    //    [viewController plotChar:inputChar xLoc:xLoc yLoc:yLoc forered:foreRed foregreen:foreGreen foreBlue:foreBlue backRed:backRed backGreen:backGreen backBlue:backBlue];
+ //   });
+	
 }
 
 void pausingTimerStartsNow() {
-	pauseStartDate = [NSDate date];
+ //   pauseStartDate = nil;
+//	pauseStartDate = [NSDate date];
  //   printf("\nPause timer started!");
 }
 
@@ -170,7 +189,7 @@ boolean pauseForMilliseconds(short milliseconds) {
 	NSDate *targetDate, *currentDate;
     //    NSComparisonResult theCompare;
     
- //   @autoreleasepool {
+    @autoreleasepool {
         currentDate = [NSDate date];
         if (pauseStartDate) {
             //            NSLog(@"\nStarting a pause: previous date was %@.", pauseStartDate);
@@ -203,7 +222,7 @@ boolean pauseForMilliseconds(short milliseconds) {
         //            [NSApp updateWindows];
         //            NSLog(@"\nSkipped a pause: target date was %@; current date was %@; comparison was %i.", targetDate, currentDate, theCompare);
         //        }
- //   }
+    }
 	return false;
 }
 
@@ -216,7 +235,7 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, boolean textInput, boolean col
 	CGPoint event_location;
 	CGPoint local_point;
 	short x, y;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+  //  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         for(;;) {
             if (colorsDance) {
                 shuffleTerrainColors(3, true);
@@ -296,7 +315,7 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, boolean textInput, boolean col
         //			 returnEvent->param2, returnEvent->controlKey ? "true" : "false", returnEvent->shiftKey ? "true" : "false");
         
 
-    });
+//    });
 }
 
 boolean controlKeyIsDown() {
