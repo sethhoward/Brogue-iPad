@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class Viewport;
 @interface ViewController : UIViewController
+
++ (id)sharedInstance;
+
+@property (nonatomic, strong) IBOutlet Viewport *theDisplay;
+- (IBAction)fuckyoutouched:(id)sender;
 
 @end

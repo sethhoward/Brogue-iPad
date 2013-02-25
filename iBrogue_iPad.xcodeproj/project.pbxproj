@@ -18,6 +18,23 @@
 		C57A963F16D7EAD500C233F1 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C57A963E16D7EAD500C233F1 /* Default-568h@2x.png */; };
 		C57A964216D7EAD500C233F1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A964116D7EAD500C233F1 /* ViewController.m */; };
 		C57A964516D7EAD500C233F1 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C57A964316D7EAD500C233F1 /* ViewController.xib */; };
+		C57A965116D7EB4C00C233F1 /* RogueDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A964E16D7EB4C00C233F1 /* RogueDriver.m */; };
+		C57A965216D7EB4C00C233F1 /* Viewport.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A965016D7EB4C00C233F1 /* Viewport.m */; };
+		C57A966516D7EB5500C233F1 /* Architect.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965416D7EB5500C233F1 /* Architect.c */; };
+		C57A966616D7EB5500C233F1 /* Buttons.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965516D7EB5500C233F1 /* Buttons.c */; };
+		C57A966716D7EB5500C233F1 /* Combat.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965616D7EB5500C233F1 /* Combat.c */; };
+		C57A966816D7EB5500C233F1 /* Dijkstra.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965716D7EB5500C233F1 /* Dijkstra.c */; };
+		C57A966916D7EB5500C233F1 /* Globals.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965816D7EB5500C233F1 /* Globals.c */; };
+		C57A966A16D7EB5500C233F1 /* Grid.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965916D7EB5500C233F1 /* Grid.c */; };
+		C57A966B16D7EB5500C233F1 /* IO.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965B16D7EB5500C233F1 /* IO.c */; };
+		C57A966C16D7EB5500C233F1 /* Items.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965C16D7EB5500C233F1 /* Items.c */; };
+		C57A966D16D7EB5500C233F1 /* Light.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965D16D7EB5500C233F1 /* Light.c */; };
+		C57A966E16D7EB5500C233F1 /* MainMenu.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965E16D7EB5500C233F1 /* MainMenu.c */; };
+		C57A966F16D7EB5500C233F1 /* Monsters.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965F16D7EB5500C233F1 /* Monsters.c */; };
+		C57A967016D7EB5500C233F1 /* Movement.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A966016D7EB5500C233F1 /* Movement.c */; };
+		C57A967116D7EB5500C233F1 /* Random.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A966116D7EB5500C233F1 /* Random.c */; };
+		C57A967216D7EB5500C233F1 /* Recordings.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A966216D7EB5500C233F1 /* Recordings.c */; };
+		C57A967316D7EB5500C233F1 /* RogueMain.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A966416D7EB5500C233F1 /* RogueMain.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +54,28 @@
 		C57A964016D7EAD500C233F1 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		C57A964116D7EAD500C233F1 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		C57A964416D7EAD500C233F1 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
+		C57A964C16D7EB4C00C233F1 /* PlatformDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlatformDefines.h; sourceTree = "<group>"; };
+		C57A964D16D7EB4C00C233F1 /* RogueDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RogueDriver.h; sourceTree = "<group>"; };
+		C57A964E16D7EB4C00C233F1 /* RogueDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RogueDriver.m; sourceTree = "<group>"; };
+		C57A964F16D7EB4C00C233F1 /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
+		C57A965016D7EB4C00C233F1 /* Viewport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Viewport.m; sourceTree = "<group>"; };
+		C57A965416D7EB5500C233F1 /* Architect.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Architect.c; sourceTree = "<group>"; };
+		C57A965516D7EB5500C233F1 /* Buttons.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Buttons.c; sourceTree = "<group>"; };
+		C57A965616D7EB5500C233F1 /* Combat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Combat.c; sourceTree = "<group>"; };
+		C57A965716D7EB5500C233F1 /* Dijkstra.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Dijkstra.c; sourceTree = "<group>"; };
+		C57A965816D7EB5500C233F1 /* Globals.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Globals.c; sourceTree = "<group>"; };
+		C57A965916D7EB5500C233F1 /* Grid.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Grid.c; sourceTree = "<group>"; };
+		C57A965A16D7EB5500C233F1 /* IncludeGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IncludeGlobals.h; sourceTree = "<group>"; };
+		C57A965B16D7EB5500C233F1 /* IO.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = IO.c; sourceTree = "<group>"; };
+		C57A965C16D7EB5500C233F1 /* Items.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Items.c; sourceTree = "<group>"; };
+		C57A965D16D7EB5500C233F1 /* Light.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Light.c; sourceTree = "<group>"; };
+		C57A965E16D7EB5500C233F1 /* MainMenu.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = MainMenu.c; sourceTree = "<group>"; };
+		C57A965F16D7EB5500C233F1 /* Monsters.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Monsters.c; sourceTree = "<group>"; };
+		C57A966016D7EB5500C233F1 /* Movement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Movement.c; sourceTree = "<group>"; };
+		C57A966116D7EB5500C233F1 /* Random.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Random.c; sourceTree = "<group>"; };
+		C57A966216D7EB5500C233F1 /* Recordings.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Recordings.c; sourceTree = "<group>"; };
+		C57A966316D7EB5500C233F1 /* Rogue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rogue.h; sourceTree = "<group>"; };
+		C57A966416D7EB5500C233F1 /* RogueMain.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = RogueMain.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +122,8 @@
 		C57A962E16D7EAD500C233F1 /* iBrogue_iPad */ = {
 			isa = PBXGroup;
 			children = (
+				C57A965316D7EB5500C233F1 /* BrogueCode */,
+				C57A964B16D7EB4C00C233F1 /* PlatformCode */,
 				C57A963716D7EAD500C233F1 /* AppDelegate.h */,
 				C57A963816D7EAD500C233F1 /* AppDelegate.m */,
 				C57A964016D7EAD500C233F1 /* ViewController.h */,
@@ -105,6 +146,42 @@
 				C57A963E16D7EAD500C233F1 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C57A964B16D7EB4C00C233F1 /* PlatformCode */ = {
+			isa = PBXGroup;
+			children = (
+				C57A964C16D7EB4C00C233F1 /* PlatformDefines.h */,
+				C57A964D16D7EB4C00C233F1 /* RogueDriver.h */,
+				C57A964E16D7EB4C00C233F1 /* RogueDriver.m */,
+				C57A964F16D7EB4C00C233F1 /* Viewport.h */,
+				C57A965016D7EB4C00C233F1 /* Viewport.m */,
+			);
+			path = PlatformCode;
+			sourceTree = "<group>";
+		};
+		C57A965316D7EB5500C233F1 /* BrogueCode */ = {
+			isa = PBXGroup;
+			children = (
+				C57A965416D7EB5500C233F1 /* Architect.c */,
+				C57A965516D7EB5500C233F1 /* Buttons.c */,
+				C57A965616D7EB5500C233F1 /* Combat.c */,
+				C57A965716D7EB5500C233F1 /* Dijkstra.c */,
+				C57A965816D7EB5500C233F1 /* Globals.c */,
+				C57A965916D7EB5500C233F1 /* Grid.c */,
+				C57A965A16D7EB5500C233F1 /* IncludeGlobals.h */,
+				C57A965B16D7EB5500C233F1 /* IO.c */,
+				C57A965C16D7EB5500C233F1 /* Items.c */,
+				C57A965D16D7EB5500C233F1 /* Light.c */,
+				C57A965E16D7EB5500C233F1 /* MainMenu.c */,
+				C57A965F16D7EB5500C233F1 /* Monsters.c */,
+				C57A966016D7EB5500C233F1 /* Movement.c */,
+				C57A966116D7EB5500C233F1 /* Random.c */,
+				C57A966216D7EB5500C233F1 /* Recordings.c */,
+				C57A966316D7EB5500C233F1 /* Rogue.h */,
+				C57A966416D7EB5500C233F1 /* RogueMain.c */,
+			);
+			path = BrogueCode;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -176,6 +253,23 @@
 				C57A963516D7EAD500C233F1 /* main.m in Sources */,
 				C57A963916D7EAD500C233F1 /* AppDelegate.m in Sources */,
 				C57A964216D7EAD500C233F1 /* ViewController.m in Sources */,
+				C57A965116D7EB4C00C233F1 /* RogueDriver.m in Sources */,
+				C57A965216D7EB4C00C233F1 /* Viewport.m in Sources */,
+				C57A966516D7EB5500C233F1 /* Architect.c in Sources */,
+				C57A966616D7EB5500C233F1 /* Buttons.c in Sources */,
+				C57A966716D7EB5500C233F1 /* Combat.c in Sources */,
+				C57A966816D7EB5500C233F1 /* Dijkstra.c in Sources */,
+				C57A966916D7EB5500C233F1 /* Globals.c in Sources */,
+				C57A966A16D7EB5500C233F1 /* Grid.c in Sources */,
+				C57A966B16D7EB5500C233F1 /* IO.c in Sources */,
+				C57A966C16D7EB5500C233F1 /* Items.c in Sources */,
+				C57A966D16D7EB5500C233F1 /* Light.c in Sources */,
+				C57A966E16D7EB5500C233F1 /* MainMenu.c in Sources */,
+				C57A966F16D7EB5500C233F1 /* Monsters.c in Sources */,
+				C57A967016D7EB5500C233F1 /* Movement.c in Sources */,
+				C57A967116D7EB5500C233F1 /* Random.c in Sources */,
+				C57A967216D7EB5500C233F1 /* Recordings.c in Sources */,
+				C57A967316D7EB5500C233F1 /* RogueMain.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,10 +356,16 @@
 		C57A964916D7EAD500C233F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iBrogue_iPad/iBrogue_iPad-Prefix.pch";
 				INFOPLIST_FILE = "iBrogue_iPad/iBrogue_iPad-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -273,10 +373,14 @@
 		C57A964A16D7EAD500C233F1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iBrogue_iPad/iBrogue_iPad-Prefix.pch";
 				INFOPLIST_FILE = "iBrogue_iPad/iBrogue_iPad-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -300,6 +404,7 @@
 				C57A964A16D7EAD500C233F1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
