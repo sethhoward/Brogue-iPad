@@ -148,6 +148,7 @@ void plotChar(uchar inputChar,
 			  short backRed, short backGreen, short backBlue) {
     if (!theMainDisplay) {
         theMainDisplay = [[(AppDelegate *)[[UIApplication sharedApplication] delegate] viewController] theDisplay];
+        viewController = [(AppDelegate *)[[UIApplication sharedApplication] delegate] viewController];
     }
     
     //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
@@ -170,7 +171,7 @@ void plotChar(uchar inputChar,
 
 void pausingTimerStartsNow() {
  //   pauseStartDate = nil;
-//	pauseStartDate = [NSDate date];
+	pauseStartDate = [NSDate date];
  //   printf("\nPause timer started!");
 }
 
@@ -227,7 +228,8 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, boolean textInput, boolean col
 	CGPoint local_point;
 	short x, y;
   //  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        for(;;) {
+       // for(;;) {
+            // TODO: why?
             if (colorsDance) {
                 shuffleTerrainColors(3, true);
                 commitDraws();
@@ -301,7 +303,7 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, boolean textInput, boolean col
              }*/
             
             //[[UIApplication sharedApplication] sendEvent:theEvent];
-        }
+       // }
         // printf("\nRogueEvent: eventType: %i, param1: %i, param2: %i, controlKey: %s, shiftKey: %s", returnEvent->eventType, returnEvent->param1,
         //			 returnEvent->param2, returnEvent->controlKey ? "true" : "false", returnEvent->shiftKey ? "true" : "false");
         

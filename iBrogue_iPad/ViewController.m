@@ -86,7 +86,7 @@ static ViewController *instance;
     //	[fileMenu setAutoenablesItems:NO];
     double delayInSeconds = 2.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(void){
+    dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
         rogueMain();
     });
     
@@ -96,7 +96,7 @@ static ViewController *instance;
 }
 
 - (IBAction)fuckyoutouched:(id)sender {
-    [self.theDisplay setNeedsDisplay];
+   // [self.theDisplay setNeedsDisplay];
 }
 
 /*
@@ -115,5 +115,19 @@ static ViewController *instance;
         foreGroundColor = nil;
    // }
 }*/
+
+#pragma mark - touches
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+}
 
 @end

@@ -364,7 +364,6 @@ void titleMenu() {
 		overlayDisplayBuffer(state.dbuf, NULL);
 		
 		// Pause briefly.
-        usleep(1000);
         
 		if (pauseBrogue(MENU_FLAME_UPDATE_DELAY)) {
 			// There was input during the pause! Get the input.
@@ -376,7 +375,8 @@ void titleMenu() {
 		
 		// Revert the display.
 		overlayDisplayBuffer(state.rbuf, NULL);
-		
+        
+        usleep(80000);
 	} while (button == -1 && rogue.nextGame == NG_NOTHING);
 	drawMenuFlames(flames, mask);
 	if (button != -1) {
