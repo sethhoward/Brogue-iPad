@@ -208,8 +208,8 @@ NSString *basicFontName = FONT_NAME;
         
         //  UIColor *back3 = [bgColor copy];
         //  UIColor *back4 = [letterColor copy];
-
-    [[self.nsBackgroundColor objectAtIndex:y] replaceObjectAtIndex:x withObject:bgColor];
+//
+//    [[self.nsBackgroundColor objectAtIndex:y] replaceObjectAtIndex:x withObject:bgColor];
 
         
     
@@ -217,13 +217,15 @@ NSString *basicFontName = FONT_NAME;
     
     
   //  bgColor = nil;
-        
-     /*   letterArray[x][y] = nil;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        letterArray[x][y] = nil;
         bgColorArray[x][y] = nil;
         attributes[x][y] = nil;
         
         letterArray[x][y] = [c copy];
-        bgColorArray[x][y] = [bgColor copy];*/
+        bgColorArray[x][y] = [bgColor copy];
+    });
+    
    //     [attributes[x][y] setObject:letterColor forKey:NSForegroundColorAttributeName];
         //[attributes[x][y] setObject:[self fontForString:c] forKey:NSFontAttributeName];
    //     [attributes[x][y] setObject:(fancyFont ? [self slowFont] : [self fastFont]) forKey:NSFontAttributeName];
@@ -287,7 +289,7 @@ NSString *basicFontName = FONT_NAME;
             for ( i = startX; i < endX; i++ ) {
              @autoreleasepool {
                 //
-                UIColor *color = bgColorArrayCopy[i][j];
+                UIColor *color = bgColorArray[i][j];
                 
                // if ([color respondsToSelector:@selector(set)]) {
                     [color set];
