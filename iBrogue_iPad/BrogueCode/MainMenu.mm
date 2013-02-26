@@ -1,12 +1,25 @@
-//
-//  MainMenu.m
-//  iBrogue_iPad
-//
-//  Created by Seth Howard on 2/25/13.
-//  Copyright (c) 2013 Seth howard. All rights reserved.
-//
-
-#import "MainMenu.h"
+/*
+ *  Buttons.c
+ *  Brogue
+ *
+ *  Created by Brian Walker on 1/14/12.
+ *  Copyright 2012. All rights reserved.
+ *
+ *  This file is part of Brogue.
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include "Rogue.h"
 #include "IncludeGlobals.h"
@@ -29,7 +42,6 @@
 #define MENU_FLAME_COLOR_SOURCE_COUNT	1136
 
 #define MENU_FLAME_DENOMINATOR			(100 + MENU_FLAME_RISE_SPEED + MENU_FLAME_SPREAD_SPEED)
-
 
 void drawMenuFlames(signed short flames[COLS][(ROWS + MENU_FLAME_ROW_PADDING)][3], unsigned char mask[COLS][ROWS]) {
 	short i, j, versionStringLength;
@@ -248,71 +260,24 @@ void initializeMenuFlames(boolean includeTitle,
 	
 }
 
-
-@implementation MainMenu
-
-signed short flames[COLS][(ROWS + MENU_FLAME_ROW_PADDING)][3]; // red, green and blue
-signed short colorSources[MENU_FLAME_COLOR_SOURCE_COUNT][4]; // red, green, blue, and rand, one for each color source (no more than MENU_FLAME_COLOR_SOURCE_COUNT).
-color *colors[COLS][(ROWS + MENU_FLAME_ROW_PADDING)];
-unsigned char mask[COLS][ROWS];
-boolean controlKeyWasDown = false;
-
-short i, b, x, y, button;
-buttonState state;
-brogueButton buttons[6];
-char whiteColorEscape[10] = "";
-char goldColorEscape[10] = "";
-char newGameText[100] = "", customNewGameText[100] = "";
-rogueEvent theEvent;
-enum NGCommands buttonCommands[6] = {NG_NEW_GAME, NG_OPEN_GAME, NG_VIEW_RECORDING, NG_HIGH_SCORES, NG_QUIT};
-
-cellDisplayBuffer shadowBuf[COLS][ROWS];
-
-
-
-- (void)renderTitle {
- //   NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    if (!controlKeyWasDown && controlKeyIsDown()) {
-        strcpy(state.buttons[0].text, customNewGameText);
-        drawButtonsInState(&state);
-        buttonCommands[0] = NG_NEW_GAME_WITH_SEED;
-        controlKeyWasDown = true;
-    } else if (controlKeyWasDown && !controlKeyIsDown()) {
-        strcpy(state.buttons[0].text, newGameText);
-        drawButtonsInState(&state);
-        buttonCommands[0] = NG_NEW_GAME;
-        controlKeyWasDown = false;
-    }
-    
-    // Update the display.
-    updateMenuFlames(colors, colorSources, flames);
-    drawMenuFlames(flames, mask);
-    overlayDisplayBuffer(shadowBuf, NULL);
-    overlayDisplayBuffer(state.dbuf, NULL);
-    
-    // Pause briefly.
-   // usleep(1000);
-    
-    if (pauseBrogue(MENU_FLAME_UPDATE_DELAY)) {
-        // There was input during the pause! Get the input.
-        //		nextBrogueEvent(&theEvent, true, false, true);
-        
-        // Process the input.
-        //		button = processButtonInput(&state, NULL, &theEvent);
-    }
-    
-    // Revert the display.
-    overlayDisplayBuffer(state.rbuf, NULL);
-    
-   /* double delayInSeconds = 1/20.f;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self renderTitle];
-    });*/
-}
-
 void titleMenu() {
+	signed short flames[COLS][(ROWS + MENU_FLAME_ROW_PADDING)][3]; // red, green and blue
+	signed short colorSources[MENU_FLAME_COLOR_SOURCE_COUNT][4]; // red, green, blue, and rand, one for each color source (no more than MENU_FLAME_COLOR_SOURCE_COUNT).
+	color *colors[COLS][(ROWS + MENU_FLAME_ROW_PADDING)];
+	unsigned char mask[COLS][ROWS];
+	boolean controlKeyWasDown = false;
+	
+	short i, b, x, y, button;
+	buttonState state;
+	brogueButton buttons[6];
+	char whiteColorEscape[10] = "";
+	char goldColorEscape[10] = "";
+	char newGameText[100] = "", customNewGameText[100] = "";
+	rogueEvent theEvent;
+	enum NGCommands buttonCommands[6] = {NG_NEW_GAME, NG_OPEN_GAME, NG_VIEW_RECORDING, NG_HIGH_SCORES, NG_QUIT};
+	
+	cellDisplayBuffer shadowBuf[COLS][ROWS];
+	
 	// Initialize the RNG so the flames aren't always the same.
 	
 	seedRandomGenerator(0);
@@ -374,15 +339,10 @@ void titleMenu() {
 	initializeButtonState(&state, buttons, b, x, y, 20, b*2-1);
 	rectangularShading(x, y, 20, b*2-1, &black, INTERFACE_OPACITY, shadowBuf);
 	drawButtonsInState(&state);
-    
+
 	initializeMenuFlames(true, colors, colorSources, flames, mask);
     rogue.creaturesWillFlashThisTurn = false; // total unconscionable hack
 	
-   // mainMenuInstance = [[MainMenu alloc] init];
-    
-    //[mainMenuInstance renderTitle];
-    
-    return;
     
 	do {
 		if (!controlKeyWasDown && controlKeyIsDown()) {
@@ -408,10 +368,10 @@ void titleMenu() {
         
 		if (pauseBrogue(MENU_FLAME_UPDATE_DELAY)) {
 			// There was input during the pause! Get the input.
-            //		nextBrogueEvent(&theEvent, true, false, true);
+	//		nextBrogueEvent(&theEvent, true, false, true);
 			
 			// Process the input.
-            //		button = processButtonInput(&state, NULL, &theEvent);
+	//		button = processButtonInput(&state, NULL, &theEvent);
 		}
 		
 		// Revert the display.
@@ -562,10 +522,10 @@ boolean dialogChooseFile(char *path, const char *suffix, const char *prompt) {
 			rectangularShading(x - 1, y - 1, width + 1, height + 1, dialogColor, INTERFACE_OPACITY, dbuf);
 			overlayDisplayBuffer(dbuf, NULL);
 			
-            //			for (j=0; j<min(count - currentPageStart, FILES_ON_PAGE_MAX); j++) {
-            //				printf("\nSanity check BEFORE: %s, with date: %s", files[currentPageStart+j].path, files[currentPageStart+j].date);
-            //				printf("\n   (button name)Sanity check BEFORE: %s", buttons[j].text);
-            //			}
+//			for (j=0; j<min(count - currentPageStart, FILES_ON_PAGE_MAX); j++) {
+//				printf("\nSanity check BEFORE: %s, with date: %s", files[currentPageStart+j].path, files[currentPageStart+j].date);
+//				printf("\n   (button name)Sanity check BEFORE: %s", buttons[j].text);
+//			}
 			
 			i = buttonInputLoop(buttons,
 								min(count - currentPageStart, FILES_ON_PAGE_MAX) + (count > FILES_ON_PAGE_MAX ? 2 : 0),
@@ -575,10 +535,10 @@ boolean dialogChooseFile(char *path, const char *suffix, const char *prompt) {
 								height,
 								NULL);
 			
-            //			for (j=0; j<min(count - currentPageStart, FILES_ON_PAGE_MAX); j++) {
-            //				printf("\nSanity check AFTER: %s, with date: %s", files[currentPageStart+j].path, files[currentPageStart+j].date);
-            //				printf("\n   (button name)Sanity check AFTER: %s", buttons[j].text);
-            //			}
+//			for (j=0; j<min(count - currentPageStart, FILES_ON_PAGE_MAX); j++) {
+//				printf("\nSanity check AFTER: %s, with date: %s", files[currentPageStart+j].path, files[currentPageStart+j].date);
+//				printf("\n   (button name)Sanity check AFTER: %s", buttons[j].text);
+//			}
 			
 			overlayDisplayBuffer(rbuf, NULL);
 			
@@ -625,9 +585,9 @@ void scum(unsigned long startingSeed, short numberOfSeedsToScan, short scanThrou
     strcat(path, GAME_SUFFIX);
     
     fprintf(logFile, "Brogue seed catalog, seeds %li to %li, through depth %i.\n\n\
-            To play one of these seeds, press control-N from the title screen \
-            and enter the seed number. Knowing which items will appear on \
-            the first %i depths will, of course, make the game significantly easier.",
+To play one of these seeds, press control-N from the title screen \
+and enter the seed number. Knowing which items will appear on \
+the first %i depths will, of course, make the game significantly easier.",
             startingSeed, startingSeed + numberOfSeedsToScan - 1, scanThroughDepth, scanThroughDepth);
     
     for (theSeed = startingSeed; theSeed < startingSeed + numberOfSeedsToScan; theSeed++) {
@@ -671,7 +631,6 @@ void scum(unsigned long startingSeed, short numberOfSeedsToScan, short scanThrou
 // accompanying path, and it's a command that should take a path, then pop up a dialog to have
 // the player specify a path. If there is no command (i.e. if rogue.nextGame contains NG_NOTHING),
 // then we'll display the title screen so the player can choose.
-
 void mainBrogueJunction() {
 	rogueEvent theEvent;
 	char path[BROGUE_FILENAME_MAX], buf[100], seedDefault[100];
@@ -695,158 +654,152 @@ void mainBrogueJunction() {
 	
 	initializeLaunchArguments(&rogue.nextGame, rogue.nextGamePath, &rogue.nextGameSeed);
 	
-    titleMenu();
-    
-	/*do {
-     rogue.gameHasEnded = false;
-     rogue.playbackFastForward = false;
-     rogue.playbackMode = false;
-     switch (rogue.nextGame) {
-     case NG_NOTHING:
-     // Run the main menu to get a decision out of the player.
-     titleMenu();
-     break;
-     case NG_NEW_GAME:
-     case NG_NEW_GAME_WITH_SEED:
-     rogue.nextGamePath[0] = '\0';
-     randomNumbersGenerated = 0;
-     
-     rogue.playbackMode = false;
-     rogue.playbackFastForward = false;
-     rogue.playbackBetweenTurns = false;
-     
-     getAvailableFilePath(path, LAST_GAME_NAME, GAME_SUFFIX);
-     strcat(path, GAME_SUFFIX);
-     strcpy(currentFilePath, path);
-     
-     if (rogue.nextGame == NG_NEW_GAME_WITH_SEED) {
-     if (rogue.nextGameSeed == 0) { // Prompt for seed; default is the previous game's seed.
-     sprintf(maxSeed, "%lu", ULONG_MAX);
-     if (previousGameSeed == 0) {
-     seedDefault[0] = '\0';
-     } else {
-     sprintf(seedDefault, "%lu", previousGameSeed);
-     }
-     if (getInputTextString(buf, "Generate dungeon with seed number:",
-     log10(ULONG_MAX) + 1,
-     seedDefault,
-     "",
-     TEXT_INPUT_NUMBERS,
-     true)
-     && buf[0] != '\0') {
-     seedTooBig = false;
-     if (strlen(buf) > strlen(maxSeed)) {
-     seedTooBig = true;
-     } else if (strlen(buf) == strlen(maxSeed)) {
-     for (i=0; maxSeed[i]; i++) {
-     if (maxSeed[i] > buf[i]) {
-     break; // we're good
-     } else if (maxSeed[i] < buf[i]) {
-     seedTooBig = true;
-     break;
-     }
-     }
-     }
-     if (seedTooBig) {
-     rogue.nextGameSeed = ULONG_MAX;
-     } else {
-     sscanf(buf, "%lu", &rogue.nextGameSeed);
-     }
-     } else {
-     rogue.nextGame = NG_NOTHING;
-     break; // Don't start a new game after all.
-     }
-     }
-     } else {
-     rogue.nextGameSeed = 0; // Seed based on clock.
-     }
-     
-     rogue.nextGame = NG_NOTHING;
-     initializeRogue(rogue.nextGameSeed);
-     startLevel(rogue.depthLevel, 1); // descending into level 1
-     
-     mainInputLoop();
-     freeEverything();
-     break;
-     case NG_OPEN_GAME:
-     rogue.nextGame = NG_NOTHING;
-     path[0] = '\0';
-     if (rogue.nextGamePath[0]) {
-     strcpy(path, rogue.nextGamePath);
-     rogue.nextGamePath[0] = '\0';
-     } else {
-     dialogChooseFile(path, GAME_SUFFIX, "Open saved game:");
-     //chooseFile(path, "Open saved game: ", "Saved game", GAME_SUFFIX);
-     }
-     
-     if (openFile(path)) {
-     loadSavedGame();
-     mainInputLoop();
-     freeEverything();
-     } else {
-     //dialogAlert("File not found.");
-     }
-     rogue.playbackMode = false;
-     rogue.playbackOOS = false;
-     
-     break;
-     case NG_VIEW_RECORDING:
-     rogue.nextGame = NG_NOTHING;
-     
-     path[0] = '\0';
-     if (rogue.nextGamePath[0]) {
-     strcpy(path, rogue.nextGamePath);
-     rogue.nextGamePath[0] = '\0';
-     } else {
-     dialogChooseFile(path, RECORDING_SUFFIX, "View recording:");
-     //chooseFile(path, "View recording: ", "Recording", RECORDING_SUFFIX);
-     }
-     
-     if (openFile(path)) {
-     randomNumbersGenerated = 0;
-     rogue.playbackMode = true;
-     initializeRogue(0); // Seed argument is ignored because we're in playback.
-     if (!rogue.gameHasEnded) {
-     startLevel(rogue.depthLevel, 1);
-     pausePlayback();
-     displayAnnotation(); // in case there's an annotation for turn 0
-     }
-     
-     while(!rogue.gameHasEnded && rogue.playbackMode) {
-     rogue.RNG = RNG_COSMETIC; // dancing terrain colors can't influence recordings
-     rogue.playbackBetweenTurns = true;
-     nextBrogueEvent(&theEvent, false, true, false);
-     rogue.RNG = RNG_SUBSTANTIVE;
-     
-     executeEvent(&theEvent);
-     }
-     
-     freeEverything();
-     } else {
-     // announce file not found
-     }
-     rogue.playbackMode = false;
-     rogue.playbackOOS = false;
-     
-     break;
-     case NG_HIGH_SCORES:
-     rogue.nextGame = NG_NOTHING;
-     printHighScores(false);
-     break;
-     case NG_SCUM:
-     rogue.nextGame = NG_NOTHING;
-     scum(1, 1000, 5);
-     break;
-     case NG_QUIT:
-     // No need to do anything.
-     break;
-     default:
-     break;
-     }
-     } while (rogue.nextGame != NG_QUIT);*/
+	do {
+        rogue.gameHasEnded = false;
+        rogue.playbackFastForward = false;
+        rogue.playbackMode = false;
+		switch (rogue.nextGame) {
+			case NG_NOTHING:
+				// Run the main menu to get a decision out of the player.
+				titleMenu();
+				break;
+			case NG_NEW_GAME:
+			case NG_NEW_GAME_WITH_SEED:
+				rogue.nextGamePath[0] = '\0';
+				randomNumbersGenerated = 0;
+				
+				rogue.playbackMode = false;
+				rogue.playbackFastForward = false;
+				rogue.playbackBetweenTurns = false;
+                
+                getAvailableFilePath(path, LAST_GAME_NAME, GAME_SUFFIX);
+                strcat(path, GAME_SUFFIX);
+				strcpy(currentFilePath, path);
+				
+				if (rogue.nextGame == NG_NEW_GAME_WITH_SEED) {
+					if (rogue.nextGameSeed == 0) { // Prompt for seed; default is the previous game's seed.
+						sprintf(maxSeed, "%lu", ULONG_MAX);
+						if (previousGameSeed == 0) {
+							seedDefault[0] = '\0';
+						} else {
+							sprintf(seedDefault, "%lu", previousGameSeed);
+						}
+						if (getInputTextString(buf, "Generate dungeon with seed number:",
+											   log10(ULONG_MAX) + 1,
+											   seedDefault,
+											   "",
+											   TEXT_INPUT_NUMBERS,
+											   true)
+							&& buf[0] != '\0') {
+							seedTooBig = false;
+							if (strlen(buf) > strlen(maxSeed)) {
+								seedTooBig = true;
+							} else if (strlen(buf) == strlen(maxSeed)) {
+								for (i=0; maxSeed[i]; i++) {
+									if (maxSeed[i] > buf[i]) {
+										break; // we're good
+									} else if (maxSeed[i] < buf[i]) {
+										seedTooBig = true;
+										break;
+									}
+								}
+							}
+							if (seedTooBig) {
+								rogue.nextGameSeed = ULONG_MAX;
+							} else {
+								sscanf(buf, "%lu", &rogue.nextGameSeed);
+							}
+						} else {
+							rogue.nextGame = NG_NOTHING;
+							break; // Don't start a new game after all.
+						}
+					}
+				} else {
+					rogue.nextGameSeed = 0; // Seed based on clock.
+				}
+				
+				rogue.nextGame = NG_NOTHING;
+				initializeRogue(rogue.nextGameSeed);
+				startLevel(rogue.depthLevel, 1); // descending into level 1
+				
+				mainInputLoop();
+				freeEverything();
+				break;
+			case NG_OPEN_GAME:
+				rogue.nextGame = NG_NOTHING;
+				path[0] = '\0';
+				if (rogue.nextGamePath[0]) {
+					strcpy(path, rogue.nextGamePath);
+					rogue.nextGamePath[0] = '\0';
+				} else {
+					dialogChooseFile(path, GAME_SUFFIX, "Open saved game:");
+					//chooseFile(path, "Open saved game: ", "Saved game", GAME_SUFFIX);
+				}
+					
+				if (openFile(path)) {
+					loadSavedGame();
+					mainInputLoop();
+					freeEverything();
+				} else {
+					//dialogAlert("File not found.");
+				}
+				rogue.playbackMode = false;
+				rogue.playbackOOS = false;
+				
+				break;
+			case NG_VIEW_RECORDING:
+				rogue.nextGame = NG_NOTHING;
+				
+				path[0] = '\0';
+				if (rogue.nextGamePath[0]) {
+					strcpy(path, rogue.nextGamePath);
+					rogue.nextGamePath[0] = '\0';
+				} else {
+					dialogChooseFile(path, RECORDING_SUFFIX, "View recording:");
+					//chooseFile(path, "View recording: ", "Recording", RECORDING_SUFFIX);
+				}
+				
+				if (openFile(path)) {
+					randomNumbersGenerated = 0;
+					rogue.playbackMode = true;
+					initializeRogue(0); // Seed argument is ignored because we're in playback.
+					if (!rogue.gameHasEnded) {
+						startLevel(rogue.depthLevel, 1);
+						pausePlayback();
+						displayAnnotation(); // in case there's an annotation for turn 0
+					}
+					
+					while(!rogue.gameHasEnded && rogue.playbackMode) {
+						rogue.RNG = RNG_COSMETIC; // dancing terrain colors can't influence recordings
+						rogue.playbackBetweenTurns = true;
+						nextBrogueEvent(&theEvent, false, true, false);
+						rogue.RNG = RNG_SUBSTANTIVE;
+						
+						executeEvent(&theEvent);
+					}
+					
+					freeEverything();
+				} else {
+					// announce file not found
+				}
+				rogue.playbackMode = false;
+				rogue.playbackOOS = false;
+				
+				break;
+			case NG_HIGH_SCORES:
+				rogue.nextGame = NG_NOTHING;
+				printHighScores(false);
+				break;
+            case NG_SCUM:
+                rogue.nextGame = NG_NOTHING;
+                scum(1, 1000, 5);
+                break;
+			case NG_QUIT:
+				// No need to do anything.
+				break;
+			default:
+				break;
+		}
+	} while (rogue.nextGame != NG_QUIT);
 }
-
-
-@end
-
 

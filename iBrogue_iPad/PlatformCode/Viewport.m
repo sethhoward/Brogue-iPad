@@ -24,7 +24,7 @@
 #import "Viewport.h"
 #import "ViewController.h"
 #import <QuartzCore/QuartzCore.h>
-#import "MainMenu.h"
+
 
 @interface Viewport ()
 @property (nonatomic, strong) CADisplayLink *displayLink;
@@ -184,11 +184,6 @@ NSString *basicFontName = FONT_NAME;
 - (void)draw {
  //   NSLog(@"test");
  //   dispatch_async(dispatch_get_main_queue(), ^{
-    if (!mainMenuInstance) {
-        mainMenuInstance = [[MainMenu alloc] init];
-    }
-    
-    [mainMenuInstance renderTitle];
         [self setNeedsDisplay];
   //  });
 }
@@ -214,7 +209,7 @@ NSString *basicFontName = FONT_NAME;
         //  UIColor *back3 = [bgColor copy];
         //  UIColor *back4 = [letterColor copy];
 
-   // [[self.nsBackgroundColor objectAtIndex:y] replaceObjectAtIndex:x withObject:bgColor];
+    [[self.nsBackgroundColor objectAtIndex:y] replaceObjectAtIndex:x withObject:bgColor];
 
         
     
@@ -223,15 +218,16 @@ NSString *basicFontName = FONT_NAME;
     
   //  bgColor = nil;
         
-        letterArray[x][y] = nil;
+     /*   letterArray[x][y] = nil;
         bgColorArray[x][y] = nil;
         attributes[x][y] = nil;
         
         letterArray[x][y] = [c copy];
-        bgColorArray[x][y] = [bgColor copy];
+        bgColorArray[x][y] = [bgColor copy];*/
    //     [attributes[x][y] setObject:letterColor forKey:NSForegroundColorAttributeName];
         //[attributes[x][y] setObject:[self fontForString:c] forKey:NSFontAttributeName];
-   //     [attributes[x][y] setObject:(fancyFont ? [self slowFont] : [self fastFont]) forKey:NSFontAttributeName];  
+   //     [attributes[x][y] setObject:(fancyFont ? [self slowFont] : [self fastFont]) forKey:NSFontAttributeName];
+     return;   
         stringSize = [[characterSizeDictionary objectForKey:c] CGSizeValue];
         stringSize.width += 1;
         
@@ -247,7 +243,7 @@ NSString *basicFontName = FONT_NAME;
             });
             
         } else { // fits within the cell rectangle; no need for a custom update rectangle
-         //   [self setNeedsDisplayInRect:rectArray[x][y]];
+            //[self setNeedsDisplayInRect:rectArray[x][y]];
             //       dispatch_async(dispatch_get_main_queue(), ^{
        //     [self performSelectorOnMainThread:@selector(setNeedsDisplay) withObject:nil waitUntilDone:YES];
         }
@@ -291,7 +287,7 @@ NSString *basicFontName = FONT_NAME;
             for ( i = startX; i < endX; i++ ) {
              @autoreleasepool {
                 //
-                UIColor *color = bgColorArray[i][j];
+                UIColor *color = bgColorArrayCopy[i][j];
                 
                // if ([color respondsToSelector:@selector(set)]) {
                     [color set];
@@ -299,7 +295,7 @@ NSString *basicFontName = FONT_NAME;
                     [path fill];
                 
                     path = nil;
-                    color = nil;
+                    //color = nil;
              }
                 //}
                 

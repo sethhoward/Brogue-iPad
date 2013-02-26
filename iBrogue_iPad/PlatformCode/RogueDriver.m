@@ -150,7 +150,7 @@ void plotChar(uchar inputChar,
         theMainDisplay = [[(AppDelegate *)[[UIApplication sharedApplication] delegate] viewController] theDisplay];
     }
     
-   // dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         @autoreleasepool {
             [theMainDisplay setString:[NSString stringWithCharacters:&inputChar length:1]
                        withBackground:[UIColor colorWithRed:((float)backRed/100)
@@ -165,7 +165,7 @@ void plotChar(uchar inputChar,
                         withFancyFont:(inputChar == FOLIAGE_CHAR)];
         }
 
-   // });
+    });
 }
 
 void pausingTimerStartsNow() {

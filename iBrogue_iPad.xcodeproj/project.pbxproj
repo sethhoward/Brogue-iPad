@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C546A02D16DC7A41002702C0 /* MainMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = C546A02C16DC7A41002702C0 /* MainMenu.m */; };
 		C57A962916D7EAD500C233F1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C57A962816D7EAD500C233F1 /* UIKit.framework */; };
 		C57A962B16D7EAD500C233F1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C57A962A16D7EAD500C233F1 /* Foundation.framework */; };
 		C57A962D16D7EAD500C233F1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C57A962C16D7EAD500C233F1 /* CoreGraphics.framework */; };
@@ -30,6 +29,7 @@
 		C57A966B16D7EB5500C233F1 /* IO.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965B16D7EB5500C233F1 /* IO.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A966C16D7EB5500C233F1 /* Items.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965C16D7EB5500C233F1 /* Items.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A966D16D7EB5500C233F1 /* Light.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965D16D7EB5500C233F1 /* Light.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		C57A966E16D7EB5500C233F1 /* MainMenu.mm in Sources */ = {isa = PBXBuildFile; fileRef = C57A965E16D7EB5500C233F1 /* MainMenu.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A966F16D7EB5500C233F1 /* Monsters.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965F16D7EB5500C233F1 /* Monsters.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A967016D7EB5500C233F1 /* Movement.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A966016D7EB5500C233F1 /* Movement.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A967116D7EB5500C233F1 /* Random.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A966116D7EB5500C233F1 /* Random.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -39,8 +39,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		C546A02B16DC7A41002702C0 /* MainMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenu.h; sourceTree = "<group>"; };
-		C546A02C16DC7A41002702C0 /* MainMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenu.m; sourceTree = "<group>"; };
 		C57A962516D7EAD500C233F1 /* iBrogue_iPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iBrogue_iPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C57A962816D7EAD500C233F1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C57A962A16D7EAD500C233F1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -72,6 +70,7 @@
 		C57A965B16D7EB5500C233F1 /* IO.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = IO.c; sourceTree = "<group>"; };
 		C57A965C16D7EB5500C233F1 /* Items.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Items.c; sourceTree = "<group>"; };
 		C57A965D16D7EB5500C233F1 /* Light.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Light.c; sourceTree = "<group>"; };
+		C57A965E16D7EB5500C233F1 /* MainMenu.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainMenu.mm; sourceTree = "<group>"; };
 		C57A965F16D7EB5500C233F1 /* Monsters.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Monsters.c; sourceTree = "<group>"; };
 		C57A966016D7EB5500C233F1 /* Movement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Movement.c; sourceTree = "<group>"; };
 		C57A966116D7EB5500C233F1 /* Random.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Random.c; sourceTree = "<group>"; };
@@ -178,8 +177,7 @@
 				C57A965B16D7EB5500C233F1 /* IO.c */,
 				C57A965C16D7EB5500C233F1 /* Items.c */,
 				C57A965D16D7EB5500C233F1 /* Light.c */,
-				C546A02B16DC7A41002702C0 /* MainMenu.h */,
-				C546A02C16DC7A41002702C0 /* MainMenu.m */,
+				C57A965E16D7EB5500C233F1 /* MainMenu.mm */,
 				C57A965F16D7EB5500C233F1 /* Monsters.c */,
 				C57A966016D7EB5500C233F1 /* Movement.c */,
 				C57A966116D7EB5500C233F1 /* Random.c */,
@@ -270,12 +268,12 @@
 				C57A966B16D7EB5500C233F1 /* IO.c in Sources */,
 				C57A966C16D7EB5500C233F1 /* Items.c in Sources */,
 				C57A966D16D7EB5500C233F1 /* Light.c in Sources */,
+				C57A966E16D7EB5500C233F1 /* MainMenu.mm in Sources */,
 				C57A966F16D7EB5500C233F1 /* Monsters.c in Sources */,
 				C57A967016D7EB5500C233F1 /* Movement.c in Sources */,
 				C57A967116D7EB5500C233F1 /* Random.c in Sources */,
 				C57A967216D7EB5500C233F1 /* Recordings.c in Sources */,
 				C57A967316D7EB5500C233F1 /* RogueMain.c in Sources */,
-				C546A02D16DC7A41002702C0 /* MainMenu.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
