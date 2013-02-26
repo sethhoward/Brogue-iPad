@@ -103,9 +103,7 @@ static ViewController *instance;
 - (void) plotChar:(char)inputChar xLoc:(short)xLoc yLoc:(short)yLoc forered:(short)foreRed foregreen:(short)foreGreen foreBlue:(short)foreBlue backRed:(short)backRed backGreen:(short)backGreen backBlue:(short)backBlue {
 
    // @autoreleasepool {
-        UIColor *backgroundColor = [[UIColor alloc] initWithRed:(float)backRed/100. green:(float)backGreen/100. blue:(float)backBlue/100. alpha:1.];
-                                                                                                                    
-        UIColor *foreGroundColor = [[UIColor alloc] initWithRed:(float)foreRed/100. green:(float)foreGreen/100. blue:(float)foreBlue/100. alpha:1.];
+        
     
         [self.theDisplay setString:nil
                    withBackground:backgroundColor

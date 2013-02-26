@@ -146,35 +146,26 @@ void plotChar(uchar inputChar,
 			  short xLoc, short yLoc,
 			  short foreRed, short foreGreen, short foreBlue,
 			  short backRed, short backGreen, short backBlue) {
-    if (!viewController) {
-        viewController = [[(AppDelegate *)[[UIApplication sharedApplication] delegate] viewController] retain];
+    if (!theMainDisplay) {
+        theMainDisplay = [[(AppDelegate *)[[UIApplication sharedApplication] delegate] viewController] theDisplay];
     }
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        @autoreleasepool {
+            [theMainDisplay setString:[NSString stringWithCharacters:&inputChar length:1]
+                       withBackground:[UIColor colorWithRed:((float)backRed/100)
+                                                      green:((float)backGreen/100)
+                                                       blue:((float)backBlue/100)
+                                                      alpha:(float)1]
+                      withLetterColor:[UIColor colorWithRed:((float)foreRed/100)
+                                                      green:((float)foreGreen/100)
+                                                       blue:((float)foreBlue/100)
+                                                      alpha:(float)1]
+                          atLocationX:xLoc locationY:yLoc
+                        withFancyFont:(inputChar == FOLIAGE_CHAR)];
+        }
 
-    @autoreleasepool {
-        [theMainDisplay setString:[NSString stringWithCharacters:&inputChar length:1]
-                   withBackground:[UIColor colorWithRed:((float)backRed/100)
-                                                  green:((float)backGreen/100)
-                                                   blue:((float)backBlue/100)
-                                                  alpha:(float)1]
-                  withLetterColor:[UIColor colorWithRed:((float)foreRed/100)
-                                                  green:((float)foreGreen/100)
-                                                   blue:((float)foreBlue/100)
-                                                  alpha:(float)1]
-                      atLocationX:xLoc locationY:yLoc
-                    withFancyFont:(inputChar == FOLIAGE_CHAR)];
-    }
-    
-    
-   // return;
-    
-  //  NSString *temp = [[NSString alloc] initWithCharactersNoCopy:&inputChar length:1 freeWhenDone:NO];
-  //  temp = nil;
-   // [NSString stringWithCharacters:&inputChar length:1];
-  //  return;
- //   dispatch_async(dispatch_get_main_queue(), ^{
-    //    [viewController plotChar:inputChar xLoc:xLoc yLoc:yLoc forered:foreRed foregreen:foreGreen foreBlue:foreBlue backRed:backRed backGreen:backGreen backBlue:backBlue];
- //   });
-	
+    });
 }
 
 void pausingTimerStartsNow() {

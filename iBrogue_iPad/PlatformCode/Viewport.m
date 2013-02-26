@@ -28,6 +28,7 @@
 
 @interface Viewport ()
 @property (nonatomic, strong) CADisplayLink *displayLink;
+@property (nonatomic, strong) NSMutableArray *nsBackgroundColor;
 @end
 
 @implementation Viewport {
@@ -39,7 +40,9 @@
     NSTimer __strong *timer;
     
     BOOL animationRunning;
-
+    
+    UIColor __strong *back;
+    UIColor __strong *back2;
 }
 
 CGSize characterSize;
@@ -138,8 +141,14 @@ NSString *basicFontName = FONT_NAME;
 - (void)initializeLayoutVariables {
     int i, j;
     
+    self.nsBackgroundColor = [NSMutableArray arrayWithCapacity:1];
+    
 	for (j = 0; j < kROWS; j++) {
+        [self.nsBackgroundColor addObject:[NSMutableArray arrayWithCapacity:1]];
+        
 		for (i = 0; i < kCOLS; i++) {
+            [[self.nsBackgroundColor objectAtIndex:j] addObject:[UIColor whiteColor]];
+            
 			letterArray[i][j] = @" ";
             //           [letterArray[i][j] setString:@" "];
             //			[letterArray[i][j] retain];
@@ -186,24 +195,39 @@ NSString *basicFontName = FONT_NAME;
 		locationY:(short)y
     withFancyFont:(bool)fancyFont
 {
+    
+  //  return;
+    CGRect updateRect;
+    CGSize stringSize;
    // dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
   //       NSString *character =  c;
    //      UIColor *backColor = bgColor;
    //      UIColor *letColor = letterColor;
-    return;
-        CGRect updateRect;
-        CGSize stringSize;
+  //  @autoreleasepool {
         
-        letterArray[x][y] = nil;
+        
+        //  UIColor *back3 = [bgColor copy];
+        //  UIColor *back4 = [letterColor copy];
+
+    [[self.nsBackgroundColor objectAtIndex:y] replaceObjectAtIndex:x withObject:bgColor];
+
+        
+    
+   // }
+    
+    
+  //  bgColor = nil;
+        
+     /*   letterArray[x][y] = nil;
         bgColorArray[x][y] = nil;
         attributes[x][y] = nil;
         
-        letterArray[x][y] = c;
-        bgColorArray[x][y] = bgColor;
+        letterArray[x][y] = [c copy];
+        bgColorArray[x][y] = [bgColor copy];*/
    //     [attributes[x][y] setObject:letterColor forKey:NSForegroundColorAttributeName];
         //[attributes[x][y] setObject:[self fontForString:c] forKey:NSFontAttributeName];
    //     [attributes[x][y] setObject:(fancyFont ? [self slowFont] : [self fastFont]) forKey:NSFontAttributeName];
-        
+     return;   
         stringSize = [[characterSizeDictionary objectForKey:c] CGSizeValue];
         stringSize.width += 1;
         
