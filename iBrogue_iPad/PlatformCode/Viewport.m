@@ -200,8 +200,8 @@ NSString *basicFontName = FONT_NAME;
     
 
     dispatch_async(dispatch_get_main_queue(), ^{
-     //   CGRect updateRect;
-     //   CGSize stringSize;
+        CGRect updateRect;
+        CGSize stringSize;
         
         letterArray[x][y] = nil;
         bgColorArray[x][y] = nil;
@@ -214,9 +214,9 @@ NSString *basicFontName = FONT_NAME;
         [attributes[x][y] setObject:[self fontForString:c] forKey:NSFontAttributeName];
         [attributes[x][y] setObject:(fancyFont ? [self slowFont] : [self fastFont]) forKey:NSFontAttributeName];
      //return;
-     //   stringSize = [[characterSizeDictionary objectForKey:c] CGSizeValue];
-     //   stringSize.width += 1;
-      /*
+     /*   stringSize = [[characterSizeDictionary objectForKey:c] CGSizeValue];
+        stringSize.width += 1;
+      
         if (stringSize.width >= rectArray[x][y].size.width) { // custom update rectangle
             updateRect.origin.y = rectArray[x][y].origin.y;
             updateRect.size.height = rectArray[x][y].size.height;
@@ -225,12 +225,12 @@ NSString *basicFontName = FONT_NAME;
             //[self setNeedsDisplayInRect:updateRect];
          //   dispatch_async(dispatch_get_main_queue(), ^{
                 //[self setNeedsDisplay];
-         //       [self setNeedsDisplayInRect:updateRect];
+                [self setNeedsDisplayInRect:updateRect];
        //     });
             
         } else { // fits within the cell rectangle; no need for a custom update rectangle
-     //       [self setNeedsDisplayInRect:rectArray[x][y]];
-            //       dispatch_async(dispatch_get_main_queue(), ^{
+            [self setNeedsDisplayInRect:rectArray[x][y]];
+          //         dispatch_async(dispatch_get_main_queue(), ^{
        //     [self performSelectorOnMainThread:@selector(setNeedsDisplay) withObject:nil waitUntilDone:YES];
         }*/
    });
@@ -251,23 +251,23 @@ NSString *basicFontName = FONT_NAME;
 	int i, j, startX, startY, endX, endY;
 
     
-  /*      startX = (int) (kCOLS * rect.origin.x / hWindow);
+        startX = (int) (kCOLS * rect.origin.x / hWindow);
         startY = kROWS - (int) (kCOLS * (rect.origin.y + rect.size.height + vPixels - 1 ) / vWindow);
         endX = (int) (kCOLS * (rect.origin.x + rect.size.width + hPixels - 1) / hWindow);
-        endY = kROWS - (int) (kROWS * rect.origin.y / vWindow);*/
+        endY = kROWS - (int) (kROWS * rect.origin.y / vWindow);
         
-     //   if (startX < 0) {
+        if (startX < 0) {
             startX = 0;
-     //   }
-     //   if (endX > kCOLS) {
+        }
+        if (endX > kCOLS) {
             endX = kCOLS;
-     //   }
-     //   if (startY < 0) {
+        }
+        if (startY < 0) {
             startY = 0;
-     //   }
-     //   if (endY > kROWS) {
+        }
+        if (endY > kROWS) {
             endY = kROWS;
-     //   }
+        }
 
         for ( j = startY; j < endY; j++ ) {
             for ( i = startX; i < endX; i++ ) {
@@ -327,16 +327,25 @@ NSString *basicFontName = FONT_NAME;
         
         //	[theString drawAtPoint:stringOrigin withAttributes:theAttributes];
     
-    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGFloat red;
+    CGFloat blue;
+    CGFloat green;
+    CGFloat alpha;
+    
+    UIColor *color = [theAttributes objectForKey:NSForegroundColorAttributeName];
+    [color getRed:&red green:&green blue:&blue alpha:&alpha];
+    
+ //   CGContextRef context = UIGraphicsGetCurrentContext();
 
     // ERASE BACKGROUND
-    CGContextSetRGBStrokeColor(context, 0.0, 0.0, 0.0, 1.0);
-    CGContextSetRGBFillColor(context, 0.0, 0.0, 0.0, 1.0);
-    CGContextFillRect(context, rect);
+  //  CGContextSetRGBStrokeColor(context, 0.0, 0.0, 0.0, 0.0);
+//    CGContextSetRGBFillColor(context, 0.0, 0.0, 0.0, 0.0);
+  //  CGContextSetRGBFillColor(context, red, blue, green, alpha);
+  //  CGContextFillRect(context, rect);
 
     // DRAW TEXT
 
-    [[UIColor whiteColor] set];
+    [color set];
 
    // UIFont * font = [UIFont fontWithName:@"ArialMT" size:12];
 
