@@ -2030,6 +2030,8 @@ void nextBrogueEvent(rogueEvent *returnEvent, boolean textInput, boolean colorsD
 		}
 		do {
 			nextKeyOrMouseEvent(returnEvent, textInput, colorsDance); // No mouse clicks outside of the window will register.
+            
+     //       boolean temp = coordinatesAreInWindow(returnEvent->param1, returnEvent->param2);
 		} while (returnEvent->eventType == MOUSE_UP && !coordinatesAreInWindow(returnEvent->param1, returnEvent->param2));
 		// recording done elsewhere
 	}

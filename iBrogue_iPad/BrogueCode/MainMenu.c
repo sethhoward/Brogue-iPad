@@ -367,19 +367,19 @@ void titleMenu() {
         
 		if (pauseBrogue(MENU_FLAME_UPDATE_DELAY)) {
 			// There was input during the pause! Get the input.
-	//		nextBrogueEvent(&theEvent, true, false, true);
+			nextBrogueEvent(&theEvent, true, false, true);
 			
 			// Process the input.
-	//		button = processButtonInput(&state, NULL, &theEvent);
+			button = processButtonInput(&state, NULL, &theEvent);
 		}
 		
 		// Revert the display.
 		overlayDisplayBuffer(state.rbuf, NULL);
         
-        usleep(80000);
+        usleep(70000);
 	} while (button == -1 && rogue.nextGame == NG_NOTHING);
 	drawMenuFlames(flames, mask);
-	if (button != -1) {
+	if (button != -1) { 
 		rogue.nextGame = buttonCommands[button];
 	}
 }

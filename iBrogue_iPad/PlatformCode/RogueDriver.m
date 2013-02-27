@@ -32,7 +32,7 @@
 // something about the OS X high scores file structure changes.
 
 //static Viewport *theMainDisplay;
-NSDate *pauseStartDate;
+//NSDate *pauseStartDate;
 short mouseX, mouseY;
 
 @implementation RogueDriver
@@ -171,144 +171,91 @@ void plotChar(uchar inputChar,
 
 void pausingTimerStartsNow() {
  //   pauseStartDate = nil;
-	pauseStartDate = [NSDate date];
+//	pauseStartDate = [NSDate date];
  //   printf("\nPause timer started!");
 }
 
 // Returns true if the player interrupted the wait with a keystroke; otherwise false.
 boolean pauseForMilliseconds(short milliseconds) {
-	UIEvent *theEvent;
-	NSDate *targetDate, *currentDate;
-    //    NSComparisonResult theCompare;
-    
-    @autoreleasepool {
-        currentDate = [NSDate date];
-        if (pauseStartDate) {
-            //            NSLog(@"\nStarting a pause: previous date was %@.", pauseStartDate);
-            targetDate = [NSDate dateWithTimeInterval:((double) milliseconds) / 1000 sinceDate:pauseStartDate];
-            pauseStartDate = NULL;
-        } else {
-            targetDate = [NSDate dateWithTimeIntervalSinceNow: ((double) milliseconds) / 1000];
-        }
-        //        theCompare = [targetDate compare:currentDate];
+    BOOL hasEvent = NO;
+
+    UITouch *touch = [viewController lastTouch];
+     //   NSLog(@"%@", touch);
         
-        //        if (theCompare != NSOrderedAscending) {
-        do {
-        /*    theEvent = [UIApplication nextEventMatchingMask:NSAnyEventMask untilDate:targetDate
-                                             inMode:NSDefaultRunLoopMode dequeue:YES];
-            if (([theEvent type] == NSKeyDown && !([theEvent modifierFlags] & NSCommandKeyMask))
-                || [theEvent type] == NSLeftMouseUp
-                || [theEvent type] == NSLeftMouseDown
-                || [theEvent type] == NSRightMouseUp
-                || [theEvent type] == NSRightMouseDown
-                || [theEvent type] == NSMouseMoved
-                || [theEvent type] == NSLeftMouseDragged
-                || [theEvent type] == NSRightMouseDragged) {
-                [UIApplication postEvent:theEvent atStart:TRUE]; // put the event back on the queue*/
-                return true;
-           // } else if (theEvent != nil) {
-             //   [NSApp sendEvent:theEvent];
-           // }
-        } while (theEvent != nil);
-        //        } else {
-        //            [NSApp updateWindows];
-        //            NSLog(@"\nSkipped a pause: target date was %@; current date was %@; comparison was %i.", targetDate, currentDate, theCompare);
-        //        }
+    if (touch != nil) {
+        if (touch.phase == UITouchPhaseBegan || touch.phase == UITouchPhaseStationary || touch.phase == UITouchPhaseEnded) {
+            NSLog(@"%@", touch);
+            hasEvent = YES;
+        }
     }
-	return false;
+
+	return hasEvent;
 }
 
+/*
+ UITouchPhaseBegan,
+ UITouchPhaseMoved,
+ UITouchPhaseStationary,
+ UITouchPhaseEnded,
+ UITouchPhaseCancelled,
+ */
+
 void nextKeyOrMouseEvent(rogueEvent *returnEvent, boolean textInput, boolean colorsDance) {
-    return;
-    
 	//UNUSED(textInput);
-    UIEvent *theEvent;
-	UIEventType theEventType;
+   // UIEvent *theEvent;
+    
 	CGPoint event_location;
 	CGPoint local_point;
 	short x, y;
-  //  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-       // for(;;) {
-            // TODO: why?
-            if (colorsDance) {
-                shuffleTerrainColors(3, true);
-                commitDraws();
+    for(;;) {
+        UITouch *touch = [viewController lastTouch];
+        UITouchPhase phase = touch.phase;
+        
+        if (colorsDance) {
+            shuffleTerrainColors(3, true);
+            commitDraws();
+        }
+        
+        if (touch != nil && (phase != UITouchPhaseCancelled || phase != UITouchPhaseStationary)) {
+            switch (phase) {
+                case UITouchPhaseBegan:
+                case UITouchPhaseStationary:
+                    returnEvent->eventType = MOUSE_DOWN;
+                    break;
+                case UITouchPhaseEnded:
+                    returnEvent->eventType = MOUSE_UP;
+                    break;
+                case UITouchPhaseMoved:
+                    returnEvent->eventType = MOUSE_ENTERED_CELL;
+                    break;
+                default:
+                    break;
             }
             
-            /*         theEvent = [NSApp nextEventMatchingMask:NSAnyEventMask
-             untilDate:[NSDate dateWithTimeIntervalSinceNow: ((NSTimeInterval) ((double) 50) / ((double) 1000))]
-             inMode:NSDefaultRunLoopMode
-             dequeue:YES];
-             theEventType = [theEvent type];
-             if (theEventType == NSKeyDown && !([theEvent modifierFlags] & NSCommandKeyMask)) {
-             returnEvent->eventType = KEYSTROKE;
-             returnEvent->param1 = [[theEvent charactersIgnoringModifiers] characterAtIndex:0];
-             //printf("\nKey pressed: %i", returnEvent->param1);
-             returnEvent->param2 = 0;
-             returnEvent->controlKey = ([theEvent modifierFlags] & NSControlKeyMask ? 1 : 0);
-             returnEvent->shiftKey = ([theEvent modifierFlags] & NSShiftKeyMask ? 1 : 0);
-             break;
-             } else if (theEventType == NSLeftMouseDown
-             || theEventType == NSLeftMouseUp
-             || theEventType == NSRightMouseDown
-             || theEventType == NSRightMouseUp
-             || theEventType == NSMouseMoved
-             || theEventType == NSLeftMouseDragged
-             || theEventType == NSRightMouseDragged) {
-             [NSApp sendEvent:theEvent];
-             switch (theEventType) {
-             case NSLeftMouseDown:
-             returnEvent->eventType = MOUSE_DOWN;
-             break;
-             case NSLeftMouseUp:
-             returnEvent->eventType = MOUSE_UP;
-             break;
-             case NSRightMouseDown:
-             returnEvent->eventType = RIGHT_MOUSE_DOWN;
-             break;
-             case NSRightMouseUp:
-             returnEvent->eventType = RIGHT_MOUSE_UP;
-             break;
-             case NSMouseMoved:
-             case NSLeftMouseDragged:
-             case NSRightMouseDragged:
-             returnEvent->eventType = MOUSE_ENTERED_CELL;
-             break;
-             default:
-             break;
-             }
-             event_location = [theEvent locationInWindow];
-             local_point = [theMainDisplay convertPoint:event_location fromView:nil];
-             x = COLS * local_point.x / [theMainDisplay horizWindow];
-             y = ROWS - (ROWS * local_point.y / [theMainDisplay vertWindow]);
-             // Correct for the fact that truncation occurs in a positive direction when we're below zero:
-             if (local_point.x < 0) {
-             x--;
-             }
-             if ([theMainDisplay vertWindow] < local_point.y) {
-             y--;
-             }
-             returnEvent->param1 = x;
-             returnEvent->param2 = y;
-             returnEvent->controlKey = ([theEvent modifierFlags] & NSControlKeyMask ? 1 : 0);
-             returnEvent->shiftKey = ([theEvent modifierFlags] & NSShiftKeyMask ? 1 : 0);
-             //			if (theEventType != NSMouseMoved || x != mouseX || y != mouseY) { // Don't send mouse_entered_cell events if the cell hasn't changed
-             mouseX = x;
-             mouseY = y;
-             break;
-             //			}
-             }
-             if (theEvent != nil) {
-             [NSApp sendEvent:theEvent]; // pass along any other events so, e.g., the menus work
-             }*/
-            
-            //[[UIApplication sharedApplication] sendEvent:theEvent];
-       // }
-        // printf("\nRogueEvent: eventType: %i, param1: %i, param2: %i, controlKey: %s, shiftKey: %s", returnEvent->eventType, returnEvent->param1,
-        //			 returnEvent->param2, returnEvent->controlKey ? "true" : "false", returnEvent->shiftKey ? "true" : "false");
+            event_location = [touch locationInView:theMainDisplay];
+            local_point = event_location;//[theMainDisplay convertPoint:event_location fromView:nil];
+            x = COLS * local_point.x / [theMainDisplay horizWindow];
+            y = (ROWS * local_point.y / [theMainDisplay vertWindow]);
+            // Correct for the fact that truncation occurs in a positive direction when we're below zero:
+            if (local_point.x < 0) {
+                x--;
+            }
+            if ([theMainDisplay vertWindow] < local_point.y) {
+                y--;
+            }
+            returnEvent->param1 = x;
+            returnEvent->param2 = y;
+            returnEvent->controlKey = 0;
+            returnEvent->shiftKey = 0;
+            mouseX = x;
+            mouseY = y;
+            break;
+        }
         
-
-//    });
+        usleep(20000);
+    }
+    
+    [viewController setLastTouch:nil];
 }
 
 boolean controlKeyIsDown() {

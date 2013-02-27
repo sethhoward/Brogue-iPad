@@ -119,15 +119,27 @@ static ViewController *instance;
 #pragma mark - touches
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+  //  NSLog(@"%s", __PRETTY_FUNCTION__);
+    [touches enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+        // Get a single touch and it's location
+        self.lastTouch = obj;
+    }];
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+   // NSLog(@"%s", __PRETTY_FUNCTION__);
+    [touches enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+        // Get a single touch and it's location
+        self.lastTouch = obj;
+    }];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+   // NSLog(@"%s", __PRETTY_FUNCTION__);
+    [touches enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+        // Get a single touch and it's location
+        self.lastTouch = obj;
+    }];
 }
 
 @end
