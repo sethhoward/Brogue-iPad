@@ -184,7 +184,7 @@ boolean pauseForMilliseconds(short milliseconds) {
         
     if (touch != nil) {
         if (touch.phase == UITouchPhaseBegan || touch.phase == UITouchPhaseStationary || touch.phase == UITouchPhaseEnded) {
-            NSLog(@"%@", touch);
+          //  NSLog(@"%@", touch);
             hasEvent = YES;
         }
     }
@@ -247,15 +247,17 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, boolean textInput, boolean col
             returnEvent->param2 = y;
             returnEvent->controlKey = 0;
             returnEvent->shiftKey = 0;
-            mouseX = x;
-            mouseY = y;
+     //       mouseX = x;
+     //       mouseY = y;
             break;
         }
         
-        usleep(20000);
+       // usleep(10000);
     }
     
-    [viewController setLastTouch:nil];
+    if (returnEvent->eventType == MOUSE_UP) {
+        [viewController setLastTouch:nil];
+    }
 }
 
 boolean controlKeyIsDown() {

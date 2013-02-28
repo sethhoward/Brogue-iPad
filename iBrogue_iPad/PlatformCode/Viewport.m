@@ -76,7 +76,7 @@ NSString *basicFontName = FONT_NAME;
 - (UIFont *)slowFont {
 	if (!theSlowFont) {
 	//	UIFont *baseFont = [UIFont fontWithName:basicFontName size:theFontSize];
-        UIFont *baseFont = [UIFont systemFontOfSize:theFontSize];
+        UIFont *baseFont = [UIFont fontWithName:@"ArialUnicodeMS" size:theFontSize];
 	/*	NSArray *fallbackDescriptors = [NSArray arrayWithObjects:
 		                                // Arial provides reasonable versions of most characters.
 		                                [NSFontDescriptor fontDescriptorWithName:@"Arial Unicode MS" size:theFontSize],
@@ -97,7 +97,7 @@ NSString *basicFontName = FONT_NAME;
 	if (!theFastFont) {
 		//theFastFont = [[NSFont fontWithName:basicFontName size:theFontSize] retain];
        // theFastFont = [UIFont fontWithName:basicFontName size:theFontSize];
-        theFastFont = [UIFont fontWithName:@"Courier New" size:10];
+        theFastFont = [UIFont fontWithName:@"ArialUnicodeMS" size:theFontSize];
     }
 	return theFastFont;
 }
@@ -211,10 +211,10 @@ NSString *basicFontName = FONT_NAME;
         bgColorArray[x][y] = bgColor;
     
         [attributes[x][y] setObject:letterColor forKey:NSForegroundColorAttributeName];
-        [attributes[x][y] setObject:[self fontForString:c] forKey:NSFontAttributeName];
+     //   [attributes[x][y] setObject:[self fontForString:c] forKey:NSFontAttributeName];
         [attributes[x][y] setObject:(fancyFont ? [self slowFont] : [self fastFont]) forKey:NSFontAttributeName];
-     //return;
-     /*   stringSize = [[characterSizeDictionary objectForKey:c] CGSizeValue];
+     return;
+        stringSize = [[characterSizeDictionary objectForKey:c] CGSizeValue];
         stringSize.width += 1;
       
         if (stringSize.width >= rectArray[x][y].size.width) { // custom update rectangle
@@ -232,7 +232,7 @@ NSString *basicFontName = FONT_NAME;
             [self setNeedsDisplayInRect:rectArray[x][y]];
           //         dispatch_async(dispatch_get_main_queue(), ^{
        //     [self performSelectorOnMainThread:@selector(setNeedsDisplay) withObject:nil waitUntilDone:YES];
-        }*/
+        }
    });
 }
 
@@ -251,24 +251,26 @@ NSString *basicFontName = FONT_NAME;
 	int i, j, startX, startY, endX, endY;
 
     
-        startX = (int) (kCOLS * rect.origin.x / hWindow);
+    /*    startX = (int) (kCOLS * rect.origin.x / hWindow);
         startY = kROWS - (int) (kCOLS * (rect.origin.y + rect.size.height + vPixels - 1 ) / vWindow);
         endX = (int) (kCOLS * (rect.origin.x + rect.size.width + hPixels - 1) / hWindow);
         endY = kROWS - (int) (kROWS * rect.origin.y / vWindow);
         
-        if (startX < 0) {
+        if (startX < 0) {*/
             startX = 0;
-        }
-        if (endX > kCOLS) {
+       // }
+       // if (endX > kCOLS) {
             endX = kCOLS;
-        }
-        if (startY < 0) {
+      //  }
+      //  if (startY < 0) {
             startY = 0;
-        }
-        if (endY > kROWS) {
+      //  }
+       // if (endY > kROWS) {
             endY = kROWS;
-        }
+      //  }
 
+        CGContextRef context = UIGraphicsGetCurrentContext();
+    
         for ( j = startY; j < endY; j++ ) {
             for ( i = startX; i < endX; i++ ) {
             // @autoreleasepool {
@@ -277,11 +279,13 @@ NSString *basicFontName = FONT_NAME;
                 
                // if ([color respondsToSelector:@selector(set)]) {
                     [color set];
-                    UIBezierPath *path = [UIBezierPath bezierPathWithRect:rectArray[i][j]];
-                    [path fill];
+                  //  UIBezierPath *path = [UIBezierPath bezierPathWithRect:rectArray[i][j]];
+                  //  [path fill];
                 
-                    path = nil;
+                  //  path = nil;
                     //color = nil;
+                
+                CGContextFillRect(context, rectArray[i][j]);
                  
                //  [self drawTheString:letterArray[i][j] centeredIn:rectArray[i][j] withAttributes:attributes[i][j]];
             // }
@@ -334,31 +338,15 @@ NSString *basicFontName = FONT_NAME;
     
     UIColor *color = [theAttributes objectForKey:NSForegroundColorAttributeName];
     [color getRed:&red green:&green blue:&blue alpha:&alpha];
+
     
- //   CGContextRef context = UIGraphicsGetCurrentContext();
-
-    // ERASE BACKGROUND
-  //  CGContextSetRGBStrokeColor(context, 0.0, 0.0, 0.0, 0.0);
-//    CGContextSetRGBFillColor(context, 0.0, 0.0, 0.0, 0.0);
-  //  CGContextSetRGBFillColor(context, red, blue, green, alpha);
-  //  CGContextFillRect(context, rect);
-
-    // DRAW TEXT
-
+    UIFont* font = [theAttributes objectForKey:NSFontAttributeName];
+    
     [color set];
 
-   // UIFont * font = [UIFont fontWithName:@"ArialMT" size:12];
 
-    [theString drawAtPoint:stringOrigin withFont:[self fastFont]];
+    [theString drawAtPoint:stringOrigin withFont:font];
 
-    
- //   UIFont *font = [UIFont systemFontOfSize:10];
-    
- //       [theString drawAtPoint:stringOrigin withFont:[UIFont systemFontOfSize:18]];
-   // }
-	
-    
-	//[pool drain];
 }
 
 - (short)horizPixels {
