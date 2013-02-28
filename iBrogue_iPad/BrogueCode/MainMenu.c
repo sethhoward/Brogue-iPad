@@ -375,8 +375,6 @@ void titleMenu() {
 		
 		// Revert the display.
 		overlayDisplayBuffer(state.rbuf, NULL);
-        
-      //  usleep(70000);
 	} while (button == -1 && rogue.nextGame == NG_NOTHING);
 	drawMenuFlames(flames, mask);
 	if (button != -1) { 

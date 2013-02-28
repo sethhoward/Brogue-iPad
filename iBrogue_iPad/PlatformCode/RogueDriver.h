@@ -26,17 +26,6 @@
 
 #import "Rogue.h"
 
-@interface RogueDriver : NSObject {
-	IBOutlet Viewport *theDisplay;
-	IBOutlet UIButton *theButton;
-//	IBOutlet NSMenu *fileMenu;
-//	IBOutlet NSWindow *theWindow;
-}
-
-- (IBAction)playBrogue:(id)sender;
-
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification;
-
-- (void)windowDidResize:(NSNotification *)aNotification;
+@interface RogueDriver : NSObject
 
 @end

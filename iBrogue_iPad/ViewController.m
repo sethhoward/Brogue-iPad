@@ -15,28 +15,25 @@
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
 
-@interface ViewController ()
+Viewport *theMainDisplay;
+ViewController *viewController;
 
+@interface ViewController ()
+@property (nonatomic, strong) NSMutableArray *cachedTouches; // collection of iBTouches
 @end
 
 @implementation ViewController
-
-{
-@private
-    // temp
-    
-    short mouseX, mouseY;
-    NSDate *pauseStartDate;
-}
-static ViewController *instance;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    instance = self;
-    
+    if (!theMainDisplay) {
+        theMainDisplay = self.theDisplay;
+        viewController = self;
+        _cachedTouches = [NSMutableArray arrayWithCapacity:1];
+    }
     
     [self playBrogue:nil];
 }
@@ -64,20 +61,6 @@ static ViewController *instance;
 		[[NSUserDefaults standardUserDefaults] setInteger:BROGUE_VERSION forKey:@"Brogue version"];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
-    
-    //	theMainDisplay = theDisplay;
-    /*	[theWindow setFrameAutosaveName:@"Brogue main window"];
-     [theWindow useOptimizedDrawing:YES];
-     [theWindow setAcceptsMouseMovedEvents:YES];
-     
-     // Comment out this line if you're trying to compile on a system earlier than OS X 10.7:
-     [theWindow setCollectionBehavior:NSWindowCollectionBehaviorFullScreenPrimary];*/
-    
-    //	theSize.height = 7 * VERT_PX * kROWS / FONT_SIZE;
-    //	theSize.width = 7 * HORIZ_PX * kCOLS / FONT_SIZE;
-    //	[theWindow setContentMinSize:theSize];
-    
-	mouseX = mouseY = 0;
 }
 
 - (IBAction)playBrogue:(id)sender
@@ -99,46 +82,52 @@ static ViewController *instance;
    // [self.theDisplay setNeedsDisplay];
 }
 
-/*
-- (void) plotChar:(char)inputChar xLoc:(short)xLoc yLoc:(short)yLoc forered:(short)foreRed foregreen:(short)foreGreen foreBlue:(short)foreBlue backRed:(short)backRed backGreen:(short)backGreen backBlue:(short)backBlue {
-
-   // @autoreleasepool {
-        
-    
-        [self.theDisplay setString:nil
-                   withBackground:backgroundColor
-                  withLetterColor:foreGroundColor
-                       atLocationX:xLoc locationY:yLoc
-                    withFancyFont:(inputChar == FOLIAGE_CHAR)];
-    
-        backgroundColor = nil;
-        foreGroundColor = nil;
-   // }
-}*/
-
 #pragma mark - touches
 
+- (void)addTouchToCache:(UITouch *)touch {
+    iBTouch ibtouch;
+    ibtouch.location = [touch locationInView:theMainDisplay];
+    ibtouch.phase = touch.phase;
+    [self.cachedTouches addObject:[NSValue value:&ibtouch withObjCType:@encode(iBTouch)]];
+}
+
+- (iBTouch)getTouchAtIndex:(uint)index {
+    NSValue *anObj = [self.cachedTouches objectAtIndex:index];
+    iBTouch touch;
+    [anObj getValue:&touch];
+    
+    return touch;
+}
+
+- (void)removeTouchAtIndex:(uint)index {
+    [self.cachedTouches removeObjectAtIndex:index];
+}
+
+- (uint)cachedTouchesCount {
+    return [self.cachedTouches count];
+}
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-  //  NSLog(@"%s", __PRETTY_FUNCTION__);
-    [touches enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
         // Get a single touch and it's location
-        self.lastTouch = obj;
+        [self addTouchToCache:touch];
     }];
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-   // NSLog(@"%s", __PRETTY_FUNCTION__);
-    [touches enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
         // Get a single touch and it's location
-        self.lastTouch = obj;
+        [self addTouchToCache:touch];
     }];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-   // NSLog(@"%s", __PRETTY_FUNCTION__);
-    [touches enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
         // Get a single touch and it's location
-        self.lastTouch = obj;
+        [self addTouchToCache:touch];
     }];
 }
 

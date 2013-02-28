@@ -11,11 +11,20 @@
 @class Viewport;
 @interface ViewController : UIViewController
 
-// - (void) plotChar:(char)inputChar xLoc:(short)xLoc yLoc:(short)yLoc forered:(short)foreRed foregreen:(short)foreGreen foreBlue:(short)foreBlue backRed:(short)backRed backGreen:(short)backGreen backBlue:(short)backBlue;
+struct iBTouch {
+    UITouchPhase phase;
+    CGPoint location;
+};
+typedef struct iBTouch iBTouch;
 
 @property (nonatomic, strong) IBOutlet Viewport *theDisplay;
 
 - (IBAction)fuckyoutouched:(id)sender;
-@property (nonatomic, strong) UITouch *lastTouch;
+- (uint)cachedTouchesCount;
+- (iBTouch)getTouchAtIndex:(uint)index;
+- (void)removeTouchAtIndex:(uint)index;
 
 @end
+
+extern Viewport *theMainDisplay;
+extern ViewController *viewController;

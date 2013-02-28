@@ -28,21 +28,12 @@
 
 @interface Viewport ()
 @property (nonatomic, strong) CADisplayLink *displayLink;
-@property (nonatomic, strong) NSMutableArray *nsBackgroundColor;
+@property (nonatomic, strong) UIFont *font;
 @end
 
 @implementation Viewport {
     @private
-    UIFont __strong *theSlowFont;
-    UIFont __strong *theFastFont;
-    
-    UIColor __strong *bgColorArrayCopy[kCOLS][kROWS];
-    NSTimer __strong *timer;
-    
-    BOOL animationRunning;
-    
-    UIColor __strong *back;
-    UIColor __strong *back2;
+    BOOL _animationRunning;
 }
 
 CGSize characterSize;
@@ -51,63 +42,13 @@ CGSize characterSize;
 short vPixels = VERT_PX;
 short hPixels = HORIZ_PX;
 
-// The exact size of the window:
-short hWindow = 1024;
-short vWindow = 748;
-
 short theFontSize = FONT_SIZE;  // Will get written over when windowDidResize
-NSString *basicFontName = FONT_NAME;
 
-
-// Letting OS X handle the fallback for us produces inconsistent results
-// across versions, and on OS X 10.8 falls back to Emoji Color for some items
-// (e.g. foliage), which doesn't draw correctly at all. So we need to use a
-// cascade list forcing it to fall back to Arial Unicode MS and Apple Symbols,
-// which have the desired characters.
-//
-// Using a cascade list, even an empty one, makes text drawing unusably
-// slower. To fix this, we store two fonts, one "fast" for ASCII characters
-// which we assume Monaco will always be able to handle, and one "slow" for
-// non-ASCII.
-//
-// Because I prefer the default glyphs for all characters except for foliage,
-// the cascade list is used only for foliage characters.
-
-- (UIFont *)slowFont {
-	if (!theSlowFont) {
-	//	UIFont *baseFont = [UIFont fontWithName:basicFontName size:theFontSize];
-        UIFont *baseFont = [UIFont fontWithName:@"ArialUnicodeMS" size:theFontSize];
-	/*	NSArray *fallbackDescriptors = [NSArray arrayWithObjects:
-		                                // Arial provides reasonable versions of most characters.
-		                                [NSFontDescriptor fontDescriptorWithName:@"Arial Unicode MS" size:theFontSize],
-		                                // Apple Symbols provides U+26AA, for rings, which Arial does not.
-		                                [NSFontDescriptor fontDescriptorWithName:@"Apple Symbols" size:theFontSize],
-		                                nil];
-		NSDictionary *fodDict = [NSDictionary dictionaryWithObject:fallbackDescriptors forKey:NSFontCascadeListAttribute];
-		NSFontDescriptor *desc = [baseFont.fontDescriptor fontDescriptorByAddingAttributes:fodDict];*/
-        
-		//theSlowFont = [[UIFont fontWithDescriptor:desc size:theFontSize] retain];
-        
-        theSlowFont = baseFont;
-	}
-	return theSlowFont;
-}
-
-- (UIFont *)fastFont {
-	if (!theFastFont) {
-		//theFastFont = [[NSFont fontWithName:basicFontName size:theFontSize] retain];
-       // theFastFont = [UIFont fontWithName:basicFontName size:theFontSize];
-        theFastFont = [UIFont fontWithName:@"ArialUnicodeMS" size:theFontSize];
+- (UIFont *)font {
+	if (!_font) {
+        _font = [UIFont fontWithName:FONT_NAME size:theFontSize];
     }
-	return theFastFont;
-}
-
-- (UIFont *)fontForString:(NSString *)s {
-	if (s.length == 1 && ([s characterAtIndex:0] < 128)) {
-		return [self fastFont];
-	} else {
-		return [self slowFont];
-    }
+	return _font;
 }
 
 - (id)initWithFrame:(CGRect)rect
@@ -126,12 +67,6 @@ NSString *basicFontName = FONT_NAME;
 
     if (self) {
         [self initializeLayoutVariables];
-    
-        if (!timer) {
-            
-            //timer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(draw) userInfo:nil repeats:YES];
-        }
-        
         self.displayLink =  [CADisplayLink displayLinkWithTarget:self selector:@selector(draw)];
     }
     
@@ -140,54 +75,30 @@ NSString *basicFontName = FONT_NAME;
 
 - (void)initializeLayoutVariables {
     int i, j;
+    self.hWindow = 1024;
+    self.vWindow = 748;
     
-    self.nsBackgroundColor = [NSMutableArray arrayWithCapacity:1];
-    
-	for (j = 0; j < kROWS; j++) {
-        [self.nsBackgroundColor addObject:[NSMutableArray arrayWithCapacity:1]];
-        
-		for (i = 0; i < kCOLS; i++) {
-            [[self.nsBackgroundColor objectAtIndex:j] addObject:[UIColor whiteColor]];
-            
+	for (j = 0; j < kROWS; j++) {        
+		for (i = 0; i < kCOLS; i++) {            
 			letterArray[i][j] = @" ";
-            //           [letterArray[i][j] setString:@" "];
-            //			[letterArray[i][j] retain];
-			//bgColorArray[i][j] = [UIColor whiteColor];
+			bgColorArray[i][j] = [UIColor blackColor];
 
-			bgColorArray[i][j] = [UIColor whiteColor];
-            bgColorArrayCopy[i][j] = [UIColor blueColor];
-            
 			attributes[i][j] = [[NSMutableDictionary alloc] init];
-			[attributes[i][j] setObject:[self fastFont] forKey:NSFontAttributeName];
+			[attributes[i][j] setObject:[self font] forKey:NSFontAttributeName];
 			[attributes[i][j] setObject:[UIColor blackColor]
                                  forKey:NSForegroundColorAttributeName];
             
             // (18 * 33) - (18 *(j + 1))
             CGRect rect = CGRectMake(HORIZ_PX*i, (VERT_PX*(j)), HORIZ_PX, VERT_PX);
-            
-			rectArray[i][j] = rect; // NSStringFromCGRect(CGRectMake(HORIZ_PX*i, (VERT_PX * kROWS)-(VERT_PX*(j+1)), HORIZ_PX, VERT_PX));
+			rectArray[i][j] = rect;
 		}
 	}
     
-	characterSizeDictionary = [NSMutableDictionary dictionaryWithCapacity:100];
-    
-	//characterSize = [a sizeWithAttributes:attributes[0][0]]; // no need to do this every time we draw a character
-    
-    characterSize = [@"a" sizeWithFont:[UIFont systemFontOfSize:theFontSize]];
-    
-    [self setHorizWindow:hWindow vertWindow:vWindow fontSize:10];
-}
-
-- (BOOL)isOpaque
-{
-	return YES;
+    [self setHorizWindow:self.hWindow vertWindow:self.vWindow fontSize:10];
 }
 
 - (void)draw {
- //   NSLog(@"test");
- //   dispatch_async(dispatch_get_main_queue(), ^{
-        [self setNeedsDisplay];
-  //  });
+    [self setNeedsDisplay];
 }
 
 - (void)setString:(NSString *)c
@@ -197,109 +108,46 @@ NSString *basicFontName = FONT_NAME;
 		locationY:(short)y
     withFancyFont:(bool)fancyFont
 {
-    
-
     dispatch_async(dispatch_get_main_queue(), ^{
-        CGRect updateRect;
-        CGSize stringSize;
-        
         letterArray[x][y] = nil;
         bgColorArray[x][y] = nil;
-    //    attributes[x][y] = nil;
         
         letterArray[x][y] = c;
         bgColorArray[x][y] = bgColor;
     
         [attributes[x][y] setObject:letterColor forKey:NSForegroundColorAttributeName];
-     //   [attributes[x][y] setObject:[self fontForString:c] forKey:NSFontAttributeName];
-        [attributes[x][y] setObject:(fancyFont ? [self slowFont] : [self fastFont]) forKey:NSFontAttributeName];
-     return;
-        stringSize = [[characterSizeDictionary objectForKey:c] CGSizeValue];
-        stringSize.width += 1;
-      
-        if (stringSize.width >= rectArray[x][y].size.width) { // custom update rectangle
-            updateRect.origin.y = rectArray[x][y].origin.y;
-            updateRect.size.height = rectArray[x][y].size.height;
-            updateRect.origin.x = rectArray[x][y].origin.x + (rectArray[x][y].size.width - stringSize.width - 10)/2;
-            updateRect.size.width = stringSize.width + 10;
-            //[self setNeedsDisplayInRect:updateRect];
-         //   dispatch_async(dispatch_get_main_queue(), ^{
-                //[self setNeedsDisplay];
-                [self setNeedsDisplayInRect:updateRect];
-       //     });
-            
-        } else { // fits within the cell rectangle; no need for a custom update rectangle
-            [self setNeedsDisplayInRect:rectArray[x][y]];
-          //         dispatch_async(dispatch_get_main_queue(), ^{
-       //     [self performSelectorOnMainThread:@selector(setNeedsDisplay) withObject:nil waitUntilDone:YES];
-        }
-   });
+    });
 }
 
 - (void)drawRect:(CGRect)rect
 {
  //   NSLog(@"%s", __PRETTY_FUNCTION__);
     
-    if (!animationRunning)
+    if (!_animationRunning)
     {
         [self.displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
-        animationRunning = YES;
+        _animationRunning = YES;
         return;
     }
-
     
 	int i, j, startX, startY, endX, endY;
 
-    
-    /*    startX = (int) (kCOLS * rect.origin.x / hWindow);
-        startY = kROWS - (int) (kCOLS * (rect.origin.y + rect.size.height + vPixels - 1 ) / vWindow);
-        endX = (int) (kCOLS * (rect.origin.x + rect.size.width + hPixels - 1) / hWindow);
-        endY = kROWS - (int) (kROWS * rect.origin.y / vWindow);
-        
-        if (startX < 0) {*/
-            startX = 0;
-       // }
-       // if (endX > kCOLS) {
-            endX = kCOLS;
-      //  }
-      //  if (startY < 0) {
-            startY = 0;
-      //  }
-       // if (endY > kROWS) {
-            endY = kROWS;
-      //  }
+    startX = 0;
+    endX = kCOLS;
+    startY = 0;
+    endY = kROWS;
 
-        CGContextRef context = UIGraphicsGetCurrentContext();
-    
-        for ( j = startY; j < endY; j++ ) {
-            for ( i = startX; i < endX; i++ ) {
-            // @autoreleasepool {
-                //
-                UIColor *color = bgColorArray[i][j];
-                
-               // if ([color respondsToSelector:@selector(set)]) {
-                    [color set];
-                  //  UIBezierPath *path = [UIBezierPath bezierPathWithRect:rectArray[i][j]];
-                  //  [path fill];
-                
-                  //  path = nil;
-                    //color = nil;
-                
-                CGContextFillRect(context, rectArray[i][j]);
-                 
-               //  [self drawTheString:letterArray[i][j] centeredIn:rectArray[i][j] withAttributes:attributes[i][j]];
-            // }
-                //}
-                
-                    
-               // }
-                
-               // NSLog(@"bgColorArray[%i][%i] is %@; letter is %@, letter color is %@ placement: %@", i, j, bgColorArray[i][j], letterArray[i][j], [attributes[i][j] objectForKey:NSForegroundColorAttributeName], NSStringFromCGRect(rectArray[i][j]));
-                [self drawTheString:letterArray[i][j] centeredIn:rectArray[i][j] withAttributes:attributes[i][j]];
-                   //[self drawTheString:@"A" centeredIn:CGRectMake(10, 10, 10, 10) withAttributes:attributes[i][j]];
-            }
+    CGContextRef context = UIGraphicsGetCurrentContext();
+
+    for ( j = startY; j < endY; j++ ) {
+        for ( i = startX; i < endX; i++ ) {
+            UIColor *color = bgColorArray[i][j];
+            [color set];
+            
+            CGContextFillRect(context, rectArray[i][j]);
+            [self drawTheString:letterArray[i][j] centeredIn:rectArray[i][j] withAttributes:attributes[i][j]];
         }
-   // }
+    }
 }
 
 - (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(NSMutableDictionary *)theAttributes
@@ -312,24 +160,20 @@ NSString *basicFontName = FONT_NAME;
 		return;
 	}
 
-    //@autoreleasepool {
-        //NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-        CGPoint stringOrigin;
-        CGSize stringSize;
-        
-        // Cache glyph sizes.
-        if ([characterSizeDictionary objectForKey:theString] == nil) {
-            stringSize = [theString sizeWithFont:[theAttributes valueForKey:NSFontAttributeName]];	// quite expensive
-            //	NSLog(@"stringSize for '%@' has width %f and height %f", theString, stringSize.width, stringSize.height);
-            [characterSizeDictionary setObject:[NSValue valueWithCGSize:stringSize] forKey:theString];
-        } else {
-            stringSize = [[characterSizeDictionary objectForKey:theString] CGSizeValue];
-        }
-        
-        stringOrigin.x = rect.origin.x + (rect.size.width - stringSize.width) * 0.5;
-        stringOrigin.y = rect.origin.y + (rect.size.height - stringSize.height) * 0.5;
-        
-        //	[theString drawAtPoint:stringOrigin withAttributes:theAttributes];
+    CGPoint stringOrigin;
+    CGSize stringSize;
+    
+    // Cache sizes.
+    if ([characterSizeDictionary objectForKey:theString] == nil) {
+        stringSize = [theString sizeWithFont:self.font];	// quite expensive
+        //	NSLog(@"stringSize for '%@' has width %f and height %f", theString, stringSize.width, stringSize.height);
+        [characterSizeDictionary setObject:[NSValue valueWithCGSize:stringSize] forKey:theString];
+    } else {
+        stringSize = [[characterSizeDictionary objectForKey:theString] CGSizeValue];
+    }
+    
+    stringOrigin.x = rect.origin.x + (rect.size.width - stringSize.width) * 0.5;
+    stringOrigin.y = rect.origin.y + (rect.size.height - stringSize.height) * 0.5;
     
     CGFloat red;
     CGFloat blue;
@@ -338,70 +182,34 @@ NSString *basicFontName = FONT_NAME;
     
     UIColor *color = [theAttributes objectForKey:NSForegroundColorAttributeName];
     [color getRed:&red green:&green blue:&blue alpha:&alpha];
-
-    
-    UIFont* font = [theAttributes objectForKey:NSFontAttributeName];
-    
     [color set];
-
-
-    [theString drawAtPoint:stringOrigin withFont:font];
-
-}
-
-- (short)horizPixels {
-	return hPixels;
-}
-
-- (short)vertPixels {
-	return vPixels;
-}
-
-- (short)horizWindow {
-	return hWindow;
-}
-
-- (short)vertWindow {
-	return vWindow;
-}
-
-- (short)fontSize {
-	return theFontSize;
-}
-
-- (NSString *)fontName {
-    return basicFontName;
+    
+    [theString drawAtPoint:stringOrigin withFont:self.font];
 }
 
 - (void)setHorizWindow:(short)hPx
             vertWindow:(short)vPx
               fontSize:(short)size
 {
-	//@autoreleasepool {
-        int i, j;
-        hPixels = hPx / kCOLS;
-        vPixels = vPx / kROWS;
-        hWindow = hPx;
-        vWindow = vPx;
-        theFontSize = size;
-        theSlowFont = nil;
-        theFastFont = nil;
-        
-        for (j = 0; j < kROWS; j++) {
-            for (i = 0; i < kCOLS; i++) {
-                [attributes[i][j] setObject:[self fontForString:letterArray[i][j]] forKey:NSFontAttributeName];
-                
-//              /  CGRect rect = CGRectMake(hpx*i, (VERT_PX*(j)), HORIZ_PX, VERT_PX);
-                rectArray[i][j] = CGRectMake((int) (hPx * i / kCOLS),
-                                             (int) ((vPx * (j) / kROWS)),
-                                             ((int) (hPx * (i+1) / kCOLS)) - ((int) (hPx * (i) / kCOLS)),//hPixels + 1,
-                                             ((int) (vPx * (j+1) / kROWS)) - ((int) (vPx * (j) / kROWS)));//vPixels + 1);
-            }
+    int i, j;
+    hPixels = hPx / kCOLS;
+    vPixels = vPx / kROWS;
+    self.hWindow = hPx;
+    self.vWindow = vPx;
+    theFontSize = size;
+    self.font = nil;
+    
+    for (j = 0; j < kROWS; j++) {
+        for (i = 0; i < kCOLS; i++) {
+            [attributes[i][j] setObject:self.font forKey:NSFontAttributeName];
+            rectArray[i][j] = CGRectMake((int) (hPx * i / kCOLS),
+                                         (int) ((vPx * (j) / kROWS)),
+                                         ((int) (hPx * (i+1) / kCOLS)) - ((int) (hPx * (i) / kCOLS)),//hPixels + 1,
+                                         ((int) (vPx * (j+1) / kROWS)) - ((int) (vPx * (j) / kROWS)));//vPixels + 1);
         }
-      //  characterSize = [@"a" sizeWithAttributes:attributes[0][0]];
-        characterSize = [@"a" sizeWithFont:[UIFont systemFontOfSize:theFontSize]];
-        [characterSizeDictionary removeAllObjects];
-   // }
+    }
+
+    [characterSizeDictionary removeAllObjects];
 }
 
 

@@ -31,162 +31,50 @@
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
 
-//static Viewport *theMainDisplay;
-//NSDate *pauseStartDate;
 short mouseX, mouseY;
 
 @implementation RogueDriver
-/*
-- (void)awakeFromNib
-{
-	extern Viewport *theMainDisplay;
-	NSSize theSize;
-	short versionNumber;
-    
-	versionNumber = [[NSUserDefaults standardUserDefaults] integerForKey:@"Brogue version"];
-	if (versionNumber == 0 || versionNumber < BROGUE_VERSION) {
-		// This is so we know when to purge the relevant preferences and save them anew.
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"NSWindow Frame Brogue main window"];
-        
-		if (versionNumber != 0) {
-			[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"Brogue version"];
-		}
-		[[NSUserDefaults standardUserDefaults] setInteger:BROGUE_VERSION forKey:@"Brogue version"];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-	}
-    
-	theMainDisplay = theDisplay;
-	[theWindow setFrameAutosaveName:@"Brogue main window"];
-	[theWindow useOptimizedDrawing:YES];
-	[theWindow setAcceptsMouseMovedEvents:YES];
-    
-    // Comment out this line if you're trying to compile on a system earlier than OS X 10.7:
-    [theWindow setCollectionBehavior:NSWindowCollectionBehaviorFullScreenPrimary];
-    
-	theSize.height = 7 * VERT_PX * kROWS / FONT_SIZE;
-	theSize.width = 7 * HORIZ_PX * kCOLS / FONT_SIZE;
-	[theWindow setContentMinSize:theSize];
-    
-	mouseX = mouseY = 0;
-}
 
-- (IBAction)playBrogue:(id)sender
-{
-    //UNUSED(sender);
-    //	[fileMenu setAutoenablesItems:NO];
-	rogueMain();
-    //	[fileMenu setAutoenablesItems:YES];
-	//exit(0);
-}
-
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{
-    //UNUSED(aNotification);
-	[theWindow makeMainWindow];
-	[theWindow makeKeyWindow];
-	[self windowDidResize:nil];
-	//NSLog(@"\nAspect ratio is %@", [theWindow aspectRatio]);
-	[self playBrogue:nil];
-	[NSApp terminate:nil];
-}
-
-- (void)windowDidResize:(NSNotification *)aNotification
-{
-    //UNUSED(aNotification);
-    NSRect theRect;
-    NSSize testSizeBox;
-    NSMutableDictionary *theAttributes = [[NSMutableDictionary alloc] init];
-    short theWidth, theHeight, theSize;
-    
-    theRect = [theWindow contentRectForFrameRect:[theWindow frame]];
-    theWidth = theRect.size.width;
-    theHeight = theRect.size.height;
-    theSize = min(FONT_SIZE * theWidth / (HORIZ_PX * kCOLS), FONT_SIZE * theHeight / (VERT_PX * kROWS));
-    //NSLog(@"Start theSize=%d (w=%d, h=%d)", theSize, theWidth, theHeight);
-    do {
-        [theAttributes setObject:[NSFont fontWithName:[theMainDisplay fontName] size:theSize] forKey:NSFontAttributeName];
-        testSizeBox = [@"a" sizeWithAttributes:theAttributes];
-        //NSLog(@"theSize=%d testSizeBox w=%f, h=%f", theSize, testSizeBox.width, testSizeBox.height);
-        theSize++;
-    } while (testSizeBox.width < theWidth / kCOLS && testSizeBox.height < theHeight / kROWS);
-    // Now theSize is one more than what was passed in to fontWithName:size:.  Also need to subtract 1 to get to the
-    // last box that fit.
-    //    [theMainDisplay setHorizPixels:(theWidth / kCOLS) vertPixels:(theHeight / kROWS) fontSize:max(theSize - 2, 9)];
-    [theMainDisplay setHorizWindow:theWidth vertWindow:theHeight fontSize:max(theSize - 2, 9)];
-    //NSLog(@"End theSize=%d (w=%d, h=%d)  (tW/kC=%f, tH/kR=%f)", theSize, theWidth, theHeight, (theWidth / (float)kCOLS), (theHeight / (float)kROWS));
-    [theAttributes release];
-}*/
-
-//- (NSRect)windowWillUseStandardFrame:(NSWindow *)window
-//					  defaultFrame:(NSRect)defaultFrame
-//{
-//	NSRect theRect;
-//	if (defaultFrame.size.width > HORIZ_PX * kCOLS) {
-//		theRect.size.width = HORIZ_PX * kCOLS;
-//		theRect.size.height = VERT_PX * kROWS;
-//	} else {
-//		theRect.size.width = (HORIZ_PX - 1) * kCOLS;
-//		theRect.size.height = (VERT_PX - 2) * kROWS;
-//	}
-//
-//	theRect.origin = [window contentRectForFrameRect:[window frame]].origin;
-//	theRect.origin.y += ([window contentRectForFrameRect:[window frame]].size.height - theRect.size.height);
-//
-//	if (th
+// this was all garbage in my book... trashed it
 
 @end
 
 //  plotChar: plots inputChar at (xLoc, yLoc) with specified background and foreground colors.
 //  Color components are given in ints from 0 to 100.
-static Viewport *theMainDisplay;
-
-static ViewController *viewController;
-
 void plotChar(uchar inputChar,
 			  short xLoc, short yLoc,
 			  short foreRed, short foreGreen, short foreBlue,
 			  short backRed, short backGreen, short backBlue) {
-    if (!theMainDisplay) {
-        theMainDisplay = [[(AppDelegate *)[[UIApplication sharedApplication] delegate] viewController] theDisplay];
-        viewController = [(AppDelegate *)[[UIApplication sharedApplication] delegate] viewController];
+    @autoreleasepool {
+        [theMainDisplay setString:[NSString stringWithCharacters:&inputChar length:1]
+                   withBackground:[UIColor colorWithRed:((float)backRed/100)
+                                                  green:((float)backGreen/100)
+                                                   blue:((float)backBlue/100)
+                                                  alpha:(float)1]
+                  withLetterColor:[UIColor colorWithRed:((float)foreRed/100)
+                                                  green:((float)foreGreen/100)
+                                                   blue:((float)foreBlue/100)
+                                                  alpha:(float)1]
+                      atLocationX:xLoc locationY:yLoc
+                    withFancyFont:(inputChar == FOLIAGE_CHAR)];
     }
-    
-    //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        @autoreleasepool {
-            [theMainDisplay setString:[NSString stringWithCharacters:&inputChar length:1]
-                       withBackground:[UIColor colorWithRed:((float)backRed/100)
-                                                      green:((float)backGreen/100)
-                                                       blue:((float)backBlue/100)
-                                                      alpha:(float)1]
-                      withLetterColor:[UIColor colorWithRed:((float)foreRed/100)
-                                                      green:((float)foreGreen/100)
-                                                       blue:((float)foreBlue/100)
-                                                      alpha:(float)1]
-                          atLocationX:xLoc locationY:yLoc
-                        withFancyFont:(inputChar == FOLIAGE_CHAR)];
-        }
-
-   // });
 }
 
 void pausingTimerStartsNow() {
- //   pauseStartDate = nil;
-//	pauseStartDate = [NSDate date];
- //   printf("\nPause timer started!");
+
 }
 
 // Returns true if the player interrupted the wait with a keystroke; otherwise false.
 boolean pauseForMilliseconds(short milliseconds) {
     BOOL hasEvent = NO;
-
-    UITouch *touch = [viewController lastTouch];
-     //   NSLog(@"%@", touch);
+    
+    [NSThread sleepForTimeInterval:milliseconds/1000.0f];
         
-    if (touch != nil) {
-        if (touch.phase == UITouchPhaseBegan || touch.phase == UITouchPhaseStationary || touch.phase == UITouchPhaseEnded) {
-          //  NSLog(@"%@", touch);
+    if ([viewController cachedTouchesCount] > 0) {
+    //    UITouch *touch = [viewController cach];
+    //    if (touch.phase == UITouchPhaseBegan || touch.phase == UITouchPhaseStationary || touch.phase == UITouchPhaseEnded) {
             hasEvent = YES;
-        }
+    //    }
     }
 
 	return hasEvent;
@@ -202,71 +90,65 @@ boolean pauseForMilliseconds(short milliseconds) {
 
 void nextKeyOrMouseEvent(rogueEvent *returnEvent, boolean textInput, boolean colorsDance) {
 	//UNUSED(textInput);
-   // UIEvent *theEvent;
-    
 	CGPoint event_location;
-	CGPoint local_point;
+//	CGPoint local_point;
 	short x, y;
     for(;;) {
-        UITouch *touch = [viewController lastTouch];
-        UITouchPhase phase = touch.phase;
-        
         if (colorsDance) {
             shuffleTerrainColors(3, true);
             commitDraws();
         }
         
-        if (touch != nil && (phase != UITouchPhaseCancelled || phase != UITouchPhaseStationary)) {
-            switch (phase) {
-                case UITouchPhaseBegan:
-                case UITouchPhaseStationary:
-                    returnEvent->eventType = MOUSE_DOWN;
-                    break;
-                case UITouchPhaseEnded:
-                    returnEvent->eventType = MOUSE_UP;
-                    break;
-                case UITouchPhaseMoved:
-                    returnEvent->eventType = MOUSE_ENTERED_CELL;
-                    break;
-                default:
-                    break;
-            }
+        if ([viewController cachedTouchesCount] > 0) {
+            iBTouch touch = [viewController getTouchAtIndex:0];
+            UITouchPhase phase = touch.phase;
             
-            event_location = [touch locationInView:theMainDisplay];
-            local_point = event_location;//[theMainDisplay convertPoint:event_location fromView:nil];
-            x = COLS * local_point.x / [theMainDisplay horizWindow];
-            y = (ROWS * local_point.y / [theMainDisplay vertWindow]);
-            // Correct for the fact that truncation occurs in a positive direction when we're below zero:
-            if (local_point.x < 0) {
-                x--;
+            if (phase != UITouchPhaseCancelled) {
+                switch (phase) {
+                    case UITouchPhaseBegan:
+                    case UITouchPhaseStationary:
+                        returnEvent->eventType = MOUSE_DOWN;
+                        break;
+                    case UITouchPhaseEnded:
+                        returnEvent->eventType = MOUSE_UP;
+                        break;
+                    case UITouchPhaseMoved:
+                        returnEvent->eventType = MOUSE_ENTERED_CELL;
+                        break;
+                    default:
+                        break;
+                }
+                
+            //    NSLog(@"Event %i w/Touch: %@", returnEvent->eventType, touch);
+                
+                event_location = touch.location;
+               // local_point = touch.location;
+                x = COLS * event_location.x / [theMainDisplay hWindow];
+                y = (ROWS * event_location.y / [theMainDisplay vWindow]);
+                // Correct for the fact that truncation occurs in a positive direction when we're below zero:
+                if (event_location.x < 0) {
+                    x--;
+                }
+                if ([theMainDisplay vWindow] < event_location.y) {
+                    y--;
+                }
+                returnEvent->param1 = x;
+                returnEvent->param2 = y;
+                returnEvent->controlKey = 0;
+                returnEvent->shiftKey = 0;
+                
+                [viewController removeTouchAtIndex:0];
+                break;
             }
-            if ([theMainDisplay vertWindow] < local_point.y) {
-                y--;
-            }
-            returnEvent->param1 = x;
-            returnEvent->param2 = y;
-            returnEvent->controlKey = 0;
-            returnEvent->shiftKey = 0;
-     //       mouseX = x;
-     //       mouseY = y;
-            break;
         }
-        
-       // usleep(10000);
-    }
-    
-    if (returnEvent->eventType == MOUSE_UP) {
-        [viewController setLastTouch:nil];
     }
 }
 
 boolean controlKeyIsDown() {
-	//return (([[UIap currentEvent] modifierFlags] & NSControlKeyMask) ? true : false);
     return NO;
 }
 
 boolean shiftKeyIsDown() {
-	//return (([[NSApp currentEvent] modifierFlags] & NSShiftKeyMask) ? true : false);
     return NO;
 }
 

@@ -32,8 +32,7 @@
 // This is only used as a starting point for the calculation after the
 // window resizes.
 #define FONT_SIZE	10
-// This is only the basic font.  There are also fixed-name fallback fonts.
-#define FONT_NAME	@"Monaco"
+#define FONT_NAME	@"ArialUnicodeMS"
 
 @interface Viewport : UIView
 {
@@ -55,12 +54,11 @@
 
 - (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(NSMutableDictionary *)theAttributes;
 
-- (short)horizWindow;
-- (short)vertWindow;
-- (short)fontSize;
-- (NSString *)fontName;
 - (void)setHorizWindow:(short)hPx
 			vertWindow:(short)vPx
 			  fontSize:(short)size;
+
+@property (nonatomic, assign) short hWindow;
+@property (nonatomic, assign) short vWindow;
 
 @end
