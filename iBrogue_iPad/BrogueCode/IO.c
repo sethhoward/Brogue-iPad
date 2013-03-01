@@ -27,6 +27,8 @@
 #include "Rogue.h"
 #include "IncludeGlobals.h"
 
+
+
 // Populates path[][] with a list of coordinates starting at origin and traversing down the map. Returns the number of steps in the path.
 short getPathOnMap(short path[1000][2], short **map, short originX, short originY) {
 	short dir, x, y, steps;
@@ -2359,6 +2361,12 @@ boolean getInputTextString(char *inputText,
 	do {
 		printString(suffix, charNum + x, y, &gray, &black, 0);
 		plotCharWithColor((suffix[0] ? suffix[0] : ' '), x + charNum, y, &black, &white);
+  
+#warning outside implementation
+        // SETH: custom function
+        setWaitingForInput(true);
+        
+        
 		keystroke = nextKeyPress(true);
 		if (keystroke == DELETE_KEY && charNum > 0) {
 			printString(suffix, charNum + x - 1, y, &gray, &black, 0);

@@ -2834,6 +2834,9 @@ extern "C" {
 	void pdsSetDistance(pdsMap *map, short x, short y, short distance);
 	void pdsBatchOutput(pdsMap *map, short **distanceMap);
 	
+#warning outside implementation
+    // SETH: custom function
+    void setWaitingForInput(boolean waiting);
 #if defined __cplusplus
 }
 #endif

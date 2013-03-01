@@ -18,8 +18,15 @@
 Viewport *theMainDisplay;
 ViewController *viewController;
 
-@interface ViewController ()
+@interface ViewController () <UITextFieldDelegate>
+
+- (IBAction)escButtonPressed:(id)sender;
+
+@property (weak, nonatomic) IBOutlet UIButton *escButton;
 @property (nonatomic, strong) NSMutableArray *cachedTouches; // collection of iBTouches
+@property (weak, nonatomic) IBOutlet UIView *playerControlView;
+@property (weak, nonatomic) IBOutlet UITextField *aTextField;
+@property (nonatomic, strong) NSMutableArray *cachedKeyStrokes;
 @end
 
 @implementation ViewController
@@ -33,9 +40,14 @@ ViewController *viewController;
         theMainDisplay = self.theDisplay;
         viewController = self;
         _cachedTouches = [NSMutableArray arrayWithCapacity:1];
+        _cachedKeyStrokes = [NSMutableArray arrayWithCapacity:1];
+        
+        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        [center addObserver:self selector:@selector(didShowKeyboard) name:UIKeyboardDidShowNotification object:nil];
+        [center addObserver:self selector:@selector(didHideKeyboard) name:UIKeyboardWillHideNotification object:nil];
     }
     
-    [self playBrogue:nil];
+    [self playBrogue];
 }
 
 - (void)didReceiveMemoryWarning
@@ -63,24 +75,14 @@ ViewController *viewController;
 	}
 }
 
-- (IBAction)playBrogue:(id)sender
+- (void)playBrogue
 {
-    //UNUSED(sender);
-    //	[fileMenu setAutoenablesItems:NO];
-    double delayInSeconds = 0.;
+    double delayInSeconds = 0.2;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
         rogueMain();
         exit(0);
     });
-    
-
-    //	[fileMenu setAutoenablesItems:YES];
-	//exit(0);
-}
-
-- (IBAction)fuckyoutouched:(id)sender {
-   // [self.theDisplay setNeedsDisplay];
 }
 
 #pragma mark - touches
@@ -109,7 +111,7 @@ ViewController *viewController;
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+  //  NSLog(@"%s", __PRETTY_FUNCTION__);
     [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
         // Get a single touch and it's location
         [self addTouchToCache:touch];
@@ -117,7 +119,7 @@ ViewController *viewController;
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+   // NSLog(@"%s", __PRETTY_FUNCTION__);
     [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
         // Get a single touch and it's location
         [self addTouchToCache:touch];
@@ -125,7 +127,7 @@ ViewController *viewController;
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+  //  NSLog(@"%s", __PRETTY_FUNCTION__);
     [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
         // Get a single touch and it's location
         [self addTouchToCache:touch];
@@ -152,8 +154,65 @@ ViewController *viewController;
     }
 }
 
+#pragma mark - keyboard stuff
+
+- (void)showKeyboard {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.aTextField.text = @"Recording";
+        [self.aTextField becomeFirstResponder];
+    });
+}
+
 - (void)viewDidUnload {
     [self setPlayerControlView:nil];
+    [self setATextField:nil];
+    [self setEscButton:nil];
     [super viewDidUnload];
 }
+
+- (uint)cachedKeyStrokeCount {
+    return [self.cachedKeyStrokes count];
+}
+
+- (char)dequeKeyStroke {
+    NSString *keyStroke = [self.cachedKeyStrokes objectAtIndex:0];
+    [self.cachedKeyStrokes removeObjectAtIndex:0];
+    
+    return [keyStroke characterAtIndex:0];
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (void)didHideKeyboard {
+    [self.cachedKeyStrokes addObject:@"\015"];
+    self.escButton.hidden = YES;
+}
+
+- (void)didShowKeyboard {
+    self.escButton.hidden = NO;
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    const char *_char = [string cStringUsingEncoding:NSUTF8StringEncoding];
+    int isBackSpace = strcmp(_char, "\b");
+    
+    if (isBackSpace == -8) {
+        // is backspace
+        [self.cachedKeyStrokes addObject:@"\177"];
+    }
+    else if([string isEqualToString:@"\n"]) {
+        [textField resignFirstResponder];
+        [self.cachedKeyStrokes addObject:string];
+    }
+    else {
+        [self.cachedKeyStrokes addObject:string];
+    }
+    
+    return YES;
+}
+
+- (IBAction)escButtonPressed:(id)sender {
+    [self.aTextField resignFirstResponder];
+}
+
 @end

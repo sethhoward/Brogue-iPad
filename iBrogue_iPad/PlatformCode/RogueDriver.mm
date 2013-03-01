@@ -28,6 +28,7 @@
 #import "ViewController.h"
 #import "AppDelegate.h"
 #include "IncludeGlobals.h"
+#include "Rogue.h"
 
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
@@ -39,6 +40,8 @@ short mouseX, mouseY;
 // this was all garbage in my book... trashed it
 
 @end
+
+boolean needsKeyboardInput = NO;
 
 //  plotChar: plots inputChar at (xLoc, yLoc) with specified background and foreground colors.
 //  Color components are given in ints from 0 to 100.
@@ -104,13 +107,20 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
     
     for(;;) {
       //  NSLog(@"%i", rogue.nextGame);
-       
-        
         if (colorsDance) {
             shuffleTerrainColors(3, true);
             commitDraws();
         }
         
+        if ([viewController cachedKeyStrokeCount] > 0) {
+            returnEvent->eventType = KEYSTROKE;
+            returnEvent->param1 = [viewController dequeKeyStroke];
+            //printf("\nKey pressed: %i", returnEvent->param1);
+            returnEvent->param2 = 0;
+            returnEvent->controlKey = 0;//([theEvent modifierFlags] & NSControlKeyMask ? 1 : 0);
+            returnEvent->shiftKey = 0;//([theEvent modifierFlags] & NSShiftKeyMask ? 1 : 0);
+            break;
+        }
         if ([viewController cachedTouchesCount] > 0) {
             iBTouch touch = [viewController getTouchAtIndex:0];
             UITouchPhase phase = touch.phase;
@@ -261,7 +271,11 @@ short getHighScoresList(rogueHighScoresEntry returnList[HIGH_SCORES_COUNT]) {
 // returns whether the score qualified for the list.
 // This function ignores the date passed to it in theEntry and substitutes the current
 // date instead.
+
+// TODO: going to assume every save highscore qualifies as an end game screen.
+
 boolean saveHighScore(rogueHighScoresEntry theEntry) {
+    return false;
 	NSMutableArray *scoresArray, *textArray, *datesArray;
 	NSNumber *newScore;
 	NSString *newText;
@@ -339,7 +353,7 @@ void initializeBrogueSaveLocation() {
 // Returns a malloc'ed fileEntry array, and puts the file count into *fileCount.
 // Also returns a pointer to the memory that holds the file names, so that it can also
 // be freed afterward.
-fileEntry *listFiles(short *fileCount, char **dynamicMemoryBuffer) {/*
+fileEntry *listFiles(short *fileCount, char **dynamicMemoryBuffer) {
 	short i, count, thisFileNameLength;
 	unsigned long bufferPosition, bufferSize;
 	unsigned long *offsets;
@@ -356,20 +370,24 @@ fileEntry *listFiles(short *fileCount, char **dynamicMemoryBuffer) {/*
 	bufferPosition = bufferSize = 0;
 	*dynamicMemoryBuffer = NULL;
     
-	//dateFormatter = [[NSDateFormatter alloc] initWithDateFormat:@"%1m/%1d/%y" allowNaturalLanguage:YES];
+	dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"mm/dd/yy"];//                initWithDateFormat:@"%1m/%1d/%y" allowNaturalLanguage:YES];
     
 	array = [manager contentsOfDirectoryAtPath:[manager currentDirectoryPath] error:&err];
 	count = [array count];
     
-	fileList = malloc((count + ADD_FAKE_PADDING_FILES) * sizeof(fileEntry));
-	offsets = malloc((count + ADD_FAKE_PADDING_FILES) * sizeof(unsigned long));
+	fileList = (fileEntry *)malloc((count + ADD_FAKE_PADDING_FILES) * sizeof(fileEntry));
+	offsets = (unsigned long*)malloc((count + ADD_FAKE_PADDING_FILES) * sizeof(unsigned long));
     
 	for (i=0; i < count + ADD_FAKE_PADDING_FILES; i++) {
 		if (i < count) {
 			thisFileName = [[array objectAtIndex:i] cStringUsingEncoding:NSASCIIStringEncoding];
 			fileAttributes = [manager attributesOfItemAtPath:[array objectAtIndex:i] error:nil];
+            
+            const char *date = [[dateFormatter stringFromDate:[fileAttributes fileModificationDate]] cStringUsingEncoding:NSASCIIStringEncoding];
+            
 			strcpy(fileList[i].date,
-				   [[dateFormatter stringFromDate:[fileAttributes fileModificationDate]] cStringUsingEncoding:NSASCIIStringEncoding]);
+				   date);
 		} else {
 			// Debug feature.
 			sprintf(tempString, "Fake padding file %i.broguerec", i - count + 1);
@@ -398,5 +416,11 @@ fileEntry *listFiles(short *fileCount, char **dynamicMemoryBuffer) {/*
 	free(offsets);
     
 	*fileCount = count + ADD_FAKE_PADDING_FILES;
-	return fileList;*/
+	return fileList;
+}
+
+void setWaitingForInput(boolean waiting) {
+    // TODO: variable probably not needed
+    needsKeyboardInput = waiting;
+    [viewController showKeyboard];
 }
