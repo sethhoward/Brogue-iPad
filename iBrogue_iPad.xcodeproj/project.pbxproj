@@ -18,7 +18,7 @@
 		C57A963F16D7EAD500C233F1 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C57A963E16D7EAD500C233F1 /* Default-568h@2x.png */; };
 		C57A964216D7EAD500C233F1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A964116D7EAD500C233F1 /* ViewController.m */; };
 		C57A964516D7EAD500C233F1 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C57A964316D7EAD500C233F1 /* ViewController.xib */; };
-		C57A965116D7EB4C00C233F1 /* RogueDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A964E16D7EB4C00C233F1 /* RogueDriver.m */; };
+		C57A965116D7EB4C00C233F1 /* RogueDriver.mm in Sources */ = {isa = PBXBuildFile; fileRef = C57A964E16D7EB4C00C233F1 /* RogueDriver.mm */; };
 		C57A965216D7EB4C00C233F1 /* Viewport.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A965016D7EB4C00C233F1 /* Viewport.m */; };
 		C57A966516D7EB5500C233F1 /* Architect.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965416D7EB5500C233F1 /* Architect.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A966616D7EB5500C233F1 /* Buttons.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965516D7EB5500C233F1 /* Buttons.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -57,7 +57,7 @@
 		C57A964416D7EAD500C233F1 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
 		C57A964C16D7EB4C00C233F1 /* PlatformDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlatformDefines.h; sourceTree = "<group>"; };
 		C57A964D16D7EB4C00C233F1 /* RogueDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RogueDriver.h; sourceTree = "<group>"; };
-		C57A964E16D7EB4C00C233F1 /* RogueDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RogueDriver.m; sourceTree = "<group>"; };
+		C57A964E16D7EB4C00C233F1 /* RogueDriver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RogueDriver.mm; sourceTree = "<group>"; };
 		C57A964F16D7EB4C00C233F1 /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
 		C57A965016D7EB4C00C233F1 /* Viewport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Viewport.m; sourceTree = "<group>"; };
 		C57A965416D7EB5500C233F1 /* Architect.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Architect.c; sourceTree = "<group>"; };
@@ -157,7 +157,7 @@
 			children = (
 				C57A964C16D7EB4C00C233F1 /* PlatformDefines.h */,
 				C57A964D16D7EB4C00C233F1 /* RogueDriver.h */,
-				C57A964E16D7EB4C00C233F1 /* RogueDriver.m */,
+				C57A964E16D7EB4C00C233F1 /* RogueDriver.mm */,
 				C57A964F16D7EB4C00C233F1 /* Viewport.h */,
 				C57A965016D7EB4C00C233F1 /* Viewport.m */,
 			);
@@ -257,7 +257,7 @@
 				C57A963516D7EAD500C233F1 /* main.m in Sources */,
 				C57A963916D7EAD500C233F1 /* AppDelegate.m in Sources */,
 				C57A964216D7EAD500C233F1 /* ViewController.m in Sources */,
-				C57A965116D7EB4C00C233F1 /* RogueDriver.m in Sources */,
+				C57A965116D7EB4C00C233F1 /* RogueDriver.mm in Sources */,
 				C57A965216D7EB4C00C233F1 /* Viewport.m in Sources */,
 				C57A966516D7EB5500C233F1 /* Architect.c in Sources */,
 				C57A966616D7EB5500C233F1 /* Buttons.c in Sources */,

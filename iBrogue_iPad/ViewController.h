@@ -18,11 +18,15 @@ struct iBTouch {
 typedef struct iBTouch iBTouch;
 
 @property (nonatomic, strong) IBOutlet Viewport *theDisplay;
+@property (weak, nonatomic) IBOutlet UIView *playerControlView;
 
 - (IBAction)fuckyoutouched:(id)sender;
 - (uint)cachedTouchesCount;
 - (iBTouch)getTouchAtIndex:(uint)index;
 - (void)removeTouchAtIndex:(uint)index;
+
+- (void)hideControls;
+- (void)showControls;
 
 @end
 

@@ -27,6 +27,7 @@
 #import "RogueDriver.h"
 #import "ViewController.h"
 #import "AppDelegate.h"
+#include "IncludeGlobals.h"
 
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
@@ -67,15 +68,20 @@ void pausingTimerStartsNow() {
 // Returns true if the player interrupted the wait with a keystroke; otherwise false.
 boolean pauseForMilliseconds(short milliseconds) {
     BOOL hasEvent = NO;
+   // NSLog(@"%i", rogue.nextGame);
+    if (rogue.nextGame == NG_NOTHING && rogue.gameHasEnded) {
+        [viewController hideControls];
+    }
     
     [NSThread sleepForTimeInterval:milliseconds/1000.0f];
         
     if ([viewController cachedTouchesCount] > 0) {
-    //    UITouch *touch = [viewController cach];
-    //    if (touch.phase == UITouchPhaseBegan || touch.phase == UITouchPhaseStationary || touch.phase == UITouchPhaseEnded) {
-            hasEvent = YES;
-    //    }
+        hasEvent = YES;
     }
+    
+    //  tell the viewcontroller what event we're on so we can respond appropriately
+    // case NG_NEW_GAME:
+    // case NG_NEW_GAME_WITH_SEED:
 
 	return hasEvent;
 }
@@ -88,12 +94,18 @@ boolean pauseForMilliseconds(short milliseconds) {
  UITouchPhaseCancelled,
  */
 
-void nextKeyOrMouseEvent(rogueEvent *returnEvent, boolean textInput, boolean colorsDance) {
-	//UNUSED(textInput);
+void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, boolean colorsDance) {
 	CGPoint event_location;
-//	CGPoint local_point;
 	short x, y;
+    
+    if (!rogue.gameHasEnded) {
+        [viewController showControls];
+    }
+    
     for(;;) {
+      //  NSLog(@"%i", rogue.nextGame);
+       
+        
         if (colorsDance) {
             shuffleTerrainColors(3, true);
             commitDraws();
@@ -122,7 +134,6 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, boolean textInput, boolean col
             //    NSLog(@"Event %i w/Touch: %@", returnEvent->eventType, touch);
                 
                 event_location = touch.location;
-               // local_point = touch.location;
                 x = COLS * event_location.x / [theMainDisplay hWindow];
                 y = (ROWS * event_location.y / [theMainDisplay vWindow]);
                 // Correct for the fact that truncation occurs in a positive direction when we're below zero:
@@ -328,7 +339,7 @@ void initializeBrogueSaveLocation() {
 // Returns a malloc'ed fileEntry array, and puts the file count into *fileCount.
 // Also returns a pointer to the memory that holds the file names, so that it can also
 // be freed afterward.
-fileEntry *listFiles(short *fileCount, char **dynamicMemoryBuffer) {
+fileEntry *listFiles(short *fileCount, char **dynamicMemoryBuffer) {/*
 	short i, count, thisFileNameLength;
 	unsigned long bufferPosition, bufferSize;
 	unsigned long *offsets;
@@ -387,5 +398,5 @@ fileEntry *listFiles(short *fileCount, char **dynamicMemoryBuffer) {
 	free(offsets);
     
 	*fileCount = count + ADD_FAKE_PADDING_FILES;
-	return fileList;
+	return fileList;*/
 }
