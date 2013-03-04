@@ -34,6 +34,7 @@
 @implementation Viewport {
     @private
     BOOL _animationRunning;
+    BOOL _hasInitialized;
 }
 
 CGSize characterSize;
@@ -95,6 +96,8 @@ short theFontSize = FONT_SIZE;  // Will get written over when windowDidResize
 	}
     
     [self setHorizWindow:self.hWindow vertWindow:self.vWindow fontSize:10];
+    
+    _hasInitialized = YES;
 }
 
 - (void)draw {
@@ -122,13 +125,18 @@ short theFontSize = FONT_SIZE;  // Will get written over when windowDidResize
 - (void)drawRect:(CGRect)rect
 {
  //   NSLog(@"%s", __PRETTY_FUNCTION__);
-    
     if (!_animationRunning)
     {
         [self.displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
         _animationRunning = YES;
         return;
     }
+    
+    if (!_hasInitialized) {
+        NSLog(@"haven't init yet");
+        return;
+    }
+    
     
 	int i, j, startX, startY, endX, endY;
 

@@ -25,11 +25,16 @@
 #include "IncludeGlobals.h"
 #include <math.h>
 #include <time.h>
+#include <dispatch/dispatch.h>
 
 void rogueMain() {
-	previousGameSeed = 0;
+	previousGameSeed = 0; 
 	initializeBrogueSaveLocation();
-	mainBrogueJunction();
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        mainBrogueJunction();
+        exit(0);
+    });
 }
 
 void executeEvent(rogueEvent *theEvent) {
@@ -286,7 +291,7 @@ void initializeRogue(unsigned long seed) {
 	zeroOutGrid(displayDetail);
 	
 	for (i=0; i<NUMBER_MONSTER_KINDS; i++) {
-		monsterCatalog[i].monsterID = i;
+		monsterCatalog[i].monsterID = (monsterTypes)i;
 	}
 	
 	shuffleFlavors();
@@ -673,7 +678,7 @@ void startLevel(short oldLevelNumber, short stairDirection) {
 	
 	for (i=0; i<DCOLS; i++) {
 		for (j=0; j<DROWS; j++) {
-			for (layer = 0; layer < NUMBER_TERRAIN_LAYERS; layer++) {
+			for (layer = (dungeonLayers)0; layer < NUMBER_TERRAIN_LAYERS; layer++) {
 				levels[oldLevelNumber - 1].mapStorage[i][j].layers[layer] = pmap[i][j].layers[layer];
 			}
 			levels[oldLevelNumber - 1].mapStorage[i][j].volume = pmap[i][j].volume;
@@ -743,7 +748,7 @@ void startLevel(short oldLevelNumber, short stairDirection) {
 		
 		for (i=0; i<DCOLS; i++) {
 			for (j=0; j<DROWS; j++) {
-				for (layer = 0; layer < NUMBER_TERRAIN_LAYERS; layer++) {
+				for (layer = (dungeonLayers)0; layer < NUMBER_TERRAIN_LAYERS; layer++) {
 					pmap[i][j].layers[layer] = levels[rogue.depthLevel - 1].mapStorage[i][j].layers[layer];
 				}
 				pmap[i][j].volume = levels[rogue.depthLevel - 1].mapStorage[i][j].volume;

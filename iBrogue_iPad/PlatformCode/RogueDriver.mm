@@ -30,6 +30,8 @@
 #include "IncludeGlobals.h"
 #include "Rogue.h"
 
+void autoSave();
+
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
 
@@ -37,11 +39,13 @@ short mouseX, mouseY;
 
 @implementation RogueDriver
 
++ (void)autoSave {
+ //   autoSave();
+}
+
 // this was all garbage in my book... trashed it
 
 @end
-
-boolean needsKeyboardInput = NO;
 
 //  plotChar: plots inputChar at (xLoc, yLoc) with specified background and foreground colors.
 //  Color components are given in ints from 0 to 100.
@@ -71,20 +75,12 @@ void pausingTimerStartsNow() {
 // Returns true if the player interrupted the wait with a keystroke; otherwise false.
 boolean pauseForMilliseconds(short milliseconds) {
     BOOL hasEvent = NO;
-   // NSLog(@"%i", rogue.nextGame);
-    if (rogue.nextGame == NG_NOTHING && rogue.gameHasEnded) {
-        [viewController hideControls];
-    }
     
     [NSThread sleepForTimeInterval:milliseconds/1000.0f];
         
     if ([viewController cachedTouchesCount] > 0) {
         hasEvent = YES;
     }
-    
-    //  tell the viewcontroller what event we're on so we can respond appropriately
-    // case NG_NEW_GAME:
-    // case NG_NEW_GAME_WITH_SEED:
 
 	return hasEvent;
 }
@@ -97,69 +93,78 @@ boolean pauseForMilliseconds(short milliseconds) {
  UITouchPhaseCancelled,
  */
 
+void showDirectionControls(boolean show) {
+    if (show) {
+        [viewController showControls];
+    }
+    else {
+        [viewController hideControls];
+    }
+}
+
 void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, boolean colorsDance) {
 	CGPoint event_location;
 	short x, y;
     
-    if (!rogue.gameHasEnded) {
-        [viewController showControls];
-    }
-    
-    for(;;) {
-      //  NSLog(@"%i", rogue.nextGame);
-        if (colorsDance) {
-            shuffleTerrainColors(3, true);
-            commitDraws();
-        }
-        
-        if ([viewController cachedKeyStrokeCount] > 0) {
-            returnEvent->eventType = KEYSTROKE;
-            returnEvent->param1 = [viewController dequeKeyStroke];
-            //printf("\nKey pressed: %i", returnEvent->param1);
-            returnEvent->param2 = 0;
-            returnEvent->controlKey = 0;//([theEvent modifierFlags] & NSControlKeyMask ? 1 : 0);
-            returnEvent->shiftKey = 0;//([theEvent modifierFlags] & NSShiftKeyMask ? 1 : 0);
-            break;
-        }
-        if ([viewController cachedTouchesCount] > 0) {
-            iBTouch touch = [viewController getTouchAtIndex:0];
-            UITouchPhase phase = touch.phase;
+    @autoreleasepool {
+        for(;;) {
+            [NSThread sleepForTimeInterval:0.05];
             
-            if (phase != UITouchPhaseCancelled) {
-                switch (phase) {
-                    case UITouchPhaseBegan:
-                    case UITouchPhaseStationary:
-                        returnEvent->eventType = MOUSE_DOWN;
-                        break;
-                    case UITouchPhaseEnded:
-                        returnEvent->eventType = MOUSE_UP;
-                        break;
-                    case UITouchPhaseMoved:
-                        returnEvent->eventType = MOUSE_ENTERED_CELL;
-                        break;
-                    default:
-                        break;
-                }
-                
-            //    NSLog(@"Event %i w/Touch: %@", returnEvent->eventType, touch);
-                
-                event_location = touch.location;
-                x = COLS * event_location.x / [theMainDisplay hWindow];
-                y = (ROWS * event_location.y / [theMainDisplay vWindow]);
-                // Correct for the fact that truncation occurs in a positive direction when we're below zero:
-                if (event_location.x < 0) {
-                    x--;
-                }
-                if ([theMainDisplay vWindow] < event_location.y) {
-                    y--;
-                }
-                returnEvent->param1 = x;
-                returnEvent->param2 = y;
-                returnEvent->controlKey = 0;
-                returnEvent->shiftKey = 0;
-                
-                [viewController removeTouchAtIndex:0];
+            //  NSLog(@"%i", rogue.nextGame);
+            if (colorsDance) {
+                shuffleTerrainColors(3, true);
+                commitDraws();
+            }
+            
+            if ([viewController cachedKeyStrokeCount] > 0) {
+                returnEvent->eventType = KEYSTROKE;
+                returnEvent->param1 = [viewController dequeKeyStroke];
+                //printf("\nKey pressed: %i", returnEvent->param1);
+                returnEvent->param2 = 0;
+                returnEvent->controlKey = 0;//([theEvent modifierFlags] & NSControlKeyMask ? 1 : 0);
+                returnEvent->shiftKey = 0;//([theEvent modifierFlags] & NSShiftKeyMask ? 1 : 0);
                 break;
+            }
+            if ([viewController cachedTouchesCount] > 0) {
+                iBTouch touch = [viewController getTouchAtIndex:0];
+                UITouchPhase phase = touch.phase;
+                
+                if (phase != UITouchPhaseCancelled) {
+                    switch (phase) {
+                        case UITouchPhaseBegan:
+                        case UITouchPhaseStationary:
+                            returnEvent->eventType = MOUSE_DOWN;
+                            break;
+                        case UITouchPhaseEnded:
+                            returnEvent->eventType = MOUSE_UP;
+                            break;
+                        case UITouchPhaseMoved:
+                            returnEvent->eventType = MOUSE_ENTERED_CELL;
+                            break;
+                        default:
+                            break;
+                    }
+                    
+                    //    NSLog(@"Event %i w/Touch: %@", returnEvent->eventType, touch);
+                    
+                    event_location = touch.location;
+                    x = COLS * event_location.x / [theMainDisplay hWindow];
+                    y = (ROWS * event_location.y / [theMainDisplay vWindow]);
+                    // Correct for the fact that truncation occurs in a positive direction when we're below zero:
+                    if (event_location.x < 0) {
+                        x--;
+                    }
+                    if ([theMainDisplay vWindow] < event_location.y) {
+                        y--;
+                    }
+                    returnEvent->param1 = x;
+                    returnEvent->param2 = y;
+                    returnEvent->controlKey = 0;
+                    returnEvent->shiftKey = 0;
+                    
+                    [viewController removeTouchAtIndex:0];
+                    break;
+                }
             }
         }
     }
@@ -275,7 +280,6 @@ short getHighScoresList(rogueHighScoresEntry returnList[HIGH_SCORES_COUNT]) {
 // TODO: going to assume every save highscore qualifies as an end game screen.
 
 boolean saveHighScore(rogueHighScoresEntry theEntry) {
-    return false;
 	NSMutableArray *scoresArray, *textArray, *datesArray;
 	NSNumber *newScore;
 	NSString *newText;
@@ -420,7 +424,33 @@ fileEntry *listFiles(short *fileCount, char **dynamicMemoryBuffer) {
 }
 
 void setWaitingForInput(boolean waiting) {
-    // TODO: variable probably not needed
-    needsKeyboardInput = waiting;
     [viewController showKeyboard];
 }
+
+//warning essentially lifted from the save code in Recordings.c
+//warning redefines what Last Game is used for
+
+// we're on a mobile device so we'll want to do this every now and then or really piss off some users
+/*
+void autoSave() {
+    short i;
+	FILE *recordFile;
+    lengthOfPlaybackFile += locationInRecordingBuffer;
+    
+    if (lengthOfPlaybackFile != 0) {
+		writeHeaderInfo(currentFilePath);
+        
+		recordFile = fopen(currentFilePath, "ab");
+		
+		for (i=0; i<locationInRecordingBuffer; i++) {
+			putc(inputRecordBuffer[i], recordFile);
+		}
+		
+		if (recordFile) {
+			fclose(recordFile);
+		}
+		
+		locationInRecordingBuffer = 0;
+	}
+}
+*/

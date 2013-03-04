@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@class Viewport;
+@class Viewport, ViewController;
+
+extern Viewport *theMainDisplay;
+extern ViewController *viewController;
+
 @interface ViewController : UIViewController
 
 struct iBTouch {
@@ -32,6 +36,3 @@ typedef struct iBTouch iBTouch;
 - (void)showKeyboard;
 
 @end
-
-extern Viewport *theMainDisplay;
-extern ViewController *viewController;

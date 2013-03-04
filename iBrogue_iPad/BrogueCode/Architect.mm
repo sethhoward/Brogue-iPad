@@ -99,20 +99,20 @@ boolean checkLoopiness(short x, short y) {
 }
 
 void auditLoop(short x, short y, char grid[DCOLS][DROWS]) {
-	short dir, newX, newY;
-	if (coordinatesAreInMap(x, y)
-		&& !grid[x][y]
-		&& !(pmap[x][y].flags & IN_LOOP)) {
-		
-		grid[x][y] = true;
-		for (dir = 0; dir < 8; dir++) {
-			newX = x + nbDirs[dir][0];
-			newY = y + nbDirs[dir][1];
-			if (coordinatesAreInMap(newX, newY)) {
-				auditLoop(newX, newY, grid);
-			}
-		}
-	}
+    short dir, newX, newY;
+    if (coordinatesAreInMap(x, y)
+        && !grid[x][y]
+        && !(pmap[x][y].flags & IN_LOOP)) {
+        
+        grid[x][y] = true;
+        for (dir = 0; dir < 8; dir++) {
+            newX = x + nbDirs[dir][0];
+            newY = y + nbDirs[dir][1];
+            if (coordinatesAreInMap(newX, newY)) {
+                auditLoop(newX, newY, grid);
+            }
+        }
+    }
 }
 
 // Assumes it is called with respect to a passable (startX, startY), and that the same is not already included in results.
@@ -527,7 +527,7 @@ void expandMachineInterior(char interior[DCOLS][DROWS], short minimumInteriorNei
                 if (cellHasTerrainFlag(i, j, T_PATHING_BLOCKER)) {
                     
                     // Count up the number of interior open neighbors out of eight:
-                    for (nbcount = dir = 0; dir < 8; dir++) {
+                    for (nbcount = dir = (directions)0; dir < 8; dir++) {
                         newX = i + nbDirs[dir][0];
                         newY = j + nbDirs[dir][1];
                         if (interior[newX][newY]
@@ -537,7 +537,7 @@ void expandMachineInterior(char interior[DCOLS][DROWS], short minimumInteriorNei
                     }
                     if (nbcount >= minimumInteriorNeighbors) {
                         // Make sure zero exterior open/machine neighbors out of eight:
-                        for (nbcount = dir = 0; dir < 8; dir++) {
+                        for (nbcount = dir = (directions)0; dir < 8; dir++) {
                             newX = i + nbDirs[dir][0];
                             newY = j + nbDirs[dir][1];
                             if (!interior[newX][newY]
@@ -555,7 +555,7 @@ void expandMachineInterior(char interior[DCOLS][DROWS], short minimumInteriorNei
                                     pmap[i][j].layers[layer] = (layer == DUNGEON ? FLOOR : NOTHING);
                                 }
                             }
-                            for (dir = 0; dir < 8; dir++) {
+                            for (dir = (directions)0; dir < 8; dir++) {
                                 newX = i + nbDirs[dir][0];
                                 newY = j + nbDirs[dir][1];
                                 if (pmap[newX][newY].layers[DUNGEON] == GRANITE) {
@@ -718,7 +718,7 @@ boolean buildAMachine(enum machineTypes bp,
 			for (i=1; i<NUMBER_BLUEPRINTS; i++) {
 				if (blueprintQualifies(i, requiredMachineFlags)) {
 					if (randIndex <= blueprintCatalog[i].frequency) {
-						bp = i;
+						bp = (machineTypes)i;
 						break;
 					} else {
 						randIndex -= blueprintCatalog[i].frequency;
@@ -933,7 +933,7 @@ boolean buildAMachine(enum machineTypes bp,
 							&& !pmap[newX][newY].machineNumber
                             && cellHasTerrainFlag(newX, newY, T_PATHING_BLOCKER)) {
 							for (layer=0; layer<NUMBER_TERRAIN_LAYERS; layer++) {
-								pmap[newX][newY].layers[layer] = (layer == DUNGEON ? WALL : 0);
+								pmap[newX][newY].layers[layer] = (tileType)(layer == DUNGEON ? WALL : 0);
 							}
 						}
 					}
@@ -1289,9 +1289,9 @@ boolean buildAMachine(enum machineTypes bp,
                                 removeItemFromChain(theItem, floorItems);
                                 removeItemFromChain(theItem, packItems);
                                 theItem->nextItem = NULL;
-                                success = buildAMachine(-1, -1, -1, BP_ADOPT_ITEM, theItem, spawnedItemsSub, spawnedMonstersSub);
+                                success = buildAMachine((machineTypes)-1, -1, -1, BP_ADOPT_ITEM, theItem, spawnedItemsSub, spawnedMonstersSub);
                             } else if (feature->flags & MF_BUILD_VESTIBULE) {
-                                success = buildAMachine(-1, featX, featY, BP_VESTIBULE, NULL, spawnedItemsSub, spawnedMonstersSub);
+                                success = buildAMachine((machineTypes)-1, featX, featY, BP_VESTIBULE, NULL, spawnedItemsSub, spawnedMonstersSub);
                             }
                             
                             // Now put the item up for adoption.
@@ -1479,7 +1479,7 @@ void addMachines() {
     }
 	
 	for (failsafe = 50; machineCount && failsafe; failsafe--) {
-		if (buildAMachine(-1, -1, -1, BP_REWARD, NULL, NULL, NULL)) {
+		if (buildAMachine((machineTypes)-1, -1, -1, BP_REWARD, NULL, NULL, NULL)) {
 			machineCount--;
 			rogue.rewardRoomsGenerated++;
 		}
@@ -1788,7 +1788,7 @@ enum directions directionOfDoorSite(short **grid, short x, short y) {
     }
     
     solutionDir = NO_DIRECTION;
-    for (dir=0; dir<4; dir++) {
+    for (dir= (directions)0; dir<4; dir++) {
         newX = x + nbDirs[dir][0];
         newY = y + nbDirs[dir][1];
         oppX = x - nbDirs[dir][0];
@@ -1851,7 +1851,7 @@ void chooseRandomDoorSites(short **roomMap, short doorSites[4][2]) {
 //    temporaryMessage("Door candidates:", true);
     
     // Pick four doors, one in each direction, and store them in doorSites[dir].
-    for (dir=0; dir<4; dir++) {
+    for (dir=(directions)0; dir<4; dir++) {
         randomLocationInGrid(grid, &(doorSites[dir][0]), &(doorSites[dir][1]), dir + 2);
     }
     
@@ -1868,7 +1868,7 @@ void attachHallwayTo(short **grid, short doorSites[4][2]) {
     fillSequentialList(dirs, 4);
     shuffleList(dirs, 4);
     for (i=0; i<4; i++) {
-        dir = dirs[i];
+        dir = (directions)dirs[i];
         if (doorSites[dir][0] != -1
             && doorSites[dir][1] != -1
             && coordinatesAreInMap(doorSites[dir][0] + nbDirs[dir][0] * HORIZONTAL_CORRIDOR_MAX_LENGTH,
@@ -1898,7 +1898,7 @@ void attachHallwayTo(short **grid, short doorSites[4][2]) {
     x = clamp(x - nbDirs[dir][0], 0, DCOLS - 1);
     y = clamp(y - nbDirs[dir][1], 0, DROWS - 1); // Now (x, y) points at the last interior cell of the hallway.
     allowObliqueHallwayExit = rand_percent(15);
-    for (dir2 = 0; dir2 < 4; dir2++) {
+    for (dir2 = (directions)0; dir2 < 4; dir2++) {
         newX = x + nbDirs[dir2][0];
         newY = y + nbDirs[dir2][1];
         
@@ -1980,9 +1980,9 @@ void designRandomRoom(short **grid, boolean attachHallway, short doorSites[4][2]
     if (doorSites) {
         chooseRandomDoorSites(grid, doorSites);
         if (attachHallway) {
-            dir = rand_range(0, 3);
+            dir = (directions)rand_range(0, 3);
             for (i=0; doorSites[dir][0] == -1 && i < 3; i++) {
-                dir = (dir + 1) % 4; // Each room will have at least 2 valid directions for doors.
+                dir = (directions)((dir + 1) % 4); // Each room will have at least 2 valid directions for doors.
             }
             attachHallwayTo(grid, doorSites);
         }
@@ -2032,14 +2032,14 @@ void carveDungeon(short **grid) {
     //      5. Cavern (the kind that fills a level)
     //      6. Entrance room (the big upside-down T room at the start of depth 1)
     const short roomFrequencies[ROOM_TYPE_COUNT] = {
-        2 + 20 * (100 - descentPercent) / 100,
-        1 + 7 * (100 - descentPercent) / 100,
+        static_cast<short>(2 + 20 * (100 - descentPercent) / 100),
+        static_cast<short>(1 + 7 * (100 - descentPercent) / 100),
         7,
-        1 + 10 * descentPercent / 100,
+        static_cast<short>(1 + 10 * descentPercent / 100),
         0,
         0};
     
-    const short firstRoomFrequencies[ROOM_TYPE_COUNT]   = {10, 3, 7, 10, 10 + 50 * descentPercent / 100, 0};
+    const short firstRoomFrequencies[ROOM_TYPE_COUNT]   = {10, 3, 7, 10, static_cast<short>(10 + 50 * descentPercent / 100), 0};
     
     const short corridorPercent = 10 + 80 * (100 - descentPercent) / 100;
     
@@ -2080,7 +2080,7 @@ void carveDungeon(short **grid) {
             y = sCoord[i] % DROWS;
         
             dir = directionOfDoorSite(grid, x, y);
-            oppDir = oppositeDirection(dir);
+            oppDir = (directions)oppositeDirection(dir);
             if (dir != NO_DIRECTION
                 && doorSites[oppDir][0] != -1
                 && roomFitsAt(grid, roomMap, x - doorSites[oppDir][0], y - doorSites[oppDir][1])) {
@@ -2119,7 +2119,7 @@ void finishWalls(boolean includingDiagonals) {
 		for (j=0; j<DROWS; j++) {
 			if (pmap[i][j].layers[DUNGEON] == GRANITE) {
 				foundExposure = false;
-				for (dir = 0; dir < (includingDiagonals ? 8 : 4) && !foundExposure; dir++) {
+				for (dir = (directions)0; dir < (includingDiagonals ? 8 : 4) && !foundExposure; dir++) {
 					x1 = i + nbDirs[dir][0];
 					y1 = j + nbDirs[dir][1];
 					if (coordinatesAreInMap(x1, y1)
@@ -2131,7 +2131,7 @@ void finishWalls(boolean includingDiagonals) {
 				}
 			} else if (pmap[i][j].layers[DUNGEON] == WALL) {
 				foundExposure = false;
-				for (dir = 0; dir < (includingDiagonals ? 8 : 4) && !foundExposure; dir++) {
+				for (dir = (directions)0; dir < (includingDiagonals ? 8 : 4) && !foundExposure; dir++) {
 					x1 = i + nbDirs[dir][0];
 					y1 = j + nbDirs[dir][1];
 					if (coordinatesAreInMap(x1, y1)
@@ -2248,7 +2248,7 @@ void fillLake(short x, short y, short liquid, short scanWidth, char wreathMap[DC
 		for (j = y - scanWidth; j <= y + scanWidth; j++) {
 			if (coordinatesAreInMap(i, j) && unfilledLakeMap[i][j]) {
 				unfilledLakeMap[i][j] = false;
-				pmap[i][j].layers[LIQUID] = liquid;
+				pmap[i][j].layers[LIQUID] = (tileType)liquid;
 				wreathMap[i][j] = 1;
 				fillLake(i, j, liquid, scanWidth, wreathMap, unfilledLakeMap);	// recursive
 			}
@@ -2261,7 +2261,7 @@ void lakeFloodFill(short x, short y, short **floodMap, short **grid, short **lak
     enum directions dir;
     
     floodMap[x][y] = true;
-    for (dir=0; dir<4; dir++) {
+    for (dir=(directions)0; dir<4; dir++) {
         newX = x + nbDirs[dir][0];
         newY = y + nbDirs[dir][1];
         if (coordinatesAreInMap(newX, newY)
@@ -2387,7 +2387,7 @@ void createWreath(short shallowLiquid, short wreathWidth, char wreathMap[DCOLS][
 					for (l = j-wreathWidth; l <= j+wreathWidth; l++) {
 						if (coordinatesAreInMap(k, l) && pmap[k][l].layers[LIQUID] == NOTHING
 							&& (i-k)*(i-k) + (j-l)*(j-l) <= wreathWidth*wreathWidth) {
-							pmap[k][l].layers[LIQUID] = shallowLiquid;
+							pmap[k][l].layers[LIQUID] = (tileType)shallowLiquid;
 							if (pmap[k][l].layers[DUNGEON] == DOOR) {
 								pmap[k][l].layers[DUNGEON] = FLOOR;
 							}
@@ -2460,7 +2460,7 @@ void clearLevel() {
 			pmap[i][j].layers[SURFACE] = NOTHING;
 			pmap[i][j].machineNumber = 0;
 			pmap[i][j].rememberedTerrain = NOTHING;
-			pmap[i][j].rememberedItemCategory = 0;
+			pmap[i][j].rememberedItemCategory = (itemCategory)0;
 			pmap[i][j].flags = 0;
 			pmap[i][j].volume = 0;
 		}
@@ -2625,7 +2625,10 @@ void digDungeon() {
 	}
 	
 	// Now add some treasure machines.
-	addMachines();
+    dispatch_async(dispatch_get_main_queue(), ^{
+        addMachines();
+    });
+	
 	
 	if (D_INSPECT_LEVELGEN) {
 		dumpLevelToScreen();
@@ -2797,7 +2800,7 @@ short connectCell(short x, short y, short zoneLabel, char blockingMap[DCOLS][DRO
 	zoneMap[x][y] = zoneLabel;
 	size = 1;
 	
-	for (dir = 0; dir < 4; dir++) {
+	for (dir = (directions)0; dir < 4; dir++) {
 		newX = x + nbDirs[dir][0];
 		newY = y + nbDirs[dir][1];
 		

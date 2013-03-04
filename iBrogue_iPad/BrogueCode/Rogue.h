@@ -64,7 +64,7 @@
 #define boolean					char
 
 #define false					0
-#define true					1
+#define true            1
 
 #define Fl(N)					(1 << (N))
 
@@ -2837,6 +2837,8 @@ extern "C" {
 #warning outside implementation
     // SETH: custom function
     void setWaitingForInput(boolean waiting);
+//    void writeHeaderInfo(char *path);
+    void showDirectionControls(boolean show);
 #if defined __cplusplus
 }
 #endif

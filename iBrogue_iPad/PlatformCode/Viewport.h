@@ -43,8 +43,6 @@
 	CGRect rectArray[kCOLS][kROWS];
 }
 
-- (BOOL)isOpaque;
-
 - (void)setString:(NSString *)c
    withBackground:(UIColor *)bgColor
   withLetterColor:(UIColor *)letterColor

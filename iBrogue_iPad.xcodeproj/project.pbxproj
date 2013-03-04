@@ -20,7 +20,7 @@
 		C57A964516D7EAD500C233F1 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C57A964316D7EAD500C233F1 /* ViewController.xib */; };
 		C57A965116D7EB4C00C233F1 /* RogueDriver.mm in Sources */ = {isa = PBXBuildFile; fileRef = C57A964E16D7EB4C00C233F1 /* RogueDriver.mm */; };
 		C57A965216D7EB4C00C233F1 /* Viewport.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A965016D7EB4C00C233F1 /* Viewport.m */; };
-		C57A966516D7EB5500C233F1 /* Architect.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965416D7EB5500C233F1 /* Architect.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		C57A966516D7EB5500C233F1 /* Architect.mm in Sources */ = {isa = PBXBuildFile; fileRef = C57A965416D7EB5500C233F1 /* Architect.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A966616D7EB5500C233F1 /* Buttons.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965516D7EB5500C233F1 /* Buttons.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A966716D7EB5500C233F1 /* Combat.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965616D7EB5500C233F1 /* Combat.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A966816D7EB5500C233F1 /* Dijkstra.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965716D7EB5500C233F1 /* Dijkstra.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -34,7 +34,7 @@
 		C57A967016D7EB5500C233F1 /* Movement.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A966016D7EB5500C233F1 /* Movement.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A967116D7EB5500C233F1 /* Random.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A966116D7EB5500C233F1 /* Random.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A967216D7EB5500C233F1 /* Recordings.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A966216D7EB5500C233F1 /* Recordings.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		C57A967316D7EB5500C233F1 /* RogueMain.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A966416D7EB5500C233F1 /* RogueMain.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		C57A967316D7EB5500C233F1 /* RogueMain.mm in Sources */ = {isa = PBXBuildFile; fileRef = C57A966416D7EB5500C233F1 /* RogueMain.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A967516DBF1CE00C233F1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C57A967416DBF1CE00C233F1 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
@@ -60,7 +60,7 @@
 		C57A964E16D7EB4C00C233F1 /* RogueDriver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RogueDriver.mm; sourceTree = "<group>"; };
 		C57A964F16D7EB4C00C233F1 /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
 		C57A965016D7EB4C00C233F1 /* Viewport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Viewport.m; sourceTree = "<group>"; };
-		C57A965416D7EB5500C233F1 /* Architect.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Architect.c; sourceTree = "<group>"; };
+		C57A965416D7EB5500C233F1 /* Architect.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Architect.mm; sourceTree = "<group>"; };
 		C57A965516D7EB5500C233F1 /* Buttons.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Buttons.c; sourceTree = "<group>"; };
 		C57A965616D7EB5500C233F1 /* Combat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Combat.c; sourceTree = "<group>"; };
 		C57A965716D7EB5500C233F1 /* Dijkstra.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Dijkstra.c; sourceTree = "<group>"; };
@@ -76,7 +76,7 @@
 		C57A966116D7EB5500C233F1 /* Random.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Random.c; sourceTree = "<group>"; };
 		C57A966216D7EB5500C233F1 /* Recordings.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Recordings.c; sourceTree = "<group>"; };
 		C57A966316D7EB5500C233F1 /* Rogue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rogue.h; sourceTree = "<group>"; };
-		C57A966416D7EB5500C233F1 /* RogueMain.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = RogueMain.c; sourceTree = "<group>"; };
+		C57A966416D7EB5500C233F1 /* RogueMain.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RogueMain.mm; sourceTree = "<group>"; };
 		C57A967416DBF1CE00C233F1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -167,7 +167,7 @@
 		C57A965316D7EB5500C233F1 /* BrogueCode */ = {
 			isa = PBXGroup;
 			children = (
-				C57A965416D7EB5500C233F1 /* Architect.c */,
+				C57A965416D7EB5500C233F1 /* Architect.mm */,
 				C57A965516D7EB5500C233F1 /* Buttons.c */,
 				C57A965616D7EB5500C233F1 /* Combat.c */,
 				C57A965716D7EB5500C233F1 /* Dijkstra.c */,
@@ -183,7 +183,7 @@
 				C57A966116D7EB5500C233F1 /* Random.c */,
 				C57A966216D7EB5500C233F1 /* Recordings.c */,
 				C57A966316D7EB5500C233F1 /* Rogue.h */,
-				C57A966416D7EB5500C233F1 /* RogueMain.c */,
+				C57A966416D7EB5500C233F1 /* RogueMain.mm */,
 			);
 			path = BrogueCode;
 			sourceTree = "<group>";
@@ -259,7 +259,7 @@
 				C57A964216D7EAD500C233F1 /* ViewController.m in Sources */,
 				C57A965116D7EB4C00C233F1 /* RogueDriver.mm in Sources */,
 				C57A965216D7EB4C00C233F1 /* Viewport.m in Sources */,
-				C57A966516D7EB5500C233F1 /* Architect.c in Sources */,
+				C57A966516D7EB5500C233F1 /* Architect.mm in Sources */,
 				C57A966616D7EB5500C233F1 /* Buttons.c in Sources */,
 				C57A966716D7EB5500C233F1 /* Combat.c in Sources */,
 				C57A966816D7EB5500C233F1 /* Dijkstra.c in Sources */,
@@ -273,7 +273,7 @@
 				C57A967016D7EB5500C233F1 /* Movement.c in Sources */,
 				C57A967116D7EB5500C233F1 /* Random.c in Sources */,
 				C57A967216D7EB5500C233F1 /* Recordings.c in Sources */,
-				C57A967316D7EB5500C233F1 /* RogueMain.c in Sources */,
+				C57A967316D7EB5500C233F1 /* RogueMain.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,7 +361,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Seth Howard (XAXWUJ2H47)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iBrogue_iPad/iBrogue_iPad-Prefix.pch";
@@ -378,7 +378,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Seth Howard (XAXWUJ2H47)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iBrogue_iPad/iBrogue_iPad-Prefix.pch";
 				INFOPLIST_FILE = "iBrogue_iPad/iBrogue_iPad-Info.plist";

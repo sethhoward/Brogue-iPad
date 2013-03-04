@@ -21,11 +21,15 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+// Used as a bridge between the c and the objecctive-c
+
 #import <UIKit/UIKit.h>
 #import "Viewport.h"
 
 #import "Rogue.h"
 
 @interface RogueDriver : NSObject
+
++ (void)autoSave;
 
 @end

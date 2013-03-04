@@ -659,6 +659,7 @@ void mainBrogueJunction() {
 		switch (rogue.nextGame) {
 			case NG_NOTHING:
 				// Run the main menu to get a decision out of the player.
+                showDirectionControls(false);
 				titleMenu();
 				break;
 			case NG_NEW_GAME:
@@ -720,6 +721,8 @@ void mainBrogueJunction() {
 				initializeRogue(rogue.nextGameSeed);
 				startLevel(rogue.depthLevel, 1); // descending into level 1
 				
+                showDirectionControls(true);
+                
 				mainInputLoop();
 				freeEverything();
 				break;

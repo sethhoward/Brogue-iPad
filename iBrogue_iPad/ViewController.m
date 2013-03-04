@@ -18,9 +18,24 @@
 Viewport *theMainDisplay;
 ViewController *viewController;
 
-@interface ViewController () <UITextFieldDelegate>
+typedef enum {
+    KeyDownUp = 0,
+    KeyDownRight,
+    KeyDownDown,
+    KeyDownLeft,
+}KeyDown;
 
+@interface ViewController () <UITextFieldDelegate>
 - (IBAction)escButtonPressed:(id)sender;
+- (IBAction)upButtonPressed:(id)sender;
+- (IBAction)downButtonPressed:(id)sender;
+- (IBAction)rightButtonPressed:(id)sender;
+- (IBAction)leftButtonPressed:(id)sender;
+- (IBAction)upLeftButtonPressed:(id)sender;
+- (IBAction)upRightButtonPressed:(id)sender;
+- (IBAction)downLeftButtonPressed:(id)sender;
+- (IBAction)downRightButtonPressed:(id)sender;
+
 
 @property (weak, nonatomic) IBOutlet UIButton *escButton;
 @property (nonatomic, strong) NSMutableArray *cachedTouches; // collection of iBTouches
@@ -29,7 +44,14 @@ ViewController *viewController;
 @property (nonatomic, strong) NSMutableArray *cachedKeyStrokes;
 @end
 
-@implementation ViewController
+@implementation ViewController {
+    @private
+    NSTimer __strong *_autoSaveTimer;
+}
+
+- (void)autoSave {
+    [RogueDriver autoSave];
+}
 
 - (void)viewDidLoad
 {
@@ -45,6 +67,9 @@ ViewController *viewController;
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center addObserver:self selector:@selector(didShowKeyboard) name:UIKeyboardDidShowNotification object:nil];
         [center addObserver:self selector:@selector(didHideKeyboard) name:UIKeyboardWillHideNotification object:nil];
+        
+        //TODO: consider this... may not be the time for this yet
+      //  _autoSaveTimer = [NSTimer scheduledTimerWithTimeInterval:20. target:self selector:@selector(autoSave) userInfo:nil repeats:YES];
     }
     
     [self playBrogue];
@@ -77,12 +102,7 @@ ViewController *viewController;
 
 - (void)playBrogue
 {
-    double delayInSeconds = 0.2;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-        rogueMain();
-        exit(0);
-    });
+    rogueMain();
 }
 
 #pragma mark - touches
@@ -146,7 +166,7 @@ ViewController *viewController;
 
 - (void)showControls {
     if (self.playerControlView.hidden == YES) {
-        double delayInSeconds = 2.0;
+        double delayInSeconds = 1.0;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             self.playerControlView.hidden = NO;
@@ -202,17 +222,55 @@ ViewController *viewController;
     }
     else if([string isEqualToString:@"\n"]) {
         [textField resignFirstResponder];
+        // enter
         [self.cachedKeyStrokes addObject:string];
     }
     else {
+        // misc
         [self.cachedKeyStrokes addObject:string];
     }
     
     return YES;
 }
 
+- (IBAction)buttonTouchDown:(id)sender {
+    // store which button it is... certain combinations will allow for diag movement
+}
+
 - (IBAction)escButtonPressed:(id)sender {
     [self.aTextField resignFirstResponder];
+}
+
+- (IBAction)upButtonPressed:(id)sender {
+    [self.cachedKeyStrokes addObject:@"k"];
+}
+
+- (IBAction)downButtonPressed:(id)sender {
+    [self.cachedKeyStrokes addObject:@"j"];
+}
+
+- (IBAction)rightButtonPressed:(id)sender {
+    [self.cachedKeyStrokes addObject:@"l"];
+}
+
+- (IBAction)leftButtonPressed:(id)sender {
+    [self.cachedKeyStrokes addObject:@"h"];
+}
+
+- (IBAction)upLeftButtonPressed:(id)sender {
+    [self.cachedKeyStrokes addObject:@"y"];
+}
+
+- (IBAction)upRightButtonPressed:(id)sender {
+    [self.cachedKeyStrokes addObject:@"u"];
+}
+
+- (IBAction)downLeftButtonPressed:(id)sender {
+    [self.cachedKeyStrokes addObject:@"b"];
+}
+
+- (IBAction)downRightButtonPressed:(id)sender {
+    [self.cachedKeyStrokes addObject:@"n"];
 }
 
 @end
