@@ -36,7 +36,6 @@ typedef enum {
 - (IBAction)downLeftButtonPressed:(id)sender;
 - (IBAction)downRightButtonPressed:(id)sender;
 
-
 @property (weak, nonatomic) IBOutlet UIButton *escButton;
 @property (nonatomic, strong) NSMutableArray *cachedTouches; // collection of iBTouches
 @property (weak, nonatomic) IBOutlet UIView *playerControlView;
@@ -231,10 +230,6 @@ typedef enum {
     }
     
     return YES;
-}
-
-- (IBAction)buttonTouchDown:(id)sender {
-    // store which button it is... certain combinations will allow for diag movement
 }
 
 - (IBAction)escButtonPressed:(id)sender {

@@ -222,13 +222,16 @@ void initHighScores() {
 		[[NSUserDefaults standardUserDefaults] setObject:textArray forKey:@"high scores text"];
 		[[NSUserDefaults standardUserDefaults] setObject:datesArray forKey:@"high scores dates"];
 	}
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 // returns the index number of the most recent score
 short getHighScoresList(rogueHighScoresEntry returnList[HIGH_SCORES_COUNT]) {
 	NSArray *scoresArray, *textArray, *datesArray;
-	NSDateFormatter *dateFormatter;
-	NSDate *mostRecentDate;
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"mm/dd/yy"];
+    NSDate *mostRecentDate;
 	short i, j, maxIndex, mostRecentIndex;
 	long maxScore;
 	boolean scoreTaken[HIGH_SCORES_COUNT];
@@ -245,7 +248,6 @@ short getHighScoresList(rogueHighScoresEntry returnList[HIGH_SCORES_COUNT]) {
 	datesArray = [[NSUserDefaults standardUserDefaults] arrayForKey:@"high scores dates"];
     
 	mostRecentDate = [NSDate distantPast];
-	//dateFormatter = [[NSDateFormatter alloc] initWithDateFormat:@"%1m/%1d/%y"];
     
 	// store each value in order into returnList
 	for (i=0; i<HIGH_SCORES_COUNT; i++) {
