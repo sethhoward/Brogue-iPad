@@ -171,7 +171,11 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
 }
 
 boolean controlKeyIsDown() {
-    return NO;
+    if ([viewController isSeedKeyDown]) {
+        return 1;
+    }
+    
+    return 0;
 }
 
 boolean shiftKeyIsDown() {

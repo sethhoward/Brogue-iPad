@@ -35,6 +35,8 @@ typedef enum {
 - (IBAction)upRightButtonPressed:(id)sender;
 - (IBAction)downLeftButtonPressed:(id)sender;
 - (IBAction)downRightButtonPressed:(id)sender;
+- (IBAction)seedKeyPressed:(id)sender;
+
 
 @property (weak, nonatomic) IBOutlet UIButton *escButton;
 @property (nonatomic, strong) NSMutableArray *cachedTouches; // collection of iBTouches
@@ -266,6 +268,10 @@ typedef enum {
 
 - (IBAction)downRightButtonPressed:(id)sender {
     [self.cachedKeyStrokes addObject:@"n"];
+}
+
+- (IBAction)seedKeyPressed:(id)sender {
+    _seedKeyDown = !_seedKeyDown;
 }
 
 @end

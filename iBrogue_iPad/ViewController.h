@@ -22,6 +22,7 @@ struct iBTouch {
 typedef struct iBTouch iBTouch;
 
 @property (nonatomic, strong) IBOutlet Viewport *theDisplay;
+@property (nonatomic, readonly, getter = isSeedKeyDown) BOOL seedKeyDown;
 
 - (uint)cachedTouchesCount;
 - (iBTouch)getTouchAtIndex:(uint)index;
