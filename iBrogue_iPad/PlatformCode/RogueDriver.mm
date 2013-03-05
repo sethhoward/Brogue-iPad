@@ -3,6 +3,7 @@
 //  Brogue
 //
 //  Created by Brian and Kevin Walker on 12/26/08.
+//  Updated for iOS by Seth Howard on 03/01/13
 //  Copyright 2012. All rights reserved.
 //
 //  This file is part of Brogue.
@@ -68,9 +69,12 @@ void plotChar(uchar inputChar,
     }
 }
 
+// unused
 void pausingTimerStartsNow() {
 
 }
+
+#pragma mark - input
 
 // Returns true if the player interrupted the wait with a keystroke; otherwise false.
 boolean pauseForMilliseconds(short milliseconds) {
@@ -85,31 +89,12 @@ boolean pauseForMilliseconds(short milliseconds) {
 	return hasEvent;
 }
 
-/*
- UITouchPhaseBegan,
- UITouchPhaseMoved,
- UITouchPhaseStationary,
- UITouchPhaseEnded,
- UITouchPhaseCancelled,
- */
-
-void showDirectionControls(boolean show) {
-    if (show) {
-        [viewController showControls];
-    }
-    else {
-        [viewController hideControls];
-    }
-}
-
 void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, boolean colorsDance) {
 	CGPoint event_location;
 	short x, y;
     
     @autoreleasepool {
         for(;;) {
-            [NSThread sleepForTimeInterval:0.05];
-            
             //  NSLog(@"%i", rogue.nextGame);
             if (colorsDance) {
                 shuffleTerrainColors(3, true);
@@ -170,6 +155,16 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
     }
 }
 
+#pragma mark - bridge
+
+void setWaitingForInput(boolean waiting) {
+    [viewController showKeyboard];
+}
+
+void showTitleControls(boolean show) {
+    [viewController showTitlePageItems:show];
+}
+
 boolean controlKeyIsDown() {
     if ([viewController isSeedKeyDown]) {
         return 1;
@@ -178,9 +173,20 @@ boolean controlKeyIsDown() {
     return 0;
 }
 
+void showDirectionControls(boolean show) {
+    if (show) {
+        [viewController showControls];
+    }
+    else {
+        [viewController hideControls];
+    }
+}
+
 boolean shiftKeyIsDown() {
     return NO;
 }
+
+#pragma mark - OSX->iOS implementation
 
 void initHighScores() {
 	NSMutableArray *scoresArray, *textArray, *datesArray;
@@ -381,7 +387,7 @@ fileEntry *listFiles(short *fileCount, char **dynamicMemoryBuffer) {
 	*dynamicMemoryBuffer = NULL;
     
 	dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"mm/dd/yy"];//                initWithDateFormat:@"%1m/%1d/%y" allowNaturalLanguage:YES];
+    [dateFormatter setDateFormat:@"MM/dd/yy"];//                initWithDateFormat:@"%1m/%1d/%y" allowNaturalLanguage:YES];
     
 	array = [manager contentsOfDirectoryAtPath:[manager currentDirectoryPath] error:&err];
 	count = [array count];
@@ -394,7 +400,9 @@ fileEntry *listFiles(short *fileCount, char **dynamicMemoryBuffer) {
 			thisFileName = [[array objectAtIndex:i] cStringUsingEncoding:NSASCIIStringEncoding];
 			fileAttributes = [manager attributesOfItemAtPath:[array objectAtIndex:i] error:nil];
             
-            const char *date = [[dateFormatter stringFromDate:[fileAttributes fileModificationDate]] cStringUsingEncoding:NSASCIIStringEncoding];
+            NSString *aDate = [dateFormatter stringFromDate:[fileAttributes fileModificationDate]];
+            
+            const char *date = [aDate cStringUsingEncoding:NSASCIIStringEncoding];
             
 			strcpy(fileList[i].date,
 				   date);
@@ -427,10 +435,6 @@ fileEntry *listFiles(short *fileCount, char **dynamicMemoryBuffer) {
     
 	*fileCount = count + ADD_FAKE_PADDING_FILES;
 	return fileList;
-}
-
-void setWaitingForInput(boolean waiting) {
-    [viewController showKeyboard];
 }
 
 //warning essentially lifted from the save code in Recordings.c

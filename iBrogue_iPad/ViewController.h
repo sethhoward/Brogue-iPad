@@ -33,7 +33,7 @@ typedef struct iBTouch iBTouch;
 
 - (void)hideControls;
 - (void)showControls;
-
 - (void)showKeyboard;
+- (void)showTitlePageItems:(BOOL)show;
 
 @end

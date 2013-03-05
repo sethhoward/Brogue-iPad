@@ -37,6 +37,7 @@ typedef enum {
 - (IBAction)downRightButtonPressed:(id)sender;
 - (IBAction)seedKeyPressed:(id)sender;
 
+@property (weak, nonatomic) IBOutlet UIButton *seedButton;
 
 @property (weak, nonatomic) IBOutlet UIButton *escButton;
 @property (nonatomic, strong) NSMutableArray *cachedTouches; // collection of iBTouches
@@ -68,6 +69,16 @@ typedef enum {
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center addObserver:self selector:@selector(didShowKeyboard) name:UIKeyboardDidShowNotification object:nil];
         [center addObserver:self selector:@selector(didHideKeyboard) name:UIKeyboardWillHideNotification object:nil];
+        
+        [self.seedButton setAlpha:0];
+        
+        double delayInSeconds = 2.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [UIView animateWithDuration:0.2 animations:^{
+                self.seedButton.alpha = 1.;
+            }];
+        });
         
         //TODO: consider this... may not be the time for this yet
       //  _autoSaveTimer = [NSTimer scheduledTimerWithTimeInterval:20. target:self selector:@selector(autoSave) userInfo:nil repeats:YES];
@@ -157,6 +168,29 @@ typedef enum {
 
 #pragma mark - views
 
+- (void)showTitlePageItems:(BOOL)show {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (show) {
+            double delayInSeconds = 2.0;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                if (self.seedButton.hidden == YES) {
+                    self.seedButton.hidden = NO;
+                    self.seedButton.alpha = 0.;
+                    [UIView animateWithDuration:0.2 animations:^{
+                        self.seedButton.alpha = 1.;
+                    }];
+                }
+            });
+        }
+        else {
+            self.seedButton.hidden = YES;
+            // get your finger off the ctrl key.. we don't need it anymore
+            _seedKeyDown = NO;
+        }
+    });
+}
+
 - (void)hideControls {
     if (self.playerControlView.hidden == NO) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -166,13 +200,19 @@ typedef enum {
 }
 
 - (void)showControls {
-    if (self.playerControlView.hidden == YES) {
-        double delayInSeconds = 1.0;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            self.playerControlView.hidden = NO;
-        });
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.playerControlView.hidden == YES) {
+            double delayInSeconds = 1.0;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                self.playerControlView.hidden = NO;
+                self.playerControlView.alpha = 0;
+                [UIView animateWithDuration:0.2 animations:^{
+                    self.playerControlView.alpha = 0.65;
+                }];
+            });
+        }
+    });
 }
 
 #pragma mark - keyboard stuff
@@ -188,6 +228,7 @@ typedef enum {
     [self setPlayerControlView:nil];
     [self setATextField:nil];
     [self setEscButton:nil];
+    [self setSeedButton:nil];
     [super viewDidUnload];
 }
 
@@ -205,7 +246,7 @@ typedef enum {
 #pragma mark - UITextFieldDelegate
 
 - (void)didHideKeyboard {
-    [self.cachedKeyStrokes addObject:@"\015"];
+    [self.cachedKeyStrokes addObject:@"\033"];
     self.escButton.hidden = YES;
 }
 
@@ -233,6 +274,8 @@ typedef enum {
     
     return YES;
 }
+
+#pragma mark - Actions
 
 - (IBAction)escButtonPressed:(id)sender {
     [self.aTextField resignFirstResponder];

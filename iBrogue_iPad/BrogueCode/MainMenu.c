@@ -659,7 +659,11 @@ void mainBrogueJunction() {
 		switch (rogue.nextGame) {
 			case NG_NOTHING:
 				// Run the main menu to get a decision out of the player.
+               
+                // Seth: Added
                 showDirectionControls(false);
+                showTitleControls(true);
+                
 				titleMenu();
 				break;
 			case NG_NEW_GAME:
@@ -721,13 +725,20 @@ void mainBrogueJunction() {
 				initializeRogue(rogue.nextGameSeed);
 				startLevel(rogue.depthLevel, 1); // descending into level 1
 				
+                // Seth: Added
                 showDirectionControls(true);
+                showTitleControls(false);
                 
 				mainInputLoop();
 				freeEverything();
 				break;
 			case NG_OPEN_GAME:
 				rogue.nextGame = NG_NOTHING;
+                
+                // Seth: Added
+                showDirectionControls(false);
+                showTitleControls(false);
+                
 				path[0] = '\0';
 				if (rogue.nextGamePath[0]) {
 					strcpy(path, rogue.nextGamePath);
@@ -746,10 +757,13 @@ void mainBrogueJunction() {
 				}
 				rogue.playbackMode = false;
 				rogue.playbackOOS = false;
-				
 				break;
 			case NG_VIEW_RECORDING:
 				rogue.nextGame = NG_NOTHING;
+                
+                // Seth: Added
+                showDirectionControls(false);
+                showTitleControls(false);
 				
 				path[0] = '\0';
 				if (rogue.nextGamePath[0]) {
@@ -785,10 +799,14 @@ void mainBrogueJunction() {
 				}
 				rogue.playbackMode = false;
 				rogue.playbackOOS = false;
-				
 				break;
 			case NG_HIGH_SCORES:
 				rogue.nextGame = NG_NOTHING;
+                
+                // Seth: Added
+                showDirectionControls(false);
+                showTitleControls(false);
+                
 				printHighScores(false);
 				break;
             case NG_SCUM:

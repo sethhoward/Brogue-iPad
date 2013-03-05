@@ -2837,6 +2837,7 @@ extern "C" {
 #warning outside implementation
     // SETH: custom function
     void setWaitingForInput(boolean waiting);
+    void showTitleControls(boolean show);
 //    void writeHeaderInfo(char *path);
     void showDirectionControls(boolean show);
 #if defined __cplusplus
