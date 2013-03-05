@@ -134,7 +134,7 @@ short theFontSize = FONT_SIZE;  // Will get written over when windowDidResize
     }
     
     if (!_hasInitialized) {
-        NSLog(@"haven't init yet");
+ //       NSLog(@"haven't init yet");
         return;
     }
     

@@ -11,6 +11,9 @@
 #include <unistd.h>
 #import "RogueDriver.h"
 #import "Viewport.h"
+#import "GameCenterManager.h"
+#import "UIViewController+UIViewController_GCLeaderBoardView.h"
+#import "AboutViewController.h"
 
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
@@ -36,9 +39,10 @@ typedef enum {
 - (IBAction)downLeftButtonPressed:(id)sender;
 - (IBAction)downRightButtonPressed:(id)sender;
 - (IBAction)seedKeyPressed:(id)sender;
+- (IBAction)showLeaderBoardButtonPressed:(id)sender;
+- (IBAction)aboutButtonPressed:(id)sender;
 
-@property (weak, nonatomic) IBOutlet UIButton *seedButton;
-
+@property (weak, nonatomic) IBOutlet UIView *buttonView;
 @property (weak, nonatomic) IBOutlet UIButton *escButton;
 @property (nonatomic, strong) NSMutableArray *cachedTouches; // collection of iBTouches
 @property (weak, nonatomic) IBOutlet UIView *playerControlView;
@@ -48,7 +52,7 @@ typedef enum {
 
 @implementation ViewController {
     @private
-    NSTimer __strong *_autoSaveTimer;
+    __unused NSTimer __strong *_autoSaveTimer;
 }
 
 - (void)autoSave {
@@ -58,6 +62,8 @@ typedef enum {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [GameCenterManager sharedInstance];
+    [[GameCenterManager sharedInstance] authenticateLocalUser];
 	// Do any additional setup after loading the view, typically from a nib.
     
     if (!theMainDisplay) {
@@ -70,13 +76,13 @@ typedef enum {
         [center addObserver:self selector:@selector(didShowKeyboard) name:UIKeyboardDidShowNotification object:nil];
         [center addObserver:self selector:@selector(didHideKeyboard) name:UIKeyboardWillHideNotification object:nil];
         
-        [self.seedButton setAlpha:0];
+        [self.buttonView setAlpha:0];
         
         double delayInSeconds = 2.0;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             [UIView animateWithDuration:0.2 animations:^{
-                self.seedButton.alpha = 1.;
+                self.buttonView.alpha = 1.;
             }];
         });
         
@@ -120,10 +126,12 @@ typedef enum {
 #pragma mark - touches
 
 - (void)addTouchToCache:(UITouch *)touch {
-    iBTouch ibtouch;
-    ibtouch.location = [touch locationInView:theMainDisplay];
-    ibtouch.phase = touch.phase;
-    [self.cachedTouches addObject:[NSValue value:&ibtouch withObjCType:@encode(iBTouch)]];
+    @synchronized(self.cachedTouches){
+        iBTouch ibtouch;
+        ibtouch.location = [touch locationInView:theMainDisplay];
+        ibtouch.phase = touch.phase;
+        [self.cachedTouches addObject:[NSValue value:&ibtouch withObjCType:@encode(iBTouch)]];
+    }
 }
 
 - (iBTouch)getTouchAtIndex:(uint)index {
@@ -135,7 +143,11 @@ typedef enum {
 }
 
 - (void)removeTouchAtIndex:(uint)index {
-    [self.cachedTouches removeObjectAtIndex:index];
+    @synchronized(self.cachedTouches){
+        if ([self.cachedTouches count] > 0) {
+            [self.cachedTouches removeObjectAtIndex:index];
+        }
+    }
 }
 
 - (uint)cachedTouchesCount {
@@ -171,20 +183,20 @@ typedef enum {
 - (void)showTitlePageItems:(BOOL)show {
     dispatch_async(dispatch_get_main_queue(), ^{
         if (show) {
-            double delayInSeconds = 2.0;
+            double delayInSeconds = 0.5;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                if (self.seedButton.hidden == YES) {
-                    self.seedButton.hidden = NO;
-                    self.seedButton.alpha = 0.;
+                if (self.buttonView.hidden == YES) {
+                    self.buttonView.hidden = NO;
+                    self.buttonView.alpha = 0.;
                     [UIView animateWithDuration:0.2 animations:^{
-                        self.seedButton.alpha = 1.;
+                        self.buttonView.alpha = 1.;
                     }];
                 }
             });
         }
         else {
-            self.seedButton.hidden = YES;
+            self.buttonView.hidden = YES;
             // get your finger off the ctrl key.. we don't need it anymore
             _seedKeyDown = NO;
         }
@@ -202,7 +214,7 @@ typedef enum {
 - (void)showControls {
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.playerControlView.hidden == YES) {
-            double delayInSeconds = 1.0;
+            double delayInSeconds = 0.5;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                 self.playerControlView.hidden = NO;
@@ -228,7 +240,7 @@ typedef enum {
     [self setPlayerControlView:nil];
     [self setATextField:nil];
     [self setEscButton:nil];
-    [self setSeedButton:nil];
+    [self setButtonView:nil];
     [super viewDidUnload];
 }
 
@@ -238,7 +250,9 @@ typedef enum {
 
 - (char)dequeKeyStroke {
     NSString *keyStroke = [self.cachedKeyStrokes objectAtIndex:0];
-    [self.cachedKeyStrokes removeObjectAtIndex:0];
+    @synchronized(self.cachedKeyStrokes){
+        [self.cachedKeyStrokes removeObjectAtIndex:0];
+    }
     
     return [keyStroke characterAtIndex:0];
 }
@@ -246,12 +260,21 @@ typedef enum {
 #pragma mark - UITextFieldDelegate
 
 - (void)didHideKeyboard {
-    [self.cachedKeyStrokes addObject:@"\033"];
+    if ([self.cachedKeyStrokes count] == 0) {
+        [self.cachedKeyStrokes addObject:@"\033"];
+    }
+
     self.escButton.hidden = YES;
 }
 
 - (void)didShowKeyboard {
     self.escButton.hidden = NO;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self.cachedKeyStrokes addObject:@"\015"];
+    [textField resignFirstResponder];
+    return YES;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -265,7 +288,7 @@ typedef enum {
     else if([string isEqualToString:@"\n"]) {
         [textField resignFirstResponder];
         // enter
-        [self.cachedKeyStrokes addObject:string];
+        [self.cachedKeyStrokes addObject:@"\015"];
     }
     else {
         // misc
@@ -278,6 +301,7 @@ typedef enum {
 #pragma mark - Actions
 
 - (IBAction)escButtonPressed:(id)sender {
+    [self.cachedKeyStrokes addObject:@"\033"];
     [self.aTextField resignFirstResponder];
 }
 
@@ -315,6 +339,17 @@ typedef enum {
 
 - (IBAction)seedKeyPressed:(id)sender {
     _seedKeyDown = !_seedKeyDown;
+}
+
+- (IBAction)showLeaderBoardButtonPressed:(id)sender {
+    [self rgGCshowLeaderBoardWithCategory:kBrogueHighScoreLeaderBoard];
+}
+
+- (IBAction)aboutButtonPressed:(id)sender {
+    self.modalPresentationStyle = UIModalPresentationFormSheet;
+    AboutViewController *aboutVC = [[AboutViewController alloc] init];
+    aboutVC.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:aboutVC animated:YES completion:nil];
 }
 
 @end

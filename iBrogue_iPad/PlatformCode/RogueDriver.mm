@@ -30,6 +30,7 @@
 #import "AppDelegate.h"
 #include "IncludeGlobals.h"
 #include "Rogue.h"
+#import "GameCenterManager.h"
 
 void autoSave();
 
@@ -240,7 +241,7 @@ void initHighScores() {
 short getHighScoresList(rogueHighScoresEntry returnList[HIGH_SCORES_COUNT]) {
 	NSArray *scoresArray, *textArray, *datesArray;
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"mm/dd/yy"];
+    [dateFormatter setDateFormat:@"MM/dd/yy"];
     NSDate *mostRecentDate;
 	short i, j, maxIndex, mostRecentIndex;
 	long maxScore;
@@ -317,6 +318,10 @@ boolean saveHighScore(rogueHighScoresEntry theEntry) {
 			minIndex = j;
 		}
 	}
+
+    if (theEntry.score > 0) {
+        [[GameCenterManager sharedInstance] reportScore:theEntry.score forCategory:kBrogueHighScoreLeaderBoard];
+    }
     
 	if (minIndex == -1) { // didn't qualify
 		return false;

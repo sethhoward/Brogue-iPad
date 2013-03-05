@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C5105B1216E65EDB00E09905 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5105B1016E65EDB00E09905 /* AboutViewController.m */; };
+		C5105B1316E65EDB00E09905 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5105B1116E65EDB00E09905 /* AboutViewController.xib */; };
+		C52B092216E5848500675CC7 /* GameCenterIOS4.m in Sources */ = {isa = PBXBuildFile; fileRef = C52B091B16E5848500675CC7 /* GameCenterIOS4.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		C52B092316E5848500675CC7 /* GameCenterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C52B091D16E5848500675CC7 /* GameCenterManager.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		C52B092416E5848500675CC7 /* UIViewController+UIViewController_GCAchievementView.m in Sources */ = {isa = PBXBuildFile; fileRef = C52B091F16E5848500675CC7 /* UIViewController+UIViewController_GCAchievementView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		C52B092516E5848500675CC7 /* UIViewController+UIViewController_GCLeaderBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = C52B092116E5848500675CC7 /* UIViewController+UIViewController_GCLeaderBoardView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		C52B092716E5853900675CC7 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C52B092616E5853900675CC7 /* GameKit.framework */; };
 		C57A962916D7EAD500C233F1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C57A962816D7EAD500C233F1 /* UIKit.framework */; };
 		C57A962B16D7EAD500C233F1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C57A962A16D7EAD500C233F1 /* Foundation.framework */; };
 		C57A962D16D7EAD500C233F1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C57A962C16D7EAD500C233F1 /* CoreGraphics.framework */; };
@@ -39,6 +46,18 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C5105B0F16E65EDB00E09905 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
+		C5105B1016E65EDB00E09905 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
+		C5105B1116E65EDB00E09905 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
+		C52B091A16E5848500675CC7 /* GameCenterIOS4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenterIOS4.h; sourceTree = "<group>"; };
+		C52B091B16E5848500675CC7 /* GameCenterIOS4.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameCenterIOS4.m; sourceTree = "<group>"; };
+		C52B091C16E5848500675CC7 /* GameCenterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenterManager.h; sourceTree = "<group>"; };
+		C52B091D16E5848500675CC7 /* GameCenterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameCenterManager.m; sourceTree = "<group>"; };
+		C52B091E16E5848500675CC7 /* UIViewController+UIViewController_GCAchievementView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+UIViewController_GCAchievementView.h"; sourceTree = "<group>"; };
+		C52B091F16E5848500675CC7 /* UIViewController+UIViewController_GCAchievementView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+UIViewController_GCAchievementView.m"; sourceTree = "<group>"; };
+		C52B092016E5848500675CC7 /* UIViewController+UIViewController_GCLeaderBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+UIViewController_GCLeaderBoardView.h"; sourceTree = "<group>"; };
+		C52B092116E5848500675CC7 /* UIViewController+UIViewController_GCLeaderBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+UIViewController_GCLeaderBoardView.m"; sourceTree = "<group>"; };
+		C52B092616E5853900675CC7 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		C57A962516D7EAD500C233F1 /* iBrogue_iPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iBrogue_iPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C57A962816D7EAD500C233F1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C57A962A16D7EAD500C233F1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -85,6 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C52B092716E5853900675CC7 /* GameKit.framework in Frameworks */,
 				C57A967516DBF1CE00C233F1 /* QuartzCore.framework in Frameworks */,
 				C57A962916D7EAD500C233F1 /* UIKit.framework in Frameworks */,
 				C57A962B16D7EAD500C233F1 /* Foundation.framework in Frameworks */,
@@ -95,9 +115,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C52B091916E5848500675CC7 /* GameCenter */ = {
+			isa = PBXGroup;
+			children = (
+				C52B091A16E5848500675CC7 /* GameCenterIOS4.h */,
+				C52B091B16E5848500675CC7 /* GameCenterIOS4.m */,
+				C52B091C16E5848500675CC7 /* GameCenterManager.h */,
+				C52B091D16E5848500675CC7 /* GameCenterManager.m */,
+				C52B091E16E5848500675CC7 /* UIViewController+UIViewController_GCAchievementView.h */,
+				C52B091F16E5848500675CC7 /* UIViewController+UIViewController_GCAchievementView.m */,
+				C52B092016E5848500675CC7 /* UIViewController+UIViewController_GCLeaderBoardView.h */,
+				C52B092116E5848500675CC7 /* UIViewController+UIViewController_GCLeaderBoardView.m */,
+			);
+			path = GameCenter;
+			sourceTree = "<group>";
+		};
 		C57A961C16D7EAD500C233F1 = {
 			isa = PBXGroup;
 			children = (
+				C52B092616E5853900675CC7 /* GameKit.framework */,
 				C57A967416DBF1CE00C233F1 /* QuartzCore.framework */,
 				C57A962E16D7EAD500C233F1 /* iBrogue_iPad */,
 				C57A962716D7EAD500C233F1 /* Frameworks */,
@@ -126,6 +162,7 @@
 		C57A962E16D7EAD500C233F1 /* iBrogue_iPad */ = {
 			isa = PBXGroup;
 			children = (
+				C52B091916E5848500675CC7 /* GameCenter */,
 				C57A965316D7EB5500C233F1 /* BrogueCode */,
 				C57A964B16D7EB4C00C233F1 /* PlatformCode */,
 				C57A963716D7EAD500C233F1 /* AppDelegate.h */,
@@ -134,6 +171,9 @@
 				C57A964116D7EAD500C233F1 /* ViewController.m */,
 				C57A964316D7EAD500C233F1 /* ViewController.xib */,
 				C57A962F16D7EAD500C233F1 /* Supporting Files */,
+				C5105B0F16E65EDB00E09905 /* AboutViewController.h */,
+				C5105B1016E65EDB00E09905 /* AboutViewController.m */,
+				C5105B1116E65EDB00E09905 /* AboutViewController.xib */,
 			);
 			path = iBrogue_iPad;
 			sourceTree = "<group>";
@@ -244,6 +284,7 @@
 				C57A963D16D7EAD500C233F1 /* Default@2x.png in Resources */,
 				C57A963F16D7EAD500C233F1 /* Default-568h@2x.png in Resources */,
 				C57A964516D7EAD500C233F1 /* ViewController.xib in Resources */,
+				C5105B1316E65EDB00E09905 /* AboutViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,6 +315,11 @@
 				C57A967116D7EB5500C233F1 /* Random.c in Sources */,
 				C57A967216D7EB5500C233F1 /* Recordings.c in Sources */,
 				C57A967316D7EB5500C233F1 /* RogueMain.mm in Sources */,
+				C52B092216E5848500675CC7 /* GameCenterIOS4.m in Sources */,
+				C52B092316E5848500675CC7 /* GameCenterManager.m in Sources */,
+				C52B092416E5848500675CC7 /* UIViewController+UIViewController_GCAchievementView.m in Sources */,
+				C52B092516E5848500675CC7 /* UIViewController+UIViewController_GCLeaderBoardView.m in Sources */,
+				C5105B1216E65EDB00E09905 /* AboutViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -366,7 +412,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iBrogue_iPad/iBrogue_iPad-Prefix.pch";
 				INFOPLIST_FILE = "iBrogue_iPad/iBrogue_iPad-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -382,7 +428,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iBrogue_iPad/iBrogue_iPad-Prefix.pch";
 				INFOPLIST_FILE = "iBrogue_iPad/iBrogue_iPad-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
