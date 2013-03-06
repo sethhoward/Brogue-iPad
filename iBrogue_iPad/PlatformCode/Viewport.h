@@ -31,7 +31,7 @@
 
 // This is only used as a starting point for the calculation after the
 // window resizes.
-#define FONT_SIZE	10
+#define FONT_SIZE	12
 #define FONT_NAME	@"ArialUnicodeMS"
 
 @interface Viewport : UIView

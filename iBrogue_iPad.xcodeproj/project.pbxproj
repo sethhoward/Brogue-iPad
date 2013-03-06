@@ -43,6 +43,7 @@
 		C57A967216D7EB5500C233F1 /* Recordings.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A966216D7EB5500C233F1 /* Recordings.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A967316D7EB5500C233F1 /* RogueMain.mm in Sources */ = {isa = PBXBuildFile; fileRef = C57A966416D7EB5500C233F1 /* RogueMain.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A967516DBF1CE00C233F1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C57A967416DBF1CE00C233F1 /* QuartzCore.framework */; };
+		C5F0CED616E6D57500F1A853 /* gamecenterlogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5F0CED516E6D57500F1A853 /* gamecenterlogo@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -97,6 +98,7 @@
 		C57A966316D7EB5500C233F1 /* Rogue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rogue.h; sourceTree = "<group>"; };
 		C57A966416D7EB5500C233F1 /* RogueMain.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RogueMain.mm; sourceTree = "<group>"; };
 		C57A967416DBF1CE00C233F1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		C5F0CED516E6D57500F1A853 /* gamecenterlogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gamecenterlogo@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +164,7 @@
 		C57A962E16D7EAD500C233F1 /* iBrogue_iPad */ = {
 			isa = PBXGroup;
 			children = (
+				C5F0CED416E6D56700F1A853 /* image assets */,
 				C52B091916E5848500675CC7 /* GameCenter */,
 				C57A965316D7EB5500C233F1 /* BrogueCode */,
 				C57A964B16D7EB4C00C233F1 /* PlatformCode */,
@@ -228,6 +231,14 @@
 			path = BrogueCode;
 			sourceTree = "<group>";
 		};
+		C5F0CED416E6D56700F1A853 /* image assets */ = {
+			isa = PBXGroup;
+			children = (
+				C5F0CED516E6D57500F1A853 /* gamecenterlogo@2x.png */,
+			);
+			name = "image assets";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -285,6 +296,7 @@
 				C57A963F16D7EAD500C233F1 /* Default-568h@2x.png in Resources */,
 				C57A964516D7EAD500C233F1 /* ViewController.xib in Resources */,
 				C5105B1316E65EDB00E09905 /* AboutViewController.xib in Resources */,
+				C5F0CED616E6D57500F1A853 /* gamecenterlogo@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

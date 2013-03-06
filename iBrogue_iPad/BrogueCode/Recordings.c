@@ -749,6 +749,8 @@ void executePlaybackInput(rogueEvent *recordingInput) {
 			case ACKNOWLEDGE_KEY:
 				if (rogue.playbackOOS && rogue.playbackPaused) {
 					flashTemporaryAlert(" Out of sync ", 2000);
+                    // Seth: Added to ensure we exit when oos
+                    rogue.gameHasEnded = true;
 				} else {
 					pausePlayback();
 				}

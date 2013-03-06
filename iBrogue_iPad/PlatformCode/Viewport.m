@@ -96,7 +96,7 @@ short theFontSize = FONT_SIZE;  // Will get written over when windowDidResize
 		}
 	}
     
-    [self setHorizWindow:self.hWindow vertWindow:self.vWindow fontSize:10];
+    [self setHorizWindow:self.hWindow vertWindow:self.vWindow fontSize:theFontSize];
     
     _hasInitialized = YES;
 }
