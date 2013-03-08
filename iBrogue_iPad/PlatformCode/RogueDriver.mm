@@ -158,13 +158,22 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
 
 #pragma mark - bridge
 
+void showTitle() {
+    [viewController showTitle];
+}
+
+void showAuxillaryScreen(boolean showDirectionalControls) {
+    [viewController showAuxillaryScreensWithDirectionalControls:showDirectionalControls];
+}
+
 void setWaitingForInput(boolean waiting) {
     [viewController showKeyboard];
 }
 
+/*
 void showTitleControls(boolean show) {
     [viewController showTitlePageItems:show];
-}
+}*/
 
 boolean controlKeyIsDown() {
     if ([viewController isSeedKeyDown]) {
@@ -174,14 +183,14 @@ boolean controlKeyIsDown() {
     return 0;
 }
 
-void showDirectionControls(boolean show) {
+/*void showDirectionControls(boolean show) {
     if (show) {
         [viewController showControls];
     }
     else {
         [viewController hideControls];
     }
-}
+}*/
 
 boolean shiftKeyIsDown() {
     return NO;

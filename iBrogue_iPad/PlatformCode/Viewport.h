@@ -56,6 +56,9 @@
 			vertWindow:(short)vPx
 			  fontSize:(short)size;
 
+- (void)stopAnimating;
+- (void)startAnimating;
+
 @property (nonatomic, assign) short hWindow;
 @property (nonatomic, assign) short vWindow;
 

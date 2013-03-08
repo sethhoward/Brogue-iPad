@@ -2625,7 +2625,9 @@ void digDungeon() {
 	}
 	
 	// Now add some treasure machines.
-    dispatch_async(dispatch_get_main_queue(), ^{
+    // Seth: added
+    // we need to run on the main thread or we clobber the auxillery thread stacks which are very small.
+    dispatch_sync(dispatch_get_main_queue(), ^{
         addMachines();
     });
 	

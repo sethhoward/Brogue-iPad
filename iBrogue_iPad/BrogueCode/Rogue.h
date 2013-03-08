@@ -54,7 +54,7 @@
 #define DELETE_SAVE_FILE_AFTER_LOADING	true
 
 //#define BROGUE_ASSERTS		// introduces several assert()s -- useful to find certain array overruns
-//#define AUDIT_RNG             // VERY slow, but sometimes necessary to debug out-of-sync recording errors
+//#define AUDIT_RNG            // VERY slow, but sometimes necessary to debug out-of-sync recording errors
 //#define GENERATE_FONT_FILES	// Displays font in grid upon startup, which can be screen-captured into font files for PC.
 
 #ifdef BROGUE_ASSERTS
@@ -2837,9 +2837,10 @@ extern "C" {
 #warning outside implementation
     // SETH: custom function
     void setWaitingForInput(boolean waiting);
-    void showTitleControls(boolean show);
+    void showTitle();
+    void showAuxillaryScreen(boolean showDirectionalControls);
 //    void writeHeaderInfo(char *path);
-    void showDirectionControls(boolean show);
+ //   void showDirectionControls(boolean show);
 #if defined __cplusplus
 }
 #endif

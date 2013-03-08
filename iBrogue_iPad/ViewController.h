@@ -21,7 +21,6 @@ struct iBTouch {
 };
 typedef struct iBTouch iBTouch;
 
-@property (nonatomic, strong) IBOutlet Viewport *theDisplay;
 @property (nonatomic, readonly, getter = isSeedKeyDown) BOOL seedKeyDown;
 
 - (uint)cachedTouchesCount;
@@ -31,9 +30,11 @@ typedef struct iBTouch iBTouch;
 - (uint)cachedKeyStrokeCount;
 - (char)dequeKeyStroke;
 
-- (void)hideControls;
-- (void)showControls;
 - (void)showKeyboard;
-- (void)showTitlePageItems:(BOOL)show;
+
+// only one screen can show at a time. We use two different views for the game and title view to handle custom
+// iOS buttons etc. This makes for smoother transitions and is for looks only.
+- (void)showTitle;
+- (void)showAuxillaryScreensWithDirectionalControls:(BOOL)controls;
 
 @end

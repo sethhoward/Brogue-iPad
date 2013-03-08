@@ -128,8 +128,8 @@ static GameCenterManager *sharedGameCenterManager;
         _loginCount++;
         
         if (_loginCount < 3) {
-            UIAlertView* alert = [[[UIAlertView alloc] initWithTitle: @"Game Center Account Required" message:[NSString stringWithFormat: @"Reason: %@", [error localizedDescription]] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil] autorelease];
-            [alert show];
+       //     UIAlertView* alert = [[[UIAlertView alloc] initWithTitle: @"Game Center Account Required" message:[NSString stringWithFormat: @"Reason: %@", [error localizedDescription]] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil] autorelease];
+        //    [alert show];
         } else {
             //Still not logging in but let's not get stuck in a repeat loop
             NSLog(@"Not logging in repeat loop");

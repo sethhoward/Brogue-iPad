@@ -42,6 +42,8 @@ typedef enum {
 - (IBAction)showLeaderBoardButtonPressed:(id)sender;
 - (IBAction)aboutButtonPressed:(id)sender;
 
+@property (weak, nonatomic) IBOutlet Viewport *secondaryDisplay;   // game etc
+@property (nonatomic, strong) IBOutlet Viewport *titleDisplay;
 @property (weak, nonatomic) IBOutlet UIView *buttonView;
 @property (weak, nonatomic) IBOutlet UIButton *escButton;
 @property (nonatomic, strong) NSMutableArray *cachedTouches; // collection of iBTouches
@@ -67,7 +69,8 @@ typedef enum {
 	// Do any additional setup after loading the view, typically from a nib.
     
     if (!theMainDisplay) {
-        theMainDisplay = self.theDisplay;
+        self.titleDisplay.hidden = YES;
+        theMainDisplay = self.titleDisplay;
         viewController = self;
         _cachedTouches = [NSMutableArray arrayWithCapacity:1];
         _cachedKeyStrokes = [NSMutableArray arrayWithCapacity:1];
@@ -180,10 +183,49 @@ typedef enum {
 
 #pragma mark - views
 
+- (void)showTitle {
+    dispatch_async(dispatch_get_main_queue(), ^{
+    if (self.titleDisplay.hidden == YES) {
+        theMainDisplay = self.titleDisplay;
+        [self.titleDisplay startAnimating];
+        [self.secondaryDisplay stopAnimating];
+    }
+    
+    double delayInSeconds = 0.;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            self.titleDisplay.hidden = NO;
+            self.secondaryDisplay.hidden = YES;
+        });
+    });
+}
+
+- (void)showAuxillaryScreensWithDirectionalControls:(BOOL)controls {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.titleDisplay.hidden == NO) {
+            theMainDisplay = self.secondaryDisplay;
+            [self.secondaryDisplay startAnimating];
+            [self.titleDisplay stopAnimating];
+        }
+        
+        double delayInSeconds = 0.;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            
+            self.titleDisplay.hidden = YES;
+            self.secondaryDisplay.hidden = NO;
+            
+            self.playerControlView.hidden = !controls;
+        });
+    });
+    
+}
+
+/*
 - (void)showTitlePageItems:(BOOL)show {
     dispatch_async(dispatch_get_main_queue(), ^{
         if (show) {
-            double delayInSeconds = 0.5;
+            double delayInSeconds = 0.0;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                 if (self.buttonView.hidden == YES) {
@@ -206,6 +248,8 @@ typedef enum {
 - (void)hideControls {
     if (self.playerControlView.hidden == NO) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            
+            
             self.playerControlView.hidden = YES;
         });
     }
@@ -213,8 +257,10 @@ typedef enum {
 
 - (void)showControls {
     dispatch_async(dispatch_get_main_queue(), ^{
+        
+        
         if (self.playerControlView.hidden == YES) {
-            double delayInSeconds = 0.5;
+            double delayInSeconds = 0.0;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                 self.playerControlView.hidden = NO;
@@ -225,7 +271,7 @@ typedef enum {
             });
         }
     });
-}
+}*/
 
 #pragma mark - keyboard stuff
 

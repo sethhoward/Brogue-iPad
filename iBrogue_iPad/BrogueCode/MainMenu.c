@@ -661,8 +661,7 @@ void mainBrogueJunction() {
 				// Run the main menu to get a decision out of the player.
                
                 // Seth: Added
-                showDirectionControls(false);
-                showTitleControls(true);
+                showTitle();
                 
 				titleMenu();
 				break;
@@ -721,13 +720,14 @@ void mainBrogueJunction() {
 					rogue.nextGameSeed = 0; // Seed based on clock.
 				}
 				
+                // Seth: Added
+                showAuxillaryScreen(true);
+                
 				rogue.nextGame = NG_NOTHING;
 				initializeRogue(rogue.nextGameSeed);
 				startLevel(rogue.depthLevel, 1); // descending into level 1
 				
-                // Seth: Added
-                showDirectionControls(true);
-                showTitleControls(false);
+                
                 
 				mainInputLoop();
 				freeEverything();
@@ -736,8 +736,9 @@ void mainBrogueJunction() {
 				rogue.nextGame = NG_NOTHING;
                 
                 // Seth: Added
-                showDirectionControls(false);
-                showTitleControls(false);
+                
+                //showDirectionControls(false);
+                //showTitleControls(false);
                 
 				path[0] = '\0';
 				if (rogue.nextGamePath[0]) {
@@ -749,6 +750,10 @@ void mainBrogueJunction() {
 				}
 					
 				if (openFile(path)) {
+                    
+                    // Seth: Added
+                    showAuxillaryScreen(true);
+                    
 					loadSavedGame();
 					mainInputLoop();
 					freeEverything();
@@ -760,10 +765,6 @@ void mainBrogueJunction() {
 				break;
 			case NG_VIEW_RECORDING:
 				rogue.nextGame = NG_NOTHING;
-                
-                // Seth: Added
-                showDirectionControls(false);
-                showTitleControls(false);
 				
 				path[0] = '\0';
 				if (rogue.nextGamePath[0]) {
@@ -775,6 +776,9 @@ void mainBrogueJunction() {
 				}
 				
 				if (openFile(path)) {
+                    // Seth: Added
+                    showAuxillaryScreen(false);
+                    
 					randomNumbersGenerated = 0;
 					rogue.playbackMode = true;
 					initializeRogue(0); // Seed argument is ignored because we're in playback.
@@ -804,8 +808,9 @@ void mainBrogueJunction() {
 				rogue.nextGame = NG_NOTHING;
                 
                 // Seth: Added
-                showDirectionControls(false);
-                showTitleControls(false);
+                showAuxillaryScreen(false);
+                //showDirectionControls(false);
+                //showTitleControls(false);
                 
 				printHighScores(false);
 				break;

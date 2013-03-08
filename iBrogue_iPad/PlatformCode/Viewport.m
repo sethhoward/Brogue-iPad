@@ -69,10 +69,38 @@ short theFontSize = FONT_SIZE;  // Will get written over when windowDidResize
 
     if (self) {
         [self initializeLayoutVariables];
-        self.displayLink =  [CADisplayLink displayLinkWithTarget:self selector:@selector(draw)];
+      //  self.displayLink =  [CADisplayLink displayLinkWithTarget:self selector:@selector(draw)];
+        _animationRunning = YES;    // TODO: remove
     }
     
 	return self;
+}
+
+- (void)stopAnimating {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.displayLink invalidate];
+        self.displayLink = nil;
+        
+        for (int j = 0; j < kROWS; j++) {
+            for (int i = 0; i < kCOLS; i++) {
+                letterArray[i][j] = @" ";
+                bgColorArray[i][j] = [UIColor blackColor];
+                
+                attributes[i][j] = [[NSMutableDictionary alloc] init];
+                [attributes[i][j] setObject:[self font] forKey:NSFontAttributeName];
+                [attributes[i][j] setObject:[UIColor blackColor]
+                                     forKey:NSForegroundColorAttributeName];
+            }
+        }
+        
+        [self setNeedsDisplay];
+    });
+}
+
+- (void)startAnimating {
+    self.displayLink =  [CADisplayLink displayLinkWithTarget:self selector:@selector(draw)];
+    [self.displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
+    [self setNeedsDisplay];
 }
 
 - (void)initializeLayoutVariables {
@@ -126,7 +154,7 @@ short theFontSize = FONT_SIZE;  // Will get written over when windowDidResize
 - (void)drawRect:(CGRect)rect
 {
  //   NSLog(@"%s", __PRETTY_FUNCTION__);
-    if (!_animationRunning)
+  /*  if (!_animationRunning)
     {
         [self.displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
         _animationRunning = YES;
@@ -136,7 +164,7 @@ short theFontSize = FONT_SIZE;  // Will get written over when windowDidResize
     if (!_hasInitialized) {
  //       NSLog(@"haven't init yet");
         return;
-    }
+    }*/
     
     
 	int i, j, startX, startY, endX, endY;
