@@ -42,6 +42,7 @@ typedef enum {
 - (IBAction)showLeaderBoardButtonPressed:(id)sender;
 - (IBAction)aboutButtonPressed:(id)sender;
 
+@property (weak, nonatomic) IBOutlet UIButton *seedButton;
 @property (weak, nonatomic) IBOutlet Viewport *secondaryDisplay;   // game etc
 @property (nonatomic, strong) IBOutlet Viewport *titleDisplay;
 @property (weak, nonatomic) IBOutlet UIView *buttonView;
@@ -221,58 +222,6 @@ typedef enum {
     
 }
 
-/*
-- (void)showTitlePageItems:(BOOL)show {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (show) {
-            double delayInSeconds = 0.0;
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                if (self.buttonView.hidden == YES) {
-                    self.buttonView.hidden = NO;
-                    self.buttonView.alpha = 0.;
-                    [UIView animateWithDuration:0.2 animations:^{
-                        self.buttonView.alpha = 1.;
-                    }];
-                }
-            });
-        }
-        else {
-            self.buttonView.hidden = YES;
-            // get your finger off the ctrl key.. we don't need it anymore
-            _seedKeyDown = NO;
-        }
-    });
-}
-
-- (void)hideControls {
-    if (self.playerControlView.hidden == NO) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            
-            self.playerControlView.hidden = YES;
-        });
-    }
-}
-
-- (void)showControls {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        
-        if (self.playerControlView.hidden == YES) {
-            double delayInSeconds = 0.0;
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                self.playerControlView.hidden = NO;
-                self.playerControlView.alpha = 0;
-                [UIView animateWithDuration:0.2 animations:^{
-                    self.playerControlView.alpha = 0.65;
-                }];
-            });
-        }
-    });
-}*/
-
 #pragma mark - keyboard stuff
 
 - (void)showKeyboard {
@@ -385,6 +334,13 @@ typedef enum {
 
 - (IBAction)seedKeyPressed:(id)sender {
     _seedKeyDown = !_seedKeyDown;
+    
+    if (_seedKeyDown) {
+        [self.seedButton setImage:[UIImage imageNamed:@"brogue_seedsprouted.png"] forState:UIControlStateNormal];
+    }
+    else {
+        [self.seedButton setImage:[UIImage imageNamed:@"brogue_seed.png"] forState:UIControlStateNormal];
+    }
 }
 
 - (IBAction)showLeaderBoardButtonPressed:(id)sender {
