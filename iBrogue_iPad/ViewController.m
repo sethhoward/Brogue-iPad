@@ -222,7 +222,7 @@ typedef enum {
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+  //  NSLog(@"%s", __PRETTY_FUNCTION__);
     [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
         // Get a single touch and it's location
         [self addTouchToCache:touch];
@@ -232,13 +232,13 @@ typedef enum {
 #pragma mark - views
 
 - (void)showTitle {
-    dispatch_async(dispatch_get_main_queue(), ^{
     if (self.titleDisplay.hidden == YES) {
         theMainDisplay = self.titleDisplay;
         [self.titleDisplay startAnimating];
         [self.secondaryDisplay stopAnimating];
     }
     
+    dispatch_async(dispatch_get_main_queue(), ^{
     double delayInSeconds = 0.;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -249,13 +249,13 @@ typedef enum {
 }
 
 - (void)showAuxillaryScreensWithDirectionalControls:(BOOL)controls {
+    if (self.titleDisplay.hidden == NO) {
+        theMainDisplay = self.secondaryDisplay;
+        [self.secondaryDisplay startAnimating];
+        [self.titleDisplay stopAnimating];
+    }
+    
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.titleDisplay.hidden == NO) {
-            theMainDisplay = self.secondaryDisplay;
-            [self.secondaryDisplay startAnimating];
-            [self.titleDisplay stopAnimating];
-        }
-        
         double delayInSeconds = 0.;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){

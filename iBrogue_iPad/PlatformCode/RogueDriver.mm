@@ -94,10 +94,12 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
 	CGPoint event_location;
 	short x, y;
     
-   // @autoreleasepool {
+    @autoreleasepool {
         for(;;) {
+            // throttle the video or at some point it'll run too fast on some amazing device that doesn't exist yet
             //  NSLog(@"%i", rogue.nextGame);
             if (colorsDance) {
+                [NSThread sleepForTimeInterval:0.01667f];
                 shuffleTerrainColors(3, true);
                 commitDraws();
             }
@@ -120,19 +122,19 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
                     switch (phase) {
                         case UITouchPhaseBegan:
                         case UITouchPhaseStationary:
-                            NSLog(@"touch station");
+                    //        NSLog(@"touch station");
                             returnEvent->eventType = MOUSE_DOWN;
                             break;
                         case UITouchPhaseEnded:
-                            NSLog(@"touch ended");
+                    //        NSLog(@"touch ended");
                             returnEvent->eventType = MOUSE_UP;
                             break;
                         case UITouchPhaseMoved:
-                            NSLog(@"touch moved");
+                    //        NSLog(@"touch moved");
                             returnEvent->eventType = MOUSE_ENTERED_CELL;
                             break;
                         default:
-                            NSLog(@"touch nothing");
+                     //       NSLog(@"touch nothing");
                             break;
                     }
                     
@@ -142,7 +144,7 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
                     x = COLS * event_location.x / [theMainDisplay hWindow];
                     y = (ROWS * event_location.y / [theMainDisplay vWindow]);
                     
-                    NSLog(@"%i %i", x, y);
+                //    NSLog(@"%i %i", x, y);
                     // Correct for the fact that truncation occurs in a positive direction when we're below zero:
                   /*  if (event_location.x < 0) {
                         x--;
@@ -158,7 +160,7 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
                     break;
                 }
             }
-       // }
+        }
     }
 }
 

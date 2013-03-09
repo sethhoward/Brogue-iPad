@@ -129,7 +129,7 @@ short theFontSize = FONT_SIZE;  // Will get written over when windowDidResize
                                      forKey:NSForegroundColorAttributeName];
             }
         }
-        
+    
         [self setNeedsDisplay];
     });
 }
@@ -137,7 +137,6 @@ short theFontSize = FONT_SIZE;  // Will get written over when windowDidResize
 - (void)startAnimating {
     self.displayLink =  [CADisplayLink displayLinkWithTarget:self selector:@selector(draw)];
     [self.displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
-    [self setNeedsDisplay];
 }
 
 - (void)initializeLayoutVariables {
