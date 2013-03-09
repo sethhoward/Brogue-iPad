@@ -94,7 +94,7 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
 	CGPoint event_location;
 	short x, y;
     
-    @autoreleasepool {
+   // @autoreleasepool {
         for(;;) {
             //  NSLog(@"%i", rogue.nextGame);
             if (colorsDance) {
@@ -113,21 +113,26 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
             }
             if ([viewController cachedTouchesCount] > 0) {
                 iBTouch touch = [viewController getTouchAtIndex:0];
+                [viewController removeTouchAtIndex:0];
                 UITouchPhase phase = touch.phase;
                 
                 if (phase != UITouchPhaseCancelled) {
                     switch (phase) {
                         case UITouchPhaseBegan:
                         case UITouchPhaseStationary:
+                            NSLog(@"touch station");
                             returnEvent->eventType = MOUSE_DOWN;
                             break;
                         case UITouchPhaseEnded:
+                            NSLog(@"touch ended");
                             returnEvent->eventType = MOUSE_UP;
                             break;
                         case UITouchPhaseMoved:
+                            NSLog(@"touch moved");
                             returnEvent->eventType = MOUSE_ENTERED_CELL;
                             break;
                         default:
+                            NSLog(@"touch nothing");
                             break;
                     }
                     
@@ -136,23 +141,24 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
                     event_location = touch.location;
                     x = COLS * event_location.x / [theMainDisplay hWindow];
                     y = (ROWS * event_location.y / [theMainDisplay vWindow]);
+                    
+                    NSLog(@"%i %i", x, y);
                     // Correct for the fact that truncation occurs in a positive direction when we're below zero:
-                    if (event_location.x < 0) {
+                  /*  if (event_location.x < 0) {
                         x--;
                     }
                     if ([theMainDisplay vWindow] < event_location.y) {
                         y--;
-                    }
+                    }*/
                     returnEvent->param1 = x;
                     returnEvent->param2 = y;
                     returnEvent->controlKey = 0;
                     returnEvent->shiftKey = 0;
                     
-                    [viewController removeTouchAtIndex:0];
                     break;
                 }
             }
-        }
+       // }
     }
 }
 

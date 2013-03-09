@@ -44,6 +44,12 @@
 		C57A967316D7EB5500C233F1 /* RogueMain.mm in Sources */ = {isa = PBXBuildFile; fileRef = C57A966416D7EB5500C233F1 /* RogueMain.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A967516DBF1CE00C233F1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C57A967416DBF1CE00C233F1 /* QuartzCore.framework */; };
 		C58831E016EA6E860047FCA9 /* brogue_seed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C58831DF16EA6E860047FCA9 /* brogue_seed@2x.png */; };
+		C58831E616EA98040047FCA9 /* brogue_sproutedseed.png in Resources */ = {isa = PBXBuildFile; fileRef = C58831E516EA98040047FCA9 /* brogue_sproutedseed.png */; };
+		C58831E816EA987D0047FCA9 /* brogue_sproutedseed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C58831E716EA987D0047FCA9 /* brogue_sproutedseed@2x.png */; };
+		C58831EE16EA9A970047FCA9 /* icon_144x144.png in Resources */ = {isa = PBXBuildFile; fileRef = C58831ED16EA9A970047FCA9 /* icon_144x144.png */; };
+		C58831F816EAA2ED0047FCA9 /* icon_72x72.png in Resources */ = {isa = PBXBuildFile; fileRef = C58831F716EAA2ED0047FCA9 /* icon_72x72.png */; };
+		C58831FE16EAB6D10047FCA9 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C58831FD16EAB6D10047FCA9 /* Default-Landscape~ipad.png */; };
+		C588320016EAB6DF0047FCA9 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C58831FF16EAB6DF0047FCA9 /* Default-Landscape@2x~ipad.png */; };
 		C59B21C716EA48E0007018DE /* MONACO.TTF in Resources */ = {isa = PBXBuildFile; fileRef = C59B21C616EA48E0007018DE /* MONACO.TTF */; };
 		C59B21CE16EA57AF007018DE /* gamecenterlogo_brogue.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21C816EA57AF007018DE /* gamecenterlogo_brogue.png */; };
 		C59B21CF16EA57AF007018DE /* brogue_directionals.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21C916EA57AF007018DE /* brogue_directionals.png */; };
@@ -56,8 +62,6 @@
 		C59B21DB16EA5EE9007018DE /* brogue_escapebutton.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21D916EA5EE9007018DE /* brogue_escapebutton.png */; };
 		C59B21DE16EA69D8007018DE /* about_brogue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21DC16EA69D7007018DE /* about_brogue@2x.png */; };
 		C59B21DF16EA69D8007018DE /* about_brogue.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21DD16EA69D8007018DE /* about_brogue.png */; };
-		C59B21E416EA6CC1007018DE /* brogue_seedsprouted.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21E216EA6CC1007018DE /* brogue_seedsprouted.png */; };
-		C59B21E516EA6CC1007018DE /* brogue_seedsprouted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21E316EA6CC1007018DE /* brogue_seedsprouted@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,7 +77,7 @@
 		C52B092016E5848500675CC7 /* UIViewController+UIViewController_GCLeaderBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+UIViewController_GCLeaderBoardView.h"; sourceTree = "<group>"; };
 		C52B092116E5848500675CC7 /* UIViewController+UIViewController_GCLeaderBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+UIViewController_GCLeaderBoardView.m"; sourceTree = "<group>"; };
 		C52B092616E5853900675CC7 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
-		C57A962516D7EAD500C233F1 /* iBrogue_iPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iBrogue_iPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C57A962516D7EAD500C233F1 /* iBrogue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iBrogue.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C57A962816D7EAD500C233F1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C57A962A16D7EAD500C233F1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C57A962C16D7EAD500C233F1 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -113,6 +117,12 @@
 		C57A966416D7EB5500C233F1 /* RogueMain.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RogueMain.mm; sourceTree = "<group>"; };
 		C57A967416DBF1CE00C233F1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C58831DF16EA6E860047FCA9 /* brogue_seed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brogue_seed@2x.png"; sourceTree = "<group>"; };
+		C58831E516EA98040047FCA9 /* brogue_sproutedseed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brogue_sproutedseed.png; sourceTree = "<group>"; };
+		C58831E716EA987D0047FCA9 /* brogue_sproutedseed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brogue_sproutedseed@2x.png"; sourceTree = "<group>"; };
+		C58831ED16EA9A970047FCA9 /* icon_144x144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_144x144.png; sourceTree = "<group>"; };
+		C58831F716EAA2ED0047FCA9 /* icon_72x72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_72x72.png; sourceTree = "<group>"; };
+		C58831FD16EAB6D10047FCA9 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
+		C58831FF16EAB6DF0047FCA9 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
 		C59B21C616EA48E0007018DE /* MONACO.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = MONACO.TTF; sourceTree = "<group>"; };
 		C59B21C816EA57AF007018DE /* gamecenterlogo_brogue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gamecenterlogo_brogue.png; sourceTree = "<group>"; };
 		C59B21C916EA57AF007018DE /* brogue_directionals.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brogue_directionals.png; sourceTree = "<group>"; };
@@ -125,8 +135,6 @@
 		C59B21D916EA5EE9007018DE /* brogue_escapebutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brogue_escapebutton.png; sourceTree = "<group>"; };
 		C59B21DC16EA69D7007018DE /* about_brogue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "about_brogue@2x.png"; sourceTree = "<group>"; };
 		C59B21DD16EA69D8007018DE /* about_brogue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = about_brogue.png; sourceTree = "<group>"; };
-		C59B21E216EA6CC1007018DE /* brogue_seedsprouted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brogue_seedsprouted.png; sourceTree = "<group>"; };
-		C59B21E316EA6CC1007018DE /* brogue_seedsprouted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brogue_seedsprouted@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +171,10 @@
 		C57A961C16D7EAD500C233F1 = {
 			isa = PBXGroup;
 			children = (
+				C58831FF16EAB6DF0047FCA9 /* Default-Landscape@2x~ipad.png */,
+				C58831FD16EAB6D10047FCA9 /* Default-Landscape~ipad.png */,
+				C58831F716EAA2ED0047FCA9 /* icon_72x72.png */,
+				C58831ED16EA9A970047FCA9 /* icon_144x144.png */,
 				C52B092616E5853900675CC7 /* GameKit.framework */,
 				C57A967416DBF1CE00C233F1 /* QuartzCore.framework */,
 				C57A962E16D7EAD500C233F1 /* iBrogue_iPad */,
@@ -174,7 +186,7 @@
 		C57A962616D7EAD500C233F1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C57A962516D7EAD500C233F1 /* iBrogue_iPad.app */,
+				C57A962516D7EAD500C233F1 /* iBrogue.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -263,19 +275,19 @@
 		C5F0CED416E6D56700F1A853 /* image assets */ = {
 			isa = PBXGroup;
 			children = (
+				C58831E516EA98040047FCA9 /* brogue_sproutedseed.png */,
+				C58831E716EA987D0047FCA9 /* brogue_sproutedseed@2x.png */,
+				C59B21CA16EA57AF007018DE /* brogue_seed.png */,
 				C58831DF16EA6E860047FCA9 /* brogue_seed@2x.png */,
-				C59B21E216EA6CC1007018DE /* brogue_seedsprouted.png */,
-				C59B21E316EA6CC1007018DE /* brogue_seedsprouted@2x.png */,
-				C59B21DC16EA69D7007018DE /* about_brogue@2x.png */,
 				C59B21DD16EA69D8007018DE /* about_brogue.png */,
-				C59B21D816EA5EE9007018DE /* brogue_escapebutton@2x.png */,
+				C59B21DC16EA69D7007018DE /* about_brogue@2x.png */,
 				C59B21D916EA5EE9007018DE /* brogue_escapebutton.png */,
+				C59B21D816EA5EE9007018DE /* brogue_escapebutton@2x.png */,
 				C59B21D616EA5C38007018DE /* brogue_dismissbutton.png */,
 				C59B21D416EA5C16007018DE /* brogue_dismissbutton@2x.png */,
-				C59B21C816EA57AF007018DE /* gamecenterlogo_brogue.png */,
 				C59B21C916EA57AF007018DE /* brogue_directionals.png */,
-				C59B21CA16EA57AF007018DE /* brogue_seed.png */,
 				C59B21CC16EA57AF007018DE /* brogue_directionals@2x.png */,
+				C59B21C816EA57AF007018DE /* gamecenterlogo_brogue.png */,
 				C59B21CD16EA57AF007018DE /* gamecenterlogo_brogue@2x.png */,
 			);
 			name = "image assets";
@@ -298,7 +310,7 @@
 			);
 			name = iBrogue_iPad;
 			productName = iBrogue_iPad;
-			productReference = C57A962516D7EAD500C233F1 /* iBrogue_iPad.app */;
+			productReference = C57A962516D7EAD500C233F1 /* iBrogue.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -350,9 +362,13 @@
 				C59B21DB16EA5EE9007018DE /* brogue_escapebutton.png in Resources */,
 				C59B21DE16EA69D8007018DE /* about_brogue@2x.png in Resources */,
 				C59B21DF16EA69D8007018DE /* about_brogue.png in Resources */,
-				C59B21E416EA6CC1007018DE /* brogue_seedsprouted.png in Resources */,
-				C59B21E516EA6CC1007018DE /* brogue_seedsprouted@2x.png in Resources */,
 				C58831E016EA6E860047FCA9 /* brogue_seed@2x.png in Resources */,
+				C58831E616EA98040047FCA9 /* brogue_sproutedseed.png in Resources */,
+				C58831E816EA987D0047FCA9 /* brogue_sproutedseed@2x.png in Resources */,
+				C58831EE16EA9A970047FCA9 /* icon_144x144.png in Resources */,
+				C58831F816EAA2ED0047FCA9 /* icon_72x72.png in Resources */,
+				C58831FE16EAB6D10047FCA9 /* Default-Landscape~ipad.png in Resources */,
+				C588320016EAB6DF0047FCA9 /* Default-Landscape@2x~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -481,7 +497,7 @@
 				GCC_PREFIX_HEADER = "iBrogue_iPad/iBrogue_iPad-Prefix.pch";
 				INFOPLIST_FILE = "iBrogue_iPad/iBrogue_iPad-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = iBrogue;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
@@ -497,7 +513,7 @@
 				GCC_PREFIX_HEADER = "iBrogue_iPad/iBrogue_iPad-Prefix.pch";
 				INFOPLIST_FILE = "iBrogue_iPad/iBrogue_iPad-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = iBrogue;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};

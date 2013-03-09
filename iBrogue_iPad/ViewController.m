@@ -28,7 +28,7 @@ typedef enum {
     KeyDownLeft,
 }KeyDown;
 
-@interface ViewController () <UITextFieldDelegate>
+@interface ViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
 - (IBAction)escButtonPressed:(id)sender;
 - (IBAction)upButtonPressed:(id)sender;
 - (IBAction)downButtonPressed:(id)sender;
@@ -56,6 +56,7 @@ typedef enum {
 @implementation ViewController {
     @private
     __unused NSTimer __strong *_autoSaveTimer;
+    CGPoint _lastTouchLocation;
 }
 
 - (void)autoSave {
@@ -89,6 +90,11 @@ typedef enum {
                 self.buttonView.alpha = 1.;
             }];
         });
+        
+        UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+        doubleTap.numberOfTapsRequired = 2;
+        doubleTap.delegate = self;
+        [self.secondaryDisplay addGestureRecognizer:doubleTap];
         
         //TODO: consider this... may not be the time for this yet
       //  _autoSaveTimer = [NSTimer scheduledTimerWithTimeInterval:20. target:self selector:@selector(autoSave) userInfo:nil repeats:YES];
@@ -129,11 +135,52 @@ typedef enum {
 
 #pragma mark - touches
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    CGPoint pointInView = [touch locationInView:gestureRecognizer.view];
+    
+    if ( [gestureRecognizer isMemberOfClass:[UITapGestureRecognizer class]]
+        && CGRectContainsPoint(self.playerControlView.frame, pointInView) ) {
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (void)handleDoubleTap:(UITapGestureRecognizer *)tap {
+    // we double tapped... send along another mouse down and up to the game
+    iBTouch touchDown;
+    touchDown.phase = UITouchPhaseStationary;
+    touchDown.location = _lastTouchLocation;
+    
+    [self.cachedTouches addObject:[NSValue value:&touchDown withObjCType:@encode(iBTouch)]];
+    
+    iBTouch touchMoved;
+    touchMoved.phase = UITouchPhaseMoved;
+    touchMoved.location = _lastTouchLocation;
+    [self.cachedTouches addObject:[NSValue value:&touchMoved withObjCType:@encode(iBTouch)]];
+    
+    iBTouch touchUp;
+    touchUp.phase = UITouchPhaseEnded;
+    touchUp.location = _lastTouchLocation;
+    
+    [self.cachedTouches addObject:[NSValue value:&touchUp withObjCType:@encode(iBTouch)]];
+}
+
 - (void)addTouchToCache:(UITouch *)touch {
     @synchronized(self.cachedTouches){
         iBTouch ibtouch;
-        ibtouch.location = [touch locationInView:theMainDisplay];
         ibtouch.phase = touch.phase;
+        
+        // we need to make sure that a phase end touch ends in the same spot as the previous touch or a borks the char movement
+        if (touch.phase == UITouchPhaseEnded) {
+            ibtouch.location = _lastTouchLocation;
+            NSLog(@"manually setting locaation");
+        }
+        else {
+          ibtouch.location = [touch locationInView:theMainDisplay];  
+        }
+        
+        _lastTouchLocation = ibtouch.location;
         [self.cachedTouches addObject:[NSValue value:&ibtouch withObjCType:@encode(iBTouch)]];
     }
 }
@@ -175,7 +222,7 @@ typedef enum {
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-  //  NSLog(@"%s", __PRETTY_FUNCTION__);
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
         // Get a single touch and it's location
         [self addTouchToCache:touch];
@@ -336,7 +383,7 @@ typedef enum {
     _seedKeyDown = !_seedKeyDown;
     
     if (_seedKeyDown) {
-        [self.seedButton setImage:[UIImage imageNamed:@"brogue_seedsprouted.png"] forState:UIControlStateNormal];
+        [self.seedButton setImage:[UIImage imageNamed:@"brogue_sproutedseed.png"] forState:UIControlStateNormal];
     }
     else {
         [self.seedButton setImage:[UIImage imageNamed:@"brogue_seed.png"] forState:UIControlStateNormal];
