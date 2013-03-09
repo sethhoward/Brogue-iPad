@@ -83,7 +83,9 @@ short theFontSize = FONT_SIZE;
 
 - (id)initWithFrame:(CGRect)rect
 {
-	if (![super initWithFrame:rect]) {
+    self = [super initWithFrame:rect];
+    
+	if (!self) {
 		return nil;
 	}
 
