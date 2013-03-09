@@ -42,6 +42,7 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrame">{{13, 37}, {422, 317}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="4180553"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="528669538">
@@ -53,12 +54,13 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<bool key="IBUIShowsHorizontalScrollIndicator">NO</bool>
 						<bool key="IBUIEditable">NO</bool>
-						<string type="base64-UTF8" key="IBUIText">QnJvZ3VlIHdhcyB1bm9mZmljaWFsbHkgcG9ydGVkIHRvIGlQYWQgYWZ0ZXIgYSBsb25nIHdlZWsgYnkg
-U2V0aCBhbmQgQWx5c29uIEhvd2FyZC4KCldlIGhvcGUgeW91IGVuam95IHRoZSBwb3J0IGFuZCBhcHBy
-ZWNpYXRlIHlvdXIgZmVlZGJhY2suCgpCcm9ndWUgaXMgb3BlbiBzb3VyY2UsIHN1cHBvcnRzIG1hbnkg
-b3RoZXIgcGxhdGZvcm1zIGFuZCBjYW4gYmUgZm91bmQgQCBodHRwczovL3NpdGVzLmdvb2dsZS5jb20v
-c2l0ZS9icm9ndWVnYW1lLyBwbGVhc2UgZW5qb3kgYW5kIHBlcmhhcHMgY29udHJpYnV0ZSB0byBCcmlh
-biBXYWxrZXIncyBncmVhdCB3b3JrLiBIYXZlIEZ1biE</string>
+						<string type="base64-UTF8" key="IBUIText">VXNlIHRoZSBkaXJlY3Rpb25hbCBjb250cm9scyB0byBjb250cm9sIHRoZSBAIHN5bWJvbCAodGhhdCdz
+IHlvdSEpLiAKCkFsdGVybmF0aXZpZWx5IGRvdWJsZSB0YXAgb3IgZHJhZyBhbmQgcmVsZWFzZSB0byBt
+b3ZlIHRvIGEgbG9jYXRpb24uCgpUYXAgYSBsb2NhdGlvbiB0byBnZXQgYSBkZXNjcmlwdGlvbiBvZiB3
+aGF0IGlzIHRoZXJlLgoKV2UgY3VycmVudGx5IGRvIG5vdCBzdXBwb3J0IGtleWJvYXJkIGNvbW1hbmRz
+LgoKQnJvZ3VlIHdhcyBvcmlnaW5hbGx5IHdyaXR0ZW4gYnkgQnJpYW4gd2Fsa2VyIGFuZCB3YXMgcG9y
+dGVkIHRvIGlQYWQgYWZ0ZXIgYSBsb25nIHdlZWsgYnkgU2V0aCBhbmQgQWx5c29uIEhvd2FyZC4gV2Ug
+aG9wZSB5b3UgZW5qb3kgYW5kIGFwcHJlY2lhdGUgeW91ciBmZWVkYmFjay4</string>
 						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MC45MDE5NjA3OTAyIDAuOTAxOTYwNzkwMiAwLjkwMTk2MDc5MDIAA</bytes>
@@ -83,6 +85,8 @@ biBXYWxrZXIncyBncmVhdCB3b3JrLiBIYXZlIEZ1biE</string>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{149, 340}, {151, 30}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -117,6 +121,7 @@ biBXYWxrZXIncyBncmVhdCB3b3JrLiBIYXZlIEZ1biE</string>
 				</array>
 				<string key="NSFrameSize">{448, 399}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="837846453"/>
 				<reference key="IBUIBackgroundColor" ref="528669538"/>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -349,7 +354,37 @@ biBXYWxrZXIncyBncmVhdCB3b3JrLiBIYXZlIEZ1biE</string>
 			<nil key="sourceID"/>
 			<int key="maxID">57</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">AboutViewController</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">dismissButtonPressed:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">dismissButtonPressed:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">dismissButtonPressed:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/AboutViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSLayoutConstraint</string>
+					<string key="superclassName">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/NSLayoutConstraint.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>

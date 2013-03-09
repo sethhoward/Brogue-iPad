@@ -29,7 +29,6 @@
 
 @interface Viewport ()
 @property (nonatomic, strong) CADisplayLink *displayLink;
-//@property (nonatomic, strong) UIFont *font;
 @end
 
 @implementation Viewport {
@@ -46,13 +45,13 @@ CGSize characterSize;
 short vPixels = VERT_PX;
 short hPixels = HORIZ_PX;
 
-short theFontSize = FONT_SIZE;  // Will get written over when windowDidResize
+short theFontSize = FONT_SIZE;
 
 // TODO:
 
 - (UIFont *)slowFont {
 	if (!theSlowFont) {
-        theSlowFont = [UIFont fontWithName:FONT_NAME size:theFontSize];
+        theSlowFont = [UIFont fontWithName:@"ArialUnicodeMS" size:theFontSize];
 /*		NSFont *baseFont = [NSFont fontWithName:basicFontName size:theFontSize];
 		NSArray *fallbackDescriptors = [NSArray arrayWithObjects:
 		                                // Arial provides reasonable versions of most characters.
@@ -81,14 +80,6 @@ short theFontSize = FONT_SIZE;  // Will get written over when windowDidResize
 		return [self slowFont];
     }
 }
-
-/*
-- (UIFont *)font {
-	if (!_font) {
-        _font = [UIFont fontWithName:FONT_NAME size:theFontSize];
-    }
-	return _font;
-}*/
 
 - (id)initWithFrame:(CGRect)rect
 {
@@ -124,7 +115,6 @@ short theFontSize = FONT_SIZE;  // Will get written over when windowDidResize
                 bgColorArray[i][j] = [UIColor blackColor];
                 
                 attributes[i][j] = [[NSMutableDictionary alloc] init];
-             //   [attributes[i][j] setObject:[self font] forKey:NSFontAttributeName];
                 [attributes[i][j] setObject:[UIColor blackColor]
                                      forKey:NSForegroundColorAttributeName];
             }
