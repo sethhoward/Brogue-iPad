@@ -735,11 +735,6 @@ void mainBrogueJunction() {
 			case NG_OPEN_GAME:
 				rogue.nextGame = NG_NOTHING;
                 
-                // Seth: Added
-                
-                //showDirectionControls(false);
-                //showTitleControls(false);
-                
 				path[0] = '\0';
 				if (rogue.nextGamePath[0]) {
 					strcpy(path, rogue.nextGamePath);
@@ -809,8 +804,6 @@ void mainBrogueJunction() {
                 
                 // Seth: Added
                 showAuxillaryScreen(false);
-                //showDirectionControls(false);
-                //showTitleControls(false);
                 
 				printHighScores(false);
 				break;
