@@ -22,6 +22,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ACMagnifyingView.h"
 
 #define	VERT_PX		18
 #define	HORIZ_PX	11
@@ -34,7 +35,7 @@
 #define FONT_SIZE	13
 //#define FONT_NAME	@"ArialUnicodeMS"
 
-@interface Viewport : UIView
+@interface Viewport : ACMagnifyingView
 {
 	NSString __strong *letterArray[kCOLS][kROWS];
 	UIColor __strong *bgColorArray[kCOLS][kROWS];

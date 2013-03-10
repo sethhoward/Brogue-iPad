@@ -14,7 +14,9 @@
 #import "GameCenterManager.h"
 #import "UIViewController+UIViewController_GCLeaderBoardView.h"
 #import "AboutViewController.h"
+#import "ZGestureRecognizer.h"
 
+#define kStationaryTime 0.45f
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
 
@@ -27,6 +29,8 @@ typedef enum {
     KeyDownDown,
     KeyDownLeft,
 }KeyDown;
+
+#define kESC_Key @"\033"
 
 @interface ViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
 - (IBAction)escButtonPressed:(id)sender;
@@ -57,6 +61,8 @@ typedef enum {
     @private
     __unused NSTimer __strong *_autoSaveTimer;
     CGPoint _lastTouchLocation;
+    BOOL _blockCachingTouches;
+    NSTimer __strong *_stationaryTouchTimer;
 }
 
 - (void)autoSave {
@@ -91,16 +97,43 @@ typedef enum {
             }];
         });
         
-        UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
-        doubleTap.numberOfTapsRequired = 2;
-        doubleTap.delegate = self;
-        [self.secondaryDisplay addGestureRecognizer:doubleTap];
+        [self initGestureRecognizers];
         
         //TODO: consider this... may not be the time for this yet
       //  _autoSaveTimer = [NSTimer scheduledTimerWithTimeInterval:20. target:self selector:@selector(autoSave) userInfo:nil repeats:YES];
     }
     
+    [self becomeFirstResponder];
+    
+    
     [self playBrogue];
+}
+
+- (BOOL)canBecomeFirstResponder {
+    return YES;
+}
+
+- (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event{
+    // you can do any thing at this stage what ever you want. Change the song in playlist, show photo, change photo or whatever you want to do
+   // titleLabel.text = @"Shake Started";
+    @synchronized(self.cachedKeyStrokes) {
+        [self.cachedKeyStrokes removeAllObjects];
+        [self.cachedKeyStrokes addObject:kESC_Key];
+    }
+    
+    NSLog(@"shake started");
+}
+
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
+{
+    return;
+    
+    if (motion == UIEventSubtypeMotionShake) {
+        @synchronized(self.cachedKeyStrokes) {
+            [self.cachedKeyStrokes removeAllObjects];
+            [self.cachedKeyStrokes addObject:kESC_Key];
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -135,6 +168,26 @@ typedef enum {
 
 #pragma mark - touches
 
+- (void)initGestureRecognizers {
+    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+    doubleTap.numberOfTapsRequired = 2;
+    doubleTap.delegate = self;
+    [self.secondaryDisplay addGestureRecognizer:doubleTap];
+    
+    ZGestureRecognizer *zGesture = [[ZGestureRecognizer alloc] initWithTarget:self action:@selector(handleZGesture:)];
+    [self.view addGestureRecognizer:zGesture];
+}
+
+- (void)handleZGesture:(ZGestureRecognizer *)zGesture {
+    [_stationaryTouchTimer invalidate];
+    _stationaryTouchTimer = nil;
+    
+    @synchronized(self.cachedKeyStrokes) {
+        [self.cachedKeyStrokes removeAllObjects];
+        [self.cachedKeyStrokes addObject:kESC_Key];
+    }
+}
+
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     CGPoint pointInView = [touch locationInView:gestureRecognizer.view];
     
@@ -146,7 +199,11 @@ typedef enum {
     return YES;
 }
 
+// TODO: touches are manually cached here instead of going through a central point
 - (void)handleDoubleTap:(UITapGestureRecognizer *)tap {
+    [_stationaryTouchTimer invalidate];
+    _stationaryTouchTimer = nil;
+    
     // we double tapped... send along another mouse down and up to the game
     iBTouch touchDown;
     touchDown.phase = UITouchPhaseStationary;
@@ -167,6 +224,10 @@ typedef enum {
 }
 
 - (void)addTouchToCache:(UITouch *)touch {
+    if (_blockCachingTouches) {
+        return;
+    }
+    
     @synchronized(self.cachedTouches){
         iBTouch ibtouch;
         ibtouch.phase = touch.phase;
@@ -174,11 +235,12 @@ typedef enum {
         // we need to make sure that a phase end touch ends in the same spot as the previous touch or a borks the char movement
         if (touch.phase == UITouchPhaseEnded) {
             ibtouch.location = _lastTouchLocation;
-            NSLog(@"manually setting locaation");
         }
         else {
           ibtouch.location = [touch locationInView:theMainDisplay];  
         }
+        
+       // NSLog(@"##### %i", touch.phase);
         
         _lastTouchLocation = ibtouch.location;
         [self.cachedTouches addObject:[NSValue value:&ibtouch withObjCType:@encode(iBTouch)]];
@@ -205,24 +267,70 @@ typedef enum {
     return [self.cachedTouches count];
 }
 
+- (BOOL)isMagHoldAvailableAtPoint:(CGPoint)point {
+    CGRect boundaryRect = CGRectMake(209., 74., 810., 650.);
+    
+    if (!CGRectContainsPoint(boundaryRect, point)) {
+        NSLog(@"out of bounds");
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (void)stopStationaryTouchTimer {
+    [_stationaryTouchTimer invalidate];
+    _stationaryTouchTimer = nil;
+}
+
+- (void)startStationaryTouchTimerWithTouch:(UITouch *)touch andTimeout:(NSTimeInterval)timeOut {
+    [self stopStationaryTouchTimer];
+    
+    if ([self isMagHoldAvailableAtPoint:[touch locationInView:self.secondaryDisplay]]) {
+        _stationaryTouchTimer = [NSTimer scheduledTimerWithTimeInterval:timeOut target:self selector:@selector(handleStationary:) userInfo:[NSValue valueWithCGPoint:[touch locationInView:self.secondaryDisplay]] repeats:NO];
+    }
+    else {
+        // kill the mag if it's showing
+        [self.secondaryDisplay removeMagnifyingGlass];
+    }
+}
+
+- (void)handleStationary:(NSTimer *)timer {
+    if (self.secondaryDisplay.hidden == NO) {
+        NSValue *v = timer.userInfo;
+        CGPoint point = [v CGPointValue];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.secondaryDisplay addMagnifyingGlassAtPoint:point];
+        });
+    }
+    
+    [self stopStationaryTouchTimer];
+}
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-  //  NSLog(@"%s", __PRETTY_FUNCTION__);
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+
     [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
         // Get a single touch and it's location
         [self addTouchToCache:touch];
+        [self startStationaryTouchTimerWithTouch:touch andTimeout:kStationaryTime + 0.1];
     }];
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-   // NSLog(@"%s", __PRETTY_FUNCTION__);
+ //   NSLog(@" ##### %@", touches);
     [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
         // Get a single touch and it's location
+        [self startStationaryTouchTimerWithTouch:touch andTimeout:kStationaryTime];
         [self addTouchToCache:touch];
     }];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-  //  NSLog(@"%s", __PRETTY_FUNCTION__);
+ //   NSLog(@"%s", __PRETTY_FUNCTION__);
+    [self stopStationaryTouchTimer];
+    
     [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
         // Get a single touch and it's location
         [self addTouchToCache:touch];
@@ -303,7 +411,7 @@ typedef enum {
 
 - (void)didHideKeyboard {
     if ([self.cachedKeyStrokes count] == 0) {
-        [self.cachedKeyStrokes addObject:@"\033"];
+        [self.cachedKeyStrokes addObject:kESC_Key];
     }
 
     self.escButton.hidden = YES;

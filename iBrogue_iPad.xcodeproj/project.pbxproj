@@ -50,6 +50,7 @@
 		C58831F816EAA2ED0047FCA9 /* icon_72x72.png in Resources */ = {isa = PBXBuildFile; fileRef = C58831F716EAA2ED0047FCA9 /* icon_72x72.png */; };
 		C58831FE16EAB6D10047FCA9 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C58831FD16EAB6D10047FCA9 /* Default-Landscape~ipad.png */; };
 		C588320016EAB6DF0047FCA9 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C58831FF16EAB6DF0047FCA9 /* Default-Landscape@2x~ipad.png */; };
+		C593046416EBE39200124B2B /* ZGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = C593046316EBE39200124B2B /* ZGestureRecognizer.m */; };
 		C59B21C716EA48E0007018DE /* MONACO.TTF in Resources */ = {isa = PBXBuildFile; fileRef = C59B21C616EA48E0007018DE /* MONACO.TTF */; };
 		C59B21CE16EA57AF007018DE /* gamecenterlogo_brogue.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21C816EA57AF007018DE /* gamecenterlogo_brogue.png */; };
 		C59B21CF16EA57AF007018DE /* brogue_directionals.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21C916EA57AF007018DE /* brogue_directionals.png */; };
@@ -62,6 +63,10 @@
 		C59B21DB16EA5EE9007018DE /* brogue_escapebutton.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21D916EA5EE9007018DE /* brogue_escapebutton.png */; };
 		C59B21DE16EA69D8007018DE /* about_brogue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21DC16EA69D7007018DE /* about_brogue@2x.png */; };
 		C59B21DF16EA69D8007018DE /* about_brogue.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21DD16EA69D8007018DE /* about_brogue.png */; };
+		C5EFC0E916ECE398008BD644 /* ACLoupe.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFC0E216ECE398008BD644 /* ACLoupe.m */; };
+		C5EFC0EA16ECE398008BD644 /* ACMagnifyingGlass.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFC0E416ECE398008BD644 /* ACMagnifyingGlass.m */; };
+		C5EFC0EB16ECE398008BD644 /* ACMagnifyingView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFC0E616ECE398008BD644 /* ACMagnifyingView.m */; };
+		C5EFC0EC16ECE398008BD644 /* kb-loupe-hi.png in Resources */ = {isa = PBXBuildFile; fileRef = C5EFC0E816ECE398008BD644 /* kb-loupe-hi.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -123,6 +128,8 @@
 		C58831F716EAA2ED0047FCA9 /* icon_72x72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_72x72.png; sourceTree = "<group>"; };
 		C58831FD16EAB6D10047FCA9 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		C58831FF16EAB6DF0047FCA9 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
+		C593046216EBE39200124B2B /* ZGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZGestureRecognizer.h; sourceTree = "<group>"; };
+		C593046316EBE39200124B2B /* ZGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZGestureRecognizer.m; sourceTree = "<group>"; };
 		C59B21C616EA48E0007018DE /* MONACO.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = MONACO.TTF; sourceTree = "<group>"; };
 		C59B21C816EA57AF007018DE /* gamecenterlogo_brogue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gamecenterlogo_brogue.png; sourceTree = "<group>"; };
 		C59B21C916EA57AF007018DE /* brogue_directionals.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brogue_directionals.png; sourceTree = "<group>"; };
@@ -135,6 +142,13 @@
 		C59B21D916EA5EE9007018DE /* brogue_escapebutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brogue_escapebutton.png; sourceTree = "<group>"; };
 		C59B21DC16EA69D7007018DE /* about_brogue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "about_brogue@2x.png"; sourceTree = "<group>"; };
 		C59B21DD16EA69D8007018DE /* about_brogue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = about_brogue.png; sourceTree = "<group>"; };
+		C5EFC0E116ECE398008BD644 /* ACLoupe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACLoupe.h; sourceTree = "<group>"; };
+		C5EFC0E216ECE398008BD644 /* ACLoupe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACLoupe.m; sourceTree = "<group>"; };
+		C5EFC0E316ECE398008BD644 /* ACMagnifyingGlass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMagnifyingGlass.h; sourceTree = "<group>"; };
+		C5EFC0E416ECE398008BD644 /* ACMagnifyingGlass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACMagnifyingGlass.m; sourceTree = "<group>"; };
+		C5EFC0E516ECE398008BD644 /* ACMagnifyingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMagnifyingView.h; sourceTree = "<group>"; };
+		C5EFC0E616ECE398008BD644 /* ACMagnifyingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACMagnifyingView.m; sourceTree = "<group>"; };
+		C5EFC0E816ECE398008BD644 /* kb-loupe-hi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kb-loupe-hi.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,6 +218,8 @@
 		C57A962E16D7EAD500C233F1 /* iBrogue_iPad */ = {
 			isa = PBXGroup;
 			children = (
+				C5EFC0E016ECE398008BD644 /* MagnifyingGlass */,
+				C593046116EBE38600124B2B /* Gestures */,
 				C5F0CED416E6D56700F1A853 /* image assets */,
 				C52B091916E5848500675CC7 /* GameCenter */,
 				C57A965316D7EB5500C233F1 /* BrogueCode */,
@@ -270,6 +286,37 @@
 				C57A966416D7EB5500C233F1 /* RogueMain.mm */,
 			);
 			path = BrogueCode;
+			sourceTree = "<group>";
+		};
+		C593046116EBE38600124B2B /* Gestures */ = {
+			isa = PBXGroup;
+			children = (
+				C593046216EBE39200124B2B /* ZGestureRecognizer.h */,
+				C593046316EBE39200124B2B /* ZGestureRecognizer.m */,
+			);
+			name = Gestures;
+			sourceTree = "<group>";
+		};
+		C5EFC0E016ECE398008BD644 /* MagnifyingGlass */ = {
+			isa = PBXGroup;
+			children = (
+				C5EFC0E116ECE398008BD644 /* ACLoupe.h */,
+				C5EFC0E216ECE398008BD644 /* ACLoupe.m */,
+				C5EFC0E316ECE398008BD644 /* ACMagnifyingGlass.h */,
+				C5EFC0E416ECE398008BD644 /* ACMagnifyingGlass.m */,
+				C5EFC0E516ECE398008BD644 /* ACMagnifyingView.h */,
+				C5EFC0E616ECE398008BD644 /* ACMagnifyingView.m */,
+				C5EFC0E716ECE398008BD644 /* Resources */,
+			);
+			path = MagnifyingGlass;
+			sourceTree = "<group>";
+		};
+		C5EFC0E716ECE398008BD644 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C5EFC0E816ECE398008BD644 /* kb-loupe-hi.png */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		C5F0CED416E6D56700F1A853 /* image assets */ = {
@@ -369,6 +416,7 @@
 				C58831F816EAA2ED0047FCA9 /* icon_72x72.png in Resources */,
 				C58831FE16EAB6D10047FCA9 /* Default-Landscape~ipad.png in Resources */,
 				C588320016EAB6DF0047FCA9 /* Default-Landscape@2x~ipad.png in Resources */,
+				C5EFC0EC16ECE398008BD644 /* kb-loupe-hi.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,6 +452,10 @@
 				C52B092416E5848500675CC7 /* UIViewController+UIViewController_GCAchievementView.m in Sources */,
 				C52B092516E5848500675CC7 /* UIViewController+UIViewController_GCLeaderBoardView.m in Sources */,
 				C5105B1216E65EDB00E09905 /* AboutViewController.m in Sources */,
+				C593046416EBE39200124B2B /* ZGestureRecognizer.m in Sources */,
+				C5EFC0E916ECE398008BD644 /* ACLoupe.m in Sources */,
+				C5EFC0EA16ECE398008BD644 /* ACMagnifyingGlass.m in Sources */,
+				C5EFC0EB16ECE398008BD644 /* ACMagnifyingView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
