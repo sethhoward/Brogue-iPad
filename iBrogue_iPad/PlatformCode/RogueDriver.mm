@@ -45,6 +45,10 @@ short mouseX, mouseY;
  //   autoSave();
 }
 
++ (void)printRogue {
+    playerCharacter temp = rogue;
+}
+
 // this was all garbage in my book... trashed it
 
 @end
@@ -178,10 +182,9 @@ void setWaitingForInput(boolean waiting) {
     [viewController showKeyboard];
 }
 
-/*
-void showTitleControls(boolean show) {
-    [viewController showTitlePageItems:show];
-}*/
+void blockMagGlass(boolean blockGlass) {
+    [viewController setBlockMagView:blockGlass];
+}
 
 boolean controlKeyIsDown() {
     if ([viewController isSeedKeyDown]) {
@@ -190,15 +193,6 @@ boolean controlKeyIsDown() {
     
     return 0;
 }
-
-/*void showDirectionControls(boolean show) {
-    if (show) {
-        [viewController showControls];
-    }
-    else {
-        [viewController hideControls];
-    }
-}*/
 
 boolean shiftKeyIsDown() {
     return NO;
@@ -299,6 +293,8 @@ short getHighScoresList(rogueHighScoresEntry returnList[HIGH_SCORES_COUNT]) {
 			mostRecentIndex = i;
 		}
 	}
+    
+    
 	return mostRecentIndex;
 }
 

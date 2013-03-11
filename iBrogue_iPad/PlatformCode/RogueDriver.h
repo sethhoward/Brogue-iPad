@@ -31,5 +31,6 @@
 @interface RogueDriver : NSObject
 
 + (void)autoSave;
++ (void)printRogue;
 
 @end

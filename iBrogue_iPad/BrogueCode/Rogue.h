@@ -2839,6 +2839,7 @@ extern "C" {
     void setWaitingForInput(boolean waiting);
     void showTitle();
     void showAuxillaryScreen(boolean showDirectionalControls);
+    void blockMagGlass(boolean blockGlass);
 //    void writeHeaderInfo(char *path);
  //   void showDirectionControls(boolean show);
 #if defined __cplusplus

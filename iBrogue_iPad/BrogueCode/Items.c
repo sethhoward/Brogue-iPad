@@ -2332,6 +2332,8 @@ char displayInventory(unsigned short categoryMask,
 	char *magicEscapePtr;
 	
 	assureCosmeticRNG;
+    
+    blockMagGlass(true);
 	
 	clearCursorPath();
 	clearDisplayBuffer(dbuf);
@@ -2650,7 +2652,8 @@ char displayInventory(unsigned short categoryMask,
 	} while (repeatDisplay); // so you can get info on multiple items sequentially
 	
 	overlayDisplayBuffer(rbuf, NULL); // restore the original screen
-
+    blockMagGlass(false);
+    
 	restoreRNG;
 	return theKey;
 }

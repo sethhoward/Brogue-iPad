@@ -179,8 +179,8 @@ typedef enum {
 }
 
 - (void)handleZGesture:(ZGestureRecognizer *)zGesture {
-    [_stationaryTouchTimer invalidate];
-    _stationaryTouchTimer = nil;
+    [self stopStationaryTouchTimer];
+    [self.secondaryDisplay removeMagnifyingGlass];
     
     @synchronized(self.cachedKeyStrokes) {
         [self.cachedKeyStrokes removeAllObjects];
@@ -201,8 +201,8 @@ typedef enum {
 
 // TODO: touches are manually cached here instead of going through a central point
 - (void)handleDoubleTap:(UITapGestureRecognizer *)tap {
-    [_stationaryTouchTimer invalidate];
-    _stationaryTouchTimer = nil;
+    [self stopStationaryTouchTimer];
+    [self.secondaryDisplay removeMagnifyingGlass];
     
     // we double tapped... send along another mouse down and up to the game
     iBTouch touchDown;
@@ -296,9 +296,10 @@ typedef enum {
 }
 
 - (void)handleStationary:(NSTimer *)timer {
-    if (self.secondaryDisplay.hidden == NO) {
+    if (self.secondaryDisplay.hidden == NO && !self.blockMagView) {
         NSValue *v = timer.userInfo;
         CGPoint point = [v CGPointValue];
+        [RogueDriver printRogue];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.secondaryDisplay addMagnifyingGlassAtPoint:point];
@@ -309,7 +310,7 @@ typedef enum {
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+   // NSLog(@"%s", __PRETTY_FUNCTION__);
 
     [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
         // Get a single touch and it's location
@@ -507,6 +508,16 @@ typedef enum {
     AboutViewController *aboutVC = [[AboutViewController alloc] init];
     aboutVC.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:aboutVC animated:YES completion:nil];
+}
+
+#pragma mark - setters/getters
+
+- (void)setBlockMagView:(BOOL)blockMagView {
+    _blockMagView = blockMagView;
+    
+    if (blockMagView) {
+        [self.secondaryDisplay removeMagnifyingGlass];
+    }
 }
 
 @end

@@ -22,6 +22,7 @@ struct iBTouch {
 typedef struct iBTouch iBTouch;
 
 @property (nonatomic, readonly, getter = isSeedKeyDown) BOOL seedKeyDown;
+@property (nonatomic, assign) BOOL blockMagView;    // block the magnifying glass from appearing
 
 - (uint)cachedTouchesCount;
 - (iBTouch)getTouchAtIndex:(uint)index;
