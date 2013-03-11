@@ -2506,6 +2506,7 @@ boolean confirm(char *prompt, boolean alsoDuringPlayback) {
 		return true; // oh yes he did
 	}
     
+    // Seth:
     blockMagGlass(true);
 	
 	encodeMessageColor(whiteColorEscape, 0, &white);
@@ -2531,6 +2532,7 @@ boolean confirm(char *prompt, boolean alsoDuringPlayback) {
 	overlayDisplayBuffer(rbuf, NULL);
     
 	if (retVal == -1 || retVal == 1) { // If they canceled or pressed no.
+        // Seth:
         blockMagGlass(false);
 		return false;
 	} else {
