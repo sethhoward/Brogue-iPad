@@ -16,7 +16,7 @@
 #import "AboutViewController.h"
 #import "ZGestureRecognizer.h"
 
-#define kStationaryTime 0.45f
+#define kStationaryTime 0.4f
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
 
@@ -61,7 +61,7 @@ typedef enum {
     @private
     __unused NSTimer __strong *_autoSaveTimer;
     CGPoint _lastTouchLocation;
-    BOOL _blockCachingTouches;
+//    BOOL _blockCachingTouches;
     NSTimer __strong *_stationaryTouchTimer;
 }
 
@@ -192,7 +192,7 @@ typedef enum {
     CGPoint pointInView = [touch locationInView:gestureRecognizer.view];
     
     if ( [gestureRecognizer isMemberOfClass:[UITapGestureRecognizer class]]
-        && /*CGRectContainsPoint(self.playerControlView.frame, pointInView*/ [RogueDriver coordinatesAreInMap:pointInView]) {
+        && CGRectContainsPoint(self.playerControlView.frame, pointInView)) {
         return NO;
     }
     
@@ -224,9 +224,9 @@ typedef enum {
 }
 
 - (void)addTouchToCache:(UITouch *)touch {
-    if (_blockCachingTouches) {
+  /*  if (_blockCachingTouches) {
         return;
-    }
+    }*/
     
     @synchronized(self.cachedTouches){
         iBTouch ibtouch;
