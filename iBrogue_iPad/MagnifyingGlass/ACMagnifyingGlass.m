@@ -9,7 +9,7 @@
 
 static CGFloat const kACMagnifyingGlassDefaultRadius = 40;
 static CGFloat const kACMagnifyingGlassDefaultOffset = -50;
-static CGFloat const kACMagnifyingGlassDefaultScale = 1.5;
+static CGFloat const kACMagnifyingGlassDefaultScale = 1.4;
 
 @interface ACMagnifyingGlass ()
 @end

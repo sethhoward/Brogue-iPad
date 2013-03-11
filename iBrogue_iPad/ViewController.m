@@ -192,7 +192,7 @@ typedef enum {
     CGPoint pointInView = [touch locationInView:gestureRecognizer.view];
     
     if ( [gestureRecognizer isMemberOfClass:[UITapGestureRecognizer class]]
-        && CGRectContainsPoint(self.playerControlView.frame, pointInView) ) {
+        && /*CGRectContainsPoint(self.playerControlView.frame, pointInView*/ [RogueDriver coordinatesAreInMap:pointInView]) {
         return NO;
     }
     
@@ -299,7 +299,7 @@ typedef enum {
     if (self.secondaryDisplay.hidden == NO && !self.blockMagView) {
         NSValue *v = timer.userInfo;
         CGPoint point = [v CGPointValue];
-        [RogueDriver printRogue];
+      //  [RogueDriver printRogue];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.secondaryDisplay addMagnifyingGlassAtPoint:point];

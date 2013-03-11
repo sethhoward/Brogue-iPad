@@ -45,8 +45,9 @@ short mouseX, mouseY;
  //   autoSave();
 }
 
-+ (void)printRogue {
-    playerCharacter temp = rogue;
+
++ (BOOL)coordinatesAreInMap:(CGPoint)point {
+    return coordinatesAreInMap(point.x, point.y);
 }
 
 // this was all garbage in my book... trashed it

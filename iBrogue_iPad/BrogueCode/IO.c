@@ -242,7 +242,15 @@ short actionMenu(short x, short y, boolean playingBack) {
 	clearDisplayBuffer(dbuf);
 	rectangularShading(x - 1, y, longestName + 2, buttonCount, &black, INTERFACE_OPACITY / 2, dbuf);
 	overlayDisplayBuffer(dbuf, rbuf);
+    
+    // Seth:
+    blockMagGlass(true);
+    
 	buttonChosen = buttonInputLoop(buttons, buttonCount, x - 1, y, longestName + 2, buttonCount, NULL);
+    
+    // Seth:
+    blockMagGlass(false);
+    
 	overlayDisplayBuffer(rbuf, NULL);
 	if (buttonChosen == -1) {
 		return -1;
@@ -2497,6 +2505,8 @@ boolean confirm(char *prompt, boolean alsoDuringPlayback) {
 	if (rogue.autoPlayingLevel || (!alsoDuringPlayback && rogue.playbackMode)) {
 		return true; // oh yes he did
 	}
+    
+    blockMagGlass(true);
 	
 	encodeMessageColor(whiteColorEscape, 0, &white);
 	encodeMessageColor(yellowColorEscape, 0, &yellow);
@@ -2519,8 +2529,9 @@ boolean confirm(char *prompt, boolean alsoDuringPlayback) {
 	
 	retVal = printTextBox(prompt, COLS/3, ROWS/3, COLS/3, &white, &interfaceBoxColor, rbuf, buttons, 2);
 	overlayDisplayBuffer(rbuf, NULL);
-	
+    
 	if (retVal == -1 || retVal == 1) { // If they canceled or pressed no.
+        blockMagGlass(false);
 		return false;
 	} else {
 		return true;

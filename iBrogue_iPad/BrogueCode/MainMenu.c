@@ -662,6 +662,7 @@ void mainBrogueJunction() {
                
                 // Seth: Added
                 showTitle();
+                blockMagGlass(true);
                 
 				titleMenu();
 				break;
@@ -722,6 +723,7 @@ void mainBrogueJunction() {
 				
                 // Seth: Added
                 showAuxillaryScreen(true);
+                blockMagGlass(false);
                 
 				rogue.nextGame = NG_NOTHING;
 				initializeRogue(rogue.nextGameSeed);
@@ -748,6 +750,7 @@ void mainBrogueJunction() {
                     
                     // Seth: Added
                     showAuxillaryScreen(true);
+                    blockMagGlass(false);
                     
 					loadSavedGame();
 					mainInputLoop();
