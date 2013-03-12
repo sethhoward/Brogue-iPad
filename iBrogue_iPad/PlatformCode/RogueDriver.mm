@@ -41,11 +41,6 @@ short mouseX, mouseY;
 
 @implementation RogueDriver
 
-+ (void)autoSave {
- //   autoSave();
-}
-
-
 + (BOOL)coordinatesAreInMap:(CGPoint)point {
     return coordinatesAreInMap(point.x, point.y);
 }
@@ -456,20 +451,47 @@ fileEntry *listFiles(short *fileCount, char **dynamicMemoryBuffer) {
 	return fileList;
 }
 
-//warning essentially lifted from the save code in Recordings.c
-//warning redefines what Last Game is used for
-
-// we're on a mobile device so we'll want to do this every now and then or really piss off some users
+// never mind with the auto save. the game auto saves every time you change a level from the looks of it
 /*
 void autoSave() {
     short i;
-	FILE *recordFile;
+    FILE *recordFile,*fileCopy;
+    char ch;
+    
+    recordFile = fopen(currentFilePath,"r");
+    
+ //   NSString *saveFile = @"autosave.broguesave";
+    const char *cSaveFile = "autosave.broguesave";
+    
+    fileCopy = fopen(cSaveFile,"w");
+    if(recordFile == NULL)
+    {
+        printf("Cannot copy file ! Press key to exit.");
+        fclose(fileCopy);
+        return;
+    }
+    
+    while(1)
+    {
+        ch = getc(fileCopy);
+        if(ch==EOF)
+        {
+            break;
+        }
+        else
+            putc(ch, fileCopy);
+    }
+    
+    printf("File copied succesfully!");
+    fclose(recordFile);
+    
+    int tempLengthOfPlaybackFile = lengthOfPlaybackFile;
     lengthOfPlaybackFile += locationInRecordingBuffer;
     
     if (lengthOfPlaybackFile != 0) {
-		writeHeaderInfo(currentFilePath);
+		writeHeaderInfo((char *)cSaveFile);
         
-		recordFile = fopen(currentFilePath, "ab");
+		recordFile = fopen(cSaveFile, "ab");
 		
 		for (i=0; i<locationInRecordingBuffer; i++) {
 			putc(inputRecordBuffer[i], recordFile);
@@ -478,8 +500,8 @@ void autoSave() {
 		if (recordFile) {
 			fclose(recordFile);
 		}
-		
-		locationInRecordingBuffer = 0;
 	}
-}
-*/
+    
+    fclose(fileCopy);
+    lengthOfPlaybackFile = tempLengthOfPlaybackFile;
+}*/

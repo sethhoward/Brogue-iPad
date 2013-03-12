@@ -69,10 +69,6 @@ typedef enum {
     BOOL _areDirectionalControlsHidden;
 }
 
-- (void)autoSave {
-    [RogueDriver autoSave];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -90,6 +86,8 @@ typedef enum {
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center addObserver:self selector:@selector(didShowKeyboard) name:UIKeyboardDidShowNotification object:nil];
         [center addObserver:self selector:@selector(didHideKeyboard) name:UIKeyboardWillHideNotification object:nil];
+     //   [center addObserver:self selector:@selector(applicationWillResign) name:UIApplicationWillResignActiveNotification object:nil];
+        [center addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
         
         [self.buttonView setAlpha:0];
         
@@ -109,13 +107,21 @@ typedef enum {
     
     [self becomeFirstResponder];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResign) name:UIApplicationWillResignActiveNotification object:nil];
-    
     
     [self playBrogue];
 }
 
+/*
 - (void)applicationWillResign {
+    [self.secondaryDisplay removeMagnifyingGlass];
+    
+    @synchronized(self){
+        [self.cachedKeyStrokes removeAllObjects];
+        [self.cachedTouches removeAllObjects];
+    }
+}*/
+
+- (void)applicationDidBecomeActive {
     [self.secondaryDisplay removeMagnifyingGlass];
     
     @synchronized(self){
@@ -410,6 +416,9 @@ typedef enum {
         [self.secondaryDisplay startAnimating];
         [self.titleDisplay stopAnimating];
     }
+    
+    self.titleDisplay.hidden = YES;
+    self.secondaryDisplay.hidden = NO;
     
     dispatch_async(dispatch_get_main_queue(), ^{
         double delayInSeconds = 0.;

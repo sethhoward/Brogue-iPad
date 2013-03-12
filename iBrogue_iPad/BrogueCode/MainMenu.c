@@ -761,6 +761,11 @@ void mainBrogueJunction() {
 				}
 				rogue.playbackMode = false;
 				rogue.playbackOOS = false;
+                
+                // Seth: Added
+                showTitle();
+                blockMagGlass(true);
+                
 				break;
 			case NG_VIEW_RECORDING:
 				rogue.nextGame = NG_NOTHING;

@@ -30,7 +30,7 @@
 
 @interface RogueDriver : NSObject
 
-+ (void)autoSave;
+//+ (void)autoSave;
 + (BOOL)coordinatesAreInMap:(CGPoint)point;
 
 @end
