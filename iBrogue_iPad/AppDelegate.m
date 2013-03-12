@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-
+#import "GameSettings.h"
 #import "ViewController.h"
 
 @implementation AppDelegate
@@ -28,7 +28,9 @@
         imageView = nil;
     });
     
-    application.applicationSupportsShakeToEdit = YES;
+    if ([[GameSettings sharedInstance] allowShake]) {
+        application.applicationSupportsShakeToEdit = YES;
+    }
     
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];

@@ -747,12 +747,13 @@ void mainBrogueJunction() {
 				}
 					
 				if (openFile(path)) {
+					loadSavedGame();
                     
                     // Seth: Added
                     showAuxillaryScreen(true);
                     blockMagGlass(false);
                     
-					loadSavedGame();
+                    
 					mainInputLoop();
 					freeEverything();
 				} else {

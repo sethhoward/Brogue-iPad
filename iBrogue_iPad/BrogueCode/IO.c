@@ -2531,9 +2531,10 @@ boolean confirm(char *prompt, boolean alsoDuringPlayback) {
 	retVal = printTextBox(prompt, COLS/3, ROWS/3, COLS/3, &white, &interfaceBoxColor, rbuf, buttons, 2);
 	overlayDisplayBuffer(rbuf, NULL);
     
+    // Seth:
+    blockMagGlass(false);
+    
 	if (retVal == -1 || retVal == 1) { // If they canceled or pressed no.
-        // Seth:
-        blockMagGlass(false);
 		return false;
 	} else {
 		return true;

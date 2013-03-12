@@ -15,8 +15,10 @@
 #import "UIViewController+UIViewController_GCLeaderBoardView.h"
 #import "AboutViewController.h"
 #import "ZGestureRecognizer.h"
+#import "GameSettings.h"
 
-#define kStationaryTime 0.4f
+#define kStationaryTime 0.5f
+#define kGamePlayHitArea CGRectMake(209., 74., 810., 650.)     // seems to be a method in the c code that does this but didn't work as expected
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
 
@@ -46,6 +48,7 @@ typedef enum {
 - (IBAction)showLeaderBoardButtonPressed:(id)sender;
 - (IBAction)aboutButtonPressed:(id)sender;
 
+@property (weak, nonatomic) IBOutlet UIView *directionalButtonSubContainer;
 @property (weak, nonatomic) IBOutlet UIButton *seedButton;
 @property (weak, nonatomic) IBOutlet Viewport *secondaryDisplay;   // game etc
 @property (nonatomic, strong) IBOutlet Viewport *titleDisplay;
@@ -63,6 +66,7 @@ typedef enum {
     CGPoint _lastTouchLocation;
 //    BOOL _blockCachingTouches;
     NSTimer __strong *_stationaryTouchTimer;
+    BOOL _areDirectionalControlsHidden;
 }
 
 - (void)autoSave {
@@ -105,8 +109,19 @@ typedef enum {
     
     [self becomeFirstResponder];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResign) name:UIApplicationWillResignActiveNotification object:nil];
+    
     
     [self playBrogue];
+}
+
+- (void)applicationWillResign {
+    [self.secondaryDisplay removeMagnifyingGlass];
+    
+    @synchronized(self){
+        [self.cachedKeyStrokes removeAllObjects];
+        [self.cachedTouches removeAllObjects];
+    }
 }
 
 - (BOOL)canBecomeFirstResponder {
@@ -115,24 +130,14 @@ typedef enum {
 
 - (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event{
     // you can do any thing at this stage what ever you want. Change the song in playlist, show photo, change photo or whatever you want to do
-   // titleLabel.text = @"Shake Started";
+
+    if (![[GameSettings sharedInstance] allowShake]) {
+        return;
+    }
+    
     @synchronized(self.cachedKeyStrokes) {
         [self.cachedKeyStrokes removeAllObjects];
         [self.cachedKeyStrokes addObject:kESC_Key];
-    }
-    
-    NSLog(@"shake started");
-}
-
-- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
-{
-    return;
-    
-    if (motion == UIEventSubtypeMotionShake) {
-        @synchronized(self.cachedKeyStrokes) {
-            [self.cachedKeyStrokes removeAllObjects];
-            [self.cachedKeyStrokes addObject:kESC_Key];
-        }
     }
 }
 
@@ -174,10 +179,46 @@ typedef enum {
     doubleTap.delegate = self;
     [self.secondaryDisplay addGestureRecognizer:doubleTap];
     
-    ZGestureRecognizer *zGesture = [[ZGestureRecognizer alloc] initWithTarget:self action:@selector(handleZGesture:)];
-    [self.view addGestureRecognizer:zGesture];
+  /*  if ([[GameSettings sharedInstance] allowESCGesture]) {
+        ZGestureRecognizer *zGesture = [[ZGestureRecognizer alloc] initWithTarget:self action:@selector(handleZGesture:)];
+        [self.view addGestureRecognizer:zGesture];
+    }*/
+    
+    if ([[GameSettings sharedInstance] allowPinchToZoomDirectional]) {
+        UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
+        [self.playerControlView addGestureRecognizer:pinch];
+    }
 }
 
+- (void)handlePinch:(UIPinchGestureRecognizer *)pinch {
+//    NSLog(@"%.2f %.2f", pinch.scale, pinch.velocity);
+    
+    if (pinch.velocity < 0 && !_areDirectionalControlsHidden) {
+        self.directionalButtonSubContainer.transform = CGAffineTransformMakeScale(pinch.scale, pinch.scale);
+    }
+    else if(pinch.velocity > 0 && _areDirectionalControlsHidden){
+        self.directionalButtonSubContainer.transform = CGAffineTransformMakeScale(1 - pinch.scale, 1 - pinch.scale);
+    }
+    
+    if (pinch.state == UIGestureRecognizerStateEnded || pinch.state == UIGestureRecognizerStateCancelled) {
+        if (pinch.scale < 0.6f) {
+            [UIView animateWithDuration:0.2 animations:^{
+                self.directionalButtonSubContainer.transform = CGAffineTransformMakeScale(.0000001, .0000001);
+            }];
+            
+            _areDirectionalControlsHidden = YES;
+        }
+        else {
+            [UIView animateWithDuration:0.2 animations:^{
+                self.directionalButtonSubContainer.transform = CGAffineTransformMakeScale(1., 1.);
+            }];
+            
+            _areDirectionalControlsHidden = NO;
+        }
+    }
+}
+
+/*  Not working as I had hoped plus it just feels a bit like shit
 - (void)handleZGesture:(ZGestureRecognizer *)zGesture {
     [self stopStationaryTouchTimer];
     [self.secondaryDisplay removeMagnifyingGlass];
@@ -186,7 +227,7 @@ typedef enum {
         [self.cachedKeyStrokes removeAllObjects];
         [self.cachedKeyStrokes addObject:kESC_Key];
     }
-}
+}*/
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     CGPoint pointInView = [touch locationInView:gestureRecognizer.view];
@@ -204,23 +245,25 @@ typedef enum {
     [self stopStationaryTouchTimer];
     [self.secondaryDisplay removeMagnifyingGlass];
     
-    // we double tapped... send along another mouse down and up to the game
-    iBTouch touchDown;
-    touchDown.phase = UITouchPhaseStationary;
-    touchDown.location = _lastTouchLocation;
-    
-    [self.cachedTouches addObject:[NSValue value:&touchDown withObjCType:@encode(iBTouch)]];
-    
-    iBTouch touchMoved;
-    touchMoved.phase = UITouchPhaseMoved;
-    touchMoved.location = _lastTouchLocation;
-    [self.cachedTouches addObject:[NSValue value:&touchMoved withObjCType:@encode(iBTouch)]];
-    
-    iBTouch touchUp;
-    touchUp.phase = UITouchPhaseEnded;
-    touchUp.location = _lastTouchLocation;
-    
-    [self.cachedTouches addObject:[NSValue value:&touchUp withObjCType:@encode(iBTouch)]];
+    @synchronized(self.cachedTouches) {
+        // we double tapped... send along another mouse down and up to the game
+        iBTouch touchDown;
+        touchDown.phase = UITouchPhaseStationary;
+        touchDown.location = _lastTouchLocation;
+        
+        [self.cachedTouches addObject:[NSValue value:&touchDown withObjCType:@encode(iBTouch)]];
+        
+        iBTouch touchMoved;
+        touchMoved.phase = UITouchPhaseMoved;
+        touchMoved.location = _lastTouchLocation;
+        [self.cachedTouches addObject:[NSValue value:&touchMoved withObjCType:@encode(iBTouch)]];
+        
+        iBTouch touchUp;
+        touchUp.phase = UITouchPhaseEnded;
+        touchUp.location = _lastTouchLocation;
+        
+        [self.cachedTouches addObject:[NSValue value:&touchUp withObjCType:@encode(iBTouch)]];
+    }
 }
 
 - (void)addTouchToCache:(UITouch *)touch {
@@ -267,34 +310,6 @@ typedef enum {
     return [self.cachedTouches count];
 }
 
-- (BOOL)isMagHoldAvailableAtPoint:(CGPoint)point {
-    CGRect boundaryRect = CGRectMake(209., 74., 810., 650.);
-    
-    if (!CGRectContainsPoint(boundaryRect, point)) {
-        NSLog(@"out of bounds");
-        return NO;
-    }
-    
-    return YES;
-}
-
-- (void)stopStationaryTouchTimer {
-    [_stationaryTouchTimer invalidate];
-    _stationaryTouchTimer = nil;
-}
-
-- (void)startStationaryTouchTimerWithTouch:(UITouch *)touch andTimeout:(NSTimeInterval)timeOut {
-    [self stopStationaryTouchTimer];
-    
-    if ([self isMagHoldAvailableAtPoint:[touch locationInView:self.secondaryDisplay]]) {
-        _stationaryTouchTimer = [NSTimer scheduledTimerWithTimeInterval:timeOut target:self selector:@selector(handleStationary:) userInfo:[NSValue valueWithCGPoint:[touch locationInView:self.secondaryDisplay]] repeats:NO];
-    }
-    else {
-        // kill the mag if it's showing
-        [self.secondaryDisplay removeMagnifyingGlass];
-    }
-}
-
 - (void)handleStationary:(NSTimer *)timer {
     if (self.secondaryDisplay.hidden == NO && !self.blockMagView) {
         NSValue *v = timer.userInfo;
@@ -323,8 +338,8 @@ typedef enum {
  //   NSLog(@" ##### %@", touches);
     [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
         // Get a single touch and it's location
-        [self startStationaryTouchTimerWithTouch:touch andTimeout:kStationaryTime];
         [self addTouchToCache:touch];
+        [self startStationaryTouchTimerWithTouch:touch andTimeout:kStationaryTime];
     }];
 }
 
@@ -336,6 +351,38 @@ typedef enum {
         // Get a single touch and it's location
         [self addTouchToCache:touch];
     }];
+}
+
+#pragma mark - Magnifier
+
+- (BOOL)isMagHoldAvailableAtPoint:(CGPoint)point {
+    CGRect boundaryRect = kGamePlayHitArea;
+    
+    if (!CGRectContainsPoint(boundaryRect, point)) {
+        // NSLog(@"out of bounds");
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (void)stopStationaryTouchTimer {
+    [_stationaryTouchTimer invalidate];
+    _stationaryTouchTimer = nil;
+}
+
+- (void)startStationaryTouchTimerWithTouch:(UITouch *)touch andTimeout:(NSTimeInterval)timeOut {
+    if ([[GameSettings sharedInstance] allowMagnifier]) {
+        [self stopStationaryTouchTimer];
+        
+        if ([self isMagHoldAvailableAtPoint:[touch locationInView:self.secondaryDisplay]]) {
+            _stationaryTouchTimer = [NSTimer scheduledTimerWithTimeInterval:timeOut target:self selector:@selector(handleStationary:) userInfo:[NSValue valueWithCGPoint:[touch locationInView:self.secondaryDisplay]] repeats:NO];
+        }
+        else {
+            // kill the mag if it's showing
+            [self.secondaryDisplay removeMagnifyingGlass];
+        }
+    }
 }
 
 #pragma mark - views

@@ -2600,6 +2600,9 @@ char displayInventory(unsigned short categoryMask,
 						overlayDisplayBuffer(dbuf, NULL); // redisplay the inventory
 					} else {
 						restoreRNG;
+                        // Seth:
+                        blockMagGlass(false);
+                        
 						repeatDisplay = false;
 						overlayDisplayBuffer(rbuf, NULL); // restore the original screen
 					}
@@ -2645,6 +2648,10 @@ char displayInventory(unsigned short categoryMask,
 					} else if (actionKey > -1) {
 						// Player took an action directly from the item screen; we're done here.
 						restoreRNG;
+                        
+                        // Seth:
+                        blockMagGlass(false);
+                        
 						return 0;
 					}
 				}
