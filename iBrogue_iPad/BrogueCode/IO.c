@@ -244,12 +244,12 @@ short actionMenu(short x, short y, boolean playingBack) {
 	overlayDisplayBuffer(dbuf, rbuf);
     
     // Seth:
-    blockMagGlass(true);
+    setBrogueGameEvent(BrogueGameEventActionMenuOpen);
     
 	buttonChosen = buttonInputLoop(buttons, buttonCount, x - 1, y, longestName + 2, buttonCount, NULL);
     
     // Seth:
-    blockMagGlass(false);
+    setBrogueGameEvent(BrogueGameEventActionMenuClose);
     
 	overlayDisplayBuffer(rbuf, NULL);
 	if (buttonChosen == -1) {
@@ -2372,7 +2372,8 @@ boolean getInputTextString(char *inputText,
   
 #warning outside implementation
         // SETH: custom function
-        setWaitingForInput(true);
+       // setWaitingForInput(true);
+        setBrogueGameEvent(BrogueGameEventKeyBoardInputRequired);
         
         
 		keystroke = nextKeyPress(true);
@@ -2507,7 +2508,8 @@ boolean confirm(char *prompt, boolean alsoDuringPlayback) {
 	}
     
     // Seth:
-    blockMagGlass(true);
+    setBrogueGameEvent(BrogueGameEventWaitingForConfirmation);
+    //blockMagGlass(true);
 	
 	encodeMessageColor(whiteColorEscape, 0, &white);
 	encodeMessageColor(yellowColorEscape, 0, &yellow);
@@ -2532,7 +2534,8 @@ boolean confirm(char *prompt, boolean alsoDuringPlayback) {
 	overlayDisplayBuffer(rbuf, NULL);
     
     // Seth:
-    blockMagGlass(false);
+   // blockMagGlass(false);
+    setBrogueGameEvent(BrogueGameEventConfirmationComplete);
     
 	if (retVal == -1 || retVal == 1) { // If they canceled or pressed no.
 		return false;

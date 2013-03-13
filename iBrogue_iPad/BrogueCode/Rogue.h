@@ -2836,10 +2836,31 @@ extern "C" {
 	
 #warning outside implementation
     // SETH: custom function
+    
+    
+    typedef enum{
+        BrogueGameEventActionMenuOpen = 0,
+        BrogueGameEventActionMenuClose,
+        BrogueGameEventKeyBoardInputRequired,
+        BrogueGameEventWaitingForConfirmation,
+        BrogueGameEventConfirmationComplete,
+        BrogueGameEventOpenedInventory,
+        BrogueGameEventClosedInventory,
+        BrogueGameEventInventoryItemAction,
+        BrogueGameEventShowTitle,
+        BrogueGameEventStartNewGame,
+        BrogueGameEventOpenGame,
+        BrogueGameEventOpenGameFinished,
+        BrogueGameEventPlayRecording,
+        BrogueGameEventShowHighScores,
+    } BrogueGameEvent;
+    
     void setWaitingForInput(boolean waiting);
     void showTitle();
     void showAuxillaryScreen(boolean showDirectionalControls);
     void blockMagGlass(boolean blockGlass);
+    
+    void setBrogueGameEvent(BrogueGameEvent brogueGameState);
 
 #if defined __cplusplus
 }

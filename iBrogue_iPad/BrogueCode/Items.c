@@ -2334,7 +2334,8 @@ char displayInventory(unsigned short categoryMask,
 	assureCosmeticRNG;
     
     // Seth: 
-    blockMagGlass(true);
+   // blockMagGlass(true);
+    setBrogueGameEvent(BrogueGameEventOpenedInventory);
 	
 	clearCursorPath();
 	clearDisplayBuffer(dbuf);
@@ -2601,7 +2602,8 @@ char displayInventory(unsigned short categoryMask,
 					} else {
 						restoreRNG;
                         // Seth:
-                        blockMagGlass(false);
+                        setBrogueGameEvent(BrogueGameEventInventoryItemAction);
+                      //  blockMagGlass(false);
                         
 						repeatDisplay = false;
 						overlayDisplayBuffer(rbuf, NULL); // restore the original screen
@@ -2650,7 +2652,8 @@ char displayInventory(unsigned short categoryMask,
 						restoreRNG;
                         
                         // Seth:
-                        blockMagGlass(false);
+                       // blockMagGlass(false);
+                        setBrogueGameEvent(BrogueGameEventClosedInventory);
                         
 						return 0;
 					}
@@ -2662,7 +2665,8 @@ char displayInventory(unsigned short categoryMask,
 	overlayDisplayBuffer(rbuf, NULL); // restore the original screen
     
     // Seth:
-    blockMagGlass(false);
+    setBrogueGameEvent(BrogueGameEventClosedInventory);
+   // blockMagGlass(false);
     
 	restoreRNG;
 	return theKey;
