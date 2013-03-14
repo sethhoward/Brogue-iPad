@@ -165,7 +165,7 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
 }
 
 #pragma mark - bridge
-
+/*
 void showTitle() {
     [viewController showTitle];
 }
@@ -180,6 +180,10 @@ void setWaitingForInput(boolean waiting) {
 
 void blockMagGlass(boolean blockGlass) {
     [viewController setBlockMagView:blockGlass];
+}*/
+
+void setBrogueGameEvent(BrogueGameEvent brogueGameEvent) {
+    [viewController setBrogueGameEvent:brogueGameEvent];
 }
 
 boolean controlKeyIsDown() {
@@ -188,10 +192,6 @@ boolean controlKeyIsDown() {
     }
     
     return 0;
-}
-
-void setBrogueGameEvent(BrogueGameEvent brogueGameEvent) {
-    [viewController setBrogueGameEvent:brogueGameEvent];
 }
 
 boolean shiftKeyIsDown() {

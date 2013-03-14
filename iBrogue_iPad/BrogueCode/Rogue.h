@@ -2855,11 +2855,11 @@ extern "C" {
         BrogueGameEventShowHighScores,
     } BrogueGameEvent;
     
-    void setWaitingForInput(boolean waiting);
+  /*  void setWaitingForInput(boolean waiting);
     void showTitle();
     void showAuxillaryScreen(boolean showDirectionalControls);
     void blockMagGlass(boolean blockGlass);
-    
+    */
     void setBrogueGameEvent(BrogueGameEvent brogueGameState);
 
 #if defined __cplusplus

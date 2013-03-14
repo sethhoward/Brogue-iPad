@@ -177,14 +177,17 @@ typedef enum {
         [self.view addGestureRecognizer:zGesture];
     }*/
     
-    if ([[GameSettings sharedInstance] allowPinchToZoomDirectional]) {
-        UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
-        [self.playerControlView addGestureRecognizer:pinch];
-    }
+    
+    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
+    [self.playerControlView addGestureRecognizer:pinch];
 }
 
 - (void)handlePinch:(UIPinchGestureRecognizer *)pinch {
 //    NSLog(@"%.2f %.2f", pinch.scale, pinch.velocity);
+    
+    if (![[GameSettings sharedInstance] allowPinchToZoomDirectional]) {
+        return;
+    }
     
     if (pinch.velocity < 0 && !_areDirectionalControlsHidden) {
         self.directionalButtonSubContainer.transform = CGAffineTransformMakeScale(pinch.scale, pinch.scale);
@@ -235,27 +238,29 @@ typedef enum {
 
 // TODO: touches are manually cached here instead of going through a central point
 - (void)handleDoubleTap:(UITapGestureRecognizer *)tap {
-    [self stopStationaryTouchTimer];
-    [self.secondaryDisplay removeMagnifyingGlass];
-    
-    @synchronized(self.cachedTouches) {
-        // we double tapped... send along another mouse down and up to the game
-        iBTouch touchDown;
-        touchDown.phase = UITouchPhaseStationary;
-        touchDown.location = _lastTouchLocation;
+    if (tap.state == UIGestureRecognizerStateEnded) {
+        [self stopStationaryTouchTimer];
+        [self.secondaryDisplay removeMagnifyingGlass];
         
-        [self.cachedTouches addObject:[NSValue value:&touchDown withObjCType:@encode(iBTouch)]];
-        
-        iBTouch touchMoved;
-        touchMoved.phase = UITouchPhaseMoved;
-        touchMoved.location = _lastTouchLocation;
-        [self.cachedTouches addObject:[NSValue value:&touchMoved withObjCType:@encode(iBTouch)]];
-        
-        iBTouch touchUp;
-        touchUp.phase = UITouchPhaseEnded;
-        touchUp.location = _lastTouchLocation;
-        
-        [self.cachedTouches addObject:[NSValue value:&touchUp withObjCType:@encode(iBTouch)]];
+        @synchronized(self.cachedTouches) {
+            // we double tapped... send along another mouse down and up to the game
+            iBTouch touchDown;
+            touchDown.phase = UITouchPhaseStationary;
+            touchDown.location = _lastTouchLocation;
+            
+            [self.cachedTouches addObject:[NSValue value:&touchDown withObjCType:@encode(iBTouch)]];
+            
+            iBTouch touchMoved;
+            touchMoved.phase = UITouchPhaseMoved;
+            touchMoved.location = _lastTouchLocation;
+            [self.cachedTouches addObject:[NSValue value:&touchMoved withObjCType:@encode(iBTouch)]];
+            
+            iBTouch touchUp;
+            touchUp.phase = UITouchPhaseEnded;
+            touchUp.location = _lastTouchLocation;
+            
+            [self.cachedTouches addObject:[NSValue value:&touchUp withObjCType:@encode(iBTouch)]];
+        }
     }
 }
 
@@ -563,14 +568,17 @@ typedef enum {
     }
 }
 
+// my original intention was to not touch any game code. In the end this was not possible in order to give the best user experience. I funnel all modification and events in the core code through here.
 - (void)setBrogueGameEvent:(BrogueGameEvent)brogueGameEvent {
+    //_brogueGameEvent = brogueGameEvent;
+    
     switch (brogueGameEvent) {
         case BrogueGameEventWaitingForConfirmation:
         case BrogueGameEventActionMenuOpen:
-        case BrogueGameEventInventoryItemAction:
         case BrogueGameEventOpenedInventory:
             self.blockMagView = YES;
             break;
+        case BrogueGameEventInventoryItemAction:
         case BrogueGameEventConfirmationComplete:
         case BrogueGameEventActionMenuClose:
         case BrogueGameEventClosedInventory:
