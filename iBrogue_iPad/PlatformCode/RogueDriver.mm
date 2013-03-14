@@ -190,10 +190,6 @@ boolean controlKeyIsDown() {
     return 0;
 }
 
-void setBrogueGameEvent(BrogueGameEvent brogueGameEvent) {
-    [viewController setBrogueGameEvent:brogueGameEvent];
-}
-
 boolean shiftKeyIsDown() {
     return NO;
 }
@@ -454,3 +450,58 @@ fileEntry *listFiles(short *fileCount, char **dynamicMemoryBuffer) {
 	*fileCount = count + ADD_FAKE_PADDING_FILES;
 	return fileList;
 }
+
+// never mind with the auto save. the game auto saves every time you change a level from the looks of it
+/*
+void autoSave() {
+    short i;
+    FILE *recordFile,*fileCopy;
+    char ch;
+    
+    recordFile = fopen(currentFilePath,"r");
+    
+ //   NSString *saveFile = @"autosave.broguesave";
+    const char *cSaveFile = "autosave.broguesave";
+    
+    fileCopy = fopen(cSaveFile,"w");
+    if(recordFile == NULL)
+    {
+        printf("Cannot copy file ! Press key to exit.");
+        fclose(fileCopy);
+        return;
+    }
+    
+    while(1)
+    {
+        ch = getc(fileCopy);
+        if(ch==EOF)
+        {
+            break;
+        }
+        else
+            putc(ch, fileCopy);
+    }
+    
+    printf("File copied succesfully!");
+    fclose(recordFile);
+    
+    int tempLengthOfPlaybackFile = lengthOfPlaybackFile;
+    lengthOfPlaybackFile += locationInRecordingBuffer;
+    
+    if (lengthOfPlaybackFile != 0) {
+		writeHeaderInfo((char *)cSaveFile);
+        
+		recordFile = fopen(cSaveFile, "ab");
+		
+		for (i=0; i<locationInRecordingBuffer; i++) {
+			putc(inputRecordBuffer[i], recordFile);
+		}
+		
+		if (recordFile) {
+			fclose(recordFile);
+		}
+	}
+    
+    fclose(fileCopy);
+    lengthOfPlaybackFile = tempLengthOfPlaybackFile;
+}*/

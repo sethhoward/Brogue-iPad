@@ -100,6 +100,9 @@ typedef enum {
         });
         
         [self initGestureRecognizers];
+        
+        //TODO: consider this... may not be the time for this yet
+      //  _autoSaveTimer = [NSTimer scheduledTimerWithTimeInterval:20. target:self selector:@selector(autoSave) userInfo:nil repeats:YES];
     }
     
     [self becomeFirstResponder];
@@ -107,6 +110,16 @@ typedef enum {
     
     [self playBrogue];
 }
+
+/*
+- (void)applicationWillResign {
+    [self.secondaryDisplay removeMagnifyingGlass];
+    
+    @synchronized(self){
+        [self.cachedKeyStrokes removeAllObjects];
+        [self.cachedTouches removeAllObjects];
+    }
+}*/
 
 - (void)applicationDidBecomeActive {
     [self.secondaryDisplay removeMagnifyingGlass];
@@ -560,42 +573,6 @@ typedef enum {
     
     if (blockMagView) {
         [self.secondaryDisplay removeMagnifyingGlass];
-    }
-}
-
-- (void)setBrogueGameEvent:(BrogueGameEvent)brogueGameEvent {
-    switch (brogueGameEvent) {
-        case BrogueGameEventWaitingForConfirmation:
-        case BrogueGameEventActionMenuOpen:
-        case BrogueGameEventInventoryItemAction:
-        case BrogueGameEventOpenedInventory:
-            self.blockMagView = YES;
-            break;
-        case BrogueGameEventConfirmationComplete:
-        case BrogueGameEventActionMenuClose:
-        case BrogueGameEventClosedInventory:
-            self.blockMagView = NO;
-            break;
-        case BrogueGameEventKeyBoardInputRequired:
-            [self showKeyboard];
-            break;
-        case BrogueGameEventShowTitle:
-        case BrogueGameEventOpenGameFinished:
-            [self showTitle];
-            self.blockMagView = YES;
-            break;
-        case BrogueGameEventStartNewGame:
-        case BrogueGameEventOpenGame:
-            [self showAuxillaryScreensWithDirectionalControls:YES];
-            self.blockMagView = NO;
-            break;
-        case BrogueGameEventPlayRecording:
-        case BrogueGameEventShowHighScores:
-            [self showAuxillaryScreensWithDirectionalControls:NO];
-            self.blockMagView = YES;
-            break;
-        default:
-            break;
     }
 }
 

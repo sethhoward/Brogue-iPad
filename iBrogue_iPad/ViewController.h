@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Rogue.h"
 
 @class Viewport, ViewController;
 
@@ -22,7 +21,6 @@ struct iBTouch {
 };
 typedef struct iBTouch iBTouch;
 
-@property (nonatomic, assign) BrogueGameEvent brogueGameEvent;
 @property (nonatomic, readonly, getter = isSeedKeyDown) BOOL seedKeyDown;
 @property (nonatomic, assign) BOOL blockMagView;    // block the magnifying glass from appearing
 
