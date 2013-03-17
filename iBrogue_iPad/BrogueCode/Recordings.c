@@ -298,6 +298,12 @@ void playbackPanic() {
 		rogue.playbackFastForward = false;
 		rogue.playbackPaused = true;
 		rogue.playbackOOS = true;
+        
+        
+        // Seth Added:
+        showAuxillaryScreen(true);
+        blockMagGlass(true);
+        
         blackOutScreen();
 		displayLevel();
 		refreshSideBar(-1, -1, false);
@@ -749,6 +755,7 @@ void executePlaybackInput(rogueEvent *recordingInput) {
 			case ACKNOWLEDGE_KEY:
 				if (rogue.playbackOOS && rogue.playbackPaused) {
 					flashTemporaryAlert(" Out of sync ", 2000);
+                    
                     // Seth: Added to ensure we exit when oos
                     rogue.gameHasEnded = true;
 				} else {

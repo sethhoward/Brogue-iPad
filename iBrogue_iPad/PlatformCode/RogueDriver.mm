@@ -32,20 +32,56 @@
 #include "Rogue.h"
 #import "GameCenterManager.h"
 
-void autoSave();
-
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
 
 short mouseX, mouseY;
 
-@implementation RogueDriver
+@interface RogueDriver ()
+@property (nonatomic, strong) NSTimer *colorsDanceTimer;
+@end
+
+@implementation RogueDriver {
+    @private
+    BOOL _areColorsDancing;
+}
+
++ (id)sharedInstance {
+    static RogueDriver *instance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[RogueDriver alloc] init];
+    });
+    
+    return instance;
+}
 
 + (BOOL)coordinatesAreInMap:(CGPoint)point {
     return coordinatesAreInMap(point.x, point.y);
 }
 
-// this was all garbage in my book... trashed it
+- (void)colorsDance {
+    shuffleTerrainColors(3, true);
+    commitDraws();
+}
+
+- (void)animateColors:(BOOL)animate {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.colorsDanceTimer invalidate];
+        self.colorsDanceTimer = nil;
+        
+        if (animate && !_areColorsDancing) {
+        //    NSLog(@"starting colors dance");
+            _areColorsDancing = YES;
+            self.colorsDanceTimer = [NSTimer scheduledTimerWithTimeInterval:0.01667 target:self selector:@selector(colorsDance) userInfo:nil repeats:YES];
+        }
+        else {
+            _areColorsDancing = NO;
+          
+         //   NSLog(@"stopping colors dance");
+        }
+    });
+}
 
 @end
 
@@ -71,7 +107,7 @@ void plotChar(uchar inputChar,
 }
 
 // unused
-void pausingTimerStartsNow() {
+__unused void pausingTimerStartsNow() {
 
 }
 
@@ -94,15 +130,27 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
 	CGPoint event_location;
 	short x, y;
     
+    if (colorsDance) {
+        [[RogueDriver sharedInstance] animateColors:YES];
+    }
+    else {
+        [[RogueDriver sharedInstance] animateColors:NO];
+    }
+    
     @autoreleasepool {
         for(;;) {
             // throttle the video or at some point it'll run too fast on some amazing device that doesn't exist yet
             //  NSLog(@"%i", rogue.nextGame);
-            if (colorsDance) {
-                [NSThread sleepForTimeInterval:0.01667f];
-                shuffleTerrainColors(3, true);
-                commitDraws();
-            }
+         /*   if (colorsDance) {
+
+                //Seth Added:
+                dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    shuffleTerrainColors(3, true);
+                    commitDraws();
+                });
+                
+                
+            }*/
             
             if ([viewController cachedKeyStrokeCount] > 0) {
                 returnEvent->eventType = KEYSTROKE;
@@ -162,6 +210,8 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
             }
         }
     }
+    
+    [[RogueDriver sharedInstance] animateColors:NO];
 }
 
 #pragma mark - bridge
@@ -188,6 +238,10 @@ boolean controlKeyIsDown() {
     }
     
     return 0;
+}
+
+void showInventoryButton(boolean show) {
+    [viewController showInventoryShowButton:show];
 }
 
 boolean shiftKeyIsDown() {

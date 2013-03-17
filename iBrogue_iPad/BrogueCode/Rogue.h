@@ -2840,6 +2840,7 @@ extern "C" {
     void showTitle();
     void showAuxillaryScreen(boolean showDirectionalControls);
     void blockMagGlass(boolean blockGlass);
+    void showInventoryButton(boolean show);
 
 #if defined __cplusplus
 }

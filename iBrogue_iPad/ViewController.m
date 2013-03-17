@@ -47,6 +47,7 @@ typedef enum {
 - (IBAction)seedKeyPressed:(id)sender;
 - (IBAction)showLeaderBoardButtonPressed:(id)sender;
 - (IBAction)aboutButtonPressed:(id)sender;
+- (IBAction)showInventoryButtonPressed:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIView *directionalButtonSubContainer;
 @property (weak, nonatomic) IBOutlet UIButton *seedButton;
@@ -58,6 +59,7 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UIView *playerControlView;
 @property (weak, nonatomic) IBOutlet UITextField *aTextField;
 @property (nonatomic, strong) NSMutableArray *cachedKeyStrokes;
+@property (weak, nonatomic) IBOutlet UIButton *showInventoryButton;
 @end
 
 @implementation ViewController {
@@ -115,23 +117,6 @@ typedef enum {
     }
 }
 
-- (BOOL)canBecomeFirstResponder {
-    return YES;
-}
-
-- (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event{
-    // you can do any thing at this stage what ever you want. Change the song in playlist, show photo, change photo or whatever you want to do
-
-    if (![[GameSettings sharedInstance] allowShake]) {
-        return;
-    }
-    
-    @synchronized(self.cachedKeyStrokes) {
-        [self.cachedKeyStrokes removeAllObjects];
-        [self.cachedKeyStrokes addObject:kESC_Key];
-    }
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -160,6 +145,25 @@ typedef enum {
 - (void)playBrogue
 {
     rogueMain();
+}
+
+#pragma mark - Shake Motion
+
+- (BOOL)canBecomeFirstResponder {
+    return YES;
+}
+
+- (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event{
+    // you can do any thing at this stage what ever you want. Change the song in playlist, show photo, change photo or whatever you want to do
+    
+    if (![[GameSettings sharedInstance] allowShake]) {
+        return;
+    }
+    
+    @synchronized(self.cachedKeyStrokes) {
+        [self.cachedKeyStrokes removeAllObjects];
+        [self.cachedKeyStrokes addObject:kESC_Key];
+    }
 }
 
 #pragma mark - touches
@@ -208,17 +212,6 @@ typedef enum {
         }
     }
 }
-
-/*  Not working as I had hoped plus it just feels a bit like shit
-- (void)handleZGesture:(ZGestureRecognizer *)zGesture {
-    [self stopStationaryTouchTimer];
-    [self.secondaryDisplay removeMagnifyingGlass];
-    
-    @synchronized(self.cachedKeyStrokes) {
-        [self.cachedKeyStrokes removeAllObjects];
-        [self.cachedKeyStrokes addObject:kESC_Key];
-    }
-}*/
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     CGPoint pointInView = [touch locationInView:gestureRecognizer.view];
@@ -551,6 +544,13 @@ typedef enum {
     [self presentViewController:aboutVC animated:YES completion:nil];
 }
 
+- (IBAction)showInventoryButtonPressed:(id)sender {
+    @synchronized(self.cachedKeyStrokes){
+        [self.cachedKeyStrokes removeAllObjects];
+        [self.cachedKeyStrokes addObject:@"i"];
+    }
+}
+
 #pragma mark - setters/getters
 
 - (void)setBlockMagView:(BOOL)blockMagView {
@@ -559,6 +559,10 @@ typedef enum {
     if (blockMagView) {
         [self.secondaryDisplay removeMagnifyingGlass];
     }
+}
+
+- (void)showInventoryShowButton:(BOOL)show {
+    self.showInventoryButton.hidden = !show;
 }
 
 @end

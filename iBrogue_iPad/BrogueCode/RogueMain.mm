@@ -1040,8 +1040,15 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
         strcpy(buf, "You die...");
         encodeMessageColor(buf, strlen(buf), &veryDarkGray);
         strcat(buf, " (press 'i' to view your inventory)");
+        
+        // Seth:
+        showInventoryButton(true);
+        
 		messageWithColor(buf, &badMessageColor, false);
         displayMoreSignWithoutWaitingForAcknowledgment();
+        
+        // Seth:
+        showInventoryButton(false);
         
         do {
             nextBrogueEvent(&theEvent, false, false, false);
