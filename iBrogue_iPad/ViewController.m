@@ -64,7 +64,6 @@ typedef enum {
     @private
     __unused NSTimer __strong *_autoSaveTimer;
     CGPoint _lastTouchLocation;
-//    BOOL _blockCachingTouches;
     NSTimer __strong *_stationaryTouchTimer;
     BOOL _areDirectionalControlsHidden;
 }
@@ -86,7 +85,6 @@ typedef enum {
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center addObserver:self selector:@selector(didShowKeyboard) name:UIKeyboardDidShowNotification object:nil];
         [center addObserver:self selector:@selector(didHideKeyboard) name:UIKeyboardWillHideNotification object:nil];
-     //   [center addObserver:self selector:@selector(applicationWillResign) name:UIApplicationWillResignActiveNotification object:nil];
         [center addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
         
         [self.buttonView setAlpha:0];
@@ -100,9 +98,6 @@ typedef enum {
         });
         
         [self initGestureRecognizers];
-        
-        //TODO: consider this... may not be the time for this yet
-      //  _autoSaveTimer = [NSTimer scheduledTimerWithTimeInterval:20. target:self selector:@selector(autoSave) userInfo:nil repeats:YES];
     }
     
     [self becomeFirstResponder];
@@ -110,16 +105,6 @@ typedef enum {
     
     [self playBrogue];
 }
-
-/*
-- (void)applicationWillResign {
-    [self.secondaryDisplay removeMagnifyingGlass];
-    
-    @synchronized(self){
-        [self.cachedKeyStrokes removeAllObjects];
-        [self.cachedTouches removeAllObjects];
-    }
-}*/
 
 - (void)applicationDidBecomeActive {
     [self.secondaryDisplay removeMagnifyingGlass];
