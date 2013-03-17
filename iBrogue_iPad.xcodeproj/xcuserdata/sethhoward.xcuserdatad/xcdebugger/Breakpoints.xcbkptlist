@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/PlatformCode/RogueDriver.mm"
-         timestampString = "385229286.487225"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "342"
-         endingLineNumber = "342"
+         startingLineNumber = "347"
+         endingLineNumber = "347"
          landmarkName = "getHighScoresList(rogueHighScoresEntry returnList[HIGH_SCORES_COUNT])"
          landmarkType = "7">
       </FileBreakpoint>
@@ -21,11 +21,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/PlatformCode/RogueDriver.mm"
-         timestampString = "385229286.487225"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "491"
-         endingLineNumber = "491"
+         startingLineNumber = "496"
+         endingLineNumber = "496"
          landmarkName = "listFiles(short *fileCount, char **dynamicMemoryBuffer)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -34,22 +34,22 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/PlatformCode/RogueDriver.mm"
-         timestampString = "385229286.487225"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "415"
-         endingLineNumber = "415">
+         startingLineNumber = "420"
+         endingLineNumber = "420">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/PlatformCode/RogueDriver.mm"
-         timestampString = "385229286.487225"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "456"
-         endingLineNumber = "456"
+         startingLineNumber = "461"
+         endingLineNumber = "461"
          landmarkName = "listFiles(short *fileCount, char **dynamicMemoryBuffer)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -58,12 +58,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/BrogueCode/Recordings.c"
-         timestampString = "384294943.635044"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "968"
-         endingLineNumber = "968"
-         landmarkName = "saveGame()"
+         startingLineNumber = "969"
+         endingLineNumber = "969"
+         landmarkName = "getAvailableFilePath()"
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
@@ -175,11 +175,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/BrogueCode/IO.c"
-         timestampString = "384743260.312124"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "3007"
-         endingLineNumber = "3007"
+         startingLineNumber = "3012"
+         endingLineNumber = "3012"
          landmarkName = "refreshSideBar()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -188,7 +188,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/BrogueCode/Recordings.c"
-         timestampString = "384240875.759454"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "305"
@@ -201,12 +201,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/BrogueCode/Recordings.c"
-         timestampString = "384241820.219263"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "552"
-         endingLineNumber = "552"
-         landmarkName = "unpause()"
+         startingLineNumber = "553"
+         endingLineNumber = "553"
+         landmarkName = "RNGCheck()"
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
@@ -214,11 +214,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/BrogueCode/IO.c"
-         timestampString = "384719830.259471"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "2023"
-         endingLineNumber = "2023"
+         startingLineNumber = "2025"
+         endingLineNumber = "2025"
          landmarkName = "nextBrogueEvent()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -227,13 +227,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/BrogueCode/Recordings.c"
-         timestampString = "384242502.567949"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "519"
-         endingLineNumber = "519"
-         landmarkName = "OOSCheck()"
-         landmarkType = "7">
+         startingLineNumber = "520"
+         endingLineNumber = "520">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -279,11 +277,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/BrogueCode/Recordings.c"
-         timestampString = "384242952.529186"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "544"
-         endingLineNumber = "544"
+         startingLineNumber = "545"
+         endingLineNumber = "545"
          landmarkName = "RNGCheck()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -318,11 +316,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/BrogueCode/MainMenu.c"
-         timestampString = "384805383.62257"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "820"
-         endingLineNumber = "820"
+         startingLineNumber = "826"
+         endingLineNumber = "826"
          landmarkName = "mainBrogueJunction()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -422,12 +420,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/BrogueCode/Recordings.c"
-         timestampString = "384294861.772194"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "326"
-         endingLineNumber = "326"
-         landmarkName = "recallEvent()"
+         startingLineNumber = "327"
+         endingLineNumber = "327"
+         landmarkName = "playbackPanic()"
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
@@ -435,12 +433,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/BrogueCode/Recordings.c"
-         timestampString = "384294865.53598"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "371"
-         endingLineNumber = "371"
-         landmarkName = "loadNextAnnotation()"
+         startingLineNumber = "372"
+         endingLineNumber = "372"
+         landmarkName = "recallEvent()"
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
@@ -448,12 +446,23 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/BrogueCode/Recordings.c"
-         timestampString = "384294880.370185"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "447"
-         endingLineNumber = "447"
-         landmarkName = "initRecording()"
+         startingLineNumber = "448"
+         endingLineNumber = "448">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "iBrogue_iPad/BrogueCode/Recordings.c"
+         timestampString = "385231964.309053"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "1001"
+         endingLineNumber = "1001"
+         landmarkName = "saveGame()"
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
@@ -461,11 +470,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/BrogueCode/Recordings.c"
-         timestampString = "384294949.918901"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1000"
-         endingLineNumber = "1000"
+         startingLineNumber = "1030"
+         endingLineNumber = "1030"
          landmarkName = "saveRecording()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -474,11 +483,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/BrogueCode/Recordings.c"
-         timestampString = "384294959.792853"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1029"
-         endingLineNumber = "1029"
+         startingLineNumber = "1051"
+         endingLineNumber = "1051"
          landmarkName = "copyFile()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -487,51 +496,36 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/BrogueCode/Recordings.c"
-         timestampString = "384294964.919307"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1050"
-         endingLineNumber = "1050"
+         startingLineNumber = "1074"
+         endingLineNumber = "1074"
          landmarkName = "switchToPlaying()"
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/BrogueCode/Recordings.c"
-         timestampString = "384294968.018086"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1073"
-         endingLineNumber = "1073"
-         landmarkName = "loadSavedGame()"
-         landmarkType = "7">
+         startingLineNumber = "1130"
+         endingLineNumber = "1130">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/BrogueCode/Recordings.c"
-         timestampString = "384294989.207744"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1129"
-         endingLineNumber = "1129"
-         landmarkName = "describeKeystroke()"
-         landmarkType = "7">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "iBrogue_iPad/BrogueCode/Recordings.c"
-         timestampString = "384294993.167612"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1191"
-         endingLineNumber = "1191"
-         landmarkName = "parseFile()"
+         startingLineNumber = "1192"
+         endingLineNumber = "1192"
+         landmarkName = "selectFile()"
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
@@ -617,11 +611,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/BrogueCode/Recordings.c"
-         timestampString = "384297963.116459"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "491"
-         endingLineNumber = "491"
+         startingLineNumber = "492"
+         endingLineNumber = "492"
          landmarkName = "initRecording()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -630,11 +624,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/BrogueCode/Recordings.c"
-         timestampString = "384298076.624004"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "510"
-         endingLineNumber = "510"
+         startingLineNumber = "511"
+         endingLineNumber = "511"
          landmarkName = "initRecording()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -656,11 +650,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/BrogueCode/IO.c"
-         timestampString = "384719830.259471"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1509"
-         endingLineNumber = "1509"
+         startingLineNumber = "1511"
+         endingLineNumber = "1511"
          landmarkName = "plotCharToBuffer()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -682,11 +676,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/BrogueCode/IO.c"
-         timestampString = "384719830.259471"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "265"
-         endingLineNumber = "265"
+         startingLineNumber = "267"
+         endingLineNumber = "267"
          landmarkName = "initializeMenuButtons()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -695,11 +689,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/BrogueCode/IO.c"
-         timestampString = "384720358.143207"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "258"
-         endingLineNumber = "258"
+         startingLineNumber = "260"
+         endingLineNumber = "260"
          landmarkName = "actionMenu()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -708,11 +702,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/BrogueCode/IO.c"
-         timestampString = "384720786.105771"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "646"
-         endingLineNumber = "646"
+         startingLineNumber = "648"
+         endingLineNumber = "648"
          landmarkName = "mainInputLoop()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -721,11 +715,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "iBrogue_iPad/PlatformCode/RogueDriver.mm"
-         timestampString = "385229286.487225"
+         timestampString = "385231964.309053"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "535"
-         endingLineNumber = "535">
+         startingLineNumber = "540"
+         endingLineNumber = "540">
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

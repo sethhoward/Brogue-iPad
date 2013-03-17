@@ -17,7 +17,7 @@
 #import "ZGestureRecognizer.h"
 #import "GameSettings.h"
 
-#define kStationaryTime 0.5f
+#define kStationaryTime 0.45f
 #define kGamePlayHitArea CGRectMake(209., 74., 810., 650.)     // seems to be a method in the c code that does this but didn't work as expected
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
@@ -565,6 +565,45 @@ typedef enum {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.showInventoryButton.hidden = !show;
     });
+}
+
+// my original intention was to not touch any game code. In the end this was not possible in order to give the best user experience. I funnel all modification and events in the core code through here.
+- (void)setBrogueGameEvent:(BrogueGameEvent)brogueGameEvent {
+    //_brogueGameEvent = brogueGameEvent;
+    
+    switch (brogueGameEvent) {
+        case BrogueGameEventWaitingForConfirmation:
+        case BrogueGameEventActionMenuOpen:
+        case BrogueGameEventOpenedInventory:
+            self.blockMagView = YES;
+            break;
+        case BrogueGameEventInventoryItemAction:
+        case BrogueGameEventConfirmationComplete:
+        case BrogueGameEventActionMenuClose:
+        case BrogueGameEventClosedInventory:
+            self.blockMagView = NO;
+            break;
+        case BrogueGameEventKeyBoardInputRequired:
+            [self showKeyboard];
+            break;
+        case BrogueGameEventShowTitle:
+        case BrogueGameEventOpenGameFinished:
+            [self showTitle];
+            self.blockMagView = YES;
+            break;
+        case BrogueGameEventStartNewGame:
+        case BrogueGameEventOpenGame:
+            [self showAuxillaryScreensWithDirectionalControls:YES];
+            self.blockMagView = NO;
+            break;
+        case BrogueGameEventPlayRecording:
+        case BrogueGameEventShowHighScores:
+            [self showAuxillaryScreensWithDirectionalControls:NO];
+            self.blockMagView = YES;
+            break;
+        default:
+            break;
+    }
 }
 
 @end

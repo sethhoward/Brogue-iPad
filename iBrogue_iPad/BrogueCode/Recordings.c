@@ -301,8 +301,9 @@ void playbackPanic() {
         
         
         // Seth Added:
-        showAuxillaryScreen(true);
-        blockMagGlass(true);
+//        showAuxillaryScreen(true);
+//        blockMagGlass(true);
+        setBrogueGameEvent(BrogueGameEventPlayBackPanic);
         
         blackOutScreen();
 		displayLevel();
