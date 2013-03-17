@@ -1047,9 +1047,6 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
 		messageWithColor(buf, &badMessageColor, false);
         displayMoreSignWithoutWaitingForAcknowledgment();
         
-        // Seth:
-        showInventoryButton(false);
-        
         do {
             nextBrogueEvent(&theEvent, false, false, false);
             if (theEvent.eventType == KEYSTROKE
@@ -1068,6 +1065,8 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
         } while (!(theEvent.eventType == KEYSTROKE && (theEvent.param1 == ACKNOWLEDGE_KEY || theEvent.param1 == ESCAPE_KEY)
                    || theEvent.eventType == MOUSE_UP));
         
+        // Seth:
+        showInventoryButton(false);
         confirmMessages();
         
 		rogue.playbackMode = playback;

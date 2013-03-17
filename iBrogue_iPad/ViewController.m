@@ -562,7 +562,9 @@ typedef enum {
 }
 
 - (void)showInventoryShowButton:(BOOL)show {
-    self.showInventoryButton.hidden = !show;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.showInventoryButton.hidden = !show;
+    });
 }
 
 @end
