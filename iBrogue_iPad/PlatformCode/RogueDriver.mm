@@ -36,6 +36,7 @@
 // something about the OS X high scores file structure changes.
 
 short mouseX, mouseY;
+static boolean _isInBackground = false;
 
 @interface RogueDriver ()
 @property (nonatomic, strong) NSTimer *colorsDanceTimer;
@@ -56,11 +57,33 @@ short mouseX, mouseY;
     return instance;
 }
 
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResign) name:UIApplicationWillResignActiveNotification object:nil];
+    }
+    return self;
+}
+
 + (BOOL)coordinatesAreInMap:(CGPoint)point {
     return coordinatesAreInMap(point.x, point.y);
 }
 
+- (void)applicationDidBecomeActive {
+    _isInBackground = false;
+}
+
+- (void)applicationWillResign {
+    _isInBackground = true;
+}
+
 - (void)colorsDance {
+    if (_isInBackground) {
+        return;
+    }
+    
     shuffleTerrainColors(3, true);
     commitDraws();
 }
@@ -91,6 +114,10 @@ void plotChar(uchar inputChar,
 			  short xLoc, short yLoc,
 			  short foreRed, short foreGreen, short foreBlue,
 			  short backRed, short backGreen, short backBlue) {
+    if (_isInBackground) {
+        return;
+    }
+    
     @autoreleasepool {
         [theMainDisplay setString:[NSString stringWithCharacters:&inputChar length:1]
                    withBackground:[UIColor colorWithRed:((float)backRed/100)
@@ -137,21 +164,8 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
         [[RogueDriver sharedInstance] animateColors:NO];
     }
     
-    @autoreleasepool {
-        for(;;) {
-            // throttle the video or at some point it'll run too fast on some amazing device that doesn't exist yet
-            //  NSLog(@"%i", rogue.nextGame);
-         /*   if (colorsDance) {
-
-                //Seth Added:
-                dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    shuffleTerrainColors(3, true);
-                    commitDraws();
-                });
-                
-                
-            }*/
-            
+  //  @autoreleasepool {
+        for(;;) {            
             if ([viewController cachedKeyStrokeCount] > 0) {
                 returnEvent->eventType = KEYSTROKE;
                 returnEvent->param1 = [viewController dequeKeyStroke];
@@ -208,7 +222,7 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
                     break;
                 }
             }
-        }
+        //}
     }
     
     [[RogueDriver sharedInstance] animateColors:NO];

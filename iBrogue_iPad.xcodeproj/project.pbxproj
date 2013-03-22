@@ -64,6 +64,8 @@
 		C59B21DB16EA5EE9007018DE /* brogue_escapebutton.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21D916EA5EE9007018DE /* brogue_escapebutton.png */; };
 		C59B21DE16EA69D8007018DE /* about_brogue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21DC16EA69D7007018DE /* about_brogue@2x.png */; };
 		C59B21DF16EA69D8007018DE /* about_brogue.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21DD16EA69D8007018DE /* about_brogue.png */; };
+		C5D5EC6116FBEA5200E9A9AF /* brogue_showinventory_button.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D5EC5F16FBEA5200E9A9AF /* brogue_showinventory_button.png */; };
+		C5D5EC6216FBEA5200E9A9AF /* brogue_showinventory_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D5EC6016FBEA5200E9A9AF /* brogue_showinventory_button@2x.png */; };
 		C5EFC0E916ECE398008BD644 /* ACLoupe.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFC0E216ECE398008BD644 /* ACLoupe.m */; };
 		C5EFC0EA16ECE398008BD644 /* ACMagnifyingGlass.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFC0E416ECE398008BD644 /* ACMagnifyingGlass.m */; };
 		C5EFC0EB16ECE398008BD644 /* ACMagnifyingView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFC0E616ECE398008BD644 /* ACMagnifyingView.m */; };
@@ -145,6 +147,8 @@
 		C59B21D916EA5EE9007018DE /* brogue_escapebutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brogue_escapebutton.png; sourceTree = "<group>"; };
 		C59B21DC16EA69D7007018DE /* about_brogue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "about_brogue@2x.png"; sourceTree = "<group>"; };
 		C59B21DD16EA69D8007018DE /* about_brogue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = about_brogue.png; sourceTree = "<group>"; };
+		C5D5EC5F16FBEA5200E9A9AF /* brogue_showinventory_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brogue_showinventory_button.png; sourceTree = "<group>"; };
+		C5D5EC6016FBEA5200E9A9AF /* brogue_showinventory_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brogue_showinventory_button@2x.png"; sourceTree = "<group>"; };
 		C5EFC0E116ECE398008BD644 /* ACLoupe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACLoupe.h; sourceTree = "<group>"; };
 		C5EFC0E216ECE398008BD644 /* ACLoupe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACLoupe.m; sourceTree = "<group>"; };
 		C5EFC0E316ECE398008BD644 /* ACMagnifyingGlass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMagnifyingGlass.h; sourceTree = "<group>"; };
@@ -327,6 +331,8 @@
 		C5F0CED416E6D56700F1A853 /* image assets */ = {
 			isa = PBXGroup;
 			children = (
+				C5D5EC5F16FBEA5200E9A9AF /* brogue_showinventory_button.png */,
+				C5D5EC6016FBEA5200E9A9AF /* brogue_showinventory_button@2x.png */,
 				C58831E516EA98040047FCA9 /* brogue_sproutedseed.png */,
 				C58831E716EA987D0047FCA9 /* brogue_sproutedseed@2x.png */,
 				C59B21CA16EA57AF007018DE /* brogue_seed.png */,
@@ -422,6 +428,8 @@
 				C58831FE16EAB6D10047FCA9 /* Default-Landscape~ipad.png in Resources */,
 				C588320016EAB6DF0047FCA9 /* Default-Landscape@2x~ipad.png in Resources */,
 				C5EFC0EC16ECE398008BD644 /* kb-loupe-hi.png in Resources */,
+				C5D5EC6116FBEA5200E9A9AF /* brogue_showinventory_button.png in Resources */,
+				C5D5EC6216FBEA5200E9A9AF /* brogue_showinventory_button@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

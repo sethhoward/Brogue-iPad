@@ -41,4 +41,7 @@ typedef struct iBTouch iBTouch;
 - (void)showAuxillaryScreensWithDirectionalControls:(BOOL)controls;
 - (void)showInventoryShowButton:(BOOL)show;
 
+- (void)turnOnPinchGesture;
+- (void)turnOffPinchGesture;
+
 @end

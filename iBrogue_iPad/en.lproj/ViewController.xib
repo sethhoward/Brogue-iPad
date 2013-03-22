@@ -80,7 +80,7 @@
 							<object class="IBUIButton" id="923170605">
 								<reference key="NSNextResponder" ref="918948232"/>
 								<int key="NSvFlags">-2147483356</int>
-								<string key="NSFrame">{{448, 97}, {128, 44}}</string>
+								<string key="NSFrame">{{382, 63}, {261, 46}}</string>
 								<reference key="NSSuperview" ref="918948232"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="252640321"/>
@@ -89,8 +89,6 @@
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
-								<int key="IBUIButtonType">1</int>
-								<string key="IBUINormalTitle">Show Inventory</string>
 								<object class="NSColor" key="IBUIHighlightedTitleColor" id="687873219">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MQA</bytes>
@@ -102,6 +100,10 @@
 								<object class="NSColor" key="IBUINormalTitleShadowColor" id="717292079">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MC41AA</bytes>
+								</object>
+								<object class="NSCustomResource" key="IBUINormalImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">brogue_showinventory_button.png</string>
 								</object>
 								<object class="IBUIFontDescription" key="IBUIFontDescription" id="958464721">
 									<int key="type">2</int>
@@ -436,7 +438,7 @@
 									<object class="IBUIButton" id="619564880">
 										<reference key="NSNextResponder" ref="888811474"/>
 										<int key="NSvFlags">292</int>
-										<string key="NSFrame">{{124, 163}, {80, 80}}</string>
+										<string key="NSFrame">{{124, 162}, {82, 85}}</string>
 										<reference key="NSSuperview" ref="888811474"/>
 										<reference key="NSWindow"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -1043,10 +1045,11 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="about_brogue.png">{80, 80}</string>
+			<string key="about_brogue.png">{333, 342}</string>
 			<string key="brogue_directionals.png">{135, 136}</string>
-			<string key="brogue_escapebutton.png">{151, 31}</string>
+			<string key="brogue_escapebutton.png">{576, 123}</string>
 			<string key="brogue_seed.png">{20, 44}</string>
+			<string key="brogue_showinventory_button.png">{693, 123}</string>
 			<string key="gamecenterlogo_brogue.png">{82, 85}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>

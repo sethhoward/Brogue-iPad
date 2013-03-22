@@ -8,6 +8,8 @@
 
 #import "AboutViewController.h"
 #import "GameSettings.h"
+#import "AppDelegate.h"
+#import "ViewController.h"
 
 @interface AboutViewController ()
 - (IBAction)dismissButtonPressed:(id)sender;
@@ -68,6 +70,15 @@
 - (IBAction)pinchSwitch:(id)sender {
     UISwitch *aSwitch = (UISwitch *)sender;
     [[GameSettings sharedInstance] setAllowPinchToZoomDirectional:aSwitch.on];
+    
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    
+    if (aSwitch.on) {
+        [appDelegate.viewController turnOnPinchGesture];
+    }
+    else {
+        [appDelegate.viewController turnOffPinchGesture];
+    }
 }
 
 - (IBAction)magnifierSwitch:(id)sender {

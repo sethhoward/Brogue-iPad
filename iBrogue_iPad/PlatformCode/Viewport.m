@@ -99,18 +99,33 @@ short theFontSize = FONT_SIZE;
 
     if (self) {
         [self initializeLayoutVariables];
-      //  self.displayLink =  [CADisplayLink displayLinkWithTarget:self selector:@selector(draw)];
-        _animationRunning = YES;    // TODO: remove
+        
+       [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResign) name:UIApplicationWillResignActiveNotification object:nil];
+  //      test = arc4random() % 10000000;
     }
     
 	return self;
 }
 
+- (void)applicationDidBecomeActive {
+    if ([self.displayLink isPaused] && _animationRunning) {
+        [self.displayLink setPaused:NO];
+    }
+}
+
+- (void)applicationWillResign {
+    if ([self.displayLink isPaused] == NO) {
+        [self.displayLink setPaused:YES];
+    }
+}
+
 - (void)stopAnimating {
+   // [self.displayLink invalidate];
+   // self.displayLink = nil;
+    [self.displayLink setPaused:YES];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.displayLink invalidate];
-        self.displayLink = nil;
-        
         for (int j = 0; j < kROWS; j++) {
             for (int i = 0; i < kCOLS; i++) {
                 letterArray[i][j] = @" ";
@@ -124,11 +139,20 @@ short theFontSize = FONT_SIZE;
     
         [self setNeedsDisplay];
     });
+    
+    _animationRunning = NO;
 }
 
 - (void)startAnimating {
-    self.displayLink =  [CADisplayLink displayLinkWithTarget:self selector:@selector(draw)];
-    [self.displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
+    _animationRunning = YES;
+    
+    if (!self.displayLink) {
+        self.displayLink =  [CADisplayLink displayLinkWithTarget:self selector:@selector(draw)];
+        [self.displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
+    }
+    else {
+        [self.displayLink setPaused:NO];
+    }
 }
 
 - (void)initializeLayoutVariables {
@@ -158,6 +182,7 @@ short theFontSize = FONT_SIZE;
 }
 
 - (void)draw {
+ //   NSLog(@"%i", test);
     [self setNeedsDisplay];
 }
 

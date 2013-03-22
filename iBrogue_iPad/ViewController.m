@@ -60,6 +60,10 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UITextField *aTextField;
 @property (nonatomic, strong) NSMutableArray *cachedKeyStrokes;
 @property (weak, nonatomic) IBOutlet UIButton *showInventoryButton;
+
+// gestures
+@property (nonatomic, strong) UIPinchGestureRecognizer *directionalPinch;
+
 @end
 
 @implementation ViewController {
@@ -111,10 +115,10 @@ typedef enum {
 - (void)applicationDidBecomeActive {
     [self.secondaryDisplay removeMagnifyingGlass];
     
-    @synchronized(self){
+ /*   @synchronized(self){
         [self.cachedKeyStrokes removeAllObjects];
         [self.cachedTouches removeAllObjects];
-    }
+    }*/
 }
 
 - (void)didReceiveMemoryWarning
@@ -180,8 +184,21 @@ typedef enum {
     }*/
     
     if ([[GameSettings sharedInstance] allowPinchToZoomDirectional]) {
-        UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
-        [self.playerControlView addGestureRecognizer:pinch];
+        [self turnOnPinchGesture];
+    }
+}
+
+- (void)turnOnPinchGesture {
+    if (!self.directionalPinch) {
+        self.directionalPinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
+        [self.playerControlView addGestureRecognizer:self.directionalPinch];
+    }
+}
+
+- (void)turnOffPinchGesture {
+    if (self.directionalPinch) {
+        [self.playerControlView removeGestureRecognizer:self.directionalPinch];
+        self.directionalPinch = nil;
     }
 }
 
@@ -598,6 +615,7 @@ typedef enum {
             break;
         case BrogueGameEventPlayRecording:
         case BrogueGameEventShowHighScores:
+        case BrogueGameEventPlayBackPanic:
             [self showAuxillaryScreensWithDirectionalControls:NO];
             self.blockMagView = YES;
             break;
