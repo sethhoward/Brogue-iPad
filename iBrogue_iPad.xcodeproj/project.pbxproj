@@ -149,6 +149,7 @@
 		C5D5EC6016FBEA5200E9A9AF /* brogue_showinventory_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brogue_showinventory_button@2x.png"; sourceTree = "<group>"; };
 		C5D5EC6B16FC07EB00E9A9AF /* icon_72x72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_72x72.png; sourceTree = "<group>"; };
 		C5D5EC6D16FC07F300E9A9AF /* icon_144x144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_144x144.png; sourceTree = "<group>"; };
+		C5EA72D616FE92DC00AE688A /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		C5EFC0E116ECE398008BD644 /* ACLoupe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACLoupe.h; sourceTree = "<group>"; };
 		C5EFC0E216ECE398008BD644 /* ACLoupe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACLoupe.m; sourceTree = "<group>"; };
 		C5EFC0E316ECE398008BD644 /* ACMagnifyingGlass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMagnifyingGlass.h; sourceTree = "<group>"; };
@@ -192,6 +193,7 @@
 		C57A961C16D7EAD500C233F1 = {
 			isa = PBXGroup;
 			children = (
+				C5EA72D616FE92DC00AE688A /* CoreText.framework */,
 				C5D5EC6D16FC07F300E9A9AF /* icon_144x144.png */,
 				C5D5EC6B16FC07EB00E9A9AF /* icon_72x72.png */,
 				C58831FF16EAB6DF0047FCA9 /* Default-Landscape@2x~ipad.png */,

@@ -160,6 +160,8 @@ short theFontSize = FONT_SIZE;
     self.hWindow = 1024;
     self.vWindow = 748;
     
+    characterSizeDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
+    
 	for (j = 0; j < kROWS; j++) {        
 		for (i = 0; i < kCOLS; i++) {            
 			letterArray[i][j] = @" ";

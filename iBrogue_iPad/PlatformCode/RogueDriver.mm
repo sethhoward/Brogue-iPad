@@ -165,7 +165,9 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
     }
     
   //  @autoreleasepool {
-        for(;;) {            
+        for(;;) {
+            [NSThread sleepForTimeInterval:1./30.];
+            
             if ([viewController cachedKeyStrokeCount] > 0) {
                 returnEvent->eventType = KEYSTROKE;
                 returnEvent->param1 = [viewController dequeKeyStroke];
