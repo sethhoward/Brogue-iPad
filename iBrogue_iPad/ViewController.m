@@ -7,17 +7,14 @@
 //
 
 #import "ViewController.h"
-#include <limits.h>
-#include <unistd.h>
 #import "RogueDriver.h"
 #import "Viewport.h"
 #import "GameCenterManager.h"
 #import "UIViewController+UIViewController_GCLeaderBoardView.h"
 #import "AboutViewController.h"
-#import "ZGestureRecognizer.h"
 #import "GameSettings.h"
 
-#define kStationaryTime 0.45f
+#define kStationaryTime 0.35f
 #define kGamePlayHitArea CGRectMake(209., 74., 810., 650.)     // seems to be a method in the c code that does this but didn't work as expected
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
@@ -73,6 +70,8 @@ typedef enum {
     NSTimer __strong *_stationaryTouchTimer;
     BOOL _areDirectionalControlsHidden;
 }
+@dynamic cachedKeyStrokeCount;
+@dynamic cachedTouchesCount;
 
 - (void)viewDidLoad
 {
@@ -88,10 +87,7 @@ typedef enum {
         _cachedTouches = [NSMutableArray arrayWithCapacity:1];
         _cachedKeyStrokes = [NSMutableArray arrayWithCapacity:1];
         
-        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-        [center addObserver:self selector:@selector(didShowKeyboard) name:UIKeyboardDidShowNotification object:nil];
-        [center addObserver:self selector:@selector(didHideKeyboard) name:UIKeyboardWillHideNotification object:nil];
-        [center addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+        [self addNotificationObservers];
         
         [self.buttonView setAlpha:0];
         
@@ -107,18 +103,18 @@ typedef enum {
     }
     
     [self becomeFirstResponder];
-    
-    
     [self playBrogue];
+}
+
+- (void)addNotificationObservers {
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(didShowKeyboard) name:UIKeyboardDidShowNotification object:nil];
+    [center addObserver:self selector:@selector(didHideKeyboard) name:UIKeyboardWillHideNotification object:nil];
+    [center addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)applicationDidBecomeActive {
     [self.secondaryDisplay removeMagnifyingGlass];
-    
- /*   @synchronized(self){
-        [self.cachedKeyStrokes removeAllObjects];
-        [self.cachedTouches removeAllObjects];
-    }*/
 }
 
 - (void)didReceiveMemoryWarning
@@ -173,15 +169,11 @@ typedef enum {
 #pragma mark - touches
 
 - (void)initGestureRecognizers {
-    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
-    doubleTap.numberOfTapsRequired = 2;
-    doubleTap.delegate = self;
-    [self.secondaryDisplay addGestureRecognizer:doubleTap];
-    
-  /*  if ([[GameSettings sharedInstance] allowESCGesture]) {
-        ZGestureRecognizer *zGesture = [[ZGestureRecognizer alloc] initWithTarget:self action:@selector(handleZGesture:)];
-        [self.view addGestureRecognizer:zGesture];
-    }*/
+    // IS slow as shit
+   // UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+   // doubleTap.numberOfTapsRequired = 2;
+   // doubleTap.delegate = self;
+  //  [self.secondaryDisplay addGestureRecognizer:doubleTap];
     
     if ([[GameSettings sharedInstance] allowPinchToZoomDirectional]) {
         [self turnOnPinchGesture];
@@ -315,7 +307,6 @@ typedef enum {
     if (self.secondaryDisplay.hidden == NO && !self.blockMagView) {
         NSValue *v = timer.userInfo;
         CGPoint point = [v CGPointValue];
-      //  [RogueDriver printRogue];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.secondaryDisplay addMagnifyingGlassAtPoint:point];
@@ -329,9 +320,17 @@ typedef enum {
    // NSLog(@"%s", __PRETTY_FUNCTION__);
 
     [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
+        if (touch.tapCount == 2) {
+            if ([self isPointInGamePlayArea:[touch locationInView:theMainDisplay]]) {
+                //This will cancel the singleTap action
+                [self handleDoubleTap:nil];
+                return ;
+            }
+        }
+        
         // Get a single touch and it's location
         [self addTouchToCache:touch];
-        [self startStationaryTouchTimerWithTouch:touch andTimeout:kStationaryTime + 0.1];
+        [self startStationaryTouchTimerWithTouch:touch andTimeout:kStationaryTime];
     }];
 }
 
@@ -356,17 +355,6 @@ typedef enum {
 
 #pragma mark - Magnifier
 
-- (BOOL)isMagHoldAvailableAtPoint:(CGPoint)point {
-    CGRect boundaryRect = kGamePlayHitArea;
-    
-    if (!CGRectContainsPoint(boundaryRect, point)) {
-        // NSLog(@"out of bounds");
-        return NO;
-    }
-    
-    return YES;
-}
-
 - (void)stopStationaryTouchTimer {
     [_stationaryTouchTimer invalidate];
     _stationaryTouchTimer = nil;
@@ -376,7 +364,7 @@ typedef enum {
     if ([[GameSettings sharedInstance] allowMagnifier]) {
         [self stopStationaryTouchTimer];
         
-        if ([self isMagHoldAvailableAtPoint:[touch locationInView:self.secondaryDisplay]]) {
+        if ([self isPointInGamePlayArea:[touch locationInView:self.secondaryDisplay]]) {
             _stationaryTouchTimer = [NSTimer scheduledTimerWithTimeInterval:timeOut target:self selector:@selector(handleStationary:) userInfo:[NSValue valueWithCGPoint:[touch locationInView:self.secondaryDisplay]] repeats:NO];
         }
         else {
@@ -387,6 +375,17 @@ typedef enum {
 }
 
 #pragma mark - views
+
+- (BOOL)isPointInGamePlayArea:(CGPoint)point {
+    CGRect boundaryRect = kGamePlayHitArea;
+    
+    if (!CGRectContainsPoint(boundaryRect, point)) {
+        // NSLog(@"out of bounds");
+        return NO;
+    }
+    
+    return YES;
+}
 
 - (void)showTitle {
     if (self.titleDisplay.hidden == YES) {
@@ -586,8 +585,6 @@ typedef enum {
 
 // my original intention was to not touch any game code. In the end this was not possible in order to give the best user experience. I funnel all modification and events in the core code through here.
 - (void)setBrogueGameEvent:(BrogueGameEvent)brogueGameEvent {
-    //_brogueGameEvent = brogueGameEvent;
-    
     switch (brogueGameEvent) {
         case BrogueGameEventWaitingForConfirmation:
         case BrogueGameEventActionMenuOpen:

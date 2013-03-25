@@ -44,12 +44,12 @@
 		C57A967216D7EB5500C233F1 /* Recordings.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A966216D7EB5500C233F1 /* Recordings.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A967316D7EB5500C233F1 /* RogueMain.mm in Sources */ = {isa = PBXBuildFile; fileRef = C57A966416D7EB5500C233F1 /* RogueMain.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A967516DBF1CE00C233F1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C57A967416DBF1CE00C233F1 /* QuartzCore.framework */; };
+		C5865D3F1700EBAE00B18C2B /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EA72D616FE92DC00AE688A /* CoreText.framework */; };
 		C58831E016EA6E860047FCA9 /* brogue_seed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C58831DF16EA6E860047FCA9 /* brogue_seed@2x.png */; };
 		C58831E616EA98040047FCA9 /* brogue_sproutedseed.png in Resources */ = {isa = PBXBuildFile; fileRef = C58831E516EA98040047FCA9 /* brogue_sproutedseed.png */; };
 		C58831E816EA987D0047FCA9 /* brogue_sproutedseed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C58831E716EA987D0047FCA9 /* brogue_sproutedseed@2x.png */; };
 		C58831FE16EAB6D10047FCA9 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C58831FD16EAB6D10047FCA9 /* Default-Landscape~ipad.png */; };
 		C588320016EAB6DF0047FCA9 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C58831FF16EAB6DF0047FCA9 /* Default-Landscape@2x~ipad.png */; };
-		C593046416EBE39200124B2B /* ZGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = C593046316EBE39200124B2B /* ZGestureRecognizer.m */; };
 		C59B21C716EA48E0007018DE /* MONACO.TTF in Resources */ = {isa = PBXBuildFile; fileRef = C59B21C616EA48E0007018DE /* MONACO.TTF */; };
 		C59B21CE16EA57AF007018DE /* gamecenterlogo_brogue.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21C816EA57AF007018DE /* gamecenterlogo_brogue.png */; };
 		C59B21CF16EA57AF007018DE /* brogue_directionals.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21C916EA57AF007018DE /* brogue_directionals.png */; };
@@ -131,8 +131,6 @@
 		C58831E716EA987D0047FCA9 /* brogue_sproutedseed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brogue_sproutedseed@2x.png"; sourceTree = "<group>"; };
 		C58831FD16EAB6D10047FCA9 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		C58831FF16EAB6DF0047FCA9 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
-		C593046216EBE39200124B2B /* ZGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZGestureRecognizer.h; sourceTree = "<group>"; };
-		C593046316EBE39200124B2B /* ZGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZGestureRecognizer.m; sourceTree = "<group>"; };
 		C59B21C616EA48E0007018DE /* MONACO.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = MONACO.TTF; sourceTree = "<group>"; };
 		C59B21C816EA57AF007018DE /* gamecenterlogo_brogue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gamecenterlogo_brogue.png; sourceTree = "<group>"; };
 		C59B21C916EA57AF007018DE /* brogue_directionals.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brogue_directionals.png; sourceTree = "<group>"; };
@@ -164,6 +162,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5865D3F1700EBAE00B18C2B /* CoreText.framework in Frameworks */,
 				C52B092716E5853900675CC7 /* GameKit.framework in Frameworks */,
 				C57A967516DBF1CE00C233F1 /* QuartzCore.framework in Frameworks */,
 				C57A962916D7EAD500C233F1 /* UIKit.framework in Frameworks */,
@@ -228,7 +227,6 @@
 			isa = PBXGroup;
 			children = (
 				C5EFC0E016ECE398008BD644 /* MagnifyingGlass */,
-				C593046116EBE38600124B2B /* Gestures */,
 				C5F0CED416E6D56700F1A853 /* image assets */,
 				C52B091916E5848500675CC7 /* GameCenter */,
 				C57A965316D7EB5500C233F1 /* BrogueCode */,
@@ -297,15 +295,6 @@
 				C57A966416D7EB5500C233F1 /* RogueMain.mm */,
 			);
 			path = BrogueCode;
-			sourceTree = "<group>";
-		};
-		C593046116EBE38600124B2B /* Gestures */ = {
-			isa = PBXGroup;
-			children = (
-				C593046216EBE39200124B2B /* ZGestureRecognizer.h */,
-				C593046316EBE39200124B2B /* ZGestureRecognizer.m */,
-			);
-			name = Gestures;
 			sourceTree = "<group>";
 		};
 		C5EFC0E016ECE398008BD644 /* MagnifyingGlass */ = {
@@ -467,7 +456,6 @@
 				C52B092416E5848500675CC7 /* UIViewController+UIViewController_GCAchievementView.m in Sources */,
 				C52B092516E5848500675CC7 /* UIViewController+UIViewController_GCLeaderBoardView.m in Sources */,
 				C5105B1216E65EDB00E09905 /* AboutViewController.m in Sources */,
-				C593046416EBE39200124B2B /* ZGestureRecognizer.m in Sources */,
 				C5EFC0E916ECE398008BD644 /* ACLoupe.m in Sources */,
 				C5EFC0EA16ECE398008BD644 /* ACMagnifyingGlass.m in Sources */,
 				C5EFC0EB16ECE398008BD644 /* ACMagnifyingView.m in Sources */,

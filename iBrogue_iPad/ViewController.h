@@ -25,12 +25,11 @@ typedef struct iBTouch iBTouch;
 - (void)setBrogueGameEvent:(BrogueGameEvent)brogueGameEvent;
 @property (nonatomic, readonly, getter = isSeedKeyDown) BOOL seedKeyDown;
 @property (nonatomic, assign) BOOL blockMagView;    // block the magnifying glass from appearing
+@property (readonly) uint cachedTouchesCount;
+@property (readonly) uint cachedKeyStrokeCount;
 
-- (uint)cachedTouchesCount;
 - (iBTouch)getTouchAtIndex:(uint)index;
 - (void)removeTouchAtIndex:(uint)index;
-
-- (uint)cachedKeyStrokeCount;
 - (char)dequeKeyStroke;
 
 - (void)showKeyboard;

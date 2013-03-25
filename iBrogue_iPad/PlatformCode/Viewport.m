@@ -37,6 +37,8 @@
     BOOL _hasInitialized;
     UIFont *theSlowFont;
     UIFont *theFastFont;
+    CGContextRef context;
+    CGFontRef CGFont;
 }
 
 CGSize characterSize;
@@ -68,7 +70,7 @@ short theFontSize = FONT_SIZE;
 
 - (UIFont *)fastFont {
 	if (!theFastFont) {
-		theFastFont = [UIFont fontWithName:@"Monaco" size:theFontSize + 1];
+		theFastFont = [UIFont fontWithName:@"Courier-Bold" size:theFontSize + 1];
     }
 	return theFastFont;
 }
@@ -217,12 +219,16 @@ short theFontSize = FONT_SIZE;
     startY = 0;
     endY = kROWS;
 
-    CGContextRef context = UIGraphicsGetCurrentContext();
+    context = UIGraphicsGetCurrentContext();
+    
+    if (!CGFont) {
+        CGFont = CGFontCreateWithFontName((CFStringRef)@"Monaco");
+    }
 
     for ( j = startY; j < endY; j++ ) {
         for ( i = startX; i < endX; i++ ) {
             UIColor *color = bgColorArray[i][j];
-           // [color set];
+
             CGContextSetFillColorWithColor(context, [color CGColor]);
             
             CGContextFillRect(context, rectArray[i][j]);
@@ -233,10 +239,6 @@ short theFontSize = FONT_SIZE;
 
 - (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(NSMutableDictionary *)theAttributes
 {
-   // NSLog(@"theString is '%@'", theString);
-
-	// Assuming a space character is an empty rectangle provides a major
-	// increase in redraw speed.
 	if (theString.length == 0 || [theString isEqualToString:@" "]) {
 		return;
 	}
@@ -256,18 +258,28 @@ short theFontSize = FONT_SIZE;
     stringOrigin.x = rect.origin.x + (rect.size.width - stringSize.width) * 0.5;
     stringOrigin.y = rect.origin.y + (rect.size.height - stringSize.height) * 0.5;
     
-    CGFloat red;
-    CGFloat blue;
-    CGFloat green;
-    CGFloat alpha;
-    
     UIColor *color = [theAttributes objectForKey:NSForegroundColorAttributeName];
-    CGContextRef context = UIGraphicsGetCurrentContext();
     
-	// Set the fill color to white.
-	CGContextSetFillColorWithColor(context, [color CGColor]);
+    const char* string = [theString cStringUsingEncoding:NSASCIIStringEncoding];
     
-    [theString drawAtPoint:stringOrigin withFont:[self fontForString:theString]];
+    if (!string)
+    {
+        CGContextSetFillColorWithColor(context, [color CGColor]);
+        [theString drawAtPoint:stringOrigin withFont:[self fontForString:theString]];
+        return;
+    }
+    
+    size_t stringLength = strlen(string);
+    
+    CGGlyph glyphString[1];
+    glyphString[0] = string[0]-29;
+
+    CGContextSetTextMatrix(context, CGAffineTransformMakeScale(1.0, -1.0));
+    CGContextSetFont(context, CGFont);
+    CGContextSetFontSize(context, theFontSize);
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    
+    CGContextShowGlyphsAtPoint(context, stringOrigin.x, stringOrigin.y + theFontSize, glyphString, stringLength);
 }
 
 - (void)setHorizWindow:(short)hPx
