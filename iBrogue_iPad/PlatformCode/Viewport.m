@@ -149,6 +149,7 @@ short theFontSize = FONT_SIZE;
     if (!self.displayLink) {
         self.displayLink =  [CADisplayLink displayLinkWithTarget:self selector:@selector(draw)];
         [self.displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
+        [self.displayLink setFrameInterval:3];
     }
     else {
         [self.displayLink setPaused:NO];
@@ -221,7 +222,8 @@ short theFontSize = FONT_SIZE;
     for ( j = startY; j < endY; j++ ) {
         for ( i = startX; i < endX; i++ ) {
             UIColor *color = bgColorArray[i][j];
-            [color set];
+           // [color set];
+            CGContextSetFillColorWithColor(context, [color CGColor]);
             
             CGContextFillRect(context, rectArray[i][j]);
             [self drawTheString:letterArray[i][j] centeredIn:rectArray[i][j] withAttributes:attributes[i][j]];
@@ -260,8 +262,10 @@ short theFontSize = FONT_SIZE;
     CGFloat alpha;
     
     UIColor *color = [theAttributes objectForKey:NSForegroundColorAttributeName];
-    [color getRed:&red green:&green blue:&blue alpha:&alpha];
-    [color set];
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+	// Set the fill color to white.
+	CGContextSetFillColorWithColor(context, [color CGColor]);
     
     [theString drawAtPoint:stringOrigin withFont:[self fontForString:theString]];
 }
