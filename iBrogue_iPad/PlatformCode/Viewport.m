@@ -70,7 +70,7 @@ short theFontSize = FONT_SIZE;
 
 - (UIFont *)fastFont {
 	if (!theFastFont) {
-		theFastFont = [UIFont fontWithName:@"Courier-Bold" size:theFontSize + 1];
+		theFastFont = [UIFont fontWithName:@"Monaco" size:theFontSize + 1];
     }
 	return theFastFont;
 }
@@ -262,6 +262,7 @@ short theFontSize = FONT_SIZE;
     
     const char* string = [theString cStringUsingEncoding:NSASCIIStringEncoding];
     
+    // we have a unicode character. Draw it with drawAtPoint
     if (!string)
     {
         CGContextSetFillColorWithColor(context, [color CGColor]);
@@ -269,6 +270,7 @@ short theFontSize = FONT_SIZE;
         return;
     }
     
+    // This seems like overkill but supposedly it's faster than drawAtPoint
     size_t stringLength = strlen(string);
     
     CGGlyph glyphString[1];

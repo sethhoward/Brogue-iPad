@@ -14,7 +14,7 @@
 #import "AboutViewController.h"
 #import "GameSettings.h"
 
-#define kStationaryTime 0.35f
+#define kStationaryTime 0.25f
 #define kGamePlayHitArea CGRectMake(209., 74., 810., 650.)     // seems to be a method in the c code that does this but didn't work as expected
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
