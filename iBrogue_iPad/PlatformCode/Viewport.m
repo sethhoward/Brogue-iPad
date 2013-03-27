@@ -37,6 +37,8 @@
     BOOL _hasInitialized;
     UIFont *theSlowFont;
     UIFont *theFastFont;
+    CGContextRef context;
+    CGFontRef CGFont;
 }
 
 CGSize characterSize;
@@ -149,6 +151,7 @@ short theFontSize = FONT_SIZE;
     if (!self.displayLink) {
         self.displayLink =  [CADisplayLink displayLinkWithTarget:self selector:@selector(draw)];
         [self.displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
+        [self.displayLink setFrameInterval:3];
     }
     else {
         [self.displayLink setPaused:NO];
@@ -159,6 +162,8 @@ short theFontSize = FONT_SIZE;
     int i, j;
     self.hWindow = 1024;
     self.vWindow = 748;
+    
+    characterSizeDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
     
 	for (j = 0; j < kROWS; j++) {        
 		for (i = 0; i < kCOLS; i++) {            
@@ -214,12 +219,17 @@ short theFontSize = FONT_SIZE;
     startY = 0;
     endY = kROWS;
 
-    CGContextRef context = UIGraphicsGetCurrentContext();
+    context = UIGraphicsGetCurrentContext();
+    
+    if (!CGFont) {
+        CGFont = CGFontCreateWithFontName((CFStringRef)@"Monaco");
+    }
 
     for ( j = startY; j < endY; j++ ) {
         for ( i = startX; i < endX; i++ ) {
             UIColor *color = bgColorArray[i][j];
-            [color set];
+
+            CGContextSetFillColorWithColor(context, [color CGColor]);
             
             CGContextFillRect(context, rectArray[i][j]);
             [self drawTheString:letterArray[i][j] centeredIn:rectArray[i][j] withAttributes:attributes[i][j]];
@@ -229,10 +239,6 @@ short theFontSize = FONT_SIZE;
 
 - (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(NSMutableDictionary *)theAttributes
 {
-   // NSLog(@"theString is '%@'", theString);
-
-	// Assuming a space character is an empty rectangle provides a major
-	// increase in redraw speed.
 	if (theString.length == 0 || [theString isEqualToString:@" "]) {
 		return;
 	}
@@ -252,16 +258,30 @@ short theFontSize = FONT_SIZE;
     stringOrigin.x = rect.origin.x + (rect.size.width - stringSize.width) * 0.5;
     stringOrigin.y = rect.origin.y + (rect.size.height - stringSize.height) * 0.5;
     
-    CGFloat red;
-    CGFloat blue;
-    CGFloat green;
-    CGFloat alpha;
-    
     UIColor *color = [theAttributes objectForKey:NSForegroundColorAttributeName];
-    [color getRed:&red green:&green blue:&blue alpha:&alpha];
-    [color set];
     
-    [theString drawAtPoint:stringOrigin withFont:[self fontForString:theString]];
+    const char* string = [theString cStringUsingEncoding:NSASCIIStringEncoding];
+    
+    // we have a unicode character. Draw it with drawAtPoint
+    if (!string)
+    {
+        CGContextSetFillColorWithColor(context, [color CGColor]);
+        [theString drawAtPoint:stringOrigin withFont:[self fontForString:theString]];
+        return;
+    }
+    
+    // This seems like overkill but supposedly it's faster than drawAtPoint
+    size_t stringLength = strlen(string);
+    
+    CGGlyph glyphString[1];
+    glyphString[0] = string[0]-29;
+
+    CGContextSetTextMatrix(context, CGAffineTransformMakeScale(1.0, -1.0));
+    CGContextSetFont(context, CGFont);
+    CGContextSetFontSize(context, theFontSize);
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    
+    CGContextShowGlyphsAtPoint(context, stringOrigin.x, stringOrigin.y + theFontSize, glyphString, stringLength);
 }
 
 - (void)setHorizWindow:(short)hPx

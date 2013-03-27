@@ -35,6 +35,8 @@
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
 
+// Objective-c Bridge
+
 short mouseX, mouseY;
 static boolean _isInBackground = false;
 
@@ -133,7 +135,6 @@ void plotChar(uchar inputChar,
     }
 }
 
-// unused
 __unused void pausingTimerStartsNow() {
 
 }
@@ -164,88 +165,63 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
         [[RogueDriver sharedInstance] animateColors:NO];
     }
     
-  //  @autoreleasepool {
-        for(;;) {            
-            if ([viewController cachedKeyStrokeCount] > 0) {
-                returnEvent->eventType = KEYSTROKE;
-                returnEvent->param1 = [viewController dequeKeyStroke];
-                //printf("\nKey pressed: %i", returnEvent->param1);
-                returnEvent->param2 = 0;
-                returnEvent->controlKey = 0;//([theEvent modifierFlags] & NSControlKeyMask ? 1 : 0);
-                returnEvent->shiftKey = 0;//([theEvent modifierFlags] & NSShiftKeyMask ? 1 : 0);
+    for(;;) {
+        [NSThread sleepForTimeInterval:1./30.];
+        
+        if ([viewController cachedKeyStrokeCount] > 0) {
+            returnEvent->eventType = KEYSTROKE;
+            returnEvent->param1 = [viewController dequeKeyStroke];
+            //printf("\nKey pressed: %i", returnEvent->param1);
+            returnEvent->param2 = 0;
+            returnEvent->controlKey = 0;//([theEvent modifierFlags] & NSControlKeyMask ? 1 : 0);
+            returnEvent->shiftKey = 0;//([theEvent modifierFlags] & NSShiftKeyMask ? 1 : 0);
+            break;
+        }
+        if ([viewController cachedTouchesCount] > 0) {
+            iBTouch touch = [viewController getTouchAtIndex:0];
+            [viewController removeTouchAtIndex:0];
+            UITouchPhase phase = touch.phase;
+            
+            if (phase != UITouchPhaseCancelled) {
+                switch (phase) {
+                    case UITouchPhaseBegan:
+                    case UITouchPhaseStationary:
+                //        NSLog(@"touch station");
+                        returnEvent->eventType = MOUSE_DOWN;
+                        break;
+                    case UITouchPhaseEnded:
+                //        NSLog(@"touch ended");
+                        returnEvent->eventType = MOUSE_UP;
+                        break;
+                    case UITouchPhaseMoved:
+                //        NSLog(@"touch moved");
+                        returnEvent->eventType = MOUSE_ENTERED_CELL;
+                        break;
+                    default:
+                 //       NSLog(@"touch nothing");
+                        break;
+                }
+                
+                //    NSLog(@"Event %i w/Touch: %@", returnEvent->eventType, touch);
+                
+                event_location = touch.location;
+                x = COLS * event_location.x / [theMainDisplay hWindow];
+                y = (ROWS * event_location.y / [theMainDisplay vWindow]);
+                
+                returnEvent->param1 = x;
+                returnEvent->param2 = y;
+                returnEvent->controlKey = 0;
+                returnEvent->shiftKey = 0;
+                
                 break;
             }
-            if ([viewController cachedTouchesCount] > 0) {
-                iBTouch touch = [viewController getTouchAtIndex:0];
-                [viewController removeTouchAtIndex:0];
-                UITouchPhase phase = touch.phase;
-                
-                if (phase != UITouchPhaseCancelled) {
-                    switch (phase) {
-                        case UITouchPhaseBegan:
-                        case UITouchPhaseStationary:
-                    //        NSLog(@"touch station");
-                            returnEvent->eventType = MOUSE_DOWN;
-                            break;
-                        case UITouchPhaseEnded:
-                    //        NSLog(@"touch ended");
-                            returnEvent->eventType = MOUSE_UP;
-                            break;
-                        case UITouchPhaseMoved:
-                    //        NSLog(@"touch moved");
-                            returnEvent->eventType = MOUSE_ENTERED_CELL;
-                            break;
-                        default:
-                     //       NSLog(@"touch nothing");
-                            break;
-                    }
-                    
-                    //    NSLog(@"Event %i w/Touch: %@", returnEvent->eventType, touch);
-                    
-                    event_location = touch.location;
-                    x = COLS * event_location.x / [theMainDisplay hWindow];
-                    y = (ROWS * event_location.y / [theMainDisplay vWindow]);
-                    
-                //    NSLog(@"%i %i", x, y);
-                    // Correct for the fact that truncation occurs in a positive direction when we're below zero:
-                  /*  if (event_location.x < 0) {
-                        x--;
-                    }
-                    if ([theMainDisplay vWindow] < event_location.y) {
-                        y--;
-                    }*/
-                    returnEvent->param1 = x;
-                    returnEvent->param2 = y;
-                    returnEvent->controlKey = 0;
-                    returnEvent->shiftKey = 0;
-                    
-                    break;
-                }
-            }
-        //}
+        }
     }
     
     [[RogueDriver sharedInstance] animateColors:NO];
 }
 
 #pragma mark - bridge
-
-/*
-void showTitle() {
-    [viewController showTitle];
-}
-
-void showAuxillaryScreen(boolean showDirectionalControls) {
-    [viewController showAuxillaryScreensWithDirectionalControls:showDirectionalControls];
-}
-
-void setWaitingForInput(boolean waiting) {
-    [viewController showKeyboard];
-}
-
-void blockMagGlass(boolean blockGlass) {
-    [viewController setBlockMagView:blockGlass];
-}*/
 
 void setBrogueGameEvent(BrogueGameEvent brogueGameEvent) {
     [viewController setBrogueGameEvent:brogueGameEvent];
