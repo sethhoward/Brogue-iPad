@@ -17,7 +17,7 @@
 #import "ZGestureRecognizer.h"
 #import "GameSettings.h"
 
-#define kStationaryTime 0.5f
+#define kStationaryTime 0.45f
 #define kGamePlayHitArea CGRectMake(209., 74., 810., 650.)     // seems to be a method in the c code that does this but didn't work as expected
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
@@ -47,6 +47,7 @@ typedef enum {
 - (IBAction)seedKeyPressed:(id)sender;
 - (IBAction)showLeaderBoardButtonPressed:(id)sender;
 - (IBAction)aboutButtonPressed:(id)sender;
+- (IBAction)showInventoryButtonPressed:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIView *directionalButtonSubContainer;
 @property (weak, nonatomic) IBOutlet UIButton *seedButton;
@@ -58,6 +59,11 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UIView *playerControlView;
 @property (weak, nonatomic) IBOutlet UITextField *aTextField;
 @property (nonatomic, strong) NSMutableArray *cachedKeyStrokes;
+@property (weak, nonatomic) IBOutlet UIButton *showInventoryButton;
+
+// gestures
+@property (nonatomic, strong) UIPinchGestureRecognizer *directionalPinch;
+
 @end
 
 @implementation ViewController {
@@ -109,27 +115,10 @@ typedef enum {
 - (void)applicationDidBecomeActive {
     [self.secondaryDisplay removeMagnifyingGlass];
     
-    @synchronized(self){
+ /*   @synchronized(self){
         [self.cachedKeyStrokes removeAllObjects];
         [self.cachedTouches removeAllObjects];
-    }
-}
-
-- (BOOL)canBecomeFirstResponder {
-    return YES;
-}
-
-- (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event{
-    // you can do any thing at this stage what ever you want. Change the song in playlist, show photo, change photo or whatever you want to do
-
-    if (![[GameSettings sharedInstance] allowShake]) {
-        return;
-    }
-    
-    @synchronized(self.cachedKeyStrokes) {
-        [self.cachedKeyStrokes removeAllObjects];
-        [self.cachedKeyStrokes addObject:kESC_Key];
-    }
+    }*/
 }
 
 - (void)didReceiveMemoryWarning
@@ -162,6 +151,25 @@ typedef enum {
     rogueMain();
 }
 
+#pragma mark - Shake Motion
+
+- (BOOL)canBecomeFirstResponder {
+    return YES;
+}
+
+- (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event{
+    // you can do any thing at this stage what ever you want. Change the song in playlist, show photo, change photo or whatever you want to do
+    
+    if (![[GameSettings sharedInstance] allowShake]) {
+        return;
+    }
+    
+    @synchronized(self.cachedKeyStrokes) {
+        [self.cachedKeyStrokes removeAllObjects];
+        [self.cachedKeyStrokes addObject:kESC_Key];
+    }
+}
+
 #pragma mark - touches
 
 - (void)initGestureRecognizers {
@@ -176,8 +184,21 @@ typedef enum {
     }*/
     
     if ([[GameSettings sharedInstance] allowPinchToZoomDirectional]) {
-        UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
-        [self.playerControlView addGestureRecognizer:pinch];
+        [self turnOnPinchGesture];
+    }
+}
+
+- (void)turnOnPinchGesture {
+    if (!self.directionalPinch) {
+        self.directionalPinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
+        [self.playerControlView addGestureRecognizer:self.directionalPinch];
+    }
+}
+
+- (void)turnOffPinchGesture {
+    if (self.directionalPinch) {
+        [self.playerControlView removeGestureRecognizer:self.directionalPinch];
+        self.directionalPinch = nil;
     }
 }
 
@@ -208,17 +229,6 @@ typedef enum {
         }
     }
 }
-
-/*  Not working as I had hoped plus it just feels a bit like shit
-- (void)handleZGesture:(ZGestureRecognizer *)zGesture {
-    [self stopStationaryTouchTimer];
-    [self.secondaryDisplay removeMagnifyingGlass];
-    
-    @synchronized(self.cachedKeyStrokes) {
-        [self.cachedKeyStrokes removeAllObjects];
-        [self.cachedKeyStrokes addObject:kESC_Key];
-    }
-}*/
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     CGPoint pointInView = [touch locationInView:gestureRecognizer.view];
@@ -551,6 +561,13 @@ typedef enum {
     [self presentViewController:aboutVC animated:YES completion:nil];
 }
 
+- (IBAction)showInventoryButtonPressed:(id)sender {
+    @synchronized(self.cachedKeyStrokes){
+        [self.cachedKeyStrokes removeAllObjects];
+        [self.cachedKeyStrokes addObject:@"i"];
+    }
+}
+
 #pragma mark - setters/getters
 
 - (void)setBlockMagView:(BOOL)blockMagView {
@@ -558,6 +575,52 @@ typedef enum {
     
     if (blockMagView) {
         [self.secondaryDisplay removeMagnifyingGlass];
+    }
+}
+
+- (void)showInventoryShowButton:(BOOL)show {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.showInventoryButton.hidden = !show;
+    });
+}
+
+// my original intention was to not touch any game code. In the end this was not possible in order to give the best user experience. I funnel all modification and events in the core code through here.
+- (void)setBrogueGameEvent:(BrogueGameEvent)brogueGameEvent {
+    //_brogueGameEvent = brogueGameEvent;
+    
+    switch (brogueGameEvent) {
+        case BrogueGameEventWaitingForConfirmation:
+        case BrogueGameEventActionMenuOpen:
+        case BrogueGameEventOpenedInventory:
+            self.blockMagView = YES;
+            break;
+        case BrogueGameEventInventoryItemAction:
+        case BrogueGameEventConfirmationComplete:
+        case BrogueGameEventActionMenuClose:
+        case BrogueGameEventClosedInventory:
+            self.blockMagView = NO;
+            break;
+        case BrogueGameEventKeyBoardInputRequired:
+            [self showKeyboard];
+            break;
+        case BrogueGameEventShowTitle:
+        case BrogueGameEventOpenGameFinished:
+            [self showTitle];
+            self.blockMagView = YES;
+            break;
+        case BrogueGameEventStartNewGame:
+        case BrogueGameEventOpenGame:
+            [self showAuxillaryScreensWithDirectionalControls:YES];
+            self.blockMagView = NO;
+            break;
+        case BrogueGameEventPlayRecording:
+        case BrogueGameEventShowHighScores:
+        case BrogueGameEventPlayBackPanic:
+            [self showAuxillaryScreensWithDirectionalControls:NO];
+            self.blockMagView = YES;
+            break;
+        default:
+            break;
     }
 }
 

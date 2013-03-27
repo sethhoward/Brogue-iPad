@@ -2614,7 +2614,9 @@ void digDungeon() {
     freeGrid(lakeMap);
 	
 	// Now run the autoGenerators.
-	runAutogenerators();
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        runAutogenerators();
+    });
 	
 	// Now remove diagonal openings.
 	removeDiagonalOpenings();

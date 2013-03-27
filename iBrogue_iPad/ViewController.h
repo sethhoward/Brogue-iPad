@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Rogue.h"
 
 @class Viewport, ViewController;
 
@@ -21,6 +22,7 @@ struct iBTouch {
 };
 typedef struct iBTouch iBTouch;
 
+- (void)setBrogueGameEvent:(BrogueGameEvent)brogueGameEvent;
 @property (nonatomic, readonly, getter = isSeedKeyDown) BOOL seedKeyDown;
 @property (nonatomic, assign) BOOL blockMagView;    // block the magnifying glass from appearing
 
@@ -37,5 +39,9 @@ typedef struct iBTouch iBTouch;
 // iOS buttons etc. This makes for smoother transitions and is for looks only.
 - (void)showTitle;
 - (void)showAuxillaryScreensWithDirectionalControls:(BOOL)controls;
+- (void)showInventoryShowButton:(BOOL)show;
+
+- (void)turnOnPinchGesture;
+- (void)turnOffPinchGesture;
 
 @end

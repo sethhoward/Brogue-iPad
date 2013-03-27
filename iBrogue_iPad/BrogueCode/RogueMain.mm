@@ -1040,6 +1040,10 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
         strcpy(buf, "You die...");
         encodeMessageColor(buf, strlen(buf), &veryDarkGray);
         strcat(buf, " (press 'i' to view your inventory)");
+        
+        // Seth:
+        showInventoryButton(true);
+        
 		messageWithColor(buf, &badMessageColor, false);
         displayMoreSignWithoutWaitingForAcknowledgment();
         
@@ -1061,6 +1065,8 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
         } while (!(theEvent.eventType == KEYSTROKE && (theEvent.param1 == ACKNOWLEDGE_KEY || theEvent.param1 == ESCAPE_KEY)
                    || theEvent.eventType == MOUSE_UP));
         
+        // Seth:
+        showInventoryButton(false);
         confirmMessages();
         
 		rogue.playbackMode = playback;

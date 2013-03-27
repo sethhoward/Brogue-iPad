@@ -32,20 +32,79 @@
 #include "Rogue.h"
 #import "GameCenterManager.h"
 
-void autoSave();
-
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
 
 short mouseX, mouseY;
+static boolean _isInBackground = false;
 
-@implementation RogueDriver
+@interface RogueDriver ()
+@property (nonatomic, strong) NSTimer *colorsDanceTimer;
+@end
+
+@implementation RogueDriver {
+    @private
+    BOOL _areColorsDancing;
+}
+
++ (id)sharedInstance {
+    static RogueDriver *instance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[RogueDriver alloc] init];
+    });
+    
+    return instance;
+}
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResign) name:UIApplicationWillResignActiveNotification object:nil];
+    }
+    return self;
+}
 
 + (BOOL)coordinatesAreInMap:(CGPoint)point {
     return coordinatesAreInMap(point.x, point.y);
 }
 
-// this was all garbage in my book... trashed it
+- (void)applicationDidBecomeActive {
+    _isInBackground = false;
+}
+
+- (void)applicationWillResign {
+    _isInBackground = true;
+}
+
+- (void)colorsDance {
+    if (_isInBackground) {
+        return;
+    }
+    
+    shuffleTerrainColors(3, true);
+    commitDraws();
+}
+
+- (void)animateColors:(BOOL)animate {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.colorsDanceTimer invalidate];
+        self.colorsDanceTimer = nil;
+        
+        if (animate && !_areColorsDancing) {
+        //    NSLog(@"starting colors dance");
+            _areColorsDancing = YES;
+            self.colorsDanceTimer = [NSTimer scheduledTimerWithTimeInterval:0.01667 target:self selector:@selector(colorsDance) userInfo:nil repeats:YES];
+        }
+        else {
+            _areColorsDancing = NO;
+          
+         //   NSLog(@"stopping colors dance");
+        }
+    });
+}
 
 @end
 
@@ -55,6 +114,10 @@ void plotChar(uchar inputChar,
 			  short xLoc, short yLoc,
 			  short foreRed, short foreGreen, short foreBlue,
 			  short backRed, short backGreen, short backBlue) {
+    if (_isInBackground) {
+        return;
+    }
+    
     @autoreleasepool {
         [theMainDisplay setString:[NSString stringWithCharacters:&inputChar length:1]
                    withBackground:[UIColor colorWithRed:((float)backRed/100)
@@ -71,7 +134,7 @@ void plotChar(uchar inputChar,
 }
 
 // unused
-void pausingTimerStartsNow() {
+__unused void pausingTimerStartsNow() {
 
 }
 
@@ -94,16 +157,15 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
 	CGPoint event_location;
 	short x, y;
     
-    @autoreleasepool {
-        for(;;) {
-            // throttle the video or at some point it'll run too fast on some amazing device that doesn't exist yet
-            //  NSLog(@"%i", rogue.nextGame);
-            if (colorsDance) {
-                [NSThread sleepForTimeInterval:0.01667f];
-                shuffleTerrainColors(3, true);
-                commitDraws();
-            }
-            
+    if (colorsDance) {
+        [[RogueDriver sharedInstance] animateColors:YES];
+    }
+    else {
+        [[RogueDriver sharedInstance] animateColors:NO];
+    }
+    
+  //  @autoreleasepool {
+        for(;;) {            
             if ([viewController cachedKeyStrokeCount] > 0) {
                 returnEvent->eventType = KEYSTROKE;
                 returnEvent->param1 = [viewController dequeKeyStroke];
@@ -160,12 +222,15 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
                     break;
                 }
             }
-        }
+        //}
     }
+    
+    [[RogueDriver sharedInstance] animateColors:NO];
 }
 
 #pragma mark - bridge
 
+/*
 void showTitle() {
     [viewController showTitle];
 }
@@ -180,6 +245,10 @@ void setWaitingForInput(boolean waiting) {
 
 void blockMagGlass(boolean blockGlass) {
     [viewController setBlockMagView:blockGlass];
+}*/
+
+void setBrogueGameEvent(BrogueGameEvent brogueGameEvent) {
+    [viewController setBrogueGameEvent:brogueGameEvent];
 }
 
 boolean controlKeyIsDown() {
@@ -188,6 +257,10 @@ boolean controlKeyIsDown() {
     }
     
     return 0;
+}
+
+void showInventoryButton(boolean show) {
+    [viewController showInventoryShowButton:show];
 }
 
 boolean shiftKeyIsDown() {
