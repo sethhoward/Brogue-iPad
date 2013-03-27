@@ -38,7 +38,7 @@
 {
 	NSString __strong *letterArray[kCOLS][kROWS];
 	UIColor __strong *bgColorArray[kCOLS][kROWS];
-	NSMutableDictionary __strong *attributes[kCOLS][kROWS];
+	UIColor __strong *attributes[kCOLS][kROWS];
 	NSMutableDictionary __strong *characterSizeDictionary;
 	CGRect rectArray[kCOLS][kROWS];
 }
@@ -50,7 +50,7 @@
 		locationY:(short)y
     withFancyFont:(bool)fancyFont;
 
-- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(NSMutableDictionary *)theAttributes;
+- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(UIColor *)theAttributes;
 
 - (void)setHorizWindow:(short)hPx
 			vertWindow:(short)vPx

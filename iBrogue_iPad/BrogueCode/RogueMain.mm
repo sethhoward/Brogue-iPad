@@ -1042,7 +1042,8 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
         strcat(buf, " (press 'i' to view your inventory)");
         
         // Seth:
-        showInventoryButton(true);
+       // showInventoryButton(true);
+        setBrogueGameEvent(BrogueGameEventMessagePlayerHasDied);
         
 		messageWithColor(buf, &badMessageColor, false);
         displayMoreSignWithoutWaitingForAcknowledgment();
@@ -1066,7 +1067,9 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
                    || theEvent.eventType == MOUSE_UP));
         
         // Seth:
-        showInventoryButton(false);
+//showInventoryButton(false);
+        setBrogueGameEvent(BrogueGameEventPlayerHasDiedMessageAcknowledged);
+        
         confirmMessages();
         
 		rogue.playbackMode = playback;

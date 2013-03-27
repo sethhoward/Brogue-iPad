@@ -14,7 +14,7 @@
 #import "AboutViewController.h"
 #import "GameSettings.h"
 
-#define kStationaryTime 0.25f
+#define kStationaryTime 0.2f
 #define kGamePlayHitArea CGRectMake(209., 74., 810., 650.)     // seems to be a method in the c code that does this but didn't work as expected
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
@@ -45,6 +45,7 @@ typedef enum {
 - (IBAction)showLeaderBoardButtonPressed:(id)sender;
 - (IBAction)aboutButtonPressed:(id)sender;
 - (IBAction)showInventoryButtonPressed:(id)sender;
+- (void)showInventoryOnDeathButton:(BOOL)show;
 
 @property (weak, nonatomic) IBOutlet UIView *directionalButtonSubContainer;
 @property (weak, nonatomic) IBOutlet UIButton *seedButton;
@@ -57,6 +58,7 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UITextField *aTextField;
 @property (nonatomic, strong) NSMutableArray *cachedKeyStrokes;
 @property (weak, nonatomic) IBOutlet UIButton *showInventoryButton;
+@property (weak, nonatomic) IBOutlet UILabel *seedLabel;
 
 // gestures
 @property (nonatomic, strong) UIPinchGestureRecognizer *directionalPinch;
@@ -577,9 +579,17 @@ typedef enum {
     }
 }
 
-- (void)showInventoryShowButton:(BOOL)show {
+- (void)showInventoryOnDeathButton:(BOOL)show {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.showInventoryButton.hidden = !show;
+        
+        if (show) {
+            self.seedLabel.hidden = NO;
+            [self.seedLabel setText:[NSString stringWithFormat:@"Seed:%li", [RogueDriver rogueSeed]]];
+        }
+        else {
+            self.seedLabel.hidden = YES;
+        }
     });
 }
 
@@ -602,6 +612,7 @@ typedef enum {
             break;
         case BrogueGameEventShowTitle:
         case BrogueGameEventOpenGameFinished:
+            [self showInventoryOnDeathButton:NO];
             [self showTitle];
             self.blockMagView = YES;
             break;
@@ -615,6 +626,12 @@ typedef enum {
         case BrogueGameEventPlayBackPanic:
             [self showAuxillaryScreensWithDirectionalControls:NO];
             self.blockMagView = YES;
+            break;
+        case BrogueGameEventMessagePlayerHasDied:
+            [self showInventoryOnDeathButton:YES];
+            break;
+        case BrogueGameEventPlayerHasDiedMessageAcknowledged:
+            [self showInventoryOnDeathButton:NO];
             break;
         default:
             break;

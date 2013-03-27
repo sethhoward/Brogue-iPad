@@ -38,7 +38,6 @@ typedef struct iBTouch iBTouch;
 // iOS buttons etc. This makes for smoother transitions and is for looks only.
 - (void)showTitle;
 - (void)showAuxillaryScreensWithDirectionalControls:(BOOL)controls;
-- (void)showInventoryShowButton:(BOOL)show;
 
 - (void)turnOnPinchGesture;
 - (void)turnOffPinchGesture;

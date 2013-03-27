@@ -45,6 +45,9 @@
 		C57A967316D7EB5500C233F1 /* RogueMain.mm in Sources */ = {isa = PBXBuildFile; fileRef = C57A966416D7EB5500C233F1 /* RogueMain.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A967516DBF1CE00C233F1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C57A967416DBF1CE00C233F1 /* QuartzCore.framework */; };
 		C5865D3F1700EBAE00B18C2B /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EA72D616FE92DC00AE688A /* CoreText.framework */; };
+		C5865EE5170399C500B18C2B /* MGBenchmark.m in Sources */ = {isa = PBXBuildFile; fileRef = C5865EDE170399C500B18C2B /* MGBenchmark.m */; };
+		C5865EE6170399C500B18C2B /* MGBenchmarkSession.m in Sources */ = {isa = PBXBuildFile; fileRef = C5865EE0170399C500B18C2B /* MGBenchmarkSession.m */; };
+		C5865EE7170399C500B18C2B /* MGConsoleOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = C5865EE4170399C500B18C2B /* MGConsoleOutput.m */; };
 		C58831E016EA6E860047FCA9 /* brogue_seed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C58831DF16EA6E860047FCA9 /* brogue_seed@2x.png */; };
 		C58831E616EA98040047FCA9 /* brogue_sproutedseed.png in Resources */ = {isa = PBXBuildFile; fileRef = C58831E516EA98040047FCA9 /* brogue_sproutedseed.png */; };
 		C58831E816EA987D0047FCA9 /* brogue_sproutedseed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C58831E716EA987D0047FCA9 /* brogue_sproutedseed@2x.png */; };
@@ -126,6 +129,14 @@
 		C57A966316D7EB5500C233F1 /* Rogue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rogue.h; sourceTree = "<group>"; };
 		C57A966416D7EB5500C233F1 /* RogueMain.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RogueMain.mm; sourceTree = "<group>"; };
 		C57A967416DBF1CE00C233F1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		C5865EDC170399C500B18C2B /* MGBenchmark-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MGBenchmark-Prefix.pch"; sourceTree = "<group>"; };
+		C5865EDD170399C500B18C2B /* MGBenchmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGBenchmark.h; sourceTree = "<group>"; };
+		C5865EDE170399C500B18C2B /* MGBenchmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGBenchmark.m; sourceTree = "<group>"; };
+		C5865EDF170399C500B18C2B /* MGBenchmarkSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGBenchmarkSession.h; sourceTree = "<group>"; };
+		C5865EE0170399C500B18C2B /* MGBenchmarkSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGBenchmarkSession.m; sourceTree = "<group>"; };
+		C5865EE2170399C500B18C2B /* MGBenchmarkTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGBenchmarkTarget.h; sourceTree = "<group>"; };
+		C5865EE3170399C500B18C2B /* MGConsoleOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGConsoleOutput.h; sourceTree = "<group>"; };
+		C5865EE4170399C500B18C2B /* MGConsoleOutput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGConsoleOutput.m; sourceTree = "<group>"; };
 		C58831DF16EA6E860047FCA9 /* brogue_seed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brogue_seed@2x.png"; sourceTree = "<group>"; };
 		C58831E516EA98040047FCA9 /* brogue_sproutedseed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brogue_sproutedseed.png; sourceTree = "<group>"; };
 		C58831E716EA987D0047FCA9 /* brogue_sproutedseed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brogue_sproutedseed@2x.png"; sourceTree = "<group>"; };
@@ -226,6 +237,7 @@
 		C57A962E16D7EAD500C233F1 /* iBrogue_iPad */ = {
 			isa = PBXGroup;
 			children = (
+				C5865EDB170399C500B18C2B /* MGBenchmark */,
 				C5EFC0E016ECE398008BD644 /* MagnifyingGlass */,
 				C5F0CED416E6D56700F1A853 /* image assets */,
 				C52B091916E5848500675CC7 /* GameCenter */,
@@ -295,6 +307,29 @@
 				C57A966416D7EB5500C233F1 /* RogueMain.mm */,
 			);
 			path = BrogueCode;
+			sourceTree = "<group>";
+		};
+		C5865EDB170399C500B18C2B /* MGBenchmark */ = {
+			isa = PBXGroup;
+			children = (
+				C5865EDC170399C500B18C2B /* MGBenchmark-Prefix.pch */,
+				C5865EDD170399C500B18C2B /* MGBenchmark.h */,
+				C5865EDE170399C500B18C2B /* MGBenchmark.m */,
+				C5865EDF170399C500B18C2B /* MGBenchmarkSession.h */,
+				C5865EE0170399C500B18C2B /* MGBenchmarkSession.m */,
+				C5865EE1170399C500B18C2B /* Output */,
+			);
+			path = MGBenchmark;
+			sourceTree = "<group>";
+		};
+		C5865EE1170399C500B18C2B /* Output */ = {
+			isa = PBXGroup;
+			children = (
+				C5865EE2170399C500B18C2B /* MGBenchmarkTarget.h */,
+				C5865EE3170399C500B18C2B /* MGConsoleOutput.h */,
+				C5865EE4170399C500B18C2B /* MGConsoleOutput.m */,
+			);
+			path = Output;
 			sourceTree = "<group>";
 		};
 		C5EFC0E016ECE398008BD644 /* MagnifyingGlass */ = {
@@ -460,6 +495,9 @@
 				C5EFC0EA16ECE398008BD644 /* ACMagnifyingGlass.m in Sources */,
 				C5EFC0EB16ECE398008BD644 /* ACMagnifyingView.m in Sources */,
 				C5105B1616EE90A400E09905 /* GameSettings.m in Sources */,
+				C5865EE5170399C500B18C2B /* MGBenchmark.m in Sources */,
+				C5865EE6170399C500B18C2B /* MGBenchmarkSession.m in Sources */,
+				C5865EE7170399C500B18C2B /* MGConsoleOutput.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

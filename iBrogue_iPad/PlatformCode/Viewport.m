@@ -25,6 +25,8 @@
 #import "Viewport.h"
 #import "ViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "MGBenchmark.h"
+#import "MGBenchmarkSession.h"
 
 
 @interface Viewport ()
@@ -133,9 +135,11 @@ short theFontSize = FONT_SIZE;
                 letterArray[i][j] = @" ";
                 bgColorArray[i][j] = [UIColor blackColor];
                 
-                attributes[i][j] = [[NSMutableDictionary alloc] init];
-                [attributes[i][j] setObject:[UIColor blackColor]
-                                     forKey:NSForegroundColorAttributeName];
+                attributes[i][j] = [UIColor blackColor];
+                
+              //  attributes[i][j] = [[NSMutableDictionary alloc] init];
+               // [attributes[i][j] setObject:[UIColor blackColor]
+                //                     forKey:NSForegroundColorAttributeName];
             }
         }
     
@@ -170,10 +174,11 @@ short theFontSize = FONT_SIZE;
 			letterArray[i][j] = @" ";
 			bgColorArray[i][j] = [UIColor blackColor];
 
-			attributes[i][j] = [[NSMutableDictionary alloc] init];
-			[attributes[i][j] setObject:[self fastFont] forKey:NSFontAttributeName];
-			[attributes[i][j] setObject:[UIColor blackColor]
-                                 forKey:NSForegroundColorAttributeName];
+		//	attributes[i][j] = [[NSMutableDictionary alloc] init];
+		//	[attributes[i][j] setObject:[self fastFont] forKey:NSFontAttributeName];
+		//	[attributes[i][j] setObject:[UIColor blackColor]
+         //                        forKey:NSForegroundColorAttributeName];
+            attributes[i][j] = [UIColor blackColor];
             
             // (18 * 33) - (18 *(j + 1))
             CGRect rect = CGRectMake(HORIZ_PX*i, (VERT_PX*(j)), HORIZ_PX, VERT_PX);
@@ -199,25 +204,15 @@ short theFontSize = FONT_SIZE;
     withFancyFont:(bool)fancyFont
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        letterArray[x][y] = nil;
-        bgColorArray[x][y] = nil;
-        
         letterArray[x][y] = c;
         bgColorArray[x][y] = bgColor;
-    
-        [attributes[x][y] setObject:letterColor forKey:NSForegroundColorAttributeName];
-        [attributes[x][y] setObject:(fancyFont ? [self slowFont] : [self fastFont]) forKey:NSFontAttributeName];
+        attributes[x][y] = letterColor;
     });
 }
 
 - (void)drawRect:(CGRect)rect
-{    
-	int i, j, startX, startY, endX, endY;
-
-    startX = 0;
-    endX = kCOLS;
-    startY = 0;
-    endY = kROWS;
+{
+    [MGBenchmark start:@"draw"];
 
     context = UIGraphicsGetCurrentContext();
     
@@ -225,8 +220,8 @@ short theFontSize = FONT_SIZE;
         CGFont = CGFontCreateWithFontName((CFStringRef)@"Monaco");
     }
 
-    for ( j = startY; j < endY; j++ ) {
-        for ( i = startX; i < endX; i++ ) {
+    for (int j = 0; j < kROWS; j++ ) {
+        for (int i = 0; i < kCOLS; i++ ) {
             UIColor *color = bgColorArray[i][j];
 
             CGContextSetFillColorWithColor(context, [color CGColor]);
@@ -235,13 +230,19 @@ short theFontSize = FONT_SIZE;
             [self drawTheString:letterArray[i][j] centeredIn:rectArray[i][j] withAttributes:attributes[i][j]];
         }
     }
+    
+    [[MGBenchmark session:@"draw"] total];
+    [MGBenchmark finish:@"draw"];
 }
 
-- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(NSMutableDictionary *)theAttributes
+- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(UIColor *)letterColor
 {
+    
 	if (theString.length == 0 || [theString isEqualToString:@" "]) {
 		return;
 	}
+    
+  //  [[MGBenchmark session:@"draw"] step:@"text start"];
 
     CGPoint stringOrigin;
     CGSize stringSize;
@@ -258,7 +259,7 @@ short theFontSize = FONT_SIZE;
     stringOrigin.x = rect.origin.x + (rect.size.width - stringSize.width) * 0.5;
     stringOrigin.y = rect.origin.y + (rect.size.height - stringSize.height) * 0.5;
     
-    UIColor *color = [theAttributes objectForKey:NSForegroundColorAttributeName];
+    UIColor *color = letterColor;
     
     const char* string = [theString cStringUsingEncoding:NSASCIIStringEncoding];
     
@@ -267,6 +268,7 @@ short theFontSize = FONT_SIZE;
     {
         CGContextSetFillColorWithColor(context, [color CGColor]);
         [theString drawAtPoint:stringOrigin withFont:[self fontForString:theString]];
+  //      [[MGBenchmark session:@"draw"] step:@"text dpoint stop"];
         return;
     }
     
@@ -282,6 +284,8 @@ short theFontSize = FONT_SIZE;
     CGContextSetFillColorWithColor(context, [color CGColor]);
     
     CGContextShowGlyphsAtPoint(context, stringOrigin.x, stringOrigin.y + theFontSize, glyphString, stringLength);
+    
+  //  [[MGBenchmark session:@"draw"] step:@"text glyph stop"];
 }
 
 - (void)setHorizWindow:(short)hPx
@@ -298,7 +302,7 @@ short theFontSize = FONT_SIZE;
     
     for (j = 0; j < kROWS; j++) {
         for (i = 0; i < kCOLS; i++) {
-            [attributes[i][j] setObject:[self fastFont] forKey:NSFontAttributeName];
+       //     [attributes[i][j] setObject:[self fastFont] forKey:NSFontAttributeName];    // not used anymore?
             rectArray[i][j] = CGRectMake((int) (hPx * i / kCOLS),
                                          (int) ((vPx * (j) / kROWS)),
                                          ((int) (hPx * (i+1) / kCOLS)) - ((int) (hPx * (i) / kCOLS)),//hPixels + 1,

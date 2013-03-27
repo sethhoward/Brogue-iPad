@@ -30,4 +30,6 @@
 
 @interface RogueDriver : NSObject
 
++ (unsigned long)rogueSeed;
+
 @end

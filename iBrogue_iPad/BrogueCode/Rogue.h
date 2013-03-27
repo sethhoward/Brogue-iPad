@@ -2854,6 +2854,8 @@ extern "C" {
         BrogueGameEventPlayRecording,
         BrogueGameEventShowHighScores,
         BrogueGameEventPlayBackPanic,
+        BrogueGameEventMessagePlayerHasDied,
+        BrogueGameEventPlayerHasDiedMessageAcknowledged,
     } BrogueGameEvent;
     
     /*  void setWaitingForInput(boolean waiting);
@@ -2861,7 +2863,7 @@ extern "C" {
      void showAuxillaryScreen(boolean showDirectionalControls);
      void blockMagGlass(boolean blockGlass);
      */
-    void showInventoryButton(boolean show);
+  //  void showInventoryButton(boolean show);
     void setBrogueGameEvent(BrogueGameEvent brogueGameState);
 
 #if defined __cplusplus

@@ -81,6 +81,11 @@ static boolean _isInBackground = false;
     _isInBackground = true;
 }
 
++ (unsigned long)rogueSeed {
+    return rogue.seed;
+}
+
+/*
 - (void)colorsDance {
     if (_isInBackground) {
         return;
@@ -107,7 +112,7 @@ static boolean _isInBackground = false;
         }
     });
 }
-
+*/
 @end
 
 //  plotChar: plots inputChar at (xLoc, yLoc) with specified background and foreground colors.
@@ -158,15 +163,13 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
 	CGPoint event_location;
 	short x, y;
     
-    if (colorsDance) {
-        [[RogueDriver sharedInstance] animateColors:YES];
-    }
-    else {
-        [[RogueDriver sharedInstance] animateColors:NO];
-    }
-    
     for(;;) {
-        [NSThread sleepForTimeInterval:1./30.];
+        [NSThread sleepForTimeInterval:0.0333];
+        
+        if (colorsDance) {
+            shuffleTerrainColors(3, true);
+            commitDraws();
+        }
         
         if ([viewController cachedKeyStrokeCount] > 0) {
             returnEvent->eventType = KEYSTROKE;
@@ -218,7 +221,7 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
         }
     }
     
-    [[RogueDriver sharedInstance] animateColors:NO];
+ //   [[RogueDriver sharedInstance] animateColors:NO];
 }
 
 #pragma mark - bridge
@@ -233,10 +236,6 @@ boolean controlKeyIsDown() {
     }
     
     return 0;
-}
-
-void showInventoryButton(boolean show) {
-    [viewController showInventoryShowButton:show];
 }
 
 boolean shiftKeyIsDown() {
