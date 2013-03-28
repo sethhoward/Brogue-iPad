@@ -32,8 +32,6 @@ typedef struct iBTouch iBTouch;
 - (void)removeTouchAtIndex:(uint)index;
 - (char)dequeKeyStroke;
 
-- (void)showKeyboard;
-
 // only one screen can show at a time. We use two different views for the game and title view to handle custom
 // iOS buttons etc. This makes for smoother transitions and is for looks only.
 - (void)showTitle;

@@ -72,6 +72,9 @@ typedef enum {
     CGPoint _lastTouchLocation;
     NSTimer __strong *_stationaryTouchTimer;
     BOOL _areDirectionalControlsHidden;
+    // TODO: set this to ivars and dynamic set. Pressing in the left side of the screen in high scores does not register the touch 
+    BOOL _isSideBarSingleTap;       // handles special touch cases when user touches the side bar
+    BOOL _ishandlingDoubleTap;      // handles special double tap touch case
 }
 @dynamic cachedKeyStrokeCount;
 @dynamic cachedTouchesCount;
@@ -152,6 +155,7 @@ typedef enum {
 
 #pragma mark - Shake Motion
 
+// Used for escape
 - (BOOL)canBecomeFirstResponder {
     return YES;
 }
@@ -172,7 +176,7 @@ typedef enum {
 #pragma mark - touches
 
 - (void)initGestureRecognizers {
-    // IS slow as shit
+    // IS slow as shit. Leaving the code in so no one ever gets the bright idea to create a double tap gesture
    // UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
    // doubleTap.numberOfTapsRequired = 2;
    // doubleTap.delegate = self;
@@ -182,6 +186,8 @@ typedef enum {
         [self turnOnPinchGesture];
     }
 }
+
+// Pinch to hide the directional controls
 
 - (void)turnOnPinchGesture {
     if (!self.directionalPinch) {
@@ -198,8 +204,6 @@ typedef enum {
 }
 
 - (void)handlePinch:(UIPinchGestureRecognizer *)pinch {
-//    NSLog(@"%.2f %.2f", pinch.scale, pinch.velocity);
-    
     if (pinch.velocity < 0 && !_areDirectionalControlsHidden) {
         self.directionalButtonSubContainer.transform = CGAffineTransformMakeScale(pinch.scale, pinch.scale);
     }
@@ -237,6 +241,7 @@ typedef enum {
 }
 
 // TODO: touches are manually cached here instead of going through a central point
+// we save the last touch point so the second tap doesn't stray to far from the first tap. Otherwise the user's expectations of where they want to go and where they go might not match up
 - (void)handleDoubleTap:(UITapGestureRecognizer *)tap {
     [self stopStationaryTouchTimer];
     [self.secondaryDisplay removeMagnifyingGlass];
@@ -263,10 +268,6 @@ typedef enum {
 }
 
 - (void)addTouchToCache:(UITouch *)touch {
-  /*  if (_blockCachingTouches) {
-        return;
-    }*/
-    
     @synchronized(self.cachedTouches){
         iBTouch ibtouch;
         ibtouch.phase = touch.phase;
@@ -319,51 +320,26 @@ typedef enum {
     [self stopStationaryTouchTimer];
 }
 
-- (void)escapeTouchKeyEvent {
-    @synchronized(self.cachedKeyStrokes){
-        [self.cachedKeyStrokes removeAllObjects];
-        [self.cachedKeyStrokes addObject:kESC_Key];
-    }
-    
-    @synchronized(self.cachedTouches) {
-//        [self.cachedTouches removeAllObjects];
-    }
-}
-
-BOOL _ishandlingDoubleTap;
-BOOL _isSideBarSingleTap;
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
    // NSLog(@"%s", __PRETTY_FUNCTION__);
      _isSideBarSingleTap = NO;
 
     [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
         CGPoint touchPoint = [touch locationInView:theMainDisplay];
-
         
         if (touch.tapCount == 2) {
-    //        NSLog(@"double tap");
-            
+            // if we're in the game we just want to send our custom double tap and return
             if ([self isPointInGamePlayArea:touchPoint]) {
                 //This will cancel the singleTap action
                 [self handleDoubleTap:nil];
                 return ;
             }
             else {
+                // we're outside the play area. (most likely the side bar). This handles that side bar case where do don't actually send a touch up until the user has double tapped
                 @synchronized(self.cachedTouches) {
-                    // we double tapped... send along another mouse down and up to the game
-                  /*  iBTouch touchDown;
-                    touchDown.phase = UITouchPhaseStationary;
-                    touchDown.location = _lastTouchLocation;
-                    
-                    [self.cachedTouches addObject:[NSValue value:&touchDown withObjCType:@encode(iBTouch)]];
-                    
-                    iBTouch touchMoved;
-                    touchMoved.phase = UITouchPhaseMoved;
-                    touchMoved.location = _lastTouchLocation;
-                    [self.cachedTouches addObject:[NSValue value:&touchMoved withObjCType:@encode(iBTouch)]];*/
-                    
                     iBTouch touchUp;
                     touchUp.phase = UITouchPhaseEnded;
+#warning _lastTouchLocation is set in [self addTouchToCach:]. Not what I'd call intuitive and potentially deal breaking if changes were made
                     touchUp.location = _lastTouchLocation;
                     
                     [self.cachedTouches addObject:[NSValue value:&touchUp withObjCType:@encode(iBTouch)]];
@@ -371,27 +347,26 @@ BOOL _isSideBarSingleTap;
                     _ishandlingDoubleTap = YES;
                 }
             }
-            
-            return;
         }
-        
-        if (CGRectContainsPoint(kGameSideBarArea, touchPoint)) {
-            @synchronized(self.cachedTouches) {
-                iBTouch touchMoved;
-                touchMoved.phase = UITouchPhaseMoved;
-                touchMoved.location = touchPoint;
-                [self.cachedTouches addObject:[NSValue value:&touchMoved withObjCType:@encode(iBTouch)]];
+        // no tap just a touch
+        else {
+            // if we touch in the side bar we want to block the touches up and so we set a bool here to do just that. This forces the user to double tap anything in the side bar that they actually want to run to and allows a single tap to bring up the selection information.
+            // when a user touches the screen we need to 'nudge' the movement so brogue event handles can update (highlight, show popup, etc) where we touched
+            if (CGRectContainsPoint(kGameSideBarArea, touchPoint)) {
+                @synchronized(self.cachedTouches) {
+                    iBTouch touchMoved;
+                    touchMoved.phase = UITouchPhaseMoved;
+                    touchMoved.location = touchPoint;
+                    [self.cachedTouches addObject:[NSValue value:&touchMoved withObjCType:@encode(iBTouch)]];
+                }
+                
+                _isSideBarSingleTap = YES;
             }
             
-            _isSideBarSingleTap = YES;
+            // Get a single touch and it's location
+            [self addTouchToCache:touch];
+            [self startStationaryTouchTimerWithTouch:touch andTimeout:kStationaryTime];
         }
-        
-      //  NSLog(@"tap");
-        
-        // Get a single touch and it's location
-        [self addTouchToCache:touch];
-        
-        [self startStationaryTouchTimerWithTouch:touch andTimeout:kStationaryTime];
     }];
 }
 
@@ -408,6 +383,7 @@ BOOL _isSideBarSingleTap;
   //  NSLog(@"%s %i", __PRETTY_FUNCTION__, _ishandlingDoubleTap);
     [self stopStationaryTouchTimer];
     
+    // under certain conditions we don't actually want to pass through a 'mouse up'
     if (!_ishandlingDoubleTap && !_isSideBarSingleTap) {
         [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
             // Get a single touch and it's location
