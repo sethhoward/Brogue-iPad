@@ -135,8 +135,7 @@ void plotChar(uchar inputChar,
                                                   green:((float)foreGreen/100)
                                                    blue:((float)foreBlue/100)
                                                   alpha:(float)1]
-                      atLocationX:xLoc locationY:yLoc
-                    withFancyFont:(inputChar == FOLIAGE_CHAR)];
+                      atLocationX:xLoc locationY:yLoc];
     }
 }
 
@@ -150,9 +149,9 @@ __unused void pausingTimerStartsNow() {
 boolean pauseForMilliseconds(short milliseconds) {
     BOOL hasEvent = NO;
     
-    [NSThread sleepForTimeInterval:milliseconds/1000.0f];
+    [NSThread sleepForTimeInterval:0.03333];
         
-    if ([viewController cachedTouchesCount] > 0) {
+    if ([viewController cachedTouchesCount] > 0 || [viewController cachedKeyStrokeCount] > 0) {
         hasEvent = YES;
     }
 
@@ -164,6 +163,7 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
 	short x, y;
     
     for(;;) {
+        // magic number 60Hz
         [NSThread sleepForTimeInterval:0.0333];
         
         if (colorsDance) {

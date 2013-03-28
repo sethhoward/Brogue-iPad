@@ -47,8 +47,7 @@
    withBackground:(UIColor *)bgColor
   withLetterColor:(UIColor *)letterColor
 	  atLocationX:(short)x
-		locationY:(short)y
-    withFancyFont:(bool)fancyFont;
+		locationY:(short)y;
 
 - (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(UIColor *)theAttributes;
 

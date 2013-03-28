@@ -155,7 +155,7 @@ short theFontSize = FONT_SIZE;
     if (!self.displayLink) {
         self.displayLink =  [CADisplayLink displayLinkWithTarget:self selector:@selector(draw)];
         [self.displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
-        [self.displayLink setFrameInterval:3];
+        [self.displayLink setFrameInterval:1];
     }
     else {
         [self.displayLink setPaused:NO];
@@ -188,6 +188,10 @@ short theFontSize = FONT_SIZE;
     
     [self setHorizWindow:self.hWindow vertWindow:self.vWindow fontSize:theFontSize];
     
+    if (!CGFont) {
+        CGFont = CGFontCreateWithFontName((CFStringRef)@"Monaco");
+    }
+    
     _hasInitialized = YES;
 }
 
@@ -201,7 +205,6 @@ short theFontSize = FONT_SIZE;
   withLetterColor:(UIColor *)letterColor
 	  atLocationX:(short)x
 		locationY:(short)y
-    withFancyFont:(bool)fancyFont
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         letterArray[x][y] = c;
@@ -212,13 +215,9 @@ short theFontSize = FONT_SIZE;
 
 - (void)drawRect:(CGRect)rect
 {
-    [MGBenchmark start:@"draw"];
+  //  [MGBenchmark start:@"draw"];
 
     context = UIGraphicsGetCurrentContext();
-    
-    if (!CGFont) {
-        CGFont = CGFontCreateWithFontName((CFStringRef)@"Monaco");
-    }
 
     for (int j = 0; j < kROWS; j++ ) {
         for (int i = 0; i < kCOLS; i++ ) {
@@ -231,10 +230,14 @@ short theFontSize = FONT_SIZE;
         }
     }
     
-    [[MGBenchmark session:@"draw"] total];
-    [MGBenchmark finish:@"draw"];
+//    [[MGBenchmark session:@"draw"] total];
+ //   [MGBenchmark finish:@"draw"];
 }
 
+size_t stringLength;
+CGGlyph glyphString[1];
+CGPoint stringOrigin;
+CGSize stringSize;
 - (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(UIColor *)letterColor
 {
     
@@ -244,8 +247,7 @@ short theFontSize = FONT_SIZE;
     
   //  [[MGBenchmark session:@"draw"] step:@"text start"];
 
-    CGPoint stringOrigin;
-    CGSize stringSize;
+    
     
     // Cache sizes.
     if ([characterSizeDictionary objectForKey:theString] == nil) {
@@ -259,29 +261,25 @@ short theFontSize = FONT_SIZE;
     stringOrigin.x = rect.origin.x + (rect.size.width - stringSize.width) * 0.5;
     stringOrigin.y = rect.origin.y + (rect.size.height - stringSize.height) * 0.5;
     
-    UIColor *color = letterColor;
-    
     const char* string = [theString cStringUsingEncoding:NSASCIIStringEncoding];
     
     // we have a unicode character. Draw it with drawAtPoint
     if (!string)
     {
-        CGContextSetFillColorWithColor(context, [color CGColor]);
+        CGContextSetFillColorWithColor(context, [letterColor CGColor]);
         [theString drawAtPoint:stringOrigin withFont:[self fontForString:theString]];
   //      [[MGBenchmark session:@"draw"] step:@"text dpoint stop"];
         return;
     }
     
     // This seems like overkill but supposedly it's faster than drawAtPoint
-    size_t stringLength = strlen(string);
-    
-    CGGlyph glyphString[1];
+    stringLength = strlen(string);
     glyphString[0] = string[0]-29;
 
     CGContextSetTextMatrix(context, CGAffineTransformMakeScale(1.0, -1.0));
     CGContextSetFont(context, CGFont);
     CGContextSetFontSize(context, theFontSize);
-    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextSetFillColorWithColor(context, [letterColor CGColor]);
     
     CGContextShowGlyphsAtPoint(context, stringOrigin.x, stringOrigin.y + theFontSize, glyphString, stringLength);
     

@@ -14,7 +14,7 @@
 #import "AboutViewController.h"
 #import "GameSettings.h"
 
-#define kStationaryTime 0.2f
+#define kStationaryTime 0.25f
 #define kGamePlayHitArea CGRectMake(209., 74., 810., 650.)     // seems to be a method in the c code that does this but didn't work as expected
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
@@ -71,6 +71,8 @@ typedef enum {
     CGPoint _lastTouchLocation;
     NSTimer __strong *_stationaryTouchTimer;
     BOOL _areDirectionalControlsHidden;
+    
+    NSTimer *_doubleTapTimer;
 }
 @dynamic cachedKeyStrokeCount;
 @dynamic cachedTouchesCount;
@@ -318,17 +320,66 @@ typedef enum {
     [self stopStationaryTouchTimer];
 }
 
+- (void)escapeTouchKeyEvent {
+    @synchronized(self.cachedKeyStrokes){
+        [self.cachedKeyStrokes removeAllObjects];
+        [self.cachedKeyStrokes addObject:kESC_Key];
+    }
+    
+    @synchronized(self.cachedTouches) {
+//        [self.cachedTouches removeAllObjects];
+    }
+}
+
+BOOL _ishandlingDoubleTap;
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
    // NSLog(@"%s", __PRETTY_FUNCTION__);
 
     [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
+        CGPoint touchPoint = [touch locationInView:theMainDisplay];
+
+        
         if (touch.tapCount == 2) {
-            if ([self isPointInGamePlayArea:[touch locationInView:theMainDisplay]]) {
+            NSLog(@"double tap");
+            
+            if ([self isPointInGamePlayArea:touchPoint]) {
                 //This will cancel the singleTap action
                 [self handleDoubleTap:nil];
                 return ;
             }
+            else {
+                @synchronized(self.cachedTouches) {
+                    // we double tapped... send along another mouse down and up to the game
+                  /*  iBTouch touchDown;
+                    touchDown.phase = UITouchPhaseStationary;
+                    touchDown.location = _lastTouchLocation;
+                    
+                    [self.cachedTouches addObject:[NSValue value:&touchDown withObjCType:@encode(iBTouch)]];
+                    
+                    iBTouch touchMoved;
+                    touchMoved.phase = UITouchPhaseMoved;
+                    touchMoved.location = _lastTouchLocation;
+                    [self.cachedTouches addObject:[NSValue value:&touchMoved withObjCType:@encode(iBTouch)]];*/
+                    
+                    iBTouch touchUp;
+                    touchUp.phase = UITouchPhaseEnded;
+                    touchUp.location = _lastTouchLocation;
+                    
+                    [self.cachedTouches addObject:[NSValue value:&touchUp withObjCType:@encode(iBTouch)]];
+                    
+                    _ishandlingDoubleTap = YES;
+                }
+
+            }
+            
+            return;
         }
+        
+        if (![self isPointInGamePlayArea:touchPoint]) {
+            [self escapeTouchKeyEvent];
+        }
+        
+        NSLog(@"tap");
         
         // Get a single touch and it's location
         [self addTouchToCache:touch];
@@ -337,7 +388,7 @@ typedef enum {
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
- //   NSLog(@" ##### %@", touches);
+    NSLog(@" ##### %@", touches);
     [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
         // Get a single touch and it's location
         [self addTouchToCache:touch];
@@ -346,13 +397,17 @@ typedef enum {
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
- //   NSLog(@"%s", __PRETTY_FUNCTION__);
+    NSLog(@"%s %i", __PRETTY_FUNCTION__, _ishandlingDoubleTap);
     [self stopStationaryTouchTimer];
     
-    [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
-        // Get a single touch and it's location
-        [self addTouchToCache:touch];
-    }];
+    if (!_ishandlingDoubleTap) {
+        [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
+            // Get a single touch and it's location
+            [self addTouchToCache:touch];
+        }];
+    }
+
+    _ishandlingDoubleTap = NO;
 }
 
 #pragma mark - Magnifier
@@ -614,6 +669,7 @@ typedef enum {
         case BrogueGameEventOpenGameFinished:
             [self showInventoryOnDeathButton:NO];
             [self showTitle];
+            
             self.blockMagView = YES;
             break;
         case BrogueGameEventStartNewGame:
