@@ -106,7 +106,6 @@ short theFontSize = FONT_SIZE;
         
        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResign) name:UIApplicationWillResignActiveNotification object:nil];
-  //      test = arc4random() % 10000000;
     }
     
 	return self;
@@ -125,8 +124,6 @@ short theFontSize = FONT_SIZE;
 }
 
 - (void)stopAnimating {
-   // [self.displayLink invalidate];
-   // self.displayLink = nil;
     [self.displayLink setPaused:YES];
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -136,10 +133,6 @@ short theFontSize = FONT_SIZE;
                 bgColorArray[i][j] = [UIColor blackColor];
                 
                 attributes[i][j] = [UIColor blackColor];
-                
-              //  attributes[i][j] = [[NSMutableDictionary alloc] init];
-               // [attributes[i][j] setObject:[UIColor blackColor]
-                //                     forKey:NSForegroundColorAttributeName];
             }
         }
     
@@ -173,11 +166,6 @@ short theFontSize = FONT_SIZE;
 		for (i = 0; i < kCOLS; i++) {            
 			letterArray[i][j] = @" ";
 			bgColorArray[i][j] = [UIColor blackColor];
-
-		//	attributes[i][j] = [[NSMutableDictionary alloc] init];
-		//	[attributes[i][j] setObject:[self fastFont] forKey:NSFontAttributeName];
-		//	[attributes[i][j] setObject:[UIColor blackColor]
-         //                        forKey:NSForegroundColorAttributeName];
             attributes[i][j] = [UIColor blackColor];
             
             // (18 * 33) - (18 *(j + 1))
@@ -244,11 +232,7 @@ CGSize stringSize;
 	if (theString.length == 0 || [theString isEqualToString:@" "]) {
 		return;
 	}
-    
-  //  [[MGBenchmark session:@"draw"] step:@"text start"];
 
-    
-    
     // Cache sizes.
     if ([characterSizeDictionary objectForKey:theString] == nil) {
         stringSize = [theString sizeWithFont:[self fontForString:theString]];	// quite expensive
@@ -268,7 +252,6 @@ CGSize stringSize;
     {
         CGContextSetFillColorWithColor(context, [letterColor CGColor]);
         [theString drawAtPoint:stringOrigin withFont:[self fontForString:theString]];
-  //      [[MGBenchmark session:@"draw"] step:@"text dpoint stop"];
         return;
     }
     
@@ -295,12 +278,9 @@ CGSize stringSize;
     vPixels = vPx / kROWS;
     self.hWindow = hPx;
     self.vWindow = vPx;
-  //  theFontSize = size;
-  //  self.font = nil;
-    
+
     for (j = 0; j < kROWS; j++) {
         for (i = 0; i < kCOLS; i++) {
-       //     [attributes[i][j] setObject:[self fastFont] forKey:NSFontAttributeName];    // not used anymore?
             rectArray[i][j] = CGRectMake((int) (hPx * i / kCOLS),
                                          (int) ((vPx * (j) / kROWS)),
                                          ((int) (hPx * (i+1) / kCOLS)) - ((int) (hPx * (i) / kCOLS)),//hPixels + 1,

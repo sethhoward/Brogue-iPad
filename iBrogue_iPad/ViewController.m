@@ -16,6 +16,7 @@
 
 #define kStationaryTime 0.25f
 #define kGamePlayHitArea CGRectMake(209., 74., 810., 650.)     // seems to be a method in the c code that does this but didn't work as expected
+#define kGameSideBarArea CGRectMake(0., 0., 210., 748.)
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
 
@@ -71,8 +72,6 @@ typedef enum {
     CGPoint _lastTouchLocation;
     NSTimer __strong *_stationaryTouchTimer;
     BOOL _areDirectionalControlsHidden;
-    
-    NSTimer *_doubleTapTimer;
 }
 @dynamic cachedKeyStrokeCount;
 @dynamic cachedTouchesCount;
@@ -332,15 +331,17 @@ typedef enum {
 }
 
 BOOL _ishandlingDoubleTap;
+BOOL _isSideBarSingleTap;
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
    // NSLog(@"%s", __PRETTY_FUNCTION__);
+     _isSideBarSingleTap = NO;
 
     [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
         CGPoint touchPoint = [touch locationInView:theMainDisplay];
 
         
         if (touch.tapCount == 2) {
-            NSLog(@"double tap");
+    //        NSLog(@"double tap");
             
             if ([self isPointInGamePlayArea:touchPoint]) {
                 //This will cancel the singleTap action
@@ -369,26 +370,33 @@ BOOL _ishandlingDoubleTap;
                     
                     _ishandlingDoubleTap = YES;
                 }
-
             }
             
             return;
         }
         
-        if (![self isPointInGamePlayArea:touchPoint]) {
-            [self escapeTouchKeyEvent];
+        if (CGRectContainsPoint(kGameSideBarArea, touchPoint)) {
+            @synchronized(self.cachedTouches) {
+                iBTouch touchMoved;
+                touchMoved.phase = UITouchPhaseMoved;
+                touchMoved.location = touchPoint;
+                [self.cachedTouches addObject:[NSValue value:&touchMoved withObjCType:@encode(iBTouch)]];
+            }
+            
+            _isSideBarSingleTap = YES;
         }
         
-        NSLog(@"tap");
+      //  NSLog(@"tap");
         
         // Get a single touch and it's location
         [self addTouchToCache:touch];
+        
         [self startStationaryTouchTimerWithTouch:touch andTimeout:kStationaryTime];
     }];
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@" ##### %@", touches);
+ //   NSLog(@" ##### %@", touches);
     [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
         // Get a single touch and it's location
         [self addTouchToCache:touch];
@@ -397,10 +405,10 @@ BOOL _ishandlingDoubleTap;
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@"%s %i", __PRETTY_FUNCTION__, _ishandlingDoubleTap);
+  //  NSLog(@"%s %i", __PRETTY_FUNCTION__, _ishandlingDoubleTap);
     [self stopStationaryTouchTimer];
     
-    if (!_ishandlingDoubleTap) {
+    if (!_ishandlingDoubleTap && !_isSideBarSingleTap) {
         [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
             // Get a single touch and it's location
             [self addTouchToCache:touch];

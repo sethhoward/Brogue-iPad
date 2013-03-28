@@ -41,7 +41,7 @@ short mouseX, mouseY;
 static boolean _isInBackground = false;
 
 @interface RogueDriver ()
-@property (nonatomic, strong) NSTimer *colorsDanceTimer;
+
 @end
 
 @implementation RogueDriver {
@@ -69,9 +69,9 @@ static boolean _isInBackground = false;
     return self;
 }
 
-+ (BOOL)coordinatesAreInMap:(CGPoint)point {
+/*+ (BOOL)coordinatesAreInMap:(CGPoint)point {
     return coordinatesAreInMap(point.x, point.y);
-}
+}*/
 
 - (void)applicationDidBecomeActive {
     _isInBackground = false;
@@ -85,34 +85,6 @@ static boolean _isInBackground = false;
     return rogue.seed;
 }
 
-/*
-- (void)colorsDance {
-    if (_isInBackground) {
-        return;
-    }
-    
-    shuffleTerrainColors(3, true);
-    commitDraws();
-}
-
-- (void)animateColors:(BOOL)animate {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.colorsDanceTimer invalidate];
-        self.colorsDanceTimer = nil;
-        
-        if (animate && !_areColorsDancing) {
-        //    NSLog(@"starting colors dance");
-            _areColorsDancing = YES;
-            self.colorsDanceTimer = [NSTimer scheduledTimerWithTimeInterval:0.01667 target:self selector:@selector(colorsDance) userInfo:nil repeats:YES];
-        }
-        else {
-            _areColorsDancing = NO;
-          
-         //   NSLog(@"stopping colors dance");
-        }
-    });
-}
-*/
 @end
 
 //  plotChar: plots inputChar at (xLoc, yLoc) with specified background and foreground colors.
