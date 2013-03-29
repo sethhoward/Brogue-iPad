@@ -76,6 +76,7 @@ typedef enum {
     BOOL _isSideBarSingleTap;       // handles special touch cases when user touches the side bar
     BOOL _ishandlingDoubleTap;      // handles special double tap touch case
     BrogueGameEvent _lastBrogueGameEvent;
+    BOOL _ignoreSideBarInteraction; // we could check if the last event was something like BrogueGameEventOpenedInventory but too fragile
 }
 @dynamic cachedKeyStrokeCount;
 @dynamic cachedTouchesCount;
@@ -132,8 +133,6 @@ typedef enum {
 
 - (void)awakeFromNib
 {
-    //	extern Viewport *theMainDisplay;
-    //	CGSize theSize;
 	short versionNumber;
     
 	versionNumber = [[NSUserDefaults standardUserDefaults] integerForKey:@"Brogue version"];
@@ -364,7 +363,7 @@ typedef enum {
         else {
             // if we touch in the side bar we want to block the touches up and so we set a bool here to do just that. This forces the user to double tap anything in the side bar that they actually want to run to and allows a single tap to bring up the selection information.
             // when a user touches the screen we need to 'nudge' the movement so brogue event handles can update (highlight, show popup, etc) where we touched
-            if (CGRectContainsPoint(kGameSideBarArea, touchPoint) && _lastBrogueGameEvent != BrogueGameEventShowHighScores) {
+            if (CGRectContainsPoint(kGameSideBarArea, touchPoint) && _lastBrogueGameEvent != BrogueGameEventShowHighScores && !_ignoreSideBarInteraction) {
         //        [self escapeTouchKeyEvent];
                 
                 @synchronized(self.cachedTouches) {
@@ -661,12 +660,15 @@ typedef enum {
         case BrogueGameEventWaitingForConfirmation:
         case BrogueGameEventActionMenuOpen:
         case BrogueGameEventOpenedInventory:
+            _ignoreSideBarInteraction = YES;
             self.blockMagView = YES;
             break;
+        // pretty much every inventory option
         case BrogueGameEventInventoryItemAction:
         case BrogueGameEventConfirmationComplete:
         case BrogueGameEventActionMenuClose:
         case BrogueGameEventClosedInventory:
+            _ignoreSideBarInteraction = NO;
             self.blockMagView = NO;
             break;
         case BrogueGameEventKeyBoardInputRequired:
