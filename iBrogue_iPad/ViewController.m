@@ -75,6 +75,7 @@ typedef enum {
     // TODO: set this to ivars and dynamic set. Pressing in the left side of the screen in high scores does not register the touch 
     BOOL _isSideBarSingleTap;       // handles special touch cases when user touches the side bar
     BOOL _ishandlingDoubleTap;      // handles special double tap touch case
+    BrogueGameEvent _lastBrogueGameEvent;
 }
 @dynamic cachedKeyStrokeCount;
 @dynamic cachedTouchesCount;
@@ -320,6 +321,17 @@ typedef enum {
     [self stopStationaryTouchTimer];
 }
 
+- (void)escapeTouchKeyEvent {
+    @synchronized(self.cachedKeyStrokes){
+        [self.cachedKeyStrokes removeAllObjects];
+        [self.cachedKeyStrokes addObject:kESC_Key];
+    }
+    
+    @synchronized(self.cachedTouches) {
+                [self.cachedTouches removeAllObjects];
+    }
+}
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
    // NSLog(@"%s", __PRETTY_FUNCTION__);
      _isSideBarSingleTap = NO;
@@ -352,7 +364,9 @@ typedef enum {
         else {
             // if we touch in the side bar we want to block the touches up and so we set a bool here to do just that. This forces the user to double tap anything in the side bar that they actually want to run to and allows a single tap to bring up the selection information.
             // when a user touches the screen we need to 'nudge' the movement so brogue event handles can update (highlight, show popup, etc) where we touched
-            if (CGRectContainsPoint(kGameSideBarArea, touchPoint)) {
+            if (CGRectContainsPoint(kGameSideBarArea, touchPoint) && _lastBrogueGameEvent != BrogueGameEventShowHighScores) {
+        //        [self escapeTouchKeyEvent];
+                
                 @synchronized(self.cachedTouches) {
                     iBTouch touchMoved;
                     touchMoved.phase = UITouchPhaseMoved;
@@ -632,8 +646,17 @@ typedef enum {
     });
 }
 
+- (void)hideKeyboard {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.aTextField becomeFirstResponder];
+        [self.aTextField resignFirstResponder];
+    });
+}
+
 // my original intention was to not touch any game code. In the end this was not possible in order to give the best user experience. I funnel all modification and events in the core code through here.
 - (void)setBrogueGameEvent:(BrogueGameEvent)brogueGameEvent {
+    _lastBrogueGameEvent = brogueGameEvent;
+    
     switch (brogueGameEvent) {
         case BrogueGameEventWaitingForConfirmation:
         case BrogueGameEventActionMenuOpen:
@@ -653,7 +676,7 @@ typedef enum {
         case BrogueGameEventOpenGameFinished:
             [self showInventoryOnDeathButton:NO];
             [self showTitle];
-            
+            [self hideKeyboard];
             self.blockMagView = YES;
             break;
         case BrogueGameEventStartNewGame:
