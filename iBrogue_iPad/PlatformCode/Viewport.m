@@ -130,9 +130,9 @@ short theFontSize = FONT_SIZE;
         for (int j = 0; j < kROWS; j++) {
             for (int i = 0; i < kCOLS; i++) {
                 letterArray[i][j] = @" ";
-                bgColorArray[i][j] = [UIColor blackColor];
+              //  bgColorArray[i][j] = [UIColor blackColor];
                 
-                attributes[i][j] = [UIColor blackColor];
+              //  attributes[i][j] = [UIColor blackColor];
             }
         }
     
@@ -165,8 +165,17 @@ short theFontSize = FONT_SIZE;
 	for (j = 0; j < kROWS; j++) {        
 		for (i = 0; i < kCOLS; i++) {            
 			letterArray[i][j] = @" ";
-			bgColorArray[i][j] = [UIColor blackColor];
-            attributes[i][j] = [UIColor blackColor];
+            
+            SHColor black;
+            black.red = 0;
+            black.blue = 0;
+            black.green = 0;
+            
+            bgColorArray[i][j] = &black;
+            attributes[i][j] = &black;
+            
+		//	bgColorArray[i][j] = [UIColor blackColor];
+        //    attributes[i][j] = [UIColor blackColor];
             
             // (18 * 33) - (18 *(j + 1))
             CGRect rect = CGRectMake(HORIZ_PX*i, (VERT_PX*(j)), HORIZ_PX, VERT_PX);
@@ -188,7 +197,7 @@ short theFontSize = FONT_SIZE;
     [self setNeedsDisplay];
 }
 
-- (void)setString:(NSString *)c
+/*- (void)setString:(NSString *)c
    withBackground:(UIColor *)bgColor
   withLetterColor:(UIColor *)letterColor
 	  atLocationX:(short)x
@@ -199,36 +208,67 @@ short theFontSize = FONT_SIZE;
         bgColorArray[x][y] = bgColor;
         attributes[x][y] = letterColor;
     });
+}*/
+
+- (void)setString:(NSString *)c withBackgroundColor:(SHColor *)bgColor letterColor:(SHColor *)letterColor atLocationX:(short)x locationY:(short)y {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        letterArray[x][y] = c;
+        bgColorArray[x][y] = bgColor;
+        attributes[x][y] = letterColor;
+    });
 }
 
+SHColor *prevColor = NULL;
 - (void)drawRect:(CGRect)rect
 {
-  //  [MGBenchmark start:@"draw"];
+    [MGBenchmark start:@"draw"];
 
     context = UIGraphicsGetCurrentContext();
 
     for (int j = 0; j < kROWS; j++ ) {
         for (int i = 0; i < kCOLS; i++ ) {
-            UIColor *color = bgColorArray[i][j];
+            SHColor *color = bgColorArray[i][j];
+            
+            if (!color) {
+                return;
+            }
 
-            CGContextSetFillColorWithColor(context, [color CGColor]);
+            if (!prevColor) {
+                CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
+            }
+            else {
+                if (prevColor->blue != color->blue || prevColor->green != color->green || prevColor->blue != color->blue) {
+                    CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
+                   // NSLog(@"DUPE COLOR");
+                  //  CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red green:color->green blue:color->blue alpha:1.0] CGColor]);
+                }                
+            }
+            
+            prevColor = color;
+            
             
             CGContextFillRect(context, rectArray[i][j]);
+        
+            
+        }
+    }
+    
+    for (int j = 0; j < kROWS; j++ ) {
+        for (int i = 0; i < kCOLS; i++ ) {
             [self drawTheString:letterArray[i][j] centeredIn:rectArray[i][j] withAttributes:attributes[i][j]];
         }
     }
     
-//    [[MGBenchmark session:@"draw"] total];
- //   [MGBenchmark finish:@"draw"];
+    [[MGBenchmark session:@"draw"] total];
+    [MGBenchmark finish:@"draw"];
 }
 
 size_t stringLength;
 CGGlyph glyphString[1];
 CGPoint stringOrigin;
 CGSize stringSize;
-- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(UIColor *)letterColor
+- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(SHColor *)letterColor
 {
-    
 	if (theString.length == 0 || [theString isEqualToString:@" "]) {
 		return;
 	}
@@ -247,10 +287,17 @@ CGSize stringSize;
     
     const char* string = [theString cStringUsingEncoding:NSASCIIStringEncoding];
     
+    UIColor *color = [UIColor colorWithRed:letterColor->red/100. green:letterColor->green/100. blue:letterColor->blue/100. alpha:1.0];
+    
+    if (prevColor->blue != letterColor->blue || prevColor->green != letterColor->green || prevColor->blue != letterColor->blue) {
+        CGContextSetFillColorWithColor(context, [color CGColor]);
+    }
+    
+    prevColor = letterColor;
+    
     // we have a unicode character. Draw it with drawAtPoint
     if (!string)
     {
-        CGContextSetFillColorWithColor(context, [letterColor CGColor]);
         [theString drawAtPoint:stringOrigin withFont:[self fontForString:theString]];
         return;
     }
@@ -262,7 +309,7 @@ CGSize stringSize;
     CGContextSetTextMatrix(context, CGAffineTransformMakeScale(1.0, -1.0));
     CGContextSetFont(context, CGFont);
     CGContextSetFontSize(context, theFontSize);
-    CGContextSetFillColorWithColor(context, [letterColor CGColor]);
+ //   CGContextSetFillColorWithColor(context, [color CGColor]);
     
     CGContextShowGlyphsAtPoint(context, stringOrigin.x, stringOrigin.y + theFontSize, glyphString, stringLength);
     

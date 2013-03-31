@@ -34,11 +34,19 @@
 // window resizes.
 #define FONT_SIZE	13
 
+typedef struct {
+    short red;
+    short green;
+    short blue;
+} SHColor;
+
+
+
 @interface Viewport : ACMagnifyingView
 {
 	NSString __strong *letterArray[kCOLS][kROWS];
-	UIColor __strong *bgColorArray[kCOLS][kROWS];
-	UIColor __strong *attributes[kCOLS][kROWS];
+	SHColor *bgColorArray[kCOLS][kROWS];
+	SHColor *attributes[kCOLS][kROWS];
 	NSMutableDictionary __strong *characterSizeDictionary;
 	CGRect rectArray[kCOLS][kROWS];
 }
@@ -49,7 +57,9 @@
 	  atLocationX:(short)x
 		locationY:(short)y;
 
-- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(UIColor *)theAttributes;
+- (void)setString:(NSString *)c withBackgroundColor:(SHColor *)bgColor letterColor:(SHColor *)letterColor atLocationX:(short)x locationY:(short)y;
+
+- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(SHColor *)theAttributes;
 
 - (void)setHorizWindow:(short)hPx
 			vertWindow:(short)vPx

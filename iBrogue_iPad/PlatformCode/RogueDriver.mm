@@ -97,8 +97,18 @@ void plotChar(uchar inputChar,
         return;
     }
     
+    SHColor *backColor = new SHColor;
+    backColor->red = backRed;
+    backColor->green = backGreen;
+    backColor->blue = backBlue;
+    
+    SHColor *foreColor = new SHColor;
+    foreColor->red = foreRed;
+    foreColor->green = foreGreen;
+    foreColor->blue = foreBlue;
+    
     @autoreleasepool {
-        [theMainDisplay setString:[NSString stringWithCharacters:&inputChar length:1]
+      /*  [theMainDisplay setString:[NSString stringWithCharacters:&inputChar length:1]
                    withBackground:[UIColor colorWithRed:((float)backRed/100)
                                                   green:((float)backGreen/100)
                                                    blue:((float)backBlue/100)
@@ -107,7 +117,8 @@ void plotChar(uchar inputChar,
                                                   green:((float)foreGreen/100)
                                                    blue:((float)foreBlue/100)
                                                   alpha:(float)1]
-                      atLocationX:xLoc locationY:yLoc];
+                      atLocationX:xLoc locationY:yLoc];*/
+        [theMainDisplay setString:[NSString stringWithCharacters:&inputChar length:1] withBackgroundColor:backColor letterColor:foreColor atLocationX:xLoc locationY:yLoc];
     }
 }
 
