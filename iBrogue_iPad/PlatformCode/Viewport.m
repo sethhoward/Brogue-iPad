@@ -224,32 +224,65 @@ SHColor *prevColor = NULL;
     [MGBenchmark start:@"draw"];
 
     context = UIGraphicsGetCurrentContext();
+    
+    CGRect startRect = CGRectNull;
+    int width = 0;
+   // int starti = 0;
 
     for (int j = 0; j < kROWS; j++ ) {
+        startRect = rectArray[0][j];
+        width = 0;
+        //starti = 1;
+        
         for (int i = 0; i < kCOLS; i++ ) {
             SHColor *color = bgColorArray[i][j];
-            
-            if (!color) {
-                return;
-            }
 
             if (!prevColor) {
+                startRect = CGRectNull;
                 CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
             }
             else {
-                if (prevColor->blue != color->blue || prevColor->green != color->green || prevColor->blue != color->blue) {
-                    CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
+                if (prevColor->blue != color->blue || prevColor->green != color->green || prevColor->blue != color->blue || i == kCOLS - 1) {
+                  //  if (!CGRectIsNull(startRect)) {
+                //        NSLog(@"%@", NSStringFromCGRect(startRect));
+                //        NSLog(@"%@", NSStringFromCGRect(rectArray[i][j]));
+                 //       NSLog(@"%i", width);
+                    if (i == kCOLS - 1) {
+                        width += rectArray[i][j].size.width;
+                    }
+                        
+                        CGContextFillRect(context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)rectArray[i][j].size.height));
+                        
+                        startRect = rectArray[i][j];
+                      //  starti = 1;
+                        width = rectArray[i][j].size.width;
+                        
+                        CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
+                   // }
+                   // else {
+                     //   CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
+                        //CGContextFillRect(context, rectArray[i][j]);
+                   // }
+                    
+                    
+
                    // NSLog(@"DUPE COLOR");
                   //  CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red green:color->green blue:color->blue alpha:1.0] CGColor]);
-                }                
+                }
+                else {
+                /*    if (CGRectIsNull(startRect)) {
+                        CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
+                        startRect = rectArray[i][j];
+                        //starti = 1;
+                    }*/
+                    
+                  //  starti++;
+                    width += rectArray[i][j].size.width;
+                }
             }
             
             prevColor = color;
-            
-            
-            CGContextFillRect(context, rectArray[i][j]);
-        
-            
+ 
         }
     }
     
