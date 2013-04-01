@@ -211,17 +211,15 @@ short theFontSize = FONT_SIZE;
 
 - (void)drawRect:(CGRect)rect
 {
-    [MGBenchmark start:@"draw"];
+   // [MGBenchmark start:@"draw"];
 
     _context = UIGraphicsGetCurrentContext();
     
     CGRect startRect = rectArray[0][0];
     int width = rectArray[0][0].size.width;
     
-    SHColor *color = bgColorArray[0][0];
-    _prevColor = color;
-    //CGContextSetFillColorWithColor(_context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
-    
+    _prevColor = bgColorArray[0][0];
+
     // draw the background rect colors
     for (int j = 0; j < kROWS; j++ ) {
         width = 0;
@@ -270,6 +268,9 @@ short theFontSize = FONT_SIZE;
             _prevColor = color;
         }
     }
+
+    _prevColor = bgColorArray[0][0];
+    CGContextSetFillColorWithColor(_context, [[UIColor colorWithRed:_prevColor->red/100. green:_prevColor->green/100. blue:_prevColor->blue/100. alpha:1.0] CGColor]);
     
     // now draw the ascii chars
     for (int j = 0; j < kROWS; j++ ) {
@@ -278,8 +279,8 @@ short theFontSize = FONT_SIZE;
         }
     }
     
-    [[MGBenchmark session:@"draw"] total];
-    [MGBenchmark finish:@"draw"];
+   // [[MGBenchmark session:@"draw"] total];
+   // [MGBenchmark finish:@"draw"];
 }
 
 // drawTheString vars declared outside the method. Seem to speed things up just a hair
