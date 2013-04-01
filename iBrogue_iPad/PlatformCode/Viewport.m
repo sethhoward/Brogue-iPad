@@ -155,7 +155,8 @@ short theFontSize = FONT_SIZE;
 - (void)clearColors {
     for (int j = 0; j < kROWS; j++) {
 		for (int i = 0; i < kCOLS; i++) {
-			letterArray[i][j] = @" ";
+			letterArray[i][j] = @"";
+            charArray[i][j] = ' ';
             SHColor black;
             black.red = 0;
             black.blue = 0;
@@ -199,17 +200,18 @@ short theFontSize = FONT_SIZE;
     [self setNeedsDisplay];
 }
 
-- (void)setString:(NSString *)c withBackgroundColor:(SHColor *)bgColor letterColor:(SHColor *)letterColor atLocationX:(short)x locationY:(short)y {
+- (void)setString:(NSString *)c withBackgroundColor:(SHColor *)bgColor letterColor:(SHColor *)letterColor atLocationX:(short)x locationY:(short)y withChar:(unsigned short)character {
     dispatch_async(dispatch_get_main_queue(), ^{
         letterArray[x][y] = c;
         bgColorArray[x][y] = bgColor;
         attributes[x][y] = letterColor;
+        charArray[x][y] = character;
     });
 }
 
 - (void)drawRect:(CGRect)rect
 {
-    [MGBenchmark start:@"draw"];
+    //[MGBenchmark start:@"draw"];
 
     _context = UIGraphicsGetCurrentContext();
     
@@ -256,12 +258,12 @@ short theFontSize = FONT_SIZE;
     // now draw the ascii chars
     for (int j = 0; j < kROWS; j++ ) {
         for (int i = 0; i < kCOLS; i++ ) {
-            [self drawTheString:letterArray[i][j] centeredIn:rectArray[i][j] withAttributes:attributes[i][j]];
+            [self drawTheString:letterArray[i][j] centeredIn:rectArray[i][j] withAttributes:attributes[i][j] withChar:charArray[i][j]];
         }
     }
     
-    [[MGBenchmark session:@"draw"] total];
-    [MGBenchmark finish:@"draw"];
+  //  [[MGBenchmark session:@"draw"] total];
+  //  [MGBenchmark finish:@"draw"];
 }
 
 // drawTheString vars declared outside the method. Seem to speed things up just a hair
@@ -269,9 +271,9 @@ size_t stringLength;
 CGGlyph glyphString[1];
 CGPoint stringOrigin;
 CGSize stringSize;
-const char* string;
+unsigned short string;
 //char *prevCharGrid[kCOLS][kROWS];
-- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(SHColor *)letterColor
+- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(SHColor *)letterColor withChar:(unsigned short)character
 {
     // before the letter array is set we ensure that anything that isn't supposed to show a character is set to size 0
 	if (theString.length == 0) {
@@ -293,7 +295,7 @@ const char* string;
     stringOrigin.y = rect.origin.y + (rect.size.height - stringSize.height) * 0.5;
     
     // TODO: how slow is this?
-    string = [theString cStringUsingEncoding:NSASCIIStringEncoding];
+    string = character;//[theString cStringUsingEncoding:NSASCIIStringEncoding];
     
     // only switch color context when needed. This call is expensive
     if (_prevColor->red != letterColor->red || _prevColor->green != letterColor->green || _prevColor->blue != letterColor->blue) {
@@ -304,21 +306,21 @@ const char* string;
     _prevColor = letterColor;
     
     // we have a unicode character. Draw it with drawAtPoint
-    if (!string)
+    if (character >= 128)
     {
         [theString drawAtPoint:stringOrigin withFont:[self slowFont]];
     }
     else {
         // This seems like overkill but supposedly it's faster than drawAtPoint
-        stringLength = strlen(string);
-        glyphString[0] = string[0]-29;
+       // stringLength = strlen(string);
+        glyphString[0] = string-29;//string[0]-29;
         
         CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
         CGContextSetFont(_context, _cgFont);
         CGContextSetFontSize(_context, theFontSize);
         //   CGContextSetFillColorWithColor(context, [color CGColor]);
         
-        CGContextShowGlyphsAtPoint(_context, stringOrigin.x, stringOrigin.y + theFontSize, glyphString, stringLength);
+        CGContextShowGlyphsAtPoint(_context, stringOrigin.x, stringOrigin.y + theFontSize, glyphString, 1);
     }
 }
 

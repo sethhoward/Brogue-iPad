@@ -119,10 +119,10 @@ void plotChar(uchar inputChar,
         foreColor->blue = foreBlue;
         
         if (inputChar == ' ') {
-            [theMainDisplay setString:@"" withBackgroundColor:backColor letterColor:foreColor atLocationX:xLoc locationY:yLoc];
+            [theMainDisplay setString:@"" withBackgroundColor:backColor letterColor:foreColor atLocationX:xLoc locationY:yLoc withChar:inputChar];
         }
         else {
-            [theMainDisplay setString:[NSString stringWithCharacters:&inputChar length:1] withBackgroundColor:backColor letterColor:foreColor atLocationX:xLoc locationY:yLoc];
+            [theMainDisplay setString:[NSString stringWithCharacters:&inputChar length:1] withBackgroundColor:backColor letterColor:foreColor atLocationX:xLoc locationY:yLoc withChar:inputChar];
         }
     
     }
