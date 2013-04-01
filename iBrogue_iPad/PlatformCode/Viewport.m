@@ -129,7 +129,7 @@ short theFontSize = FONT_SIZE;
         SHColor *color = bgColorArray[0][0];
         _prevColor = color;
         
-        [self setNeedsDisplay];
+     //   [self setNeedsDisplay];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.displayLink setPaused:YES];
         });
@@ -211,12 +211,15 @@ short theFontSize = FONT_SIZE;
 
 - (void)drawRect:(CGRect)rect
 {
-    //[MGBenchmark start:@"draw"];
+    [MGBenchmark start:@"draw"];
 
     _context = UIGraphicsGetCurrentContext();
     
     CGRect startRect = rectArray[0][0];
     int width = 0;
+    
+    SHColor *color = bgColorArray[0][0];
+    _prevColor = color;
     
     // draw the background rect colors
     for (int j = 0; j < kROWS; j++ ) {
@@ -226,23 +229,35 @@ short theFontSize = FONT_SIZE;
         for (int i = 0; i < kCOLS; i++ ) {
             SHColor *color = bgColorArray[i][j];
             
+            // if we have a mismatched color we need to draw. Otherwise we keep striping acrossed with the same color context and delay the draw
             if ((_prevColor->red != color->red || _prevColor->green != color->green || _prevColor->blue != color->blue || i == kCOLS - 1)) {
                 if (i == kCOLS - 1) {
-                    width += rectArray[i][j].size.width;
+                    //width += rectArray[i][j].size.width;
+                    if (_prevColor->red != 0 && _prevColor->blue != 0 && _prevColor->green != 0) {
+                        CGContextFillRect(_context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)rectArray[i][j].size.height));
+                        if (color->red != 0 && color->blue != 0 && color->green != 0) {
+                            CGContextSetFillColorWithColor(_context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
+                            CGContextFillRect(_context, rectArray[i][j]);
+                        }
+                    }
                 }
-                
-                if (_prevColor->red != 0 && _prevColor->blue != 0 && _prevColor->green != 0) {
-                    CGContextFillRect(_context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)rectArray[i][j].size.height));   
+                else {
+                    // if it's not black draw it otherwise we skip drawing black rects to save time
+                    if (_prevColor->red != 0 && _prevColor->blue != 0 && _prevColor->green != 0) {
+                        CGContextFillRect(_context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)rectArray[i][j].size.height));
+                    }
+                    
+                    // if it's not black change the color
+                    if (color->red != 0 && color->blue != 0 && color->green != 0) {
+                        CGContextSetFillColorWithColor(_context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
+                    }
+                    
+                    startRect = rectArray[i][j];
+                    width = rectArray[i][j].size.width;
                 }
-                
-                if (color->red != 0 && color->blue != 0 && color->green != 0) {
-                    CGContextSetFillColorWithColor(_context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
-                }
-                
-                startRect = rectArray[i][j];
-                width = rectArray[i][j].size.width;
             }
             else {
+                // we're dealing with black. don't track
                 if (color->red == 0 && color->blue == 0 && color->green == 0) {
                     startRect = rectArray[i][j];
                     width = rectArray[i][j].size.width;
@@ -262,8 +277,8 @@ short theFontSize = FONT_SIZE;
         }
     }
     
-  //  [[MGBenchmark session:@"draw"] total];
-  //  [MGBenchmark finish:@"draw"];
+    [[MGBenchmark session:@"draw"] total];
+    [MGBenchmark finish:@"draw"];
 }
 
 // drawTheString vars declared outside the method. Seem to speed things up just a hair
@@ -294,7 +309,6 @@ unsigned short string;
     stringOrigin.x = rect.origin.x + (rect.size.width - stringSize.width) * 0.5;
     stringOrigin.y = rect.origin.y + (rect.size.height - stringSize.height) * 0.5;
     
-    // TODO: how slow is this?
     string = character;//[theString cStringUsingEncoding:NSASCIIStringEncoding];
     
     // only switch color context when needed. This call is expensive

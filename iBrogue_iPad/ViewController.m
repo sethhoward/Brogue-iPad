@@ -48,11 +48,13 @@ typedef enum {
 - (IBAction)showInventoryButtonPressed:(id)sender;
 - (void)showInventoryOnDeathButton:(BOOL)show;
 
+@property (weak, nonatomic) IBOutlet UIView *titleButtonView;
+
 @property (weak, nonatomic) IBOutlet UIView *directionalButtonSubContainer;
 @property (weak, nonatomic) IBOutlet UIButton *seedButton;
 @property (weak, nonatomic) IBOutlet Viewport *secondaryDisplay;   // game etc
-@property (nonatomic, strong) IBOutlet Viewport *titleDisplay;
-@property (weak, nonatomic) IBOutlet UIView *buttonView;
+//@property (nonatomic, strong) IBOutlet Viewport *titleDisplay;
+//@property (weak, nonatomic) IBOutlet UIView *buttonView;
 @property (weak, nonatomic) IBOutlet UIButton *escButton;
 @property (nonatomic, strong) NSMutableArray *cachedTouches; // collection of iBTouches
 @property (weak, nonatomic) IBOutlet UIView *playerControlView;
@@ -89,23 +91,23 @@ typedef enum {
 	// Do any additional setup after loading the view, typically from a nib.
     
     if (!theMainDisplay) {
-        self.titleDisplay.hidden = YES;
-        theMainDisplay = self.titleDisplay;
+      //  self.titleDisplay.hidden = YES;
+        theMainDisplay = self.secondaryDisplay;
         viewController = self;
         _cachedTouches = [NSMutableArray arrayWithCapacity:1];
         _cachedKeyStrokes = [NSMutableArray arrayWithCapacity:1];
         
         [self addNotificationObservers];
         
-        [self.buttonView setAlpha:0];
+     //   [self.buttonView setAlpha:0];
         
-        double delayInSeconds = 2.0;
+      /*  double delayInSeconds = 2.0;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             [UIView animateWithDuration:0.2 animations:^{
                 self.buttonView.alpha = 1.;
             }];
-        });
+        });*/
         
         [self initGestureRecognizers];
     }
@@ -151,6 +153,7 @@ typedef enum {
 - (void)playBrogue
 {
     rogueMain();
+    [self.secondaryDisplay startAnimating];
 }
 
 #pragma mark - Shake Motion
@@ -442,44 +445,25 @@ typedef enum {
 }
 
 - (void)showTitle {
-    if (self.titleDisplay.hidden == YES) {
-        theMainDisplay = self.titleDisplay;
-        [self.titleDisplay startAnimating];
-        [self.secondaryDisplay stopAnimating];
-    }
-    
     dispatch_async(dispatch_get_main_queue(), ^{
     double delayInSeconds = 0.;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            self.titleDisplay.hidden = NO;
-            self.secondaryDisplay.hidden = YES;
+            [self.titleButtonView setHidden:NO];
+            [self.playerControlView setHidden:YES];
         });
     });
 }
 
 - (void)showAuxillaryScreensWithDirectionalControls:(BOOL)controls {
-    if (self.titleDisplay.hidden == NO) {
-        theMainDisplay = self.secondaryDisplay;
-        [self.secondaryDisplay startAnimating];
-        [self.titleDisplay stopAnimating];
-    }
-    
-    self.titleDisplay.hidden = YES;
-    self.secondaryDisplay.hidden = NO;
-    
     dispatch_async(dispatch_get_main_queue(), ^{
         double delayInSeconds = 0.;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            
-            self.titleDisplay.hidden = YES;
-            self.secondaryDisplay.hidden = NO;
-            
-            self.playerControlView.hidden = !controls;
+            [self.playerControlView setHidden:!controls];
+            [self.titleButtonView setHidden:YES];
         });
     });
-    
 }
 
 #pragma mark - keyboard stuff
@@ -495,7 +479,7 @@ typedef enum {
     [self setPlayerControlView:nil];
     [self setATextField:nil];
     [self setEscButton:nil];
-    [self setButtonView:nil];
+   // [self setButtonView:nil];
     [super viewDidUnload];
 }
 
@@ -645,6 +629,7 @@ typedef enum {
     });
 }
 
+// it's possible to lose focus of the hidden text field. This ensures we dismiss the keyboard
 - (void)hideKeyboard {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.aTextField becomeFirstResponder];

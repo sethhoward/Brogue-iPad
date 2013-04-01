@@ -25,7 +25,7 @@
 #import "ACMagnifyingView.h"
 
 #define	VERT_PX		18
-#define	HORIZ_PX	11
+#define	HORIZ_PX   	11
 
 #define kROWS		(30+3+1)
 #define kCOLS		100
