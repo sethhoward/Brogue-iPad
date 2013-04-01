@@ -211,7 +211,7 @@ short theFontSize = FONT_SIZE;
 
 - (void)drawRect:(CGRect)rect
 {
-    [MGBenchmark start:@"draw"];
+  //  [MGBenchmark start:@"draw"];
 
     _context = UIGraphicsGetCurrentContext();
     
@@ -232,7 +232,7 @@ short theFontSize = FONT_SIZE;
             // if we have a mismatched color we need to draw. Otherwise we keep striping acrossed with the same color context and delay the draw
             if ((_prevColor->red != color->red || _prevColor->green != color->green || _prevColor->blue != color->blue || i == kCOLS - 1)) {
                 if (i == kCOLS - 1) {
-                    //width += rectArray[i][j].size.width;
+                    width += rectArray[i][j].size.width;
                     if (_prevColor->red != 0 && _prevColor->blue != 0 && _prevColor->green != 0) {
                         CGContextFillRect(_context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)rectArray[i][j].size.height));
                         if (color->red != 0 && color->blue != 0 && color->green != 0) {
@@ -277,8 +277,8 @@ short theFontSize = FONT_SIZE;
         }
     }
     
-    [[MGBenchmark session:@"draw"] total];
-    [MGBenchmark finish:@"draw"];
+ //   [[MGBenchmark session:@"draw"] total];
+ //   [MGBenchmark finish:@"draw"];
 }
 
 // drawTheString vars declared outside the method. Seem to speed things up just a hair

@@ -14,7 +14,7 @@
 #import "AboutViewController.h"
 #import "GameSettings.h"
 
-#define kStationaryTime 0.25f
+#define kStationaryTime 0.2f
 #define kGamePlayHitArea CGRectMake(209., 74., 810., 650.)     // seems to be a method in the c code that does this but didn't work as expected
 #define kGameSideBarArea CGRectMake(0., 0., 210., 748.)
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
@@ -98,17 +98,6 @@ typedef enum {
         _cachedKeyStrokes = [NSMutableArray arrayWithCapacity:1];
         
         [self addNotificationObservers];
-        
-     //   [self.buttonView setAlpha:0];
-        
-      /*  double delayInSeconds = 2.0;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [UIView animateWithDuration:0.2 animations:^{
-                self.buttonView.alpha = 1.;
-            }];
-        });*/
-        
         [self initGestureRecognizers];
     }
     
@@ -446,22 +435,24 @@ typedef enum {
 
 - (void)showTitle {
     dispatch_async(dispatch_get_main_queue(), ^{
-    double delayInSeconds = 0.;
+    double delayInSeconds = 1.5;
+        [self.playerControlView setHidden:YES];
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             [self.titleButtonView setHidden:NO];
-            [self.playerControlView setHidden:YES];
+            
         });
     });
 }
 
 - (void)showAuxillaryScreensWithDirectionalControls:(BOOL)controls {
     dispatch_async(dispatch_get_main_queue(), ^{
-        double delayInSeconds = 0.;
+        double delayInSeconds = 1.5;
+        [self.titleButtonView setHidden:YES];
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             [self.playerControlView setHidden:!controls];
-            [self.titleButtonView setHidden:YES];
+            
         });
     });
 }
