@@ -174,6 +174,8 @@ short theFontSize = FONT_SIZE;
             bgColorArray[i][j] = &black;
             attributes[i][j] = &black;
             
+       //     prevCharGrid[i][j] = 0;
+            
 		//	bgColorArray[i][j] = [UIColor blackColor];
         //    attributes[i][j] = [UIColor blackColor];
             
@@ -242,7 +244,7 @@ SHColor *prevColor = NULL;
                 CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
             }
             else {
-                if (prevColor->blue != color->blue || prevColor->green != color->green || prevColor->blue != color->blue || i == kCOLS - 1) {
+                if (prevColor->red != color->red || prevColor->green != color->green || prevColor->blue != color->blue || i == kCOLS - 1) {
                   //  if (!CGRectIsNull(startRect)) {
                 //        NSLog(@"%@", NSStringFromCGRect(startRect));
                 //        NSLog(@"%@", NSStringFromCGRect(rectArray[i][j]));
@@ -300,9 +302,10 @@ size_t stringLength;
 CGGlyph glyphString[1];
 CGPoint stringOrigin;
 CGSize stringSize;
+//char *prevCharGrid[kCOLS][kROWS];
 - (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(SHColor *)letterColor
 {
-	if (theString.length == 0 || [theString isEqualToString:@" "]) {
+	if ([theString isEqualToString:@" "]) {
 		return;
 	}
 
@@ -332,19 +335,21 @@ CGSize stringSize;
     if (!string)
     {
         [theString drawAtPoint:stringOrigin withFont:[self fontForString:theString]];
-        return;
+    }
+    else {
+        // This seems like overkill but supposedly it's faster than drawAtPoint
+        stringLength = strlen(string);
+        glyphString[0] = string[0]-29;
+        
+        CGContextSetTextMatrix(context, CGAffineTransformMakeScale(1.0, -1.0));
+        CGContextSetFont(context, CGFont);
+        CGContextSetFontSize(context, theFontSize);
+        //   CGContextSetFillColorWithColor(context, [color CGColor]);
+        
+        CGContextShowGlyphsAtPoint(context, stringOrigin.x, stringOrigin.y + theFontSize, glyphString, stringLength);
     }
     
-    // This seems like overkill but supposedly it's faster than drawAtPoint
-    stringLength = strlen(string);
-    glyphString[0] = string[0]-29;
-
-    CGContextSetTextMatrix(context, CGAffineTransformMakeScale(1.0, -1.0));
-    CGContextSetFont(context, CGFont);
-    CGContextSetFontSize(context, theFontSize);
- //   CGContextSetFillColorWithColor(context, [color CGColor]);
     
-    CGContextShowGlyphsAtPoint(context, stringOrigin.x, stringOrigin.y + theFontSize, glyphString, stringLength);
     
   //  [[MGBenchmark session:@"draw"] step:@"text glyph stop"];
 }
