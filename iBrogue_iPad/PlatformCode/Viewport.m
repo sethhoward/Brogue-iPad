@@ -37,25 +37,23 @@
     @private
     BOOL _animationRunning;
     BOOL _hasInitialized;
-    UIFont *theSlowFont;
-    UIFont *theFastFont;
-    CGContextRef context;
-    CGFontRef CGFont;
+    UIFont *_slowFont;
+    UIFont *_fastFont;
+    CGContextRef _context;
+    CGFontRef _cgFont;
+    SHColor *_prevColor;
 }
-
-CGSize characterSize;
 
 // The approximate size of one rectangle, which can be off by up to 1 pixel:
 short vPixels = VERT_PX;
 short hPixels = HORIZ_PX;
-
 short theFontSize = FONT_SIZE;
 
 // TODO:
 
 - (UIFont *)slowFont {
-	if (!theSlowFont) {
-        theSlowFont = [UIFont fontWithName:@"ArialUnicodeMS" size:theFontSize];
+	if (!_slowFont) {
+        _slowFont = [UIFont fontWithName:@"ArialUnicodeMS" size:theFontSize];
 /*		NSFont *baseFont = [NSFont fontWithName:basicFontName size:theFontSize];
 		NSArray *fallbackDescriptors = [NSArray arrayWithObjects:
 		                                // Arial provides reasonable versions of most characters.
@@ -67,14 +65,14 @@ short theFontSize = FONT_SIZE;
 		NSFontDescriptor *desc = [baseFont.fontDescriptor fontDescriptorByAddingAttributes:fodDict];
 		theSlowFont = [[NSFont fontWithDescriptor:desc size:theFontSize] retain];*/
 	}
-	return theSlowFont;
+	return _slowFont;
 }
 
 - (UIFont *)fastFont {
-	if (!theFastFont) {
-		theFastFont = [UIFont fontWithName:@"Monaco" size:theFontSize + 1];
+	if (!_fastFont) {
+		_fastFont = [UIFont fontWithName:@"Monaco" size:theFontSize + 1];
     }
-	return theFastFont;
+	return _fastFont;
 }
 
 - (UIFont *)fontForString:(NSString *)s {
@@ -124,19 +122,18 @@ short theFontSize = FONT_SIZE;
 }
 
 - (void)stopAnimating {
-    [self.displayLink setPaused:YES];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        for (int j = 0; j < kROWS; j++) {
-            for (int i = 0; i < kCOLS; i++) {
-                letterArray[i][j] = @" ";
-              //  bgColorArray[i][j] = [UIColor blackColor];
-                
-              //  attributes[i][j] = [UIColor blackColor];
-            }
-        }
+        [self clearColors];
     
+        SHColor *color = bgColorArray[0][0];
+        _prevColor = color;
+        
         [self setNeedsDisplay];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.displayLink setPaused:YES];
+        });
+        
     });
     
     _animationRunning = NO;
@@ -155,17 +152,10 @@ short theFontSize = FONT_SIZE;
     }
 }
 
-- (void)initializeLayoutVariables {
-    int i, j;
-    self.hWindow = 1024;
-    self.vWindow = 748;
-    
-    characterSizeDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
-    
-	for (j = 0; j < kROWS; j++) {        
-		for (i = 0; i < kCOLS; i++) {            
+- (void)clearColors {
+    for (int j = 0; j < kROWS; j++) {
+		for (int i = 0; i < kCOLS; i++) {
 			letterArray[i][j] = @" ";
-            
             SHColor black;
             black.red = 0;
             black.blue = 0;
@@ -173,13 +163,23 @@ short theFontSize = FONT_SIZE;
             
             bgColorArray[i][j] = &black;
             attributes[i][j] = &black;
-            
-       //     prevCharGrid[i][j] = 0;
-            
-		//	bgColorArray[i][j] = [UIColor blackColor];
-        //    attributes[i][j] = [UIColor blackColor];
-            
-            // (18 * 33) - (18 *(j + 1))
+        }
+    }
+    
+    SHColor *color = bgColorArray[0][0];
+    _prevColor = color;
+}
+
+- (void)initializeLayoutVariables {
+    self.hWindow = 1024;
+    self.vWindow = 748;
+    
+    characterSizeDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
+    
+    [self clearColors];
+    
+	for (int j = 0; j < kROWS; j++) {
+		for (int i = 0; i < kCOLS; i++) {
             CGRect rect = CGRectMake(HORIZ_PX*i, (VERT_PX*(j)), HORIZ_PX, VERT_PX);
 			rectArray[i][j] = rect;
 		}
@@ -187,8 +187,8 @@ short theFontSize = FONT_SIZE;
     
     [self setHorizWindow:self.hWindow vertWindow:self.vWindow fontSize:theFontSize];
     
-    if (!CGFont) {
-        CGFont = CGFontCreateWithFontName((CFStringRef)@"Monaco");
+    if (!_cgFont) {
+        _cgFont = CGFontCreateWithFontName((CFStringRef)@"Monaco");
     }
     
     _hasInitialized = YES;
@@ -199,19 +199,6 @@ short theFontSize = FONT_SIZE;
     [self setNeedsDisplay];
 }
 
-/*- (void)setString:(NSString *)c
-   withBackground:(UIColor *)bgColor
-  withLetterColor:(UIColor *)letterColor
-	  atLocationX:(short)x
-		locationY:(short)y
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        letterArray[x][y] = c;
-        bgColorArray[x][y] = bgColor;
-        attributes[x][y] = letterColor;
-    });
-}*/
-
 - (void)setString:(NSString *)c withBackgroundColor:(SHColor *)bgColor letterColor:(SHColor *)letterColor atLocationX:(short)x locationY:(short)y {
     dispatch_async(dispatch_get_main_queue(), ^{
         letterArray[x][y] = c;
@@ -220,149 +207,119 @@ short theFontSize = FONT_SIZE;
     });
 }
 
-SHColor *prevColor = NULL;
 - (void)drawRect:(CGRect)rect
 {
- //   [MGBenchmark start:@"draw"];
+    [MGBenchmark start:@"draw"];
 
-    context = UIGraphicsGetCurrentContext();
+    _context = UIGraphicsGetCurrentContext();
     
     CGRect startRect = rectArray[0][0];
     int width = 0;
-   // int starti = 0;
     
-    if (!prevColor) {
-        SHColor *color = bgColorArray[0][0];
-        prevColor = color;
-    }
-
+    // draw the background rect colors
     for (int j = 0; j < kROWS; j++ ) {
-        
         width = 0;
         startRect = rectArray[0][j];
-        //starti = 1;
-        
+
         for (int i = 0; i < kCOLS; i++ ) {
             SHColor *color = bgColorArray[i][j];
-
             
-                if (prevColor->red != color->red || prevColor->green != color->green || prevColor->blue != color->blue || i == kCOLS - 1) {
-                    //  if (!CGRectIsNull(startRect)) {
-                    //        NSLog(@"%@", NSStringFromCGRect(startRect));
-                    //        NSLog(@"%@", NSStringFromCGRect(rectArray[i][j]));
-                    //       NSLog(@"%i", width);
-                    if (i == kCOLS - 1) {
-                        width += rectArray[i][j].size.width;
-                      //  CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
-                    }
-                    
-                    CGContextFillRect(context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)rectArray[i][j].size.height));
-                    
-                    startRect = rectArray[i][j];
-                    //  starti = 1;
-                    width = rectArray[i][j].size.width;
-                    
-                    CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
-                    // }
-                    // else {
-                    //   CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
-                    //CGContextFillRect(context, rectArray[i][j]);
-                    // }
-                    
-                    
-                    
-                    // NSLog(@"DUPE COLOR");
-                    //  CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red green:color->green blue:color->blue alpha:1.0] CGColor]);
-                }
-                else {
-                    /*    if (CGRectIsNull(startRect)) {
-                     CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
-                     startRect = rectArray[i][j];
-                     //starti = 1;
-                     }*/
-                    
-                    //  starti++;
+            if ((_prevColor->red != color->red || _prevColor->green != color->green || _prevColor->blue != color->blue || i == kCOLS - 1)) {
+                if (i == kCOLS - 1) {
                     width += rectArray[i][j].size.width;
                 }
                 
+                if (_prevColor->red != 0 && _prevColor->blue != 0 && _prevColor->green != 0) {
+                    CGContextFillRect(_context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)rectArray[i][j].size.height));   
+                }
                 
+                if (color->red != 0 && color->blue != 0 && color->green != 0) {
+                    CGContextSetFillColorWithColor(_context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
+                }
                 
-                
-          //  }
-    
-            prevColor = color;
+                startRect = rectArray[i][j];
+                width = rectArray[i][j].size.width;
+            }
+            else {
+                if (color->red == 0 && color->blue == 0 && color->green == 0) {
+                    startRect = rectArray[i][j];
+                    width = rectArray[i][j].size.width;
+                }
+                else 
+                    width += rectArray[i][j].size.width;
+            }
             
+            _prevColor = color;
         }
-        
-        
     }
     
+    // now draw the ascii chars
     for (int j = 0; j < kROWS; j++ ) {
         for (int i = 0; i < kCOLS; i++ ) {
             [self drawTheString:letterArray[i][j] centeredIn:rectArray[i][j] withAttributes:attributes[i][j]];
         }
     }
     
- //   [[MGBenchmark session:@"draw"] total];
- //  [MGBenchmark finish:@"draw"];
+    [[MGBenchmark session:@"draw"] total];
+    [MGBenchmark finish:@"draw"];
 }
 
+// drawTheString vars declared outside the method. Seem to speed things up just a hair
 size_t stringLength;
 CGGlyph glyphString[1];
 CGPoint stringOrigin;
 CGSize stringSize;
-const char* string ;
+const char* string;
 //char *prevCharGrid[kCOLS][kROWS];
 - (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(SHColor *)letterColor
 {
+    // before the letter array is set we ensure that anything that isn't supposed to show a character is set to size 0
 	if (theString.length == 0) {
 		return;
 	}
 
     // Cache sizes.
-    if ([characterSizeDictionary objectForKey:theString] == nil) {
+    NSValue *size = [characterSizeDictionary objectForKey:theString];
+    
+    if (size) {
+        stringSize = [size CGSizeValue];
+    } else {
         stringSize = [theString sizeWithFont:[self fontForString:theString]];	// quite expensive
         //	NSLog(@"stringSize for '%@' has width %f and height %f", theString, stringSize.width, stringSize.height);
         [characterSizeDictionary setObject:[NSValue valueWithCGSize:stringSize] forKey:theString];
-    } else {
-        stringSize = [[characterSizeDictionary objectForKey:theString] CGSizeValue];
     }
     
     stringOrigin.x = rect.origin.x + (rect.size.width - stringSize.width) * 0.5;
     stringOrigin.y = rect.origin.y + (rect.size.height - stringSize.height) * 0.5;
     
+    // TODO: how slow is this?
     string = [theString cStringUsingEncoding:NSASCIIStringEncoding];
     
-    
-    
-    if (prevColor->red != letterColor->red || prevColor->green != letterColor->green || prevColor->blue != letterColor->blue) {
+    // only switch color context when needed. This call is expensive
+    if (_prevColor->red != letterColor->red || _prevColor->green != letterColor->green || _prevColor->blue != letterColor->blue) {
         UIColor *color = [UIColor colorWithRed:letterColor->red/100. green:letterColor->green/100. blue:letterColor->blue/100. alpha:1.0];
-        CGContextSetFillColorWithColor(context, [color CGColor]);
+        CGContextSetFillColorWithColor(_context, [color CGColor]);
     }
     
-    prevColor = letterColor;
+    _prevColor = letterColor;
     
     // we have a unicode character. Draw it with drawAtPoint
     if (!string)
     {
-        [theString drawAtPoint:stringOrigin withFont:[self fontForString:theString]];
+        [theString drawAtPoint:stringOrigin withFont:[self slowFont]];
     }
     else {
         // This seems like overkill but supposedly it's faster than drawAtPoint
         stringLength = strlen(string);
         glyphString[0] = string[0]-29;
         
-        CGContextSetTextMatrix(context, CGAffineTransformMakeScale(1.0, -1.0));
-        CGContextSetFont(context, CGFont);
-        CGContextSetFontSize(context, theFontSize);
+        CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
+        CGContextSetFont(_context, _cgFont);
+        CGContextSetFontSize(_context, theFontSize);
         //   CGContextSetFillColorWithColor(context, [color CGColor]);
         
-        CGContextShowGlyphsAtPoint(context, stringOrigin.x, stringOrigin.y + theFontSize, glyphString, stringLength);
+        CGContextShowGlyphsAtPoint(_context, stringOrigin.x, stringOrigin.y + theFontSize, glyphString, stringLength);
     }
-    
-    
-    
-  //  [[MGBenchmark session:@"draw"] step:@"text glyph stop"];
 }
 
 - (void)setHorizWindow:(short)hPx

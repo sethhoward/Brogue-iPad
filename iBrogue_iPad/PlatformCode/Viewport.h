@@ -51,12 +51,6 @@ typedef struct {
 	CGRect rectArray[kCOLS][kROWS];
 }
 
-- (void)setString:(NSString *)c
-   withBackground:(UIColor *)bgColor
-  withLetterColor:(UIColor *)letterColor
-	  atLocationX:(short)x
-		locationY:(short)y;
-
 - (void)setString:(NSString *)c withBackgroundColor:(SHColor *)bgColor letterColor:(SHColor *)letterColor atLocationX:(short)x locationY:(short)y;
 
 - (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(SHColor *)theAttributes;

@@ -153,7 +153,7 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
     
     for(;;) {
         // magic number
-        [NSThread sleepForTimeInterval:0.0333];
+        [NSThread sleepForTimeInterval:0.016667];
         
         if (colorsDance) {
             shuffleTerrainColors(3, true);
