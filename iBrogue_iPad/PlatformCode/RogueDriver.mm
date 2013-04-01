@@ -97,16 +97,6 @@ void plotChar(uchar inputChar,
         return;
     }
     
-    SHColor *backColor = new SHColor;
-    backColor->red = backRed;
-    backColor->green = backGreen;
-    backColor->blue = backBlue;
-    
-    SHColor *foreColor = new SHColor;
-    foreColor->red = foreRed;
-    foreColor->green = foreGreen;
-    foreColor->blue = foreBlue;
-    
     @autoreleasepool {
       /*  [theMainDisplay setString:[NSString stringWithCharacters:&inputChar length:1]
                    withBackground:[UIColor colorWithRed:((float)backRed/100)
@@ -118,7 +108,23 @@ void plotChar(uchar inputChar,
                                                    blue:((float)foreBlue/100)
                                                   alpha:(float)1]
                       atLocationX:xLoc locationY:yLoc];*/
-        [theMainDisplay setString:[NSString stringWithCharacters:&inputChar length:1] withBackgroundColor:backColor letterColor:foreColor atLocationX:xLoc locationY:yLoc];
+        SHColor *backColor = new SHColor;
+        backColor->red = backRed;
+        backColor->green = backGreen;
+        backColor->blue = backBlue;
+        
+        SHColor *foreColor = new SHColor;
+        foreColor->red = foreRed;
+        foreColor->green = foreGreen;
+        foreColor->blue = foreBlue;
+        
+        if (inputChar == ' ') {
+            [theMainDisplay setString:@"" withBackgroundColor:backColor letterColor:foreColor atLocationX:xLoc locationY:yLoc];
+        }
+        else {
+            [theMainDisplay setString:[NSString stringWithCharacters:&inputChar length:1] withBackgroundColor:backColor letterColor:foreColor atLocationX:xLoc locationY:yLoc];
+        }
+    
     }
 }
 
@@ -132,7 +138,7 @@ __unused void pausingTimerStartsNow() {
 boolean pauseForMilliseconds(short milliseconds) {
     BOOL hasEvent = NO;
     
-    [NSThread sleepForTimeInterval:0.03333];
+    [NSThread sleepForTimeInterval:0.01667];
         
     if ([viewController cachedTouchesCount] > 0 || [viewController cachedKeyStrokeCount] > 0) {
         hasEvent = YES;
@@ -146,7 +152,7 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
 	short x, y;
     
     for(;;) {
-        // magic number 60Hz
+        // magic number
         [NSThread sleepForTimeInterval:0.0333];
         
         if (colorsDance) {

@@ -223,69 +223,78 @@ short theFontSize = FONT_SIZE;
 SHColor *prevColor = NULL;
 - (void)drawRect:(CGRect)rect
 {
-    [MGBenchmark start:@"draw"];
+ //   [MGBenchmark start:@"draw"];
 
     context = UIGraphicsGetCurrentContext();
     
-    CGRect startRect = CGRectNull;
+    CGRect startRect = rectArray[0][0];
     int width = 0;
    // int starti = 0;
+    
+    if (!prevColor) {
+        SHColor *color = bgColorArray[0][0];
+        prevColor = color;
+    }
 
     for (int j = 0; j < kROWS; j++ ) {
-        startRect = rectArray[0][j];
+        
         width = 0;
+        startRect = rectArray[0][j];
         //starti = 1;
         
         for (int i = 0; i < kCOLS; i++ ) {
             SHColor *color = bgColorArray[i][j];
 
-            if (!prevColor) {
-                startRect = CGRectNull;
-                CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
-            }
-            else {
+            
                 if (prevColor->red != color->red || prevColor->green != color->green || prevColor->blue != color->blue || i == kCOLS - 1) {
-                  //  if (!CGRectIsNull(startRect)) {
-                //        NSLog(@"%@", NSStringFromCGRect(startRect));
-                //        NSLog(@"%@", NSStringFromCGRect(rectArray[i][j]));
-                 //       NSLog(@"%i", width);
+                    //  if (!CGRectIsNull(startRect)) {
+                    //        NSLog(@"%@", NSStringFromCGRect(startRect));
+                    //        NSLog(@"%@", NSStringFromCGRect(rectArray[i][j]));
+                    //       NSLog(@"%i", width);
                     if (i == kCOLS - 1) {
                         width += rectArray[i][j].size.width;
+                      //  CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
                     }
-                        
-                        CGContextFillRect(context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)rectArray[i][j].size.height));
-                        
-                        startRect = rectArray[i][j];
-                      //  starti = 1;
-                        width = rectArray[i][j].size.width;
-                        
-                        CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
-                   // }
-                   // else {
-                     //   CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
-                        //CGContextFillRect(context, rectArray[i][j]);
-                   // }
+                    
+                    CGContextFillRect(context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)rectArray[i][j].size.height));
+                    
+                    startRect = rectArray[i][j];
+                    //  starti = 1;
+                    width = rectArray[i][j].size.width;
+                    
+                    CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
+                    // }
+                    // else {
+                    //   CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
+                    //CGContextFillRect(context, rectArray[i][j]);
+                    // }
                     
                     
-
-                   // NSLog(@"DUPE COLOR");
-                  //  CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red green:color->green blue:color->blue alpha:1.0] CGColor]);
+                    
+                    // NSLog(@"DUPE COLOR");
+                    //  CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red green:color->green blue:color->blue alpha:1.0] CGColor]);
                 }
                 else {
-                /*    if (CGRectIsNull(startRect)) {
-                        CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
-                        startRect = rectArray[i][j];
-                        //starti = 1;
-                    }*/
+                    /*    if (CGRectIsNull(startRect)) {
+                     CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
+                     startRect = rectArray[i][j];
+                     //starti = 1;
+                     }*/
                     
-                  //  starti++;
+                    //  starti++;
                     width += rectArray[i][j].size.width;
                 }
-            }
-            
+                
+                
+                
+                
+          //  }
+    
             prevColor = color;
- 
+            
         }
+        
+        
     }
     
     for (int j = 0; j < kROWS; j++ ) {
@@ -294,18 +303,19 @@ SHColor *prevColor = NULL;
         }
     }
     
-    [[MGBenchmark session:@"draw"] total];
-    [MGBenchmark finish:@"draw"];
+ //   [[MGBenchmark session:@"draw"] total];
+ //  [MGBenchmark finish:@"draw"];
 }
 
 size_t stringLength;
 CGGlyph glyphString[1];
 CGPoint stringOrigin;
 CGSize stringSize;
+const char* string ;
 //char *prevCharGrid[kCOLS][kROWS];
 - (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(SHColor *)letterColor
 {
-	if ([theString isEqualToString:@" "]) {
+	if (theString.length == 0) {
 		return;
 	}
 
@@ -321,11 +331,12 @@ CGSize stringSize;
     stringOrigin.x = rect.origin.x + (rect.size.width - stringSize.width) * 0.5;
     stringOrigin.y = rect.origin.y + (rect.size.height - stringSize.height) * 0.5;
     
-    const char* string = [theString cStringUsingEncoding:NSASCIIStringEncoding];
+    string = [theString cStringUsingEncoding:NSASCIIStringEncoding];
     
-    UIColor *color = [UIColor colorWithRed:letterColor->red/100. green:letterColor->green/100. blue:letterColor->blue/100. alpha:1.0];
     
-    if (prevColor->blue != letterColor->blue || prevColor->green != letterColor->green || prevColor->blue != letterColor->blue) {
+    
+    if (prevColor->red != letterColor->red || prevColor->green != letterColor->green || prevColor->blue != letterColor->blue) {
+        UIColor *color = [UIColor colorWithRed:letterColor->red/100. green:letterColor->green/100. blue:letterColor->blue/100. alpha:1.0];
         CGContextSetFillColorWithColor(context, [color CGColor]);
     }
     
