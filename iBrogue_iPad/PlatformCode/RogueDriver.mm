@@ -138,7 +138,7 @@ __unused void pausingTimerStartsNow() {
 boolean pauseForMilliseconds(short milliseconds) {
     BOOL hasEvent = NO;
     
-    [NSThread sleepForTimeInterval:0.01667];
+    [NSThread sleepForTimeInterval:0.0166667];
         
     if ([viewController cachedTouchesCount] > 0 || [viewController cachedKeyStrokeCount] > 0) {
         hasEvent = YES;
@@ -152,10 +152,8 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
 	short x, y;
     
     for(;;) {
-        // magic number
-        [NSThread sleepForTimeInterval:0.016667];
-        
         if (colorsDance) {
+            [NSThread sleepForTimeInterval:0.016667];
             shuffleTerrainColors(3, true);
             commitDraws();
         }

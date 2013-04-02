@@ -234,11 +234,14 @@ short theFontSize = FONT_SIZE;
                     width += rectArray[i][j].size.width;
                     if (_prevColor->red != 0 || _prevColor->blue != 0 || _prevColor->green != 0) {
                         CGContextFillRect(_context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)rectArray[i][j].size.height));
-                        if (color->red != 0 || color->blue != 0 || color->green != 0) {
+                      //  if (color->red != 0 || color->blue != 0 || color->green != 0) {
                             CGContextSetFillColorWithColor(_context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
                             CGContextFillRect(_context, rectArray[i][j]);
-                        }
+                      //  }
                     }
+                    
+                    CGContextSetFillColorWithColor(_context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
+                    CGContextFillRect(_context, rectArray[i][j]);
                 }
                 else {
                     // if it's not black draw it otherwise we skip drawing black rects to save time

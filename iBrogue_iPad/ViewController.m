@@ -660,6 +660,9 @@ typedef enum {
         case BrogueGameEventStartNewGame:
         case BrogueGameEventOpenGame:
             [self showAuxillaryScreensWithDirectionalControls:YES];
+            @synchronized(self.cachedTouches) {
+                [self.cachedTouches removeAllObjects];
+            }
             self.blockMagView = NO;
             break;
         case BrogueGameEventPlayRecording:
