@@ -129,7 +129,6 @@ short theFontSize = FONT_SIZE;
         SHColor *color = bgColorArray[0][0];
         _prevColor = color;
         
-     //   [self setNeedsDisplay];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.displayLink setPaused:YES];
         });
@@ -211,7 +210,7 @@ short theFontSize = FONT_SIZE;
 
 - (void)drawRect:(CGRect)rect
 {
-   // [MGBenchmark start:@"draw"];
+//    [MGBenchmark start:@"draw"];
 
     _context = UIGraphicsGetCurrentContext();
     
@@ -282,8 +281,8 @@ short theFontSize = FONT_SIZE;
         }
     }
     
-   // [[MGBenchmark session:@"draw"] total];
-   // [MGBenchmark finish:@"draw"];
+//    [[MGBenchmark session:@"draw"] total];
+//    [MGBenchmark finish:@"draw"];
 }
 
 // drawTheString vars declared outside the method. Seem to speed things up just a hair
@@ -325,11 +324,19 @@ unsigned short string;
     _prevColor = letterColor;
     
     // we have a unicode character. Draw it with drawAtPoint
-    if (character >= 128)
+    // if it's one of those fancy centered dots (183) toss it for a period. It's used a lot and slows things down
+    if (character >= 128 && character != 183)
     {
         [theString drawAtPoint:stringOrigin withFont:[self slowFont]];
     }
     else {
+        if (character == 183) {
+            string = 46;
+            
+            stringOrigin.x -= 2;
+            stringOrigin.y -= 3;
+        }
+        
         // This seems like overkill but supposedly it's faster than drawAtPoint
        // stringLength = strlen(string);
         glyphString[0] = string-29;//string[0]-29;
