@@ -98,16 +98,6 @@ void plotChar(uchar inputChar,
     }
     
     @autoreleasepool {
-      /*  [theMainDisplay setString:[NSString stringWithCharacters:&inputChar length:1]
-                   withBackground:[UIColor colorWithRed:((float)backRed/100)
-                                                  green:((float)backGreen/100)
-                                                   blue:((float)backBlue/100)
-                                                  alpha:(float)1]
-                  withLetterColor:[UIColor colorWithRed:((float)foreRed/100)
-                                                  green:((float)foreGreen/100)
-                                                   blue:((float)foreBlue/100)
-                                                  alpha:(float)1]
-                      atLocationX:xLoc locationY:yLoc];*/
         SHColor backColor;
         backColor.red = backRed;
         backColor.green = backGreen;
@@ -123,13 +113,12 @@ void plotChar(uchar inputChar,
         }
         else {
             [theMainDisplay setString:[NSString stringWithCharacters:&inputChar length:1] withBackgroundColor:backColor letterColor:foreColor atLocationX:xLoc locationY:yLoc withChar:inputChar];
-        }
-    
+       }
     }
 }
 
 __unused void pausingTimerStartsNow() {
-
+    // unused
 }
 
 #pragma mark - input
@@ -153,6 +142,8 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
     
     for(;;) {
         if (colorsDance) {
+            // we should be ok to block here. We don't seem to call pauseForMilli and this at the same time
+            // 60Hz
             [NSThread sleepForTimeInterval:0.016667];
             shuffleTerrainColors(3, true);
             commitDraws();
@@ -207,8 +198,6 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
             }
         }
     }
-    
- //   [[RogueDriver sharedInstance] animateColors:NO];
 }
 
 #pragma mark - bridge

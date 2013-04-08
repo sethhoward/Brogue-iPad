@@ -53,8 +53,6 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UIView *directionalButtonSubContainer;
 @property (weak, nonatomic) IBOutlet UIButton *seedButton;
 @property (weak, nonatomic) IBOutlet Viewport *secondaryDisplay;   // game etc
-//@property (nonatomic, strong) IBOutlet Viewport *titleDisplay;
-//@property (weak, nonatomic) IBOutlet UIView *buttonView;
 @property (weak, nonatomic) IBOutlet UIButton *escButton;
 @property (nonatomic, strong) NSMutableArray *cachedTouches; // collection of iBTouches
 @property (weak, nonatomic) IBOutlet UIView *playerControlView;
@@ -91,7 +89,6 @@ typedef enum {
 	// Do any additional setup after loading the view, typically from a nib.
     
     if (!theMainDisplay) {
-      //  self.titleDisplay.hidden = YES;
         theMainDisplay = self.secondaryDisplay;
         viewController = self;
         _cachedTouches = [NSMutableArray arrayWithCapacity:1];
@@ -151,8 +148,6 @@ typedef enum {
 }
 
 - (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event{
-    // you can do any thing at this stage what ever you want. Change the song in playlist, show photo, change photo or whatever you want to do
-    
     if (![[GameSettings sharedInstance] allowShake]) {
         return;
     }
@@ -178,7 +173,6 @@ typedef enum {
 }
 
 // Pinch to hide the directional controls
-
 - (void)turnOnPinchGesture {
     if (!self.directionalPinch) {
         self.directionalPinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
@@ -236,6 +230,7 @@ typedef enum {
     [self stopStationaryTouchTimer];
     [self.secondaryDisplay removeMagnifyingGlass];
     
+    // I'm only going to say this once. Mess with cachedTouches or keys and you best synch them or prepare to crash when you least expect it (most likely during a touch)
     @synchronized(self.cachedTouches) {
         // we double tapped... send along another mouse down and up to the game
         iBTouch touchDown;
@@ -257,7 +252,7 @@ typedef enum {
     }
 }
 
-- (void)addTouchToCache:(UITouch *)touch {
+- (void)addUITouchToCache:(UITouch *)touch {
     @synchronized(self.cachedTouches){
         iBTouch ibtouch;
         ibtouch.phase = touch.phase;
@@ -345,6 +340,7 @@ typedef enum {
                     
                     [self.cachedTouches addObject:[NSValue value:&touchUp withObjCType:@encode(iBTouch)]];
                     
+                    // setting flag to handle some special logic on touchesEnded
                     _ishandlingDoubleTap = YES;
                 }
             }
@@ -354,8 +350,7 @@ typedef enum {
             // if we touch in the side bar we want to block the touches up and so we set a bool here to do just that. This forces the user to double tap anything in the side bar that they actually want to run to and allows a single tap to bring up the selection information.
             // when a user touches the screen we need to 'nudge' the movement so brogue event handles can update (highlight, show popup, etc) where we touched
             if (CGRectContainsPoint(kGameSideBarArea, touchPoint) && _lastBrogueGameEvent != BrogueGameEventShowHighScores && !_ignoreSideBarInteraction) {
-        //        [self escapeTouchKeyEvent];
-                
+
                 @synchronized(self.cachedTouches) {
                     iBTouch touchMoved;
                     touchMoved.phase = UITouchPhaseMoved;
@@ -367,7 +362,7 @@ typedef enum {
             }
             
             // Get a single touch and it's location
-            [self addTouchToCache:touch];
+            [self addUITouchToCache:touch];
             [self startStationaryTouchTimerWithTouch:touch andTimeout:kStationaryTime];
         }
     }];
@@ -377,7 +372,7 @@ typedef enum {
  //   NSLog(@" ##### %@", touches);
     [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
         // Get a single touch and it's location
-        [self addTouchToCache:touch];
+        [self addUITouchToCache:touch];
         [self startStationaryTouchTimerWithTouch:touch andTimeout:kStationaryTime];
     }];
 }
@@ -390,7 +385,7 @@ typedef enum {
     if (!_ishandlingDoubleTap && !_isSideBarSingleTap) {
         [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
             // Get a single touch and it's location
-            [self addTouchToCache:touch];
+            [self addUITouchToCache:touch];
         }];
     }
 
