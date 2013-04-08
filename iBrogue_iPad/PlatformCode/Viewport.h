@@ -44,17 +44,18 @@ typedef struct {
 
 @interface Viewport : ACMagnifyingView
 {
+    // TODO: remove these declarations from the stack
 	NSString __strong *letterArray[kCOLS][kROWS];
     unsigned short charArray[kCOLS][kROWS];
-	SHColor *bgColorArray[kCOLS][kROWS];
-	SHColor *attributes[kCOLS][kROWS];
+	SHColor bgColorArray[kCOLS][kROWS];
+	SHColor attributes[kCOLS][kROWS];
 	NSMutableDictionary __strong *characterSizeDictionary;
 	CGRect rectArray[kCOLS][kROWS];
 }
 
-- (void)setString:(NSString *)c withBackgroundColor:(SHColor *)bgColor letterColor:(SHColor *)letterColor atLocationX:(short)x locationY:(short)y withChar:(unsigned short)character;
+- (void)setString:(NSString *)c withBackgroundColor:(SHColor)bgColor letterColor:(SHColor)letterColor atLocationX:(short)x locationY:(short)y withChar:(unsigned short)character;
 
-- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(SHColor *)theAttributes;
+- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(SHColor)theAttributes;
 
 - (void)setHorizWindow:(short)hPx
 			vertWindow:(short)vPx

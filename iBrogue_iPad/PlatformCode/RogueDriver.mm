@@ -108,15 +108,15 @@ void plotChar(uchar inputChar,
                                                    blue:((float)foreBlue/100)
                                                   alpha:(float)1]
                       atLocationX:xLoc locationY:yLoc];*/
-        SHColor *backColor = new SHColor;
-        backColor->red = backRed;
-        backColor->green = backGreen;
-        backColor->blue = backBlue;
+        SHColor backColor;
+        backColor.red = backRed;
+        backColor.green = backGreen;
+        backColor.blue = backBlue;
         
-        SHColor *foreColor = new SHColor;
-        foreColor->red = foreRed;
-        foreColor->green = foreGreen;
-        foreColor->blue = foreBlue;
+        SHColor foreColor;
+        foreColor.red = foreRed;
+        foreColor.green = foreGreen;
+        foreColor.blue = foreBlue;
         
         if (inputChar == ' ') {
             [theMainDisplay setString:@"" withBackgroundColor:backColor letterColor:foreColor atLocationX:xLoc locationY:yLoc withChar:inputChar];
@@ -138,7 +138,7 @@ __unused void pausingTimerStartsNow() {
 boolean pauseForMilliseconds(short milliseconds) {
     BOOL hasEvent = NO;
     
-    [NSThread sleepForTimeInterval:0.0166667];
+    [NSThread sleepForTimeInterval:milliseconds/1000.];
         
     if ([viewController cachedTouchesCount] > 0 || [viewController cachedKeyStrokeCount] > 0) {
         hasEvent = YES;

@@ -41,7 +41,7 @@
     UIFont *_fastFont;
     CGContextRef _context;
     CGFontRef _cgFont;
-    SHColor *_prevColor;
+    SHColor _prevColor;
 }
 
 // The approximate size of one rectangle, which can be off by up to 1 pixel:
@@ -126,7 +126,7 @@ short theFontSize = FONT_SIZE;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self clearColors];
     
-        SHColor *color = bgColorArray[0][0];
+        SHColor color = bgColorArray[0][0];
         _prevColor = color;
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -142,7 +142,7 @@ short theFontSize = FONT_SIZE;
     _animationRunning = YES;
     
     if (!self.displayLink) {
-        self.displayLink =  [CADisplayLink displayLinkWithTarget:self selector:@selector(draw)];
+       // self.displayLink =  [CADisplayLink displayLinkWithTarget:self selector:@selector(draw)];
         [self.displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
         [self.displayLink setFrameInterval:1];
     }
@@ -161,12 +161,12 @@ short theFontSize = FONT_SIZE;
             black.blue = 0;
             black.green = 0;
             
-            bgColorArray[i][j] = &black;
-            attributes[i][j] = &black;
+            bgColorArray[i][j] = black;
+            attributes[i][j] = black;
         }
     }
     
-    SHColor *color = bgColorArray[0][0];
+    SHColor color = bgColorArray[0][0];
     _prevColor = color;
 }
 
@@ -199,100 +199,129 @@ short theFontSize = FONT_SIZE;
     [self setNeedsDisplay];
 }
 
-- (void)setString:(NSString *)c withBackgroundColor:(SHColor *)bgColor letterColor:(SHColor *)letterColor atLocationX:(short)x locationY:(short)y withChar:(unsigned short)character {
+- (void)setString:(NSString *)c withBackgroundColor:(SHColor)bgColor letterColor:(SHColor)letterColor atLocationX:(short)x locationY:(short)y withChar:(unsigned short)character {
     dispatch_async(dispatch_get_main_queue(), ^{
         letterArray[x][y] = c;
         bgColorArray[x][y] = bgColor;
         attributes[x][y] = letterColor;
         charArray[x][y] = character;
+        
+        [self setNeedsDisplayInRect:rectArray[x][y]];
     });
 }
 
-- (void)drawRect:(CGRect)rect
-{
-//    [MGBenchmark start:@"draw"];
+- (void)drawRect:(CGRect)rect {
+    
+  //  [MGBenchmark start:@"draw"];
+    
+  //  @autoreleasepool {
+     int i, j, startX, startY, endX, endY;
+          
+     startX = (int) (kCOLS * rect.origin.x / self.hWindow);
+     endY = (int) (kCOLS * (rect.origin.y + rect.size.height + vPixels - 1 ) / self.vWindow);
+     endX = (int) (kCOLS * (rect.origin.x + rect.size.width + hPixels - 1) / self.hWindow);
+     startY = (int) (kROWS * rect.origin.y / self.vWindow);
+     
+     if (startX < 0) {
+         startX = 0;
+     }
+     if (endX > kCOLS) {
+         endX = kCOLS;
+     }
+     if (startY < 0) {
+         startY = 0;
+     }
+     if (endY > kROWS) {
+         endY = kROWS;
+     }
+    
 
     _context = UIGraphicsGetCurrentContext();
     
-    CGRect startRect = rectArray[0][0];
-    int width = rectArray[0][0].size.width;
+    CGRect startRect =rectArray[startX][startY];
+    int width = 0;
     
-    _prevColor = bgColorArray[0][0];
+    _prevColor = bgColorArray[startX][startY];
+    UIColor *aColor = [UIColor colorWithRed:_prevColor.red/100. green:_prevColor.green/100. blue:_prevColor.blue/100. alpha:1.0];
+    CGContextSetFillColorWithColor(_context, [aColor CGColor]);
+    aColor = nil;
 
-    // draw the background rect colors
-    for (int j = 0; j < kROWS; j++ ) {
-        width = 0;
-        startRect = rectArray[0][j];
-        
-        for (int i = 0; i < kCOLS; i++ ) {
-            SHColor *color = bgColorArray[i][j];
-            
-            // if we have a mismatched color we need to draw. Otherwise we keep striping acrossed with the same color context and delay the draw
-            if ((_prevColor->red != color->red || _prevColor->green != color->green || _prevColor->blue != color->blue || i == kCOLS - 1)) {
-                if (i == kCOLS - 1) {
-                    width += rectArray[i][j].size.width;
-                    if (_prevColor->red != 0 || _prevColor->blue != 0 || _prevColor->green != 0) {
-                        CGContextFillRect(_context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)rectArray[i][j].size.height));
-                      //  if (color->red != 0 || color->blue != 0 || color->green != 0) {
-                            CGContextSetFillColorWithColor(_context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
-                            CGContextFillRect(_context, rectArray[i][j]);
-                      //  }
+    
+        // draw the background rect colors
+        for ( j = startY; j < endY; j++ ) {
+            for ( i = startX; i < endX; i++ ) {
+                SHColor color = bgColorArray[i][j];
+                
+                // if we have a mismatched color we need to draw. Otherwise we keep striping acrossed with the same color context and delay the draw
+                if ((_prevColor.red != color.red || _prevColor.green != color.green || _prevColor.blue != color.blue || i == endX - 1)) {
+                    if (i == endX - 1) {
+                        width += rectArray[i][j].size.width;
+                        // It's the last rect... and the previous rect isn't black.. draw it and then draw the last rect
+                        if (_prevColor.red != 0 || _prevColor.blue != 0 || _prevColor.green != 0) {
+                            CGContextFillRect(_context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)rectArray[i][j].size.height));
+                        }
+                        
+                        CGContextSetFillColorWithColor(_context, [[UIColor colorWithRed:color.red/100. green:color.green/100. blue:color.blue/100. alpha:1.0] CGColor]);
+                        CGContextFillRect(_context, rectArray[i][j]);
                     }
-                    
-                    CGContextSetFillColorWithColor(_context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
-                    CGContextFillRect(_context, rectArray[i][j]);
+                    else {
+                        // if it's not black draw it otherwise we skip drawing black rects to save time
+                        if (_prevColor.red != 0 || _prevColor.blue != 0 || _prevColor.green != 0) {
+                            CGContextFillRect(_context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)rectArray[i][j].size.height));
+                        }
+                        
+                        // if it's not black change the color
+                        if (color.red != 0 || color.blue != 0 || color.green != 0) {
+                            UIColor *aColor = [UIColor colorWithRed:color.red/100. green:color.green/100. blue:color.blue/100. alpha:1.0];
+                            CGContextSetFillColorWithColor(_context, [aColor CGColor]);
+                            aColor = nil;
+                        }
+                        
+                        startRect = rectArray[i][j];
+                        width = rectArray[i][j].size.width;
+                    }
                 }
                 else {
-                    // if it's not black draw it otherwise we skip drawing black rects to save time
-                    if (_prevColor->red != 0 || _prevColor->blue != 0 || _prevColor->green != 0) {
-                        CGContextFillRect(_context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)rectArray[i][j].size.height));
+                    // we're dealing with black. don't track
+                    if (color.red == 0 && color.blue == 0 && color.green == 0) {
+                        startRect = rectArray[i][j];
                     }
-                    
-                    // if it's not black change the color
-                    if (color->red != 0 || color->blue != 0 || color->green != 0) {
-                        CGContextSetFillColorWithColor(_context, [[UIColor colorWithRed:color->red/100. green:color->green/100. blue:color->blue/100. alpha:1.0] CGColor]);
+                    else {
+                        width += rectArray[i][j].size.width;
                     }
-                    
-                    startRect = rectArray[i][j];
-                    width = rectArray[i][j].size.width;
                 }
-            }
-            else {
-                // we're dealing with black. don't track
-                if (color->red == 0 && color->blue == 0 && color->green == 0) {
-                    startRect = rectArray[i][j];
-                    width = rectArray[i][j].size.width;
-                }
-                else 
-                    width += rectArray[i][j].size.width;
+                
+                _prevColor = color;
             }
             
-            _prevColor = color;
+            width = 0;
+            startRect = rectArray[i][j];
         }
-    }
-
-    _prevColor = bgColorArray[0][0];
-    CGContextSetFillColorWithColor(_context, [[UIColor colorWithRed:_prevColor->red/100. green:_prevColor->green/100. blue:_prevColor->blue/100. alpha:1.0] CGColor]);
+        
+        _prevColor = bgColorArray[0][0];
+        aColor = [UIColor colorWithRed:_prevColor.red/100. green:_prevColor.green/100. blue:_prevColor.blue/100. alpha:1.0];
+        CGContextSetFillColorWithColor(_context, [aColor CGColor]);
+        aColor = nil;
+        
+        // now draw the ascii chars
+        for ( j = startY; j < endY; j++ ) {
+            for ( i = startX; i < endX; i++ ) {
+                [self drawTheString:letterArray[i][j] centeredIn:rectArray[i][j] withAttributes:attributes[i][j] withChar:charArray[i][j]];
+            }
+        }
+   // }
     
-    // now draw the ascii chars
-    for (int j = 0; j < kROWS; j++ ) {
-        for (int i = 0; i < kCOLS; i++ ) {
-            [self drawTheString:letterArray[i][j] centeredIn:rectArray[i][j] withAttributes:attributes[i][j] withChar:charArray[i][j]];
-        }
-    }
+    
     
 //    [[MGBenchmark session:@"draw"] total];
 //    [MGBenchmark finish:@"draw"];
 }
 
 // drawTheString vars declared outside the method. Seem to speed things up just a hair
-size_t stringLength;
 CGGlyph glyphString[1];
 CGPoint stringOrigin;
 CGSize stringSize;
-unsigned short string;
-//char *prevCharGrid[kCOLS][kROWS];
-- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(SHColor *)letterColor withChar:(unsigned short)character
+- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(SHColor)letterColor withChar:(unsigned short)character
 {
     // before the letter array is set we ensure that anything that isn't supposed to show a character is set to size 0
 	if (theString.length == 0) {
@@ -313,11 +342,9 @@ unsigned short string;
     stringOrigin.x = rect.origin.x + (rect.size.width - stringSize.width) * 0.5;
     stringOrigin.y = rect.origin.y + (rect.size.height - stringSize.height) * 0.5;
     
-    string = character;//[theString cStringUsingEncoding:NSASCIIStringEncoding];
-    
     // only switch color context when needed. This call is expensive
-    if (_prevColor->red != letterColor->red || _prevColor->green != letterColor->green || _prevColor->blue != letterColor->blue) {
-        UIColor *color = [UIColor colorWithRed:letterColor->red/100. green:letterColor->green/100. blue:letterColor->blue/100. alpha:1.0];
+    if (_prevColor.red != letterColor.red || _prevColor.green != letterColor.green || _prevColor.blue != letterColor.blue) {
+        UIColor *color = [UIColor colorWithRed:letterColor.red/100. green:letterColor.green/100. blue:letterColor.blue/100. alpha:1.0];
         CGContextSetFillColorWithColor(_context, [color CGColor]);
     }
     
@@ -325,26 +352,24 @@ unsigned short string;
     
     // we have a unicode character. Draw it with drawAtPoint
     // if it's one of those fancy centered dots (183) toss it for a period. It's used a lot and slows things down
-    if (character >= 128 && character != 183)
+    if (character == 183) {
+        character = 46;
+        
+        stringOrigin.x -= 2;
+        stringOrigin.y -= 3;
+    }
+    
+    if (character >= 128)
     {
+        // super slow call.. only used occassionally though
         [theString drawAtPoint:stringOrigin withFont:[self slowFont]];
     }
     else {
-        if (character == 183) {
-            string = 46;
-            
-            stringOrigin.x -= 2;
-            stringOrigin.y -= 3;
-        }
-        
-        // This seems like overkill but supposedly it's faster than drawAtPoint
-       // stringLength = strlen(string);
-        glyphString[0] = string-29;//string[0]-29;
+        glyphString[0] = character-29;
         
         CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
         CGContextSetFont(_context, _cgFont);
         CGContextSetFontSize(_context, theFontSize);
-        //   CGContextSetFillColorWithColor(context, [color CGColor]);
         
         CGContextShowGlyphsAtPoint(_context, stringOrigin.x, stringOrigin.y + theFontSize, glyphString, 1);
     }

@@ -416,6 +416,7 @@
 												<int key="NSvFlags">292</int>
 												<string key="NSFrame">{{120, 117}, {52, 50}}</string>
 												<reference key="NSSuperview" ref="943159232"/>
+												<reference key="NSNextKeyView"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<bool key="IBUIOpaque">NO</bool>
 												<int key="IBUITag">3</int>
@@ -496,6 +497,7 @@
 						<reference key="NSNextKeyView" ref="917050997"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="781369543"/>
+						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 				</array>
