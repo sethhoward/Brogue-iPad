@@ -35,22 +35,22 @@
 
 @implementation Viewport {
     @private
-    BOOL _animationRunning;
+   // BOOL _animationRunning;
     BOOL _hasInitialized;
     UIFont *_slowFont;
     UIFont *_fastFont;
     CGContextRef _context;
     CGFontRef _cgFont;
     SHColor _prevColor;
+    // The approximate size of one rectangle, which can be off by up to 1 pixel:
+    short vPixels;
+    short hPixels;
 }
 
-// The approximate size of one rectangle, which can be off by up to 1 pixel:
-short vPixels = VERT_PX;
-short hPixels = HORIZ_PX;
+
 short theFontSize = FONT_SIZE;
 
 // TODO:
-
 - (UIFont *)slowFont {
 	if (!_slowFont) {
         _slowFont = [UIFont fontWithName:@"ArialUnicodeMS" size:theFontSize];
@@ -83,8 +83,7 @@ short theFontSize = FONT_SIZE;
     }
 }
 
-- (id)initWithFrame:(CGRect)rect
-{
+- (id)initWithFrame:(CGRect)rect {
     self = [super initWithFrame:rect];
     
 	if (!self) {
@@ -101,54 +100,9 @@ short theFontSize = FONT_SIZE;
 
     if (self) {
         [self initializeLayoutVariables];
-        
-       [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResign) name:UIApplicationWillResignActiveNotification object:nil];
     }
     
 	return self;
-}
-
-- (void)applicationDidBecomeActive {
-    if ([self.displayLink isPaused] && _animationRunning) {
-        [self.displayLink setPaused:NO];
-    }
-}
-
-- (void)applicationWillResign {
-    if ([self.displayLink isPaused] == NO) {
-        [self.displayLink setPaused:YES];
-    }
-}
-
-- (void)stopAnimating {
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self clearColors];
-    
-        SHColor color = bgColorArray[0][0];
-        _prevColor = color;
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.displayLink setPaused:YES];
-        });
-        
-    });
-    
-    _animationRunning = NO;
-}
-
-- (void)startAnimating {
-    _animationRunning = YES;
-    
-    if (!self.displayLink) {
-       // self.displayLink =  [CADisplayLink displayLinkWithTarget:self selector:@selector(draw)];
-        [self.displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
-        [self.displayLink setFrameInterval:1];
-    }
-    else {
-        [self.displayLink setPaused:NO];
-    }
 }
 
 - (void)clearColors {
@@ -171,32 +125,42 @@ short theFontSize = FONT_SIZE;
 }
 
 - (void)initializeLayoutVariables {
-    self.hWindow = 1024;
-    self.vWindow = 748;
-    
-    characterSizeDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
-    
-    [self clearColors];
-    
-	for (int j = 0; j < kROWS; j++) {
-		for (int i = 0; i < kCOLS; i++) {
-            CGRect rect = CGRectMake(HORIZ_PX*i, (VERT_PX*(j)), HORIZ_PX, VERT_PX);
-			rectArray[i][j] = rect;
-		}
-	}
-    
-    [self setHorizWindow:self.hWindow vertWindow:self.vWindow fontSize:theFontSize];
-    
-    if (!_cgFont) {
-        _cgFont = CGFontCreateWithFontName((CFStringRef)@"Monaco");
-    }
-    
-    _hasInitialized = YES;
-}
-
-- (void)draw {
- //   NSLog(@"%i", test);
-    [self setNeedsDisplay];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        self.hWindow = 1024;
+        self.vWindow = 748;
+        
+        characterSizeDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
+        
+        charArray = (unsigned short **)malloc(kCOLS * sizeof(unsigned short *));
+        bgColorArray = (SHColor **)malloc(kCOLS * sizeof(SHColor *));
+        attributes = (SHColor **)malloc(kCOLS * sizeof(SHColor *));
+        rectArray = (CGRect **)malloc(kCOLS * sizeof(CGRect *));
+        
+        for (int c = 0; c < kCOLS; c++) {
+            charArray[c] = (unsigned short *)malloc(kROWS * sizeof(unsigned short));
+            bgColorArray[c] = (SHColor *)malloc(kROWS * sizeof(SHColor));
+            attributes[c] = (SHColor *)malloc(kROWS * sizeof(SHColor));
+            rectArray[c] = (CGRect *)malloc(kROWS * sizeof(CGRect));
+        }
+        
+        for (int j = 0; j < kROWS; j++) {
+            for (int i = 0; i < kCOLS; i++) {
+                CGRect rect = CGRectMake(HORIZ_PX*i, (VERT_PX*(j)), HORIZ_PX, VERT_PX);
+                rectArray[i][j] = rect;
+            }
+        }
+        
+        [self setHorizWindow:self.hWindow vertWindow:self.vWindow fontSize:theFontSize];
+        
+        [self clearColors];
+        
+        if (!_cgFont) {
+            _cgFont = CGFontCreateWithFontName((CFStringRef)@"Monaco");
+        }
+        
+        _hasInitialized = YES;
+    });
 }
 
 - (void)setString:(NSString *)c withBackgroundColor:(SHColor)bgColor letterColor:(SHColor)letterColor atLocationX:(short)x locationY:(short)y withChar:(unsigned short)character {
@@ -211,118 +175,113 @@ short theFontSize = FONT_SIZE;
 }
 
 - (void)drawRect:(CGRect)rect {
+   // [MGBenchmark start:@"draw"];
+    if (!_hasInitialized) {
+        return;
+    }
     
-  //  [MGBenchmark start:@"draw"];
-    
-  //  @autoreleasepool {
-     int i, j, startX, startY, endX, endY;
-          
-     startX = (int) (kCOLS * rect.origin.x / self.hWindow);
-     endY = (int) (kCOLS * (rect.origin.y + rect.size.height + vPixels - 1 ) / self.vWindow);
-     endX = (int) (kCOLS * (rect.origin.x + rect.size.width + hPixels - 1) / self.hWindow);
-     startY = (int) (kROWS * rect.origin.y / self.vWindow);
-     
-     if (startX < 0) {
-         startX = 0;
-     }
-     if (endX > kCOLS) {
-         endX = kCOLS;
-     }
-     if (startY < 0) {
-         startY = 0;
-     }
-     if (endY > kROWS) {
-         endY = kROWS;
-     }
-    
+    int i, j, startX, startY, endX, endY;
+      
+    startX = (int) (kCOLS * rect.origin.x / self.hWindow);
+    endY = (int) (kCOLS * (rect.origin.y + rect.size.height + vPixels - 1 ) / self.vWindow);
+    endX = (int) (kCOLS * (rect.origin.x + rect.size.width + hPixels - 1) / self.hWindow);
+    startY = (int) (kROWS * rect.origin.y / self.vWindow);
+    i = startX;
+
+    if (startX < 0) {
+     startX = 0;
+    }
+    if (endX > kCOLS) {
+     endX = kCOLS;
+    }
+    if (startY < 0) {
+     startY = 0;
+    }
+    if (endY > kROWS) {
+     endY = kROWS;
+    }
 
     _context = UIGraphicsGetCurrentContext();
-    
-    CGRect startRect =rectArray[startX][startY];
-    int width = 0;
-    
+
+    CGRect startRect;// = rectArray[startX][startY];
+    int width;// = 0;
+
     _prevColor = bgColorArray[startX][startY];
     UIColor *aColor = [UIColor colorWithRed:_prevColor.red/100. green:_prevColor.green/100. blue:_prevColor.blue/100. alpha:1.0];
     CGContextSetFillColorWithColor(_context, [aColor CGColor]);
-    aColor = nil;
 
-    
-        // draw the background rect colors
-        for ( j = startY; j < endY; j++ ) {
-            for ( i = startX; i < endX; i++ ) {
-                SHColor color = bgColorArray[i][j];
-                
-                // if we have a mismatched color we need to draw. Otherwise we keep striping acrossed with the same color context and delay the draw
-                if ((_prevColor.red != color.red || _prevColor.green != color.green || _prevColor.blue != color.blue || i == endX - 1)) {
-                    if (i == endX - 1) {
-                        width += rectArray[i][j].size.width;
-                        // It's the last rect... and the previous rect isn't black.. draw it and then draw the last rect
-                        if (_prevColor.red != 0 || _prevColor.blue != 0 || _prevColor.green != 0) {
-                            CGContextFillRect(_context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)rectArray[i][j].size.height));
-                        }
-                        
-                        CGContextSetFillColorWithColor(_context, [[UIColor colorWithRed:color.red/100. green:color.green/100. blue:color.blue/100. alpha:1.0] CGColor]);
-                        CGContextFillRect(_context, rectArray[i][j]);
-                    }
-                    else {
-                        // if it's not black draw it otherwise we skip drawing black rects to save time
-                        if (_prevColor.red != 0 || _prevColor.blue != 0 || _prevColor.green != 0) {
-                            CGContextFillRect(_context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)rectArray[i][j].size.height));
-                        }
-                        
-                        // if it's not black change the color
-                        if (color.red != 0 || color.blue != 0 || color.green != 0) {
-                            UIColor *aColor = [UIColor colorWithRed:color.red/100. green:color.green/100. blue:color.blue/100. alpha:1.0];
-                            CGContextSetFillColorWithColor(_context, [aColor CGColor]);
-                            aColor = nil;
-                        }
-                        
-                        startRect = rectArray[i][j];
-                        width = rectArray[i][j].size.width;
-                    }
-                }
-                else {
-                    // we're dealing with black. don't track
-                    if (color.red == 0 && color.blue == 0 && color.green == 0) {
-                        startRect = rectArray[i][j];
-                    }
-                    else {
-                        width += rectArray[i][j].size.width;
-                    }
-                }
-                
-                _prevColor = color;
-            }
-            
-            width = 0;
+    // draw the background rect colors
+    for ( j = startY; j < endY; j++ ) {
+        width = 0;
+        if (i < endX) {
             startRect = rectArray[i][j];
         }
-        
-        _prevColor = bgColorArray[0][0];
-        aColor = [UIColor colorWithRed:_prevColor.red/100. green:_prevColor.green/100. blue:_prevColor.blue/100. alpha:1.0];
-        CGContextSetFillColorWithColor(_context, [aColor CGColor]);
-        aColor = nil;
-        
-        // now draw the ascii chars
-        for ( j = startY; j < endY; j++ ) {
-            for ( i = startX; i < endX; i++ ) {
-                [self drawTheString:letterArray[i][j] centeredIn:rectArray[i][j] withAttributes:attributes[i][j] withChar:charArray[i][j]];
+
+        for ( i = startX; i < endX; i++ ) {
+            SHColor color = bgColorArray[i][j];
+            
+            // if we have a mismatched color we need to draw. Otherwise we keep striping acrossed with the same color context and delay the draw
+            if ((_prevColor.red != color.red || _prevColor.green != color.green || _prevColor.blue != color.blue || i == endX - 1)) {
+                if (i == endX - 1) {
+                    width += rectArray[i][j].size.width;
+                    // It's the last rect... and the previous rect isn't black.. draw it and then draw the last rect
+                    if (_prevColor.red != 0 || _prevColor.blue != 0 || _prevColor.green != 0) {
+                        CGContextFillRect(_context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)rectArray[i][j].size.height));
+                    }
+                    
+                    CGContextSetFillColorWithColor(_context, [[UIColor colorWithRed:color.red/100. green:color.green/100. blue:color.blue/100. alpha:1.0] CGColor]);
+                    CGContextFillRect(_context, rectArray[i][j]);
+                }
+                else {
+                    // if it's not black draw it otherwise we skip drawing black rects to save time
+                    if (_prevColor.red != 0 || _prevColor.blue != 0 || _prevColor.green != 0) {
+                        CGContextFillRect(_context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)rectArray[i][j].size.height));
+                    }
+                    
+                    // if it's not black change the color
+                    if (color.red != 0 || color.blue != 0 || color.green != 0) {
+                        UIColor *aColor = [UIColor colorWithRed:color.red/100. green:color.green/100. blue:color.blue/100. alpha:1.0];
+                        CGContextSetFillColorWithColor(_context, [aColor CGColor]);
+                    }
+                    
+                    startRect = rectArray[i][j];
+                    width = rectArray[i][j].size.width;
+                }
             }
+            else {
+                // we're dealing with black. don't track
+                if (color.red == 0 && color.blue == 0 && color.green == 0) {
+                    startRect = rectArray[i][j];
+                }
+                else {
+                    width += rectArray[i][j].size.width;
+                }
+            }
+            
+            _prevColor = color;
         }
-   // }
+    }
     
+    _prevColor = bgColorArray[0][0];
+    aColor = [UIColor colorWithRed:_prevColor.red/100. green:_prevColor.green/100. blue:_prevColor.blue/100. alpha:1.0];
+    CGContextSetFillColorWithColor(_context, [aColor CGColor]);
     
+    // now draw the ascii chars
+    for ( j = startY; j < endY; j++ ) {
+        for ( i = startX; i < endX; i++ ) {
+            [self drawTheString:letterArray[i][j] centeredIn:rectArray[i][j] withAttributes:attributes[i][j] withChar:charArray[i][j]];
+        }
+    }
     
-//    [[MGBenchmark session:@"draw"] total];
-//    [MGBenchmark finish:@"draw"];
+  //  [[MGBenchmark session:@"draw"] total];
+  //  [MGBenchmark finish:@"draw"];
 }
 
 // drawTheString vars declared outside the method. Seem to speed things up just a hair
 CGGlyph glyphString[1];
 CGPoint stringOrigin;
 CGSize stringSize;
-- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(SHColor)letterColor withChar:(unsigned short)character
-{
+- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(SHColor)letterColor withChar:(unsigned short)character {
     // before the letter array is set we ensure that anything that isn't supposed to show a character is set to size 0
 	if (theString.length == 0) {
 		return;
@@ -370,15 +329,11 @@ CGSize stringSize;
         CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
         CGContextSetFont(_context, _cgFont);
         CGContextSetFontSize(_context, theFontSize);
-        
         CGContextShowGlyphsAtPoint(_context, stringOrigin.x, stringOrigin.y + theFontSize, glyphString, 1);
     }
 }
 
-- (void)setHorizWindow:(short)hPx
-            vertWindow:(short)vPx
-              fontSize:(short)size
-{
+- (void)setHorizWindow:(short)hPx vertWindow:(short)vPx fontSize:(short)size {
     int i, j;
     hPixels = hPx / kCOLS;
     vPixels = vPx / kROWS;

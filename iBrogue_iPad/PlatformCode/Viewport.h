@@ -46,23 +46,17 @@ typedef struct {
 {
     // TODO: remove these declarations from the stack
 	NSString __strong *letterArray[kCOLS][kROWS];
-    unsigned short charArray[kCOLS][kROWS];
-	SHColor bgColorArray[kCOLS][kROWS];
-	SHColor attributes[kCOLS][kROWS];
+    unsigned short **charArray;
+	SHColor **bgColorArray;
+	SHColor **attributes;
 	NSMutableDictionary __strong *characterSizeDictionary;
-	CGRect rectArray[kCOLS][kROWS];
+	CGRect **rectArray;
 }
 
 - (void)setString:(NSString *)c withBackgroundColor:(SHColor)bgColor letterColor:(SHColor)letterColor atLocationX:(short)x locationY:(short)y withChar:(unsigned short)character;
 
 - (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(SHColor)theAttributes;
-
-- (void)setHorizWindow:(short)hPx
-			vertWindow:(short)vPx
-			  fontSize:(short)size;
-
-- (void)stopAnimating;
-- (void)startAnimating;
+- (void)setHorizWindow:(short)hPx vertWindow:(short)vPx fontSize:(short)size;
 
 @property (nonatomic, assign) short hWindow;
 @property (nonatomic, assign) short vWindow;

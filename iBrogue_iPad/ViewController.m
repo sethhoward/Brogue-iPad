@@ -139,10 +139,8 @@ typedef enum {
 	}
 }
 
-- (void)playBrogue
-{
+- (void)playBrogue {
     rogueMain();
-    [self.secondaryDisplay startAnimating];
 }
 
 #pragma mark - Shake Motion
