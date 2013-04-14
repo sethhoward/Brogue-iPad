@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+// TODO: set version number in the view from the plist instead of manually
+
 @interface AboutViewController : UIViewController
 
 @end

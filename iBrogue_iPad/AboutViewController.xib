@@ -264,7 +264,7 @@ d2FyZC4gV2UgaG9wZSB5b3UgZW5qb3kgYW5kIGFwcHJlY2lhdGUgeW91ciBmZWVkYmFjay4</bytes>
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<string key="IBUIText">v 1.0.3</string>
+						<string key="IBUIText">v 1.0.4</string>
 						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MSAxIDEAA</bytes>

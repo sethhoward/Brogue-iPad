@@ -40,7 +40,7 @@
 	SHColor **_bgColorArray;
 	SHColor **_attributes;
 	NSMutableDictionary *_characterSizeDictionary;
-	CGRect **_rectArray;
+	CGRect _rectArray[kCOLS][kROWS];
     UIFont *_slowFont;
     UIFont *_fastFont;
     CGContextRef _context;
@@ -52,47 +52,12 @@
     short _hPixels;
 }
 
-// TODO:
-- (UIFont *)slowFont {
-	if (!_slowFont) {
-        _slowFont = [UIFont fontWithName:@"ArialUnicodeMS" size:FONT_SIZE];
-/*		NSFont *baseFont = [NSFont fontWithName:basicFontName size:theFontSize];
-		NSArray *fallbackDescriptors = [NSArray arrayWithObjects:
-		                                // Arial provides reasonable versions of most characters.
-		                                [UIFontDescriptor fontDescriptorWithName:@"Arial Unicode MS" size:theFontSize],
-		                                // Apple Symbols provides U+26AA, for rings, which Arial does not.
-		                                [UIFontDescriptor fontDescriptorWithName:@"Apple Symbols" size:theFontSize],
-		                                nil];
-		NSDictionary *fodDict = [NSDictionary dictionaryWithObject:fallbackDescriptors forKey:NSFontCascadeListAttribute];
-		NSFontDescriptor *desc = [baseFont.fontDescriptor fontDescriptorByAddingAttributes:fodDict];
-		theSlowFont = [[NSFont fontWithDescriptor:desc size:theFontSize] retain];*/
-	}
-	return _slowFont;
-}
-
-- (UIFont *)fastFont {
-	if (!_fastFont) {
-		_fastFont = [UIFont fontWithName:@"Monaco" size:FONT_SIZE + 1];
-    }
-	return _fastFont;
-}
-
-- (UIFont *)fontForString:(NSString *)s {
-	if (s.length == 1 && ([s characterAtIndex:0] < 128)) {
-		return [self fastFont];
-	} else {
-		return [self slowFont];
-    }
-}
-
 - (id)initWithFrame:(CGRect)rect {
     self = [super initWithFrame:rect];
     
-	if (!self) {
-		return nil;
+	if (self) {
+		[self initializeLayoutVariables];
 	}
-
-	[self initializeLayoutVariables];
 
 	return self;
 }
@@ -107,25 +72,6 @@
 	return self;
 }
 
-- (void)clearColors {
-    for (int j = 0; j < kROWS; j++) {
-		for (int i = 0; i < kCOLS; i++) {
-			_letterArray[i][j] = @"";
-            _charArray[i][j] = ' ';
-            SHColor black;
-            black.red = 0;
-            black.blue = 0;
-            black.green = 0;
-            
-            _bgColorArray[i][j] = black;
-            _attributes[i][j] = black;
-        }
-    }
-    
-//    SHColor color = _bgColorArray[0][0];
-//    _prevColor = color;
-}
-
 - (void)initializeLayoutVariables {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -138,13 +84,13 @@
         _charArray = (unsigned short **)malloc(kCOLS * sizeof(unsigned short *));
         _bgColorArray = (SHColor **)malloc(kCOLS * sizeof(SHColor *));
         _attributes = (SHColor **)malloc(kCOLS * sizeof(SHColor *));
-        _rectArray = (CGRect **)malloc(kCOLS * sizeof(CGRect *));
+      //  _rectArray = (CGRect **)malloc(kCOLS * sizeof(CGRect *));
         
         for (int c = 0; c < kCOLS; c++) {
             _charArray[c] = (unsigned short *)malloc(kROWS * sizeof(unsigned short));
             _bgColorArray[c] = (SHColor *)malloc(kROWS * sizeof(SHColor));
             _attributes[c] = (SHColor *)malloc(kROWS * sizeof(SHColor));
-            _rectArray[c] = (CGRect *)malloc(kROWS * sizeof(CGRect));
+     //       _rectArray[c] = (CGRect *)malloc(kROWS * sizeof(CGRect));
         }
         
         // initialize varaiables based on our window size
@@ -167,6 +113,8 @@
     });
 }
 
+#pragma mark - Draw Routines
+
 - (void)drawRect:(CGRect)rect {
    // [MGBenchmark start:@"draw"];
     int i, j, startX, startY, endX, endY;
@@ -175,7 +123,6 @@
     endY = (int) (kCOLS * (rect.origin.y + rect.size.height + _vPixels - 1 ) / self.vWindow);
     endX = (int) (kCOLS * (rect.origin.x + rect.size.width + _hPixels - 1) / self.hWindow);
     startY = (int) (kROWS * rect.origin.y / self.vWindow);
-    i = startX;
 
     if (startX < 0) {
      startX = 0;
@@ -192,8 +139,8 @@
 
     _context = UIGraphicsGetCurrentContext();
 
-    CGRect startRect;// = rectArray[startX][startY];
-    int width;// = 0;
+    CGRect startRect = _rectArray[startX][startY];
+    int width = 0;
 
     _prevColor = _bgColorArray[startX][startY];
     UIColor *aColor = [UIColor colorWithRed:_prevColor.red/100. green:_prevColor.green/100. blue:_prevColor.blue/100. alpha:1.0];
@@ -201,11 +148,6 @@
 
     // draw the background rect colors
     for ( j = startY; j < endY; j++ ) {
-        width = 0;
-        if (i < endX) {
-            startRect = _rectArray[i][j];
-        }
-
         for ( i = startX; i < endX; i++ ) {
             SHColor color = _bgColorArray[i][j];
             
@@ -214,7 +156,7 @@
                 if (i == endX - 1) {
                     width += _rectArray[i][j].size.width;
                     // It's the last rect... and the previous rect isn't black.. draw it and then draw the last rect
-                    if (_prevColor.red != 0 || _prevColor.blue != 0 || _prevColor.green != 0) {
+                    if (![self isSHColorBlack:_prevColor]) {
                         CGContextFillRect(_context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)_rectArray[i][j].size.height));
                     }
                     
@@ -223,12 +165,12 @@
                 }
                 else {
                     // if it's not black draw it otherwise we skip drawing black rects to save time
-                    if (_prevColor.red != 0 || _prevColor.blue != 0 || _prevColor.green != 0) {
+                    if (![self isSHColorBlack:_prevColor]) {
                         CGContextFillRect(_context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)_rectArray[i][j].size.height));
                     }
                     
                     // if it's not black change the color
-                    if (color.red != 0 || color.blue != 0 || color.green != 0) {
+                    if (![self isSHColorBlack:color]) {
                         UIColor *aColor = [UIColor colorWithRed:color.red/100. green:color.green/100. blue:color.blue/100. alpha:1.0];
                         CGContextSetFillColorWithColor(_context, [aColor CGColor]);
                     }
@@ -239,7 +181,7 @@
             }
             else {
                 // we're dealing with black. don't track
-                if (color.red == 0 && color.blue == 0 && color.green == 0) {
+                if ([self isSHColorBlack:color]) {
                     startRect = _rectArray[i][j];
                 }
                 else {
@@ -249,9 +191,12 @@
             
             _prevColor = color;
         }
+ 
+        width = 0;
+        startRect = _rectArray[i][j];
     }
     
-    _prevColor = _bgColorArray[0][0];
+    _prevColor = _bgColorArray[startX][startY];
     aColor = [UIColor colorWithRed:_prevColor.red/100. green:_prevColor.green/100. blue:_prevColor.blue/100. alpha:1.0];
     CGContextSetFillColorWithColor(_context, [aColor CGColor]);
     
@@ -268,28 +213,13 @@
 
 // drawTheString vars declared outside the method. Seem to speed things up just a hair
 CGGlyph glyphString[1];
-CGPoint stringOrigin;
-CGSize stringSize;
 - (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(SHColor)letterColor withChar:(unsigned short)character {
     // before the letter array is set we ensure that anything that isn't supposed to show a character is set to size 0
 	if (theString.length == 0) {
 		return;
 	}
 
-    // Cache sizes.
-    NSValue *size = [_characterSizeDictionary objectForKey:theString];
-    
-    if (size) {
-        stringSize = [size CGSizeValue];
-    } else {
-        stringSize = [theString sizeWithFont:[self fontForString:theString]];	// quite expensive
-        //	NSLog(@"stringSize for '%@' has width %f and height %f", theString, stringSize.width, stringSize.height);
-        [_characterSizeDictionary setObject:[NSValue valueWithCGSize:stringSize] forKey:theString];
-    }
-    
-    // center the characters
-    stringOrigin.x = rect.origin.x + (rect.size.width - stringSize.width) * 0.5;
-    stringOrigin.y = rect.origin.y + (rect.size.height - stringSize.height) * 0.5;
+    CGPoint stringOrigin = [self originForString:theString withInitialOriginRect:rect];
     
     // only switch color context when needed. This call is expensive
     if (_prevColor.red != letterColor.red || _prevColor.green != letterColor.green || _prevColor.blue != letterColor.blue) {
@@ -325,6 +255,29 @@ CGSize stringSize;
     }
 }
 
+#pragma mark - Private Helpers
+
+- (CGPoint)originForString:(NSString *)string withInitialOriginRect:(CGRect)rect {
+    CGSize stringSize;
+    // Cache sizes.
+    CGPoint stringOrigin;
+    NSValue *size = [_characterSizeDictionary objectForKey:string];
+    
+    if (size) {
+        stringSize = [size CGSizeValue];
+    } else {
+        stringSize = [string sizeWithFont:[self fontForString:string]];	// quite expensive
+        //	NSLog(@"stringSize for '%@' has width %f and height %f", theString, stringSize.width, stringSize.height);
+        [_characterSizeDictionary setObject:[NSValue valueWithCGSize:stringSize] forKey:string];
+    }
+    
+    // center the characters
+    stringOrigin.x = rect.origin.x + (rect.size.width - stringSize.width) * 0.5;
+    stringOrigin.y = rect.origin.y + (rect.size.height - stringSize.height) * 0.5;
+    
+    return stringOrigin;
+}
+
 - (void)setHorizWindow:(short)hPx vertWindow:(short)vPx fontSize:(short)size {
     _hPixels = hPx / kCOLS;
     _vPixels = vPx / kROWS;
@@ -341,6 +294,65 @@ CGSize stringSize;
     }
 
     [_characterSizeDictionary removeAllObjects];
+}
+
+- (BOOL)isSHColorBlack:(SHColor)color {
+    if (color.red == 0 && color.blue == 0 && color.green == 0) {
+        return YES;
+    }
+    
+    return NO;
+}
+
+- (void)clearColors {
+    for (int j = 0; j < kROWS; j++) {
+		for (int i = 0; i < kCOLS; i++) {
+			_letterArray[i][j] = @"";
+            _charArray[i][j] = ' ';
+            SHColor black;
+            black.red = 0;
+            black.blue = 0;
+            black.green = 0;
+            
+            _bgColorArray[i][j] = black;
+            _attributes[i][j] = black;
+        }
+    }
+}
+
+#pragma mark - Font
+
+// TODO:
+- (UIFont *)slowFont {
+	if (!_slowFont) {
+        _slowFont = [UIFont fontWithName:@"ArialUnicodeMS" size:FONT_SIZE];
+        /*		NSFont *baseFont = [NSFont fontWithName:basicFontName size:theFontSize];
+         NSArray *fallbackDescriptors = [NSArray arrayWithObjects:
+         // Arial provides reasonable versions of most characters.
+         [UIFontDescriptor fontDescriptorWithName:@"Arial Unicode MS" size:theFontSize],
+         // Apple Symbols provides U+26AA, for rings, which Arial does not.
+         [UIFontDescriptor fontDescriptorWithName:@"Apple Symbols" size:theFontSize],
+         nil];
+         NSDictionary *fodDict = [NSDictionary dictionaryWithObject:fallbackDescriptors forKey:NSFontCascadeListAttribute];
+         NSFontDescriptor *desc = [baseFont.fontDescriptor fontDescriptorByAddingAttributes:fodDict];
+         theSlowFont = [[NSFont fontWithDescriptor:desc size:theFontSize] retain];*/
+	}
+	return _slowFont;
+}
+
+- (UIFont *)fastFont {
+	if (!_fastFont) {
+		_fastFont = [UIFont fontWithName:@"Monaco" size:FONT_SIZE + 1];
+    }
+	return _fastFont;
+}
+
+- (UIFont *)fontForString:(NSString *)s {
+	if (s.length == 1 && ([s characterAtIndex:0] < 128)) {
+		return [self fastFont];
+	} else {
+		return [self slowFont];
+    }
 }
 
 

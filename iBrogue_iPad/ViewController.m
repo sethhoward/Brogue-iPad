@@ -428,19 +428,22 @@ typedef enum {
 
 - (void)showTitle {
     dispatch_async(dispatch_get_main_queue(), ^{
-    double delayInSeconds = 1.5;
-        [self.playerControlView setHidden:YES];
+    double delayInSeconds = 1.;
+    [self.playerControlView setHidden:YES];
+        
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self.titleButtonView setHidden:NO];
-            
+            if (_lastBrogueGameEvent == BrogueGameEventShowTitle || _lastBrogueGameEvent == BrogueGameEventOpenGameFinished) {
+                [self.titleButtonView setHidden:NO];
+            }
         });
     });
 }
 
 - (void)showAuxillaryScreensWithDirectionalControls:(BOOL)controls {
     dispatch_async(dispatch_get_main_queue(), ^{
-        double delayInSeconds = 1.5;
+        double delayInSeconds = 1.;
+        
         [self.titleButtonView setHidden:YES];
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -452,19 +455,12 @@ typedef enum {
 
 #pragma mark - keyboard stuff
 
+// when showing the keyboard we need to set the field to 'recording' so we can catch backspace events (soley for saving a replay or game)
 - (void)showKeyboard {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.aTextField.text = @"Recording";
         [self.aTextField becomeFirstResponder];
     });
-}
-
-- (void)viewDidUnload {
-    [self setPlayerControlView:nil];
-    [self setATextField:nil];
-    [self setEscButton:nil];
-   // [self setButtonView:nil];
-    [super viewDidUnload];
 }
 
 - (uint)cachedKeyStrokeCount {
@@ -482,6 +478,11 @@ typedef enum {
 
 #pragma mark - UITextFieldDelegate
 
+#define kEnterKey @"\015"
+#define kBackSpaceKey @"\177"
+#define kEscKey @"\033"
+
+// when using the hide keyboard button on the UIKit keyboard we treat it like an escape
 - (void)didHideKeyboard {
     if ([self.cachedKeyStrokes count] == 0) {
         [self.cachedKeyStrokes addObject:kESC_Key];
@@ -495,7 +496,7 @@ typedef enum {
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [self.cachedKeyStrokes addObject:@"\015"];
+    [self.cachedKeyStrokes addObject:kEnterKey];
     [textField resignFirstResponder];
     return YES;
 }
@@ -506,12 +507,12 @@ typedef enum {
     
     if (isBackSpace == -8) {
         // is backspace
-        [self.cachedKeyStrokes addObject:@"\177"];
+        [self.cachedKeyStrokes addObject:kBackSpaceKey];
     }
     else if([string isEqualToString:@"\n"]) {
         [textField resignFirstResponder];
         // enter
-        [self.cachedKeyStrokes addObject:@"\015"];
+        [self.cachedKeyStrokes addObject:kEnterKey];
     }
     else {
         // misc
@@ -524,7 +525,7 @@ typedef enum {
 #pragma mark - Actions
 
 - (IBAction)escButtonPressed:(id)sender {
-    [self.cachedKeyStrokes addObject:@"\033"];
+    [self.cachedKeyStrokes addObject:kEscKey];
     [self.aTextField resignFirstResponder];
 }
 
@@ -673,6 +674,13 @@ typedef enum {
         default:
             break;
     }
+}
+
+- (void)viewDidUnload {
+    [self setPlayerControlView:nil];
+    [self setATextField:nil];
+    [self setEscButton:nil];
+    [super viewDidUnload];
 }
 
 @end
