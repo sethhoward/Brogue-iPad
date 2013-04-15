@@ -428,7 +428,7 @@ typedef enum {
 
 - (void)showTitle {
     dispatch_async(dispatch_get_main_queue(), ^{
-    double delayInSeconds = 1.;
+    double delayInSeconds = 0.5;
     [self.playerControlView setHidden:YES];
         
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -442,7 +442,7 @@ typedef enum {
 
 - (void)showAuxillaryScreensWithDirectionalControls:(BOOL)controls {
     dispatch_async(dispatch_get_main_queue(), ^{
-        double delayInSeconds = 1.;
+        double delayInSeconds = .75;
         
         [self.titleButtonView setHidden:YES];
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));

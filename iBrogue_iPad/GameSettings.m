@@ -46,7 +46,7 @@
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kAllowShake];
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kAllowESCGesture];
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kAllowMagnifier];
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kAllowPinchToZoomDirectional];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kAllowPinchToZoomDirectional];
     
     [[NSUserDefaults standardUserDefaults] synchronize];
     

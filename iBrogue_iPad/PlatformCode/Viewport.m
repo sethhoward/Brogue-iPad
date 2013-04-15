@@ -116,7 +116,7 @@
 #pragma mark - Draw Routines
 
 - (void)drawRect:(CGRect)rect {
-   // [MGBenchmark start:@"draw"];
+ //   [MGBenchmark start:@"draw"];
     int i, j, startX, startY, endX, endY;
       
     startX = (int) (kCOLS * rect.origin.x / self.hWindow);
@@ -146,7 +146,9 @@
     UIColor *aColor = [UIColor colorWithRed:_prevColor.red/100. green:_prevColor.green/100. blue:_prevColor.blue/100. alpha:1.0];
     CGContextSetFillColorWithColor(_context, [aColor CGColor]);
 
-    // draw the background rect colors
+    // draw the background rect colors.
+    // In order to speed things up we do not draw black rects
+    // Also we combine rects that are the same color (striping across the row) and draw that as one rect instead of individual rects
     for ( j = startY; j < endY; j++ ) {
         for ( i = startX; i < endX; i++ ) {
             SHColor color = _bgColorArray[i][j];
@@ -192,6 +194,7 @@
             _prevColor = color;
         }
  
+        // end of the row, reset values
         width = 0;
         startRect = _rectArray[i][j];
     }
@@ -207,8 +210,8 @@
         }
     }
     
-  //  [[MGBenchmark session:@"draw"] total];
-  //  [MGBenchmark finish:@"draw"];
+ //   [[MGBenchmark session:@"draw"] total];
+ //   [MGBenchmark finish:@"draw"];
 }
 
 // drawTheString vars declared outside the method. Seem to speed things up just a hair
