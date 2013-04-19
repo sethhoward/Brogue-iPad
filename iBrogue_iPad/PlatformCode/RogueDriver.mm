@@ -382,24 +382,46 @@ void initializeLaunchArguments(enum NGCommands *command, char *path, unsigned lo
 	*seed = 0;
 }
 
+void migrateFilesFromLegacyStorageLocation() {
+    NSFileManager *manager = [NSFileManager defaultManager];
+    NSError *err;
+    
+    NSString *legacyPath = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) objectAtIndex: 0];
+    
+    // Use a folder under Application Support named after the application.
+    NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleName"];
+    NSString *legacySupportPath = [legacyPath stringByAppendingPathComponent: appName];
+    
+    // Look up the full path to the user's Application Support folder (usually ~/Library/Application Support/).
+    NSString *basePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex: 0];
+    NSString *documentsPath = [basePath stringByAppendingPathComponent: appName];
+    
+    if ([manager fileExistsAtPath:documentsPath]) {
+        // copy all files into the documents directory
+        [manager copyItemAtPath:legacyPath toPath:documentsPath error:&err];
+    }
+}
+
 void initializeBrogueSaveLocation() {
+    migrateFilesFromLegacyStorageLocation();
+    
     NSFileManager *manager = [NSFileManager defaultManager];
     NSError *err;
     
     // Look up the full path to the user's Application Support folder (usually ~/Library/Application Support/).
-    NSString *basePath = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) objectAtIndex: 0];
+    NSString *basePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex: 0];
     
     // Use a folder under Application Support named after the application.
     NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleName"];
-    NSString *supportPath = [basePath stringByAppendingPathComponent: appName];
+    NSString *documentsPath = [basePath stringByAppendingPathComponent: appName];
     
     // Create our folder the first time it is needed.
-    if (![manager fileExistsAtPath: supportPath]) {
-        [manager createDirectoryAtPath:supportPath withIntermediateDirectories:YES attributes:nil error:&err];
+    if (![manager fileExistsAtPath:documentsPath]) {
+        [manager createDirectoryAtPath:documentsPath withIntermediateDirectories:YES attributes:nil error:&err];
     }
     
     // Set the working directory to this path, so that savegames and recordings will be stored here.
-    [manager changeCurrentDirectoryPath: supportPath];
+    [manager changeCurrentDirectoryPath:documentsPath];
 }
 
 #define ADD_FAKE_PADDING_FILES 0
