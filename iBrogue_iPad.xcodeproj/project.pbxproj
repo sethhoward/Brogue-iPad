@@ -44,7 +44,6 @@
 		C57A967216D7EB5500C233F1 /* Recordings.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A966216D7EB5500C233F1 /* Recordings.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A967316D7EB5500C233F1 /* RogueMain.mm in Sources */ = {isa = PBXBuildFile; fileRef = C57A966416D7EB5500C233F1 /* RogueMain.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A967516DBF1CE00C233F1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C57A967416DBF1CE00C233F1 /* QuartzCore.framework */; };
-		C5865D3F1700EBAE00B18C2B /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EA72D616FE92DC00AE688A /* CoreText.framework */; };
 		C5865EE5170399C500B18C2B /* MGBenchmark.m in Sources */ = {isa = PBXBuildFile; fileRef = C5865EDE170399C500B18C2B /* MGBenchmark.m */; };
 		C5865EE6170399C500B18C2B /* MGBenchmarkSession.m in Sources */ = {isa = PBXBuildFile; fileRef = C5865EE0170399C500B18C2B /* MGBenchmarkSession.m */; };
 		C5865EE7170399C500B18C2B /* MGConsoleOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = C5865EE4170399C500B18C2B /* MGConsoleOutput.m */; };
@@ -173,7 +172,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C5865D3F1700EBAE00B18C2B /* CoreText.framework in Frameworks */,
 				C52B092716E5853900675CC7 /* GameKit.framework in Frameworks */,
 				C57A967516DBF1CE00C233F1 /* QuartzCore.framework in Frameworks */,
 				C57A962916D7EAD500C233F1 /* UIKit.framework in Frameworks */,

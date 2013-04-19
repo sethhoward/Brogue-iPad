@@ -394,11 +394,19 @@ void migrateFilesFromLegacyStorageLocation() {
     
     // Look up the full path to the user's Application Support folder (usually ~/Library/Application Support/).
     NSString *basePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex: 0];
-    NSString *documentsPath = [basePath stringByAppendingPathComponent: appName];
+    NSString *documentsPath = basePath;//[basePath stringByAppendingPathComponent:@"/"];
     
-    if ([manager fileExistsAtPath:documentsPath]) {
+    if ([manager fileExistsAtPath:legacySupportPath]) {
         // copy all files into the documents directory
-        [manager copyItemAtPath:legacyPath toPath:documentsPath error:&err];
+    //    [manager copyItemAtPath:legacySupportPath toPath:documentsPath error:&err];
+        
+        NSArray *legacyFolderContents = [manager contentsOfDirectoryAtPath:legacySupportPath error:&err];
+        
+        for (NSString *source in legacyFolderContents) {
+            if (![manager copyItemAtPath:[legacySupportPath stringByAppendingPathComponent:source] toPath:[documentsPath stringByAppendingPathComponent:source] error:&err]) {
+                NSLog(@"%@", err);
+            }
+        }
     }
 }
 
@@ -412,8 +420,8 @@ void initializeBrogueSaveLocation() {
     NSString *basePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex: 0];
     
     // Use a folder under Application Support named after the application.
-    NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleName"];
-    NSString *documentsPath = [basePath stringByAppendingPathComponent: appName];
+  //  NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleName"];
+    NSString *documentsPath = basePath;//[basePath stringByAppendingPathComponent: appName];
     
     // Create our folder the first time it is needed.
     if (![manager fileExistsAtPath:documentsPath]) {
