@@ -259,6 +259,7 @@ cmVhdGVmb3J1bWhvc3RpbmcuY29tL2Jyb2d1ZS1nZW5lcmFsLWRpc2N1c3Npb24tZjEuaHRtbA</byte
 						<string key="NSFrame">{{446, 498}, {61, 21}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
