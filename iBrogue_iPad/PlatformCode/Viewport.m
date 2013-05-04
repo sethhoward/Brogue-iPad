@@ -39,7 +39,7 @@
     unsigned short **_charArray;
 	SHColor **_bgColorArray;
 	SHColor **_attributes;
-	NSMutableDictionary *_characterSizeDictionary;
+	//NSMutableDictionary *_characterSizeDictionary;
 	CGRect _rectArray[kCOLS][kROWS];
     UIFont *_slowFont;
     UIFont *_fastFont;
@@ -50,6 +50,9 @@
     // The approximate size of one rectangle, which can be off by up to 1 pixel:
     short _vPixels;
     short _hPixels;
+    
+    CGSize _fastFontCharacterSize;
+    CGSize _slowFontCharacterSize;
 }
 
 - (id)initWithFrame:(CGRect)rect {
@@ -78,7 +81,7 @@
         self.hWindow = 1024;
         self.vWindow = 748;
         
-        _characterSizeDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
+      //  _characterSizeDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
         
         // Toss the arrays onto the heap
         _charArray = (unsigned short **)malloc(kCOLS * sizeof(unsigned short *));
@@ -99,6 +102,8 @@
         [self clearColors];
         
         _cgFont = CGFontCreateWithFontName((CFStringRef)@"Monaco");
+        _fastFontCharacterSize = [@"M" sizeWithFont:[self fastFont]];
+        _slowFontCharacterSize = [@"M" sizeWithFont:[self slowFont]];
     });
 }
 
@@ -116,8 +121,8 @@
 #pragma mark - Draw Routines
 
 - (void)drawRect:(CGRect)rect {
- //   [MGBenchmark start:@"draw"];
-    int i, j, startX, startY, endX, endY;
+//    [MGBenchmark start:@"draw"];
+    int i, j, startX, startY, endX, endY, width;
       
     startX = (int) (kCOLS * rect.origin.x / self.hWindow);
     endY = (int) (kCOLS * (rect.origin.y + rect.size.height + _vPixels - 1 ) / self.vWindow);
@@ -140,10 +145,9 @@
     _context = UIGraphicsGetCurrentContext();
 
     CGRect startRect = _rectArray[startX][startY];
-    int width = 0;
 
     _prevColor = _bgColorArray[startX][startY];
-    UIColor *aColor = [UIColor colorWithRed:_prevColor.red/100. green:_prevColor.green/100. blue:_prevColor.blue/100. alpha:1.0];
+    UIColor *aColor = [UIColor colorWithRed:_prevColor.red green:_prevColor.green blue:_prevColor.blue alpha:1.0];
     CGContextSetFillColorWithColor(_context, [aColor CGColor]);
 
     // draw the background rect colors.
@@ -162,7 +166,7 @@
                         CGContextFillRect(_context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)_rectArray[i][j].size.height));
                     }
                     
-                    CGContextSetFillColorWithColor(_context, [[UIColor colorWithRed:color.red/100. green:color.green/100. blue:color.blue/100. alpha:1.0] CGColor]);
+                    CGContextSetFillColorWithColor(_context, [[UIColor colorWithRed:color.red green:color.green blue:color.blue alpha:1.0] CGColor]);
                     CGContextFillRect(_context, _rectArray[i][j]);
                 }
                 else {
@@ -173,7 +177,7 @@
                     
                     // if it's not black change the color
                     if (![self isSHColorBlack:color]) {
-                        UIColor *aColor = [UIColor colorWithRed:color.red/100. green:color.green/100. blue:color.blue/100. alpha:1.0];
+                        UIColor *aColor = [UIColor colorWithRed:color.red green:color.green blue:color.blue alpha:1.0];
                         CGContextSetFillColorWithColor(_context, [aColor CGColor]);
                     }
                     
@@ -200,8 +204,12 @@
     }
     
     _prevColor = _bgColorArray[startX][startY];
-    aColor = [UIColor colorWithRed:_prevColor.red/100. green:_prevColor.green/100. blue:_prevColor.blue/100. alpha:1.0];
+    aColor = [UIColor colorWithRed:_prevColor.red green:_prevColor.green blue:_prevColor.blue alpha:1.0];
     CGContextSetFillColorWithColor(_context, [aColor CGColor]);
+    
+    CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
+    CGContextSetFontSize(_context, FONT_SIZE);
+    CGContextSetFont(_context, _cgFont);
     
     // now draw the ascii chars
     for ( j = startY; j < endY; j++ ) {
@@ -210,27 +218,37 @@
         }
     }
     
- //   [[MGBenchmark session:@"draw"] total];
- //   [MGBenchmark finish:@"draw"];
+//    [[MGBenchmark session:@"draw"] total];
+//    [MGBenchmark finish:@"draw"];
 }
 
 // drawTheString vars declared outside the method. Seem to speed things up just a hair
 CGGlyph glyphString[1];
 - (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(SHColor)letterColor withChar:(unsigned short)character {
     // before the letter array is set we ensure that anything that isn't supposed to show a character is set to size 0
-	if (theString.length == 0) {
+	if (character == 32) {
 		return;
 	}
-
-    CGPoint stringOrigin = [self originForString:theString withInitialOriginRect:rect];
+    
+    // = [self originForString:theString withInitialOriginRect:rect];
     
     // only switch color context when needed. This call is expensive
     if (_prevColor.red != letterColor.red || _prevColor.green != letterColor.green || _prevColor.blue != letterColor.blue) {
-        UIColor *color = [UIColor colorWithRed:letterColor.red/100. green:letterColor.green/100. blue:letterColor.blue/100. alpha:1.0];
+        UIColor *color = [UIColor colorWithRed:letterColor.red green:letterColor.green blue:letterColor.blue alpha:1.0];
         CGContextSetFillColorWithColor(_context, [color CGColor]);
+        _prevColor = letterColor;
     }
     
-    _prevColor = letterColor;
+    CGSize stringSize = _fastFontCharacterSize;
+    
+    if (character > 127 && character != 183) {
+        stringSize = _slowFontCharacterSize;
+    }
+    
+    // center the characters
+    CGPoint stringOrigin;
+    stringOrigin.x = rect.origin.x + (rect.size.width - stringSize.width) * 0.5;
+    stringOrigin.y = rect.origin.y + (rect.size.height - stringSize.height) * 0.5;
     
     // we have a unicode character. Draw it with drawAtPoint
     // if it's one of those fancy centered dots (183) toss it for a period. It's used a lot and slows things down
@@ -238,30 +256,28 @@ CGGlyph glyphString[1];
         character = 46;
         
         // fudge the position with some magic numbers
-        stringOrigin.x -= 2;
-        stringOrigin.y -= 3;
+        stringOrigin.y -= 4;
     }
     
     // we're not in ascii country... draw the unicode char the only way we know how
-    if (character >= 128) {
+    if (character > 127) {
         // super slow call.. only used occassionally though
         [theString drawAtPoint:stringOrigin withFont:[self slowFont]];
+        
+        // seems like we need to change the context back or we render incorrect glyps. We do it here assuming we call this less than the show glyphs below
+        CGContextSetFont(_context, _cgFont);
     }
     // plain jane characters. Draw them nice and fast.
     else {
         glyphString[0] = character-29;
-        
-        CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
-        CGContextSetFont(_context, _cgFont);
-        CGContextSetFontSize(_context, FONT_SIZE);
         CGContextShowGlyphsAtPoint(_context, stringOrigin.x, stringOrigin.y + FONT_SIZE, glyphString, 1);
     }
 }
 
 #pragma mark - Private Helpers
-
+/*
 - (CGPoint)originForString:(NSString *)string withInitialOriginRect:(CGRect)rect {
-    CGSize stringSize;
+    CGSize stringSize = _characterSize;
     // Cache sizes.
     CGPoint stringOrigin;
     NSValue *size = [_characterSizeDictionary objectForKey:string];
@@ -272,14 +288,13 @@ CGGlyph glyphString[1];
         stringSize = [string sizeWithFont:[self fontForString:string]];	// quite expensive
         //	NSLog(@"stringSize for '%@' has width %f and height %f", theString, stringSize.width, stringSize.height);
         [_characterSizeDictionary setObject:[NSValue valueWithCGSize:stringSize] forKey:string];
-    }
+    }*/
     
-    // center the characters
-    stringOrigin.x = rect.origin.x + (rect.size.width - stringSize.width) * 0.5;
-    stringOrigin.y = rect.origin.y + (rect.size.height - stringSize.height) * 0.5;
     
-    return stringOrigin;
-}
+    
+    
+ //   return stringOrigin;
+//}
 
 - (void)setHorizWindow:(short)hPx vertWindow:(short)vPx fontSize:(short)size {
     _hPixels = hPx / kCOLS;
@@ -296,7 +311,7 @@ CGGlyph glyphString[1];
         }
     }
 
-    [_characterSizeDictionary removeAllObjects];
+  //  [_characterSizeDictionary removeAllObjects];
 }
 
 - (BOOL)isSHColorBlack:(SHColor)color {
@@ -345,7 +360,7 @@ CGGlyph glyphString[1];
 
 - (UIFont *)fastFont {
 	if (!_fastFont) {
-		_fastFont = [UIFont fontWithName:@"Monaco" size:FONT_SIZE + 1];
+		_fastFont = [UIFont fontWithName:@"Monaco" size:FONT_SIZE];
     }
 	return _fastFont;
 }

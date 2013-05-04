@@ -99,14 +99,14 @@ void plotChar(uchar inputChar,
     
     @autoreleasepool {
         SHColor backColor;
-        backColor.red = backRed;
-        backColor.green = backGreen;
-        backColor.blue = backBlue;
+        backColor.red = backRed/100.;
+        backColor.green = backGreen/100.;
+        backColor.blue = backBlue/100.;
         
         SHColor foreColor;
-        foreColor.red = foreRed;
-        foreColor.green = foreGreen;
-        foreColor.blue = foreBlue;
+        foreColor.red = foreRed/100.;
+        foreColor.green = foreGreen/100.;
+        foreColor.blue = foreBlue/100.;
         
         if (inputChar == ' ') {
             [theMainDisplay setString:@"" withBackgroundColor:backColor letterColor:foreColor atLocationX:xLoc locationY:yLoc withChar:inputChar];

@@ -29,9 +29,9 @@
 #define FONT_SIZE	13
 
 typedef struct {
-    short red;
-    short green;
-    short blue;
+    float red;
+    float green;
+    float blue;
 } SHColor;
 
 @interface Viewport : ACMagnifyingView
