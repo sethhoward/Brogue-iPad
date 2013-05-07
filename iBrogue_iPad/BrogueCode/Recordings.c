@@ -301,8 +301,6 @@ void playbackPanic() {
         
         
         // Seth Added:
-//        showAuxillaryScreen(true);
-//        blockMagGlass(true);
         setBrogueGameEvent(BrogueGameEventPlayBackPanic);
         
         blackOutScreen();
@@ -946,6 +944,9 @@ void executePlaybackInput(rogueEvent *recordingInput) {
 			displayMessageArchive();
 			rogue.playbackMode = true;
 		}
+        
+        // SETH: 
+        pausePlayback();
 	} else if (recordingInput->eventType == RIGHT_MOUSE_UP) {
 		rogue.playbackMode = false;
 		displayInventory(ALL_ITEMS, 0, 0, true, false);

@@ -2858,12 +2858,6 @@ extern "C" {
         BrogueGameEventPlayerHasDiedMessageAcknowledged,
     } BrogueGameEvent;
     
-    /*  void setWaitingForInput(boolean waiting);
-     void showTitle();
-     void showAuxillaryScreen(boolean showDirectionalControls);
-     void blockMagGlass(boolean blockGlass);
-     */
-  //  void showInventoryButton(boolean show);
     void setBrogueGameEvent(BrogueGameEvent brogueGameState);
 
 #if defined __cplusplus

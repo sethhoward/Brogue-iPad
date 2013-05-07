@@ -275,26 +275,6 @@ CGGlyph glyphString[1];
 }
 
 #pragma mark - Private Helpers
-/*
-- (CGPoint)originForString:(NSString *)string withInitialOriginRect:(CGRect)rect {
-    CGSize stringSize = _characterSize;
-    // Cache sizes.
-    CGPoint stringOrigin;
-    NSValue *size = [_characterSizeDictionary objectForKey:string];
-    
-    if (size) {
-        stringSize = [size CGSizeValue];
-    } else {
-        stringSize = [string sizeWithFont:[self fontForString:string]];	// quite expensive
-        //	NSLog(@"stringSize for '%@' has width %f and height %f", theString, stringSize.width, stringSize.height);
-        [_characterSizeDictionary setObject:[NSValue valueWithCGSize:stringSize] forKey:string];
-    }*/
-    
-    
-    
-    
- //   return stringOrigin;
-//}
 
 - (void)setHorizWindow:(short)hPx vertWindow:(short)vPx fontSize:(short)size {
     _hPixels = hPx / kCOLS;

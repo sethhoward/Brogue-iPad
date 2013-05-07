@@ -34,7 +34,8 @@
 #define MENU_FLAME_SPREAD_SPEED			20
 #define MENU_FLAME_COLOR_DRIFT_SPEED	500
 #define MENU_FLAME_FADE_SPEED			20
-#define MENU_FLAME_UPDATE_DELAY			50
+// Seth:
+#define MENU_FLAME_UPDATE_DELAY			40
 #define MENU_FLAME_ROW_PADDING			2
 #define MENU_TITLE_OFFSET_X				(-4)
 #define MENU_TITLE_OFFSET_Y				(-1)
@@ -318,8 +319,9 @@ void titleMenu() {
 	buttons[b].hotkey[1] = 'H';
 	b++;
 	
+    // Seth:
 //	initializeButton(&(buttons[b]));
-//	sprintf(buttons[b].text, "        %sS%settings        ", goldColorEscape, whiteColorEscape);
+//	sprintf(buttons[b].text, "        %sQ%suit         ", goldColorEscape, whiteColorEscape);
 //	buttons[b].hotkey[0] = 'q';
 //	buttons[b].hotkey[1] = 'Q';
 //	b++;
@@ -661,8 +663,6 @@ void mainBrogueJunction() {
 				// Run the main menu to get a decision out of the player.
                
                 // Seth: Added
-//                showTitle();
-//                blockMagGlass(true);
                 setBrogueGameEvent(BrogueGameEventShowTitle);
                 
 				titleMenu();
@@ -724,8 +724,6 @@ void mainBrogueJunction() {
 				
                 // Seth: Added
                 setBrogueGameEvent(BrogueGameEventStartNewGame);
-                //                showAuxillaryScreen(true);
-                //                blockMagGlass(false);
                 
 				rogue.nextGame = NG_NOTHING;
 				initializeRogue(rogue.nextGameSeed);
@@ -753,8 +751,6 @@ void mainBrogueJunction() {
                     
                     // Seth: Added
                     setBrogueGameEvent(BrogueGameEventOpenGame);
-                    //                    showAuxillaryScreen(true);
-                    //                    blockMagGlass(false);
                     
                     
 					mainInputLoop();
@@ -767,8 +763,6 @@ void mainBrogueJunction() {
                 
                 // Seth: Added
                 setBrogueGameEvent(BrogueGameEventOpenGameFinished);
-                //                showTitle();
-                //                blockMagGlass(true);
                 
 				break;
 			case NG_VIEW_RECORDING:
@@ -785,7 +779,6 @@ void mainBrogueJunction() {
 				
 				if (openFile(path)) {
                     // Seth: Added
-                    // showAuxillaryScreen(false);
                     setBrogueGameEvent(BrogueGameEventPlayRecording);
                     
 					randomNumbersGenerated = 0;
@@ -818,7 +811,6 @@ void mainBrogueJunction() {
                 
                 // Seth: Added
                 setBrogueGameEvent(BrogueGameEventShowHighScores);
-                //   showAuxillaryScreen(false);
                 
 				printHighScores(false);
 				break;

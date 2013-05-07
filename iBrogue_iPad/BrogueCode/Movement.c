@@ -1819,7 +1819,8 @@ void travelRoute(short path[1000][2], short steps) {
 				if (!playerMoves(dir)) {
 					rogue.disturbed = true;
 				}
-				if (pauseBrogue(25)) {
+                // Seth:
+				if (pauseBrogue(12)) {
 					rogue.disturbed = true;
 				}
 				break;
@@ -1854,7 +1855,8 @@ void travelMap(short **distanceMap) {
 				if (!playerMoves(dir)) {
 					rogue.disturbed = true;
 				}
-				if (pauseBrogue(500)) {
+                // Seth: 
+				if (pauseBrogue(250)) {
 					rogue.disturbed = true;
 				}
 				currentX = newX;
