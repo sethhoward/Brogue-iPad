@@ -36,8 +36,8 @@ typedef struct {
 
 @interface Viewport : ACMagnifyingView
 
-- (void)setString:(NSString *)c withBackgroundColor:(SHColor)bgColor letterColor:(SHColor)letterColor atLocationX:(short)x locationY:(short)y withChar:(unsigned short)character;
-- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withLetterColor:(SHColor)letterColor withChar:(unsigned short)character;
+- (void)setString:(NSString *)c withBackgroundColor:(CGColorRef)bgColor letterColor:(CGColorRef)letterColor atLocationX:(short)x locationY:(short)y withChar:(unsigned short)character;
+- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withLetterColor:(CGColorRef)letterColor withChar:(unsigned short)character;
 - (void)setHorizWindow:(short)hPx vertWindow:(short)vPx fontSize:(short)size;
 
 @property (nonatomic, assign) short hWindow;

@@ -31,6 +31,7 @@
 #include "IncludeGlobals.h"
 #include "Rogue.h"
 #import "GameCenterManager.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
@@ -89,6 +90,7 @@ static boolean _isInBackground = false;
 
 //  plotChar: plots inputChar at (xLoc, yLoc) with specified background and foreground colors.
 //  Color components are given in ints from 0 to 100.
+static CGColorSpaceRef _colorSpace;
 void plotChar(uchar inputChar,
 			  short xLoc, short yLoc,
 			  short foreRed, short foreGreen, short foreBlue,
@@ -97,8 +99,12 @@ void plotChar(uchar inputChar,
         return;
     }
     
+    if (!_colorSpace) {
+        _colorSpace = CGColorSpaceCreateDeviceRGB();
+    }
+    
     @autoreleasepool {
-        SHColor backColor;
+   /*     SHColor backColor;
         backColor.red = backRed/100.;
         backColor.green = backGreen/100.;
         backColor.blue = backBlue/100.;
@@ -106,14 +112,20 @@ void plotChar(uchar inputChar,
         SHColor foreColor;
         foreColor.red = foreRed/100.;
         foreColor.green = foreGreen/100.;
-        foreColor.blue = foreBlue/100.;
+        foreColor.blue = foreBlue/100.;*/
+        CGFloat backComponents[] = {(CGFloat)(backRed/100.), (CGFloat)(backGreen/100.), (CGFloat)(backBlue/100.), 1.};
+        CGColorRef backColor = CGColorCreate(_colorSpace, backComponents);
         
-        if (inputChar == ' ') {
+        
+        CGFloat foreComponents[] = {(CGFloat)(foreRed/100.), (CGFloat)(foreGreen/100.), (CGFloat)(foreBlue/100.), 1.};
+        CGColorRef foreColor = CGColorCreate(_colorSpace, foreComponents);
+        
+    /*    if (inputChar == ' ') {
             [theMainDisplay setString:@"" withBackgroundColor:backColor letterColor:foreColor atLocationX:xLoc locationY:yLoc withChar:inputChar];
         }
-        else {
+        else {*/
             [theMainDisplay setString:[NSString stringWithCharacters:&inputChar length:1] withBackgroundColor:backColor letterColor:foreColor atLocationX:xLoc locationY:yLoc withChar:inputChar];
-       }
+    //   }
     }
 }
 

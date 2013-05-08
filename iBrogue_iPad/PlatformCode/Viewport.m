@@ -37,15 +37,15 @@
     @private
     NSString *_letterArray[kCOLS][kROWS];
     unsigned short **_charArray;
-	SHColor **_bgColorArray;
-	SHColor **_letterColorArray;
+	CGColorRef **_bgColorArray;
+	CGColorRef **_letterColorArray;
 	//NSMutableDictionary *_characterSizeDictionary;
 	CGRect _rectArray[kCOLS][kROWS];
     UIFont *_slowFont;
     UIFont *_fastFont;
     CGContextRef _context;
     CGFontRef _cgFont;
-    SHColor _prevColor;
+    CGColorRef _prevColor;
     
     // The approximate size of one rectangle, which can be off by up to 1 pixel:
     short _vPixels;
@@ -85,13 +85,13 @@
         
         // Toss the arrays onto the heap
         _charArray = (unsigned short **)malloc(kCOLS * sizeof(unsigned short *));
-        _bgColorArray = (SHColor **)malloc(kCOLS * sizeof(SHColor *));
-        _letterColorArray = (SHColor **)malloc(kCOLS * sizeof(SHColor *));
+        _bgColorArray = (CGColorRef **)malloc(kCOLS * sizeof(CGColorRef *));
+        _letterColorArray = (CGColorRef **)malloc(kCOLS * sizeof(CGColorRef *));
         
         for (int c = 0; c < kCOLS; c++) {
             _charArray[c] = (unsigned short *)malloc(kROWS * sizeof(unsigned short));
-            _bgColorArray[c] = (SHColor *)malloc(kROWS * sizeof(SHColor));
-            _letterColorArray[c] = (SHColor *)malloc(kROWS * sizeof(SHColor));
+            _bgColorArray[c] = (CGColorRef *)malloc(kROWS * sizeof(CGColorRef));
+            _letterColorArray[c] = (CGColorRef *)malloc(kROWS * sizeof(CGColorRef));
         }
         
         // initialize varaiables based on our window size
@@ -106,8 +106,11 @@
     });
 }
 
-- (void)setString:(NSString *)c withBackgroundColor:(SHColor)bgColor letterColor:(SHColor)letterColor atLocationX:(short)x locationY:(short)y withChar:(unsigned short)character {
+- (void)setString:(NSString *)c withBackgroundColor:(CGColorRef)bgColor letterColor:(CGColorRef)letterColor atLocationX:(short)x locationY:(short)y withChar:(unsigned short)character {
     dispatch_async(dispatch_get_main_queue(), ^{
+        CGColorRelease(_bgColorArray[x][y]);
+        CGColorRelease(_letterColorArray[x][y]);
+        
         _letterArray[x][y] = c;
         _bgColorArray[x][y] = bgColor;
         _letterColorArray[x][y] = letterColor;
@@ -119,15 +122,15 @@
 
 #pragma mark - Draw Routines
 
-- (void)setContextFillColorWithSHColor:(SHColor)color {
-    CGFloat components[] = {color.red, color.green, color.blue, 1.};
-    CGColorRef aColor = CGColorCreate(_colorSpace, components);
-    CGContextSetFillColorWithColor(_context, aColor);
-    CGColorRelease(aColor);
+- (void)setContextFillColorWithSHColor:(CGColorRef)color {
+   // CGFloat components[] = {color.red, color.green, color.blue, 1.};
+   // CGColorRef aColor = CGColorCreate(_colorSpace, components);
+    CGContextSetFillColorWithColor(_context, color);
+   // CGColorRelease(aColor);
 }
 
 - (void)drawRect:(CGRect)rect {
-//    [MGBenchmark start:@"draw"];
+    [MGBenchmark start:@"draw"];
     int i, j, startX, startY, endX, endY, width;
       
     startX = (int) (kCOLS * rect.origin.x / self.hWindow);
@@ -159,10 +162,10 @@
     // Also we combine rects that are the same color (striping across the row) and draw that as one rect instead of individual rects
     for ( j = startY; j < endY; j++ ) {
         for ( i = startX; i < endX; i++ ) {
-            SHColor color = _bgColorArray[i][j];
+            CGColorRef color = _bgColorArray[i][j];
             
             // if we have a mismatched color we need to draw. Otherwise we keep striping acrossed with the same color context and delay the draw
-            if ((_prevColor.red != color.red || _prevColor.green != color.green || _prevColor.blue != color.blue || i == endX - 1)) {
+            if (!CGColorEqualToColor(color, _prevColor) || i == endX - 1) {
                 if (i == endX - 1) {
                     width += _rectArray[i][j].size.width;
                     // It's the last rect... and the previous rect isn't black.. draw it and then draw the last rect
@@ -199,6 +202,9 @@
             }
             
             _prevColor = color;
+            
+          /*  [self setContextFillColorWithSHColor:color];
+            CGContextFillRect(_context, CGRectMake((int)_rectArray[i][j].origin.x, (int)_rectArray[i][j].origin.y, _rectArray[i][j].size.width, (int)_rectArray[i][j].size.height));*/
         }
  
         // end of the row, reset values
@@ -220,20 +226,20 @@
         }
     }
     
-//   [[MGBenchmark session:@"draw"] total];
-//   [MGBenchmark finish:@"draw"];
+   [[MGBenchmark session:@"draw"] total];
+   [MGBenchmark finish:@"draw"];
 }
 
 // drawTheString vars declared outside the method. Seem to speed things up just a hair
 CGGlyph glyphString[1];
-- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withLetterColor:(SHColor)letterColor withChar:(unsigned short)character {
+- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withLetterColor:(CGColorRef)letterColor withChar:(unsigned short)character {
     // before the letter array is set we ensure that anything that isn't supposed to show a character is set to size 0
 	if (character == 32) {
 		return;
 	}
     
     // only switch color context when needed. This call is expensive
-    if (_prevColor.red != letterColor.red || _prevColor.green != letterColor.green || _prevColor.blue != letterColor.blue) {
+    if (!CGColorEqualToColor(letterColor, _prevColor)) {
         [self setContextFillColorWithSHColor:letterColor];
         _prevColor = letterColor;
     }
@@ -260,6 +266,7 @@ CGGlyph glyphString[1];
     
     // we're not in ascii country... draw the unicode char the only way we know how
     if (character > 127) {
+       // theString = [NSString stringWithCharacters:&character length:1];
         // super slow call.. only used occassionally though
         [theString drawAtPoint:stringOrigin withFont:[self slowFont]];
         
@@ -291,8 +298,8 @@ CGGlyph glyphString[1];
     }
 }
 
-- (BOOL)isSHColorBlack:(SHColor)color {
-    if (color.red == 0 && color.blue == 0 && color.green == 0) {
+- (BOOL)isSHColorBlack:(CGColorRef)color {
+    if (CGColorGetAlpha(color) == 0.) {
         return YES;
     }
     
@@ -309,8 +316,8 @@ CGGlyph glyphString[1];
             black.blue = 0;
             black.green = 0;
             
-            _bgColorArray[i][j] = black;
-            _letterColorArray[i][j] = black;
+//            _bgColorArray[i][j] = black;
+//            _letterColorArray[i][j] = black;
         }
     }
 }
