@@ -38,7 +38,7 @@
     NSString *_letterArray[kCOLS][kROWS];
     unsigned short **_charArray;
 	SHColor **_bgColorArray;
-	SHColor **_attributes;
+	SHColor **_letterColorArray;
 	//NSMutableDictionary *_characterSizeDictionary;
 	CGRect _rectArray[kCOLS][kROWS];
     UIFont *_slowFont;
@@ -53,6 +53,8 @@
     
     CGSize _fastFontCharacterSize;
     CGSize _slowFontCharacterSize;
+    
+    CGColorSpaceRef _colorSpace;
 }
 
 - (id)initWithFrame:(CGRect)rect {
@@ -81,19 +83,15 @@
         self.hWindow = 1024;
         self.vWindow = 748;
         
-      //  _characterSizeDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
-        
         // Toss the arrays onto the heap
         _charArray = (unsigned short **)malloc(kCOLS * sizeof(unsigned short *));
         _bgColorArray = (SHColor **)malloc(kCOLS * sizeof(SHColor *));
-        _attributes = (SHColor **)malloc(kCOLS * sizeof(SHColor *));
-      //  _rectArray = (CGRect **)malloc(kCOLS * sizeof(CGRect *));
+        _letterColorArray = (SHColor **)malloc(kCOLS * sizeof(SHColor *));
         
         for (int c = 0; c < kCOLS; c++) {
             _charArray[c] = (unsigned short *)malloc(kROWS * sizeof(unsigned short));
             _bgColorArray[c] = (SHColor *)malloc(kROWS * sizeof(SHColor));
-            _attributes[c] = (SHColor *)malloc(kROWS * sizeof(SHColor));
-     //       _rectArray[c] = (CGRect *)malloc(kROWS * sizeof(CGRect));
+            _letterColorArray[c] = (SHColor *)malloc(kROWS * sizeof(SHColor));
         }
         
         // initialize varaiables based on our window size
@@ -104,6 +102,7 @@
         _cgFont = CGFontCreateWithFontName((CFStringRef)@"Monaco");
         _fastFontCharacterSize = [@"M" sizeWithFont:[self fastFont]];
         _slowFontCharacterSize = [@"M" sizeWithFont:[self slowFont]];
+        _colorSpace = CGColorSpaceCreateDeviceRGB();
     });
 }
 
@@ -111,7 +110,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         _letterArray[x][y] = c;
         _bgColorArray[x][y] = bgColor;
-        _attributes[x][y] = letterColor;
+        _letterColorArray[x][y] = letterColor;
         _charArray[x][y] = character;
         
         [self setNeedsDisplayInRect:_rectArray[x][y]];
@@ -119,6 +118,13 @@
 }
 
 #pragma mark - Draw Routines
+
+- (void)setContextFillColorWithSHColor:(SHColor)color {
+    CGFloat components[] = {color.red, color.green, color.blue, 1.};
+    CGColorRef aColor = CGColorCreate(_colorSpace, components);
+    CGContextSetFillColorWithColor(_context, aColor);
+    CGColorRelease(aColor);
+}
 
 - (void)drawRect:(CGRect)rect {
 //    [MGBenchmark start:@"draw"];
@@ -143,12 +149,10 @@
     }
 
     _context = UIGraphicsGetCurrentContext();
-
     CGRect startRect = _rectArray[startX][startY];
 
     _prevColor = _bgColorArray[startX][startY];
-    UIColor *aColor = [UIColor colorWithRed:_prevColor.red green:_prevColor.green blue:_prevColor.blue alpha:1.0];
-    CGContextSetFillColorWithColor(_context, [aColor CGColor]);
+    [self setContextFillColorWithSHColor:_prevColor];
 
     // draw the background rect colors.
     // In order to speed things up we do not draw black rects
@@ -166,7 +170,7 @@
                         CGContextFillRect(_context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)_rectArray[i][j].size.height));
                     }
                     
-                    CGContextSetFillColorWithColor(_context, [[UIColor colorWithRed:color.red green:color.green blue:color.blue alpha:1.0] CGColor]);
+                    [self setContextFillColorWithSHColor:color];
                     CGContextFillRect(_context, _rectArray[i][j]);
                 }
                 else {
@@ -177,8 +181,7 @@
                     
                     // if it's not black change the color
                     if (![self isSHColorBlack:color]) {
-                        UIColor *aColor = [UIColor colorWithRed:color.red green:color.green blue:color.blue alpha:1.0];
-                        CGContextSetFillColorWithColor(_context, [aColor CGColor]);
+                        [self setContextFillColorWithSHColor:color];
                     }
                     
                     startRect = _rectArray[i][j];
@@ -204,8 +207,7 @@
     }
     
     _prevColor = _bgColorArray[startX][startY];
-    aColor = [UIColor colorWithRed:_prevColor.red green:_prevColor.green blue:_prevColor.blue alpha:1.0];
-    CGContextSetFillColorWithColor(_context, [aColor CGColor]);
+    [self setContextFillColorWithSHColor:_prevColor];
     
     CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
     CGContextSetFontSize(_context, FONT_SIZE);
@@ -214,28 +216,25 @@
     // now draw the ascii chars
     for ( j = startY; j < endY; j++ ) {
         for ( i = startX; i < endX; i++ ) {
-            [self drawTheString:_letterArray[i][j] centeredIn:_rectArray[i][j] withAttributes:_attributes[i][j] withChar:_charArray[i][j]];
+            [self drawTheString:_letterArray[i][j] centeredIn:_rectArray[i][j] withLetterColor:_letterColorArray[i][j] withChar:_charArray[i][j]];
         }
     }
     
-//    [[MGBenchmark session:@"draw"] total];
-//    [MGBenchmark finish:@"draw"];
+//   [[MGBenchmark session:@"draw"] total];
+//   [MGBenchmark finish:@"draw"];
 }
 
 // drawTheString vars declared outside the method. Seem to speed things up just a hair
 CGGlyph glyphString[1];
-- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withAttributes:(SHColor)letterColor withChar:(unsigned short)character {
+- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withLetterColor:(SHColor)letterColor withChar:(unsigned short)character {
     // before the letter array is set we ensure that anything that isn't supposed to show a character is set to size 0
 	if (character == 32) {
 		return;
 	}
     
-    // = [self originForString:theString withInitialOriginRect:rect];
-    
     // only switch color context when needed. This call is expensive
     if (_prevColor.red != letterColor.red || _prevColor.green != letterColor.green || _prevColor.blue != letterColor.blue) {
-        UIColor *color = [UIColor colorWithRed:letterColor.red green:letterColor.green blue:letterColor.blue alpha:1.0];
-        CGContextSetFillColorWithColor(_context, [color CGColor]);
+        [self setContextFillColorWithSHColor:letterColor];
         _prevColor = letterColor;
     }
     
@@ -290,8 +289,6 @@ CGGlyph glyphString[1];
                                          ((int) (vPx * (j+1) / kROWS)) - ((int) (vPx * (j) / kROWS)));//vPixels + 1);
         }
     }
-
-  //  [_characterSizeDictionary removeAllObjects];
 }
 
 - (BOOL)isSHColorBlack:(SHColor)color {
@@ -313,7 +310,7 @@ CGGlyph glyphString[1];
             black.green = 0;
             
             _bgColorArray[i][j] = black;
-            _attributes[i][j] = black;
+            _letterColorArray[i][j] = black;
         }
     }
 }

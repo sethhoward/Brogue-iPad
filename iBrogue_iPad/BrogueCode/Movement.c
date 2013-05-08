@@ -1820,7 +1820,7 @@ void travelRoute(short path[1000][2], short steps) {
 					rogue.disturbed = true;
 				}
                 // Seth:
-				if (pauseBrogue(12)) {
+				if (pauseBrogue(10)) {
 					rogue.disturbed = true;
 				}
 				break;

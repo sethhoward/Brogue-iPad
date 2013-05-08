@@ -2614,6 +2614,7 @@ void digDungeon() {
     freeGrid(lakeMap);
 	
 	// Now run the autoGenerators.
+    //Seth:
     dispatch_sync(dispatch_get_main_queue(), ^{
         runAutogenerators();
     });
