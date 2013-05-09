@@ -76,6 +76,11 @@ static boolean _isInBackground = false;
 
 - (void)applicationDidBecomeActive {
     _isInBackground = false;
+    double delayInSeconds = .1;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        clearCursor();
+    });
 }
 
 - (void)applicationWillResign {
@@ -113,12 +118,17 @@ void plotChar(uchar inputChar,
         foreColor.red = foreRed/100.;
         foreColor.green = foreGreen/100.;
         foreColor.blue = foreBlue/100.;*/
-        CGFloat backComponents[] = {(CGFloat)(backRed/100.), (CGFloat)(backGreen/100.), (CGFloat)(backBlue/100.), 1.};
-        CGColorRef backColor = CGColorCreate(_colorSpace, backComponents);
-        
-        
-        CGFloat foreComponents[] = {(CGFloat)(foreRed/100.), (CGFloat)(foreGreen/100.), (CGFloat)(foreBlue/100.), 1.};
-        CGColorRef foreColor = CGColorCreate(_colorSpace, foreComponents);
+        CGColorRef backColor = nil;
+        if (backRed != 0 || backGreen != 0 || backBlue != 0) {
+            CGFloat backComponents[] = {(CGFloat)(backRed/100.), (CGFloat)(backGreen/100.), (CGFloat)(backBlue/100.), 1.};
+            backColor = CGColorCreate(_colorSpace, backComponents);
+        }
+
+        CGColorRef foreColor = nil;
+        if ((foreRed != 0 || foreGreen != 0 || foreBlue != 0) && inputChar != ' ') {
+            CGFloat foreComponents[] = {(CGFloat)(foreRed/100.), (CGFloat)(foreGreen/100.), (CGFloat)(foreBlue/100.), 1.};
+            foreColor = CGColorCreate(_colorSpace, foreComponents);
+        }
         
     /*    if (inputChar == ' ') {
             [theMainDisplay setString:@"" withBackgroundColor:backColor letterColor:foreColor atLocationX:xLoc locationY:yLoc withChar:inputChar];
@@ -134,6 +144,11 @@ __unused void pausingTimerStartsNow() {
 }
 
 #pragma mark - input
+
+void clearCursor() {
+    rogue.cursorLoc[0] = -1;
+    rogue.cursorLoc[1] = -1;
+}
 
 // Returns true if the player interrupted the wait with a keystroke; otherwise false.
 boolean pauseForMilliseconds(short milliseconds) {
@@ -168,6 +183,7 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
             returnEvent->param2 = 0;
             returnEvent->controlKey = 0;//([theEvent modifierFlags] & NSControlKeyMask ? 1 : 0);
             returnEvent->shiftKey = 0;//([theEvent modifierFlags] & NSShiftKeyMask ? 1 : 0);
+            clearCursor();
             break;
         }
         if ([viewController cachedTouchesCount] > 0) {

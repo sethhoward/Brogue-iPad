@@ -130,7 +130,7 @@
 }
 
 - (void)drawRect:(CGRect)rect {
-    [MGBenchmark start:@"draw"];
+  //  [MGBenchmark start:@"draw"];
     int i, j, startX, startY, endX, endY, width;
       
     startX = (int) (kCOLS * rect.origin.x / self.hWindow);
@@ -226,8 +226,8 @@
         }
     }
     
-   [[MGBenchmark session:@"draw"] total];
-   [MGBenchmark finish:@"draw"];
+ //  [[MGBenchmark session:@"draw"] total];
+ //  [MGBenchmark finish:@"draw"];
 }
 
 // drawTheString vars declared outside the method. Seem to speed things up just a hair
@@ -299,9 +299,13 @@ CGGlyph glyphString[1];
 }
 
 - (BOOL)isSHColorBlack:(CGColorRef)color {
-    if (CGColorGetAlpha(color) == 0.) {
+    if (!color) {
         return YES;
     }
+    
+ /*   if (CGColorGetAlpha(color) == 0.) {
+        return YES;
+    }*/
     
     return NO;
 }
@@ -316,8 +320,8 @@ CGGlyph glyphString[1];
             black.blue = 0;
             black.green = 0;
             
-//            _bgColorArray[i][j] = black;
-//            _letterColorArray[i][j] = black;
+            _bgColorArray[i][j] = nil;
+            _letterColorArray[i][j] = nil;
         }
     }
 }

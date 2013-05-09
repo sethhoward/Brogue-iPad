@@ -1826,7 +1826,7 @@ void travelRoute(short path[1000][2], short steps) {
 				break;
 			}
 		}
-	}
+	}    
 	rogue.disturbed = true;
 	rogue.automationActive = false;
 	updateFlavorText();
@@ -2113,6 +2113,8 @@ boolean explore(short frameDelay) {
 	creature *monst;
 	
 	clearCursorPath();
+    // Seth:
+    rogue.cursorLoc[0] = rogue.cursorLoc[1] = -1;
 	
 	madeProgress	= false;
 	headingToStairs	= false;

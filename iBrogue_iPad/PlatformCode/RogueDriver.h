@@ -33,5 +33,6 @@ extern NSMutableDictionary *cachedColors;
 @interface RogueDriver : NSObject
 
 + (unsigned long)rogueSeed;
+void clearCursor();
 
 @end
