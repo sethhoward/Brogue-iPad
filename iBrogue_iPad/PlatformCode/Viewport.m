@@ -28,7 +28,6 @@
 #import "MGBenchmark.h"
 #import "MGBenchmarkSession.h"
 
-
 @interface Viewport ()
 
 @end
@@ -39,7 +38,6 @@
     unsigned short **_charArray;
 	CGColorRef **_bgColorArray;
 	CGColorRef **_letterColorArray;
-	//NSMutableDictionary *_characterSizeDictionary;
 	CGRect _rectArray[kCOLS][kROWS];
     UIFont *_slowFont;
     UIFont *_fastFont;
@@ -122,13 +120,6 @@
 
 #pragma mark - Draw Routines
 
-- (void)setContextFillColorWithSHColor:(CGColorRef)color {
-   // CGFloat components[] = {color.red, color.green, color.blue, 1.};
-   // CGColorRef aColor = CGColorCreate(_colorSpace, components);
-    CGContextSetFillColorWithColor(_context, color);
-   // CGColorRelease(aColor);
-}
-
 - (void)drawRect:(CGRect)rect {
   //  [MGBenchmark start:@"draw"];
     int i, j, startX, startY, endX, endY, width;
@@ -155,7 +146,7 @@
     CGRect startRect = _rectArray[startX][startY];
 
     _prevColor = _bgColorArray[startX][startY];
-    [self setContextFillColorWithSHColor:_prevColor];
+    CGContextSetFillColorWithColor(_context, _prevColor);
 
     // draw the background rect colors.
     // In order to speed things up we do not draw black rects
@@ -173,7 +164,7 @@
                         CGContextFillRect(_context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)_rectArray[i][j].size.height));
                     }
                     
-                    [self setContextFillColorWithSHColor:color];
+                    CGContextSetFillColorWithColor(_context, color);
                     CGContextFillRect(_context, _rectArray[i][j]);
                 }
                 else {
@@ -184,7 +175,7 @@
                     
                     // if it's not black change the color
                     if (![self isSHColorBlack:color]) {
-                        [self setContextFillColorWithSHColor:color];
+                        CGContextSetFillColorWithColor(_context, color);
                     }
                     
                     startRect = _rectArray[i][j];
@@ -202,9 +193,6 @@
             }
             
             _prevColor = color;
-            
-          /*  [self setContextFillColorWithSHColor:color];
-            CGContextFillRect(_context, CGRectMake((int)_rectArray[i][j].origin.x, (int)_rectArray[i][j].origin.y, _rectArray[i][j].size.width, (int)_rectArray[i][j].size.height));*/
         }
  
         // end of the row, reset values
@@ -213,8 +201,7 @@
     }
     
     _prevColor = _bgColorArray[startX][startY];
-    [self setContextFillColorWithSHColor:_prevColor];
-    
+    CGContextSetFillColorWithColor(_context, _prevColor);
     CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
     CGContextSetFontSize(_context, FONT_SIZE);
     CGContextSetFont(_context, _cgFont);
@@ -226,8 +213,8 @@
         }
     }
     
- //  [[MGBenchmark session:@"draw"] total];
- //  [MGBenchmark finish:@"draw"];
+  // [[MGBenchmark session:@"draw"] total];
+  // [MGBenchmark finish:@"draw"];
 }
 
 // drawTheString vars declared outside the method. Seem to speed things up just a hair
@@ -240,7 +227,7 @@ CGGlyph glyphString[1];
     
     // only switch color context when needed. This call is expensive
     if (!CGColorEqualToColor(letterColor, _prevColor)) {
-        [self setContextFillColorWithSHColor:letterColor];
+        CGContextSetFillColorWithColor(_context, letterColor);
         _prevColor = letterColor;
     }
     
@@ -266,7 +253,6 @@ CGGlyph glyphString[1];
     
     // we're not in ascii country... draw the unicode char the only way we know how
     if (character > 127) {
-       // theString = [NSString stringWithCharacters:&character length:1];
         // super slow call.. only used occassionally though
         [theString drawAtPoint:stringOrigin withFont:[self slowFont]];
         
@@ -302,10 +288,6 @@ CGGlyph glyphString[1];
     if (!color) {
         return YES;
     }
-    
- /*   if (CGColorGetAlpha(color) == 0.) {
-        return YES;
-    }*/
     
     return NO;
 }

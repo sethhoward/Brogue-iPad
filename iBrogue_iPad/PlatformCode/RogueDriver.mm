@@ -39,16 +39,13 @@
 // Objective-c Bridge
 
 short mouseX, mouseY;
-static boolean _isInBackground = false;
+//static boolean _isInBackground = false;
 
 @interface RogueDriver ()
 
 @end
 
-@implementation RogueDriver {
-    @private
-    BOOL _areColorsDancing;
-}
+@implementation RogueDriver 
 
 + (id)sharedInstance {
     static RogueDriver *instance;
@@ -65,26 +62,16 @@ static boolean _isInBackground = false;
     self = [super init];
     if (self) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResign) name:UIApplicationWillResignActiveNotification object:nil];
     }
     return self;
 }
 
-/*+ (BOOL)coordinatesAreInMap:(CGPoint)point {
-    return coordinatesAreInMap(point.x, point.y);
-}*/
-
 - (void)applicationDidBecomeActive {
-    _isInBackground = false;
-    double delayInSeconds = .1;
+    double delayInSeconds = .5;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         clearCursor();
     });
-}
-
-- (void)applicationWillResign {
-    _isInBackground = true;
 }
 
 + (unsigned long)rogueSeed {
@@ -100,24 +87,12 @@ void plotChar(uchar inputChar,
 			  short xLoc, short yLoc,
 			  short foreRed, short foreGreen, short foreBlue,
 			  short backRed, short backGreen, short backBlue) {
-    if (_isInBackground) {
-        return;
-    }
     
     if (!_colorSpace) {
         _colorSpace = CGColorSpaceCreateDeviceRGB();
     }
     
     @autoreleasepool {
-   /*     SHColor backColor;
-        backColor.red = backRed/100.;
-        backColor.green = backGreen/100.;
-        backColor.blue = backBlue/100.;
-        
-        SHColor foreColor;
-        foreColor.red = foreRed/100.;
-        foreColor.green = foreGreen/100.;
-        foreColor.blue = foreBlue/100.;*/
         CGColorRef backColor = nil;
         if (backRed != 0 || backGreen != 0 || backBlue != 0) {
             CGFloat backComponents[] = {(CGFloat)(backRed/100.), (CGFloat)(backGreen/100.), (CGFloat)(backBlue/100.), 1.};
@@ -129,13 +104,13 @@ void plotChar(uchar inputChar,
             CGFloat foreComponents[] = {(CGFloat)(foreRed/100.), (CGFloat)(foreGreen/100.), (CGFloat)(foreBlue/100.), 1.};
             foreColor = CGColorCreate(_colorSpace, foreComponents);
         }
-        
-    /*    if (inputChar == ' ') {
-            [theMainDisplay setString:@"" withBackgroundColor:backColor letterColor:foreColor atLocationX:xLoc locationY:yLoc withChar:inputChar];
+
+        NSString *uniLetter;
+        if (inputChar > 127 && inputChar != 183) {
+            uniLetter = [NSString stringWithCharacters:&inputChar length:1];
         }
-        else {*/
-            [theMainDisplay setString:[NSString stringWithCharacters:&inputChar length:1] withBackgroundColor:backColor letterColor:foreColor atLocationX:xLoc locationY:yLoc withChar:inputChar];
-    //   }
+        
+        [theMainDisplay setString:uniLetter withBackgroundColor:backColor letterColor:foreColor atLocationX:xLoc locationY:yLoc withChar:inputChar];
     }
 }
 
@@ -195,23 +170,17 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
                 switch (phase) {
                     case UITouchPhaseBegan:
                     case UITouchPhaseStationary:
-                //        NSLog(@"touch station");
                         returnEvent->eventType = MOUSE_DOWN;
                         break;
                     case UITouchPhaseEnded:
-                //        NSLog(@"touch ended");
                         returnEvent->eventType = MOUSE_UP;
                         break;
                     case UITouchPhaseMoved:
-                //        NSLog(@"touch moved");
                         returnEvent->eventType = MOUSE_ENTERED_CELL;
                         break;
                     default:
-                 //       NSLog(@"touch nothing");
                         break;
                 }
-                
-                //    NSLog(@"Event %i w/Touch: %@", returnEvent->eventType, touch);
                 
                 event_location = touch.location;
                 x = COLS * event_location.x / [theMainDisplay hWindow];
@@ -532,58 +501,3 @@ fileEntry *listFiles(short *fileCount, char **dynamicMemoryBuffer) {
 	*fileCount = count + ADD_FAKE_PADDING_FILES;
 	return fileList;
 }
-
-// never mind with the auto save. the game auto saves every time you change a level from the looks of it
-/*
-void autoSave() {
-    short i;
-    FILE *recordFile,*fileCopy;
-    char ch;
-    
-    recordFile = fopen(currentFilePath,"r");
-    
- //   NSString *saveFile = @"autosave.broguesave";
-    const char *cSaveFile = "autosave.broguesave";
-    
-    fileCopy = fopen(cSaveFile,"w");
-    if(recordFile == NULL)
-    {
-        printf("Cannot copy file ! Press key to exit.");
-        fclose(fileCopy);
-        return;
-    }
-    
-    while(1)
-    {
-        ch = getc(fileCopy);
-        if(ch==EOF)
-        {
-            break;
-        }
-        else
-            putc(ch, fileCopy);
-    }
-    
-    printf("File copied succesfully!");
-    fclose(recordFile);
-    
-    int tempLengthOfPlaybackFile = lengthOfPlaybackFile;
-    lengthOfPlaybackFile += locationInRecordingBuffer;
-    
-    if (lengthOfPlaybackFile != 0) {
-		writeHeaderInfo((char *)cSaveFile);
-        
-		recordFile = fopen(cSaveFile, "ab");
-		
-		for (i=0; i<locationInRecordingBuffer; i++) {
-			putc(inputRecordBuffer[i], recordFile);
-		}
-		
-		if (recordFile) {
-			fclose(recordFile);
-		}
-	}
-    
-    fclose(fileCopy);
-    lengthOfPlaybackFile = tempLengthOfPlaybackFile;
-}*/

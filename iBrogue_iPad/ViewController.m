@@ -49,7 +49,6 @@ typedef enum {
 - (void)showInventoryOnDeathButton:(BOOL)show;
 
 @property (weak, nonatomic) IBOutlet UIView *titleButtonView;
-
 @property (weak, nonatomic) IBOutlet UIView *directionalButtonSubContainer;
 @property (weak, nonatomic) IBOutlet UIButton *seedButton;
 @property (weak, nonatomic) IBOutlet Viewport *secondaryDisplay;   // game etc
@@ -86,7 +85,6 @@ typedef enum {
     [super viewDidLoad];
     [GameCenterManager sharedInstance];
     [[GameCenterManager sharedInstance] authenticateLocalUser];
-	// Do any additional setup after loading the view, typically from a nib.
     
     if (!theMainDisplay) {
         theMainDisplay = self.secondaryDisplay;
@@ -265,8 +263,6 @@ typedef enum {
           ibtouch.location = [touch locationInView:theMainDisplay];  
         }
         
-       // NSLog(@"##### %i", touch.phase);
-        
         _lastTouchLocation = ibtouch.location;
         [self.cachedTouches addObject:[NSValue value:&ibtouch withObjCType:@encode(iBTouch)]];
     }
@@ -317,7 +313,6 @@ typedef enum {
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-   // NSLog(@"%s", __PRETTY_FUNCTION__);
      _isSideBarSingleTap = NO;
 
     [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
@@ -369,7 +364,6 @@ typedef enum {
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
- //   NSLog(@" ##### %@", touches);
     [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
         // Get a single touch and it's location
         [self addUITouchToCache:touch];
@@ -378,7 +372,6 @@ typedef enum {
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-  //  NSLog(@"%s %i", __PRETTY_FUNCTION__, _ishandlingDoubleTap);
     [self stopStationaryTouchTimer];
     
     // under certain conditions we don't actually want to pass through a 'mouse up'
