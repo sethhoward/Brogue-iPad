@@ -29,7 +29,8 @@
 #import "MGBenchmarkSession.h"
 
 @interface Viewport ()
-
+- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withLetterColor:(CGColorRef)letterColor withChar:(unsigned short)character;
+- (void)setHorizWindow:(short)hPx vertWindow:(short)vPx fontSize:(short)size;
 @end
 
 @implementation Viewport {
@@ -296,12 +297,7 @@ CGGlyph glyphString[1];
     for (int j = 0; j < kROWS; j++) {
 		for (int i = 0; i < kCOLS; i++) {
 			_letterArray[i][j] = @"";
-            _charArray[i][j] = ' ';
-            SHColor black;
-            black.red = 0;
-            black.blue = 0;
-            black.green = 0;
-            
+            _charArray[i][j] = ' ';            
             _bgColorArray[i][j] = nil;
             _letterColorArray[i][j] = nil;
         }

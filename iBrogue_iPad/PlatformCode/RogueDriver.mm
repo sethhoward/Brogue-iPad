@@ -39,7 +39,6 @@
 // Objective-c Bridge
 
 short mouseX, mouseY;
-//static boolean _isInBackground = false;
 
 @interface RogueDriver ()
 

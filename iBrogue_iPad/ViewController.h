@@ -11,6 +11,7 @@
 
 @class Viewport, ViewController;
 
+// Lazy accessors. Used in the C bridge.
 extern Viewport *theMainDisplay;
 extern ViewController *viewController;
 
@@ -22,21 +23,20 @@ struct iBTouch {
 };
 typedef struct iBTouch iBTouch;
 
-- (void)setBrogueGameEvent:(BrogueGameEvent)brogueGameEvent;
+// Used to trigger seed
 @property (nonatomic, readonly, getter = isSeedKeyDown) BOOL seedKeyDown;
-@property (nonatomic, assign) BOOL blockMagView;    // block the magnifying glass from appearing
-@property (readonly) uint cachedTouchesCount;
-@property (readonly) uint cachedKeyStrokeCount;
 
+- (void)setBrogueGameEvent:(BrogueGameEvent)brogueGameEvent;
+
+// Touches
 - (iBTouch)getTouchAtIndex:(uint)index;
 - (void)removeTouchAtIndex:(uint)index;
 - (char)dequeKeyStroke;
 
-// only one screen can show at a time. We use two different views for the game and title view to handle custom
-// iOS buttons etc. This makes for smoother transitions and is for looks only.
-- (void)showTitle;
-- (void)showAuxillaryScreensWithDirectionalControls:(BOOL)controls;
+@property (readonly) uint cachedTouchesCount;
+@property (readonly) uint cachedKeyStrokeCount;
 
+// Settings
 - (void)turnOnPinchGesture;
 - (void)turnOffPinchGesture;
 

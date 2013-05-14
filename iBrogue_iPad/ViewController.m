@@ -14,6 +14,7 @@
 #import "AboutViewController.h"
 #import "GameSettings.h"
 
+#define kESC_Key @"\033"
 #define kStationaryTime 0.2f
 #define kGamePlayHitArea CGRectMake(209., 74., 810., 650.)     // seems to be a method in the c code that does this but didn't work as expected
 #define kGameSideBarArea CGRectMake(0., 0., 210., 748.)
@@ -30,7 +31,6 @@ typedef enum {
     KeyDownLeft,
 }KeyDown;
 
-#define kESC_Key @"\033"
 
 @interface ViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
 - (IBAction)escButtonPressed:(id)sender;
@@ -60,8 +60,13 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UIButton *showInventoryButton;
 @property (weak, nonatomic) IBOutlet UILabel *seedLabel;
 
+@property (nonatomic, assign) BOOL blockMagView;    // block the magnifying glass from appearing
+
 // gestures
 @property (nonatomic, strong) UIPinchGestureRecognizer *directionalPinch;
+
+- (void)showTitle;
+- (void)showAuxillaryScreensWithDirectionalControls:(BOOL)controls;
 
 @end
 
