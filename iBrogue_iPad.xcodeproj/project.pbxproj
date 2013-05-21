@@ -47,25 +47,25 @@
 		C5865EE5170399C500B18C2B /* MGBenchmark.m in Sources */ = {isa = PBXBuildFile; fileRef = C5865EDE170399C500B18C2B /* MGBenchmark.m */; };
 		C5865EE6170399C500B18C2B /* MGBenchmarkSession.m in Sources */ = {isa = PBXBuildFile; fileRef = C5865EE0170399C500B18C2B /* MGBenchmarkSession.m */; };
 		C5865EE7170399C500B18C2B /* MGConsoleOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = C5865EE4170399C500B18C2B /* MGConsoleOutput.m */; };
-		C58831E016EA6E860047FCA9 /* brogue_seed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C58831DF16EA6E860047FCA9 /* brogue_seed@2x.png */; };
-		C58831E616EA98040047FCA9 /* brogue_sproutedseed.png in Resources */ = {isa = PBXBuildFile; fileRef = C58831E516EA98040047FCA9 /* brogue_sproutedseed.png */; };
-		C58831E816EA987D0047FCA9 /* brogue_sproutedseed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C58831E716EA987D0047FCA9 /* brogue_sproutedseed@2x.png */; };
 		C58831FE16EAB6D10047FCA9 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C58831FD16EAB6D10047FCA9 /* Default-Landscape~ipad.png */; };
 		C588320016EAB6DF0047FCA9 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C58831FF16EAB6DF0047FCA9 /* Default-Landscape@2x~ipad.png */; };
+		C5958C6C174AFFBB00519AD9 /* about_brogue.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C5C174AFFBB00519AD9 /* about_brogue.png */; };
+		C5958C6D174AFFBB00519AD9 /* about_brogue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C5D174AFFBB00519AD9 /* about_brogue@2x.png */; };
+		C5958C6E174AFFBB00519AD9 /* brogue_directionals.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C5E174AFFBB00519AD9 /* brogue_directionals.png */; };
+		C5958C6F174AFFBB00519AD9 /* brogue_directionals@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C5F174AFFBB00519AD9 /* brogue_directionals@2x.png */; };
+		C5958C70174AFFBB00519AD9 /* brogue_dismissbutton.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C60174AFFBB00519AD9 /* brogue_dismissbutton.png */; };
+		C5958C71174AFFBB00519AD9 /* brogue_dismissbutton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C61174AFFBB00519AD9 /* brogue_dismissbutton@2x.png */; };
+		C5958C72174AFFBB00519AD9 /* brogue_escapebutton.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C62174AFFBB00519AD9 /* brogue_escapebutton.png */; };
+		C5958C73174AFFBB00519AD9 /* brogue_escapebutton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C63174AFFBB00519AD9 /* brogue_escapebutton@2x.png */; };
+		C5958C74174AFFBB00519AD9 /* brogue_seed.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C64174AFFBB00519AD9 /* brogue_seed.png */; };
+		C5958C75174AFFBB00519AD9 /* brogue_seed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C65174AFFBB00519AD9 /* brogue_seed@2x.png */; };
+		C5958C76174AFFBB00519AD9 /* brogue_showinventory_button.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C66174AFFBB00519AD9 /* brogue_showinventory_button.png */; };
+		C5958C77174AFFBB00519AD9 /* brogue_showinventory_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C67174AFFBB00519AD9 /* brogue_showinventory_button@2x.png */; };
+		C5958C78174AFFBB00519AD9 /* brogue_sproutedseed.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C68174AFFBB00519AD9 /* brogue_sproutedseed.png */; };
+		C5958C79174AFFBB00519AD9 /* brogue_sproutedseed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C69174AFFBB00519AD9 /* brogue_sproutedseed@2x.png */; };
+		C5958C7A174AFFBB00519AD9 /* gamecenterlogo_brogue.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C6A174AFFBB00519AD9 /* gamecenterlogo_brogue.png */; };
+		C5958C7B174AFFBB00519AD9 /* gamecenterlogo_brogue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C6B174AFFBB00519AD9 /* gamecenterlogo_brogue@2x.png */; };
 		C59B21C716EA48E0007018DE /* MONACO.TTF in Resources */ = {isa = PBXBuildFile; fileRef = C59B21C616EA48E0007018DE /* MONACO.TTF */; };
-		C59B21CE16EA57AF007018DE /* gamecenterlogo_brogue.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21C816EA57AF007018DE /* gamecenterlogo_brogue.png */; };
-		C59B21CF16EA57AF007018DE /* brogue_directionals.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21C916EA57AF007018DE /* brogue_directionals.png */; };
-		C59B21D016EA57AF007018DE /* brogue_seed.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21CA16EA57AF007018DE /* brogue_seed.png */; };
-		C59B21D216EA57AF007018DE /* brogue_directionals@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21CC16EA57AF007018DE /* brogue_directionals@2x.png */; };
-		C59B21D316EA57AF007018DE /* gamecenterlogo_brogue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21CD16EA57AF007018DE /* gamecenterlogo_brogue@2x.png */; };
-		C59B21D516EA5C16007018DE /* brogue_dismissbutton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21D416EA5C16007018DE /* brogue_dismissbutton@2x.png */; };
-		C59B21D716EA5C38007018DE /* brogue_dismissbutton.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21D616EA5C38007018DE /* brogue_dismissbutton.png */; };
-		C59B21DA16EA5EE9007018DE /* brogue_escapebutton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21D816EA5EE9007018DE /* brogue_escapebutton@2x.png */; };
-		C59B21DB16EA5EE9007018DE /* brogue_escapebutton.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21D916EA5EE9007018DE /* brogue_escapebutton.png */; };
-		C59B21DE16EA69D8007018DE /* about_brogue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21DC16EA69D7007018DE /* about_brogue@2x.png */; };
-		C59B21DF16EA69D8007018DE /* about_brogue.png in Resources */ = {isa = PBXBuildFile; fileRef = C59B21DD16EA69D8007018DE /* about_brogue.png */; };
-		C5D5EC6116FBEA5200E9A9AF /* brogue_showinventory_button.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D5EC5F16FBEA5200E9A9AF /* brogue_showinventory_button.png */; };
-		C5D5EC6216FBEA5200E9A9AF /* brogue_showinventory_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D5EC6016FBEA5200E9A9AF /* brogue_showinventory_button@2x.png */; };
 		C5D5EC6C16FC07EB00E9A9AF /* icon_72x72.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D5EC6B16FC07EB00E9A9AF /* icon_72x72.png */; };
 		C5D5EC6E16FC07F300E9A9AF /* icon_144x144.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D5EC6D16FC07F300E9A9AF /* icon_144x144.png */; };
 		C5EFC0E916ECE398008BD644 /* ACLoupe.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFC0E216ECE398008BD644 /* ACLoupe.m */; };
@@ -136,25 +136,25 @@
 		C5865EE2170399C500B18C2B /* MGBenchmarkTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGBenchmarkTarget.h; sourceTree = "<group>"; };
 		C5865EE3170399C500B18C2B /* MGConsoleOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGConsoleOutput.h; sourceTree = "<group>"; };
 		C5865EE4170399C500B18C2B /* MGConsoleOutput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGConsoleOutput.m; sourceTree = "<group>"; };
-		C58831DF16EA6E860047FCA9 /* brogue_seed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brogue_seed@2x.png"; sourceTree = "<group>"; };
-		C58831E516EA98040047FCA9 /* brogue_sproutedseed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brogue_sproutedseed.png; sourceTree = "<group>"; };
-		C58831E716EA987D0047FCA9 /* brogue_sproutedseed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brogue_sproutedseed@2x.png"; sourceTree = "<group>"; };
 		C58831FD16EAB6D10047FCA9 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		C58831FF16EAB6DF0047FCA9 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
+		C5958C5C174AFFBB00519AD9 /* about_brogue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = about_brogue.png; sourceTree = "<group>"; };
+		C5958C5D174AFFBB00519AD9 /* about_brogue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "about_brogue@2x.png"; sourceTree = "<group>"; };
+		C5958C5E174AFFBB00519AD9 /* brogue_directionals.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brogue_directionals.png; sourceTree = "<group>"; };
+		C5958C5F174AFFBB00519AD9 /* brogue_directionals@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brogue_directionals@2x.png"; sourceTree = "<group>"; };
+		C5958C60174AFFBB00519AD9 /* brogue_dismissbutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brogue_dismissbutton.png; sourceTree = "<group>"; };
+		C5958C61174AFFBB00519AD9 /* brogue_dismissbutton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brogue_dismissbutton@2x.png"; sourceTree = "<group>"; };
+		C5958C62174AFFBB00519AD9 /* brogue_escapebutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brogue_escapebutton.png; sourceTree = "<group>"; };
+		C5958C63174AFFBB00519AD9 /* brogue_escapebutton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brogue_escapebutton@2x.png"; sourceTree = "<group>"; };
+		C5958C64174AFFBB00519AD9 /* brogue_seed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brogue_seed.png; sourceTree = "<group>"; };
+		C5958C65174AFFBB00519AD9 /* brogue_seed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brogue_seed@2x.png"; sourceTree = "<group>"; };
+		C5958C66174AFFBB00519AD9 /* brogue_showinventory_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brogue_showinventory_button.png; sourceTree = "<group>"; };
+		C5958C67174AFFBB00519AD9 /* brogue_showinventory_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brogue_showinventory_button@2x.png"; sourceTree = "<group>"; };
+		C5958C68174AFFBB00519AD9 /* brogue_sproutedseed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brogue_sproutedseed.png; sourceTree = "<group>"; };
+		C5958C69174AFFBB00519AD9 /* brogue_sproutedseed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brogue_sproutedseed@2x.png"; sourceTree = "<group>"; };
+		C5958C6A174AFFBB00519AD9 /* gamecenterlogo_brogue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gamecenterlogo_brogue.png; sourceTree = "<group>"; };
+		C5958C6B174AFFBB00519AD9 /* gamecenterlogo_brogue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gamecenterlogo_brogue@2x.png"; sourceTree = "<group>"; };
 		C59B21C616EA48E0007018DE /* MONACO.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = MONACO.TTF; sourceTree = "<group>"; };
-		C59B21C816EA57AF007018DE /* gamecenterlogo_brogue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gamecenterlogo_brogue.png; sourceTree = "<group>"; };
-		C59B21C916EA57AF007018DE /* brogue_directionals.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brogue_directionals.png; sourceTree = "<group>"; };
-		C59B21CA16EA57AF007018DE /* brogue_seed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brogue_seed.png; sourceTree = "<group>"; };
-		C59B21CC16EA57AF007018DE /* brogue_directionals@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brogue_directionals@2x.png"; sourceTree = "<group>"; };
-		C59B21CD16EA57AF007018DE /* gamecenterlogo_brogue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gamecenterlogo_brogue@2x.png"; sourceTree = "<group>"; };
-		C59B21D416EA5C16007018DE /* brogue_dismissbutton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brogue_dismissbutton@2x.png"; sourceTree = "<group>"; };
-		C59B21D616EA5C38007018DE /* brogue_dismissbutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brogue_dismissbutton.png; sourceTree = "<group>"; };
-		C59B21D816EA5EE9007018DE /* brogue_escapebutton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brogue_escapebutton@2x.png"; sourceTree = "<group>"; };
-		C59B21D916EA5EE9007018DE /* brogue_escapebutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brogue_escapebutton.png; sourceTree = "<group>"; };
-		C59B21DC16EA69D7007018DE /* about_brogue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "about_brogue@2x.png"; sourceTree = "<group>"; };
-		C59B21DD16EA69D8007018DE /* about_brogue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = about_brogue.png; sourceTree = "<group>"; };
-		C5D5EC5F16FBEA5200E9A9AF /* brogue_showinventory_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brogue_showinventory_button.png; sourceTree = "<group>"; };
-		C5D5EC6016FBEA5200E9A9AF /* brogue_showinventory_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brogue_showinventory_button@2x.png"; sourceTree = "<group>"; };
 		C5D5EC6B16FC07EB00E9A9AF /* icon_72x72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_72x72.png; sourceTree = "<group>"; };
 		C5D5EC6D16FC07F300E9A9AF /* icon_144x144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_144x144.png; sourceTree = "<group>"; };
 		C5EA72D616FE92DC00AE688A /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -235,9 +235,9 @@
 		C57A962E16D7EAD500C233F1 /* iBrogue_iPad */ = {
 			isa = PBXGroup;
 			children = (
+				C5958C5B174AFFBB00519AD9 /* Image Assets */,
 				C5865EDB170399C500B18C2B /* MGBenchmark */,
 				C5EFC0E016ECE398008BD644 /* MagnifyingGlass */,
-				C5F0CED416E6D56700F1A853 /* image assets */,
 				C52B091916E5848500675CC7 /* GameCenter */,
 				C57A965316D7EB5500C233F1 /* BrogueCode */,
 				C57A964B16D7EB4C00C233F1 /* PlatformCode */,
@@ -330,6 +330,29 @@
 			path = Output;
 			sourceTree = "<group>";
 		};
+		C5958C5B174AFFBB00519AD9 /* Image Assets */ = {
+			isa = PBXGroup;
+			children = (
+				C5958C5C174AFFBB00519AD9 /* about_brogue.png */,
+				C5958C5D174AFFBB00519AD9 /* about_brogue@2x.png */,
+				C5958C5E174AFFBB00519AD9 /* brogue_directionals.png */,
+				C5958C5F174AFFBB00519AD9 /* brogue_directionals@2x.png */,
+				C5958C60174AFFBB00519AD9 /* brogue_dismissbutton.png */,
+				C5958C61174AFFBB00519AD9 /* brogue_dismissbutton@2x.png */,
+				C5958C62174AFFBB00519AD9 /* brogue_escapebutton.png */,
+				C5958C63174AFFBB00519AD9 /* brogue_escapebutton@2x.png */,
+				C5958C64174AFFBB00519AD9 /* brogue_seed.png */,
+				C5958C65174AFFBB00519AD9 /* brogue_seed@2x.png */,
+				C5958C66174AFFBB00519AD9 /* brogue_showinventory_button.png */,
+				C5958C67174AFFBB00519AD9 /* brogue_showinventory_button@2x.png */,
+				C5958C68174AFFBB00519AD9 /* brogue_sproutedseed.png */,
+				C5958C69174AFFBB00519AD9 /* brogue_sproutedseed@2x.png */,
+				C5958C6A174AFFBB00519AD9 /* gamecenterlogo_brogue.png */,
+				C5958C6B174AFFBB00519AD9 /* gamecenterlogo_brogue@2x.png */,
+			);
+			path = "Image Assets";
+			sourceTree = "<group>";
+		};
 		C5EFC0E016ECE398008BD644 /* MagnifyingGlass */ = {
 			isa = PBXGroup;
 			children = (
@@ -350,29 +373,6 @@
 				C5EFC0E816ECE398008BD644 /* kb-loupe-hi.png */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		C5F0CED416E6D56700F1A853 /* image assets */ = {
-			isa = PBXGroup;
-			children = (
-				C5D5EC5F16FBEA5200E9A9AF /* brogue_showinventory_button.png */,
-				C5D5EC6016FBEA5200E9A9AF /* brogue_showinventory_button@2x.png */,
-				C58831E516EA98040047FCA9 /* brogue_sproutedseed.png */,
-				C58831E716EA987D0047FCA9 /* brogue_sproutedseed@2x.png */,
-				C59B21CA16EA57AF007018DE /* brogue_seed.png */,
-				C58831DF16EA6E860047FCA9 /* brogue_seed@2x.png */,
-				C59B21DD16EA69D8007018DE /* about_brogue.png */,
-				C59B21DC16EA69D7007018DE /* about_brogue@2x.png */,
-				C59B21D916EA5EE9007018DE /* brogue_escapebutton.png */,
-				C59B21D816EA5EE9007018DE /* brogue_escapebutton@2x.png */,
-				C59B21D616EA5C38007018DE /* brogue_dismissbutton.png */,
-				C59B21D416EA5C16007018DE /* brogue_dismissbutton@2x.png */,
-				C59B21C916EA57AF007018DE /* brogue_directionals.png */,
-				C59B21CC16EA57AF007018DE /* brogue_directionals@2x.png */,
-				C59B21C816EA57AF007018DE /* gamecenterlogo_brogue.png */,
-				C59B21CD16EA57AF007018DE /* gamecenterlogo_brogue@2x.png */,
-			);
-			name = "image assets";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -433,27 +433,27 @@
 				C57A964516D7EAD500C233F1 /* ViewController.xib in Resources */,
 				C5105B1316E65EDB00E09905 /* AboutViewController.xib in Resources */,
 				C59B21C716EA48E0007018DE /* MONACO.TTF in Resources */,
-				C59B21CE16EA57AF007018DE /* gamecenterlogo_brogue.png in Resources */,
-				C59B21CF16EA57AF007018DE /* brogue_directionals.png in Resources */,
-				C59B21D016EA57AF007018DE /* brogue_seed.png in Resources */,
-				C59B21D216EA57AF007018DE /* brogue_directionals@2x.png in Resources */,
-				C59B21D316EA57AF007018DE /* gamecenterlogo_brogue@2x.png in Resources */,
-				C59B21D516EA5C16007018DE /* brogue_dismissbutton@2x.png in Resources */,
-				C59B21D716EA5C38007018DE /* brogue_dismissbutton.png in Resources */,
-				C59B21DA16EA5EE9007018DE /* brogue_escapebutton@2x.png in Resources */,
-				C59B21DB16EA5EE9007018DE /* brogue_escapebutton.png in Resources */,
-				C59B21DE16EA69D8007018DE /* about_brogue@2x.png in Resources */,
-				C59B21DF16EA69D8007018DE /* about_brogue.png in Resources */,
-				C58831E016EA6E860047FCA9 /* brogue_seed@2x.png in Resources */,
-				C58831E616EA98040047FCA9 /* brogue_sproutedseed.png in Resources */,
-				C58831E816EA987D0047FCA9 /* brogue_sproutedseed@2x.png in Resources */,
 				C58831FE16EAB6D10047FCA9 /* Default-Landscape~ipad.png in Resources */,
 				C588320016EAB6DF0047FCA9 /* Default-Landscape@2x~ipad.png in Resources */,
 				C5EFC0EC16ECE398008BD644 /* kb-loupe-hi.png in Resources */,
-				C5D5EC6116FBEA5200E9A9AF /* brogue_showinventory_button.png in Resources */,
-				C5D5EC6216FBEA5200E9A9AF /* brogue_showinventory_button@2x.png in Resources */,
 				C5D5EC6C16FC07EB00E9A9AF /* icon_72x72.png in Resources */,
 				C5D5EC6E16FC07F300E9A9AF /* icon_144x144.png in Resources */,
+				C5958C6C174AFFBB00519AD9 /* about_brogue.png in Resources */,
+				C5958C6D174AFFBB00519AD9 /* about_brogue@2x.png in Resources */,
+				C5958C6E174AFFBB00519AD9 /* brogue_directionals.png in Resources */,
+				C5958C6F174AFFBB00519AD9 /* brogue_directionals@2x.png in Resources */,
+				C5958C70174AFFBB00519AD9 /* brogue_dismissbutton.png in Resources */,
+				C5958C71174AFFBB00519AD9 /* brogue_dismissbutton@2x.png in Resources */,
+				C5958C72174AFFBB00519AD9 /* brogue_escapebutton.png in Resources */,
+				C5958C73174AFFBB00519AD9 /* brogue_escapebutton@2x.png in Resources */,
+				C5958C74174AFFBB00519AD9 /* brogue_seed.png in Resources */,
+				C5958C75174AFFBB00519AD9 /* brogue_seed@2x.png in Resources */,
+				C5958C76174AFFBB00519AD9 /* brogue_showinventory_button.png in Resources */,
+				C5958C77174AFFBB00519AD9 /* brogue_showinventory_button@2x.png in Resources */,
+				C5958C78174AFFBB00519AD9 /* brogue_sproutedseed.png in Resources */,
+				C5958C79174AFFBB00519AD9 /* brogue_sproutedseed@2x.png in Resources */,
+				C5958C7A174AFFBB00519AD9 /* gamecenterlogo_brogue.png in Resources */,
+				C5958C7B174AFFBB00519AD9 /* gamecenterlogo_brogue@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
