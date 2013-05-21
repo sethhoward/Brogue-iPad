@@ -30,7 +30,7 @@
 
 @interface Viewport ()
 - (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withLetterColor:(CGColorRef)letterColor withChar:(unsigned short)character;
-- (void)setHorizWindow:(short)hPx vertWindow:(short)vPx fontSize:(short)size;
+- (void)setHorizWindow:(short)hPx vertWindow:(short)vPx;
 @end
 
 @implementation Viewport {
@@ -94,7 +94,7 @@
         }
         
         // initialize varaiables based on our window size
-        [self setHorizWindow:self.hWindow vertWindow:self.vWindow fontSize:FONT_SIZE];
+        [self setHorizWindow:self.hWindow vertWindow:self.vWindow];
         // black out
         [self clearColors];
         
@@ -269,7 +269,7 @@ CGGlyph glyphString[1];
 
 #pragma mark - Private Helpers
 
-- (void)setHorizWindow:(short)hPx vertWindow:(short)vPx fontSize:(short)size {
+- (void)setHorizWindow:(short)hPx vertWindow:(short)vPx {
     _hPixels = hPx / kCOLS;
     _vPixels = vPx / kROWS;
     self.hWindow = hPx;
@@ -309,7 +309,7 @@ CGGlyph glyphString[1];
 // TODO:
 - (UIFont *)slowFont {
 	if (!_slowFont) {
-        _slowFont = [UIFont fontWithName:@"ArialUnicodeMS" size:FONT_SIZE];
+        _slowFont = [UIFont fontWithName:@"ArialUnicodeMS" size:FONT_SIZE - 1];
         /*		NSFont *baseFont = [NSFont fontWithName:basicFontName size:theFontSize];
          NSArray *fallbackDescriptors = [NSArray arrayWithObjects:
          // Arial provides reasonable versions of most characters.
@@ -331,13 +331,14 @@ CGGlyph glyphString[1];
 	return _fastFont;
 }
 
+/*
 - (UIFont *)fontForString:(NSString *)s {
 	if (s.length == 1 && ([s characterAtIndex:0] < 128)) {
 		return [self fastFont];
 	} else {
 		return [self slowFont];
     }
-}
+}*/
 
 
 @end

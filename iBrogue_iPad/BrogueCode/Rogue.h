@@ -35,7 +35,7 @@
 
 // debug macros -- define DEBUGGING as 1 to enable debugging.
 
-#define DEBUGGING						0
+#define DEBUGGING						1
 
 #define DEBUG							if (DEBUGGING)
 #define MONSTERS_ENABLED				(!DEBUGGING || 1) // Quest room monsters can be generated regardless.

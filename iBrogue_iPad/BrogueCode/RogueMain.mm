@@ -25,7 +25,6 @@
 #include "IncludeGlobals.h"
 #include <math.h>
 #include <time.h>
-#include <dispatch/dispatch.h>
 
 void rogueMain() {
 	previousGameSeed = 0; 
