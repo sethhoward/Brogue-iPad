@@ -221,7 +221,7 @@
 // drawTheString vars declared outside the method. Seem to speed things up just a hair
 CGGlyph glyphString[1];
 - (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withLetterColor:(CGColorRef)letterColor withChar:(unsigned short)character {
-    // before the letter array is set we ensure that anything that isn't supposed to show a character is set to size 0
+    // skip spaces... if there's isn't something to draw it's a space guaranteed
 	if (character == 32) {
 		return;
 	}
