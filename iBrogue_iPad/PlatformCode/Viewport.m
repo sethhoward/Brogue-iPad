@@ -3,7 +3,7 @@
 //  Brogue
 //
 //  Created by Brian and Kevin Walker on 11/28/08.
-//  Updated for iOS by Seth Howard on 03/01/13
+//  Updated for iOS by Seth Howard on 03/01/13.
 //  Copyright 2012. All rights reserved.
 //
 //  This file is part of Brogue.
@@ -31,6 +31,11 @@
 @interface Viewport ()
 - (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withLetterColor:(CGColorRef)letterColor withChar:(unsigned short)character;
 - (void)setHorizWindow:(short)hPx vertWindow:(short)vPx;
+
+@property (nonatomic, strong) UIFont *slowFont;
+@property (nonatomic, strong) UIFont *fastFont;
+//Used to display the square 'detected' magical items. bump down the font size to prevent artifacts.
+@property (nonatomic, strong) UIFont *squareFont;
 @end
 
 @implementation Viewport {
@@ -40,8 +45,7 @@
 	CGColorRef **_bgColorArray;
 	CGColorRef **_letterColorArray;
 	CGRect _rectArray[kCOLS][kROWS];
-    UIFont *_slowFont;
-    UIFont *_fastFont;
+
     CGContextRef _context;
     CGFontRef _cgFont;
     CGColorRef _prevColor;
@@ -214,8 +218,17 @@
         }
     }
     
-  // [[MGBenchmark session:@"draw"] total];
-  // [MGBenchmark finish:@"draw"];
+ //  [[MGBenchmark session:@"draw"] total];
+ //  [MGBenchmark finish:@"draw"];
+}
+
+- (CGPoint)originForCharacterSize:(CGSize)fontSize andRect:(CGRect)rect {
+    // center the characters
+    CGPoint stringOrigin;
+    stringOrigin.x = rect.origin.x + (rect.size.width - fontSize.width) * 0.5;
+    stringOrigin.y = rect.origin.y + (rect.size.height - fontSize.height) * 0.5;
+    
+    return stringOrigin;
 }
 
 // drawTheString vars declared outside the method. Seem to speed things up just a hair
@@ -232,36 +245,38 @@ CGGlyph glyphString[1];
         _prevColor = letterColor;
     }
     
-    CGSize stringSize = _fastFontCharacterSize;
-    
-    if (character > 127 && character != 183) {
-        stringSize = _slowFontCharacterSize;
-    }
-    
-    // center the characters
-    CGPoint stringOrigin;
-    stringOrigin.x = rect.origin.x + (rect.size.width - stringSize.width) * 0.5;
-    stringOrigin.y = rect.origin.y + (rect.size.height - stringSize.height) * 0.5;
-    
-    // we have a unicode character. Draw it with drawAtPoint
-    // if it's one of those fancy centered dots (183) toss it for a period. It's used a lot and slows things down
-    if (character == 183) {
-        character = 46;
-        
-        // fudge the position with some magic numbers
-        stringOrigin.y -= 4;
-    }
-    
     // we're not in ascii country... draw the unicode char the only way we know how
-    if (character > 127) {
-        // super slow call.. only used occassionally though
-        [theString drawAtPoint:stringOrigin withFont:[self slowFont]];
+    if (character > 127 && character != 183) {
+        CGPoint stringOrigin = [self originForCharacterSize:_slowFontCharacterSize andRect:rect];
+        
+        if (character == 10738 || character == 10739) {
+            [theString drawAtPoint:stringOrigin withFont:[self squareFont]];
+            
+            // strange results when rendering a different font size. reset some state
+            CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
+            CGContextSetFontSize(_context, FONT_SIZE);
+        }
+        else {
+            // super slow call.. only used occassionally though
+            [theString drawAtPoint:stringOrigin withFont:[self slowFont]];
+        }
         
         // seems like we need to change the context back or we render incorrect glyps. We do it here assuming we call this less than the show glyphs below
         CGContextSetFont(_context, _cgFont);
     }
     // plain jane characters. Draw them nice and fast.
     else {
+        CGPoint stringOrigin = [self originForCharacterSize:_fastFontCharacterSize andRect:rect];
+        // we have a unicode character. Draw it with drawAtPoint
+        // if it's one of those fancy centered dots (183) toss it for a period. It's used a lot and slows things down
+        if (character == 183) {
+            character = 46;
+            
+            // fudge the position with some magic numbers
+            stringOrigin.y -= 4;
+        }
+        
+        
         glyphString[0] = character-29;
         CGContextShowGlyphsAtPoint(_context, stringOrigin.x, stringOrigin.y + FONT_SIZE, glyphString, 1);
     }
@@ -309,7 +324,7 @@ CGGlyph glyphString[1];
 // TODO:
 - (UIFont *)slowFont {
 	if (!_slowFont) {
-        _slowFont = [UIFont fontWithName:@"ArialUnicodeMS" size:FONT_SIZE - 1];
+        _slowFont = [UIFont fontWithName:@"ArialUnicodeMS" size:FONT_SIZE];
         /*		NSFont *baseFont = [NSFont fontWithName:basicFontName size:theFontSize];
          NSArray *fallbackDescriptors = [NSArray arrayWithObjects:
          // Arial provides reasonable versions of most characters.
@@ -331,14 +346,11 @@ CGGlyph glyphString[1];
 	return _fastFont;
 }
 
-/*
-- (UIFont *)fontForString:(NSString *)s {
-	if (s.length == 1 && ([s characterAtIndex:0] < 128)) {
-		return [self fastFont];
-	} else {
-		return [self slowFont];
-    }
-}*/
-
+- (UIFont *)squareFont {
+    if (!_squareFont) {
+        _squareFont = [UIFont fontWithName:@"ArialUnicodeMS" size:FONT_SIZE-2];
+	}
+	return _squareFont;
+}
 
 @end

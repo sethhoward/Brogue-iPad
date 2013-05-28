@@ -3,6 +3,7 @@
 //  Brogue
 //
 //  Created by Brian and Kevin Walker on 12/26/08.
+//  Updated for iOS by Seth Howard on 03/01/13.
 //  Copyright 2012. All rights reserved.
 //  
 //  This file is part of Brogue.

@@ -2850,6 +2850,7 @@ extern "C" {
         BrogueGameEventShowTitle,
         BrogueGameEventStartNewGame,
         BrogueGameEventOpenGame,
+        BrogueGameEventBeginOpenGame,
         BrogueGameEventOpenGameFinished,
         BrogueGameEventPlayRecording,
         BrogueGameEventShowHighScores,

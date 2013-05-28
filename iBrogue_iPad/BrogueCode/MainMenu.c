@@ -736,6 +736,9 @@ void mainBrogueJunction() {
 			case NG_OPEN_GAME:
 				rogue.nextGame = NG_NOTHING;
                 
+                // Seth: Added
+                setBrogueGameEvent(BrogueGameEventBeginOpenGame);
+                
 				path[0] = '\0';
 				if (rogue.nextGamePath[0]) {
 					strcpy(path, rogue.nextGamePath);
@@ -766,6 +769,9 @@ void mainBrogueJunction() {
 				break;
 			case NG_VIEW_RECORDING:
 				rogue.nextGame = NG_NOTHING;
+                
+                // Seth: Added
+                setBrogueGameEvent(BrogueGameEventBeginOpenGame);
 				
 				path[0] = '\0';
 				if (rogue.nextGamePath[0]) {

@@ -438,6 +438,12 @@ typedef enum {
     });
 }
 
+- (void)hideTitleButtons {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.titleButtonView setHidden:YES];
+    });
+}
+
 - (void)showAuxillaryScreensWithDirectionalControls:(BOOL)controls {
     dispatch_async(dispatch_get_main_queue(), ^{
         double delayInSeconds = .75;
@@ -656,6 +662,9 @@ typedef enum {
                 [self.cachedTouches removeAllObjects];
             }
             self.blockMagView = NO;
+            break;
+        case BrogueGameEventBeginOpenGame:
+            [self hideTitleButtons];
             break;
         case BrogueGameEventPlayRecording:
         case BrogueGameEventShowHighScores:
