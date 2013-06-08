@@ -102,7 +102,12 @@ typedef enum {
     }
     
     [self becomeFirstResponder];
-    [self playBrogue];
+  
+    // bump up the default stack size for a background thread. Anything less than the magic number below
+    // risks blowing up the stack. A good test is seed #15
+    NSThread *thread = [[NSThread alloc] initWithTarget:self selector:@selector(playBrogue) object:nil];
+    [thread setStackSize:350 * 4096];
+    [thread start];
 }
 
 - (void)addNotificationObservers {
