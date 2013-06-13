@@ -2614,10 +2614,7 @@ void digDungeon() {
     freeGrid(lakeMap);
 	
 	// Now run the autoGenerators.
-    //Seth:
- //   dispatch_sync(dispatch_get_main_queue(), ^{
-        runAutogenerators();
- //   });
+    runAutogenerators();
 	
 	// Now remove diagonal openings.
 	removeDiagonalOpenings();
@@ -2628,12 +2625,7 @@ void digDungeon() {
 	}
 	
 	// Now add some treasure machines.
-    // Seth: added
-    // we need to run on the main thread or we clobber the auxillery thread stacks which are very small.
-  //  dispatch_sync(dispatch_get_main_queue(), ^{
-        addMachines();
-  //  });
-	
+    addMachines();
 	
 	if (D_INSPECT_LEVELGEN) {
 		dumpLevelToScreen();
