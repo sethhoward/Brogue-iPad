@@ -17,7 +17,7 @@
 #define kESC_Key @"\033"
 #define kStationaryTime 0.2f
 #define kGamePlayHitArea CGRectMake(209., 74., 810., 650.)     // seems to be a method in the c code that does this but didn't work as expected
-#define kGameSideBarArea CGRectMake(0., 0., 210., 748.)
+#define kGameSideBarArea CGRectMake(0., 0., 210., 768.)
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
 

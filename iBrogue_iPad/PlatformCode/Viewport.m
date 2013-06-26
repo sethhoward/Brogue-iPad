@@ -83,8 +83,9 @@
 - (void)initializeLayoutVariables {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        // TODO: this should just grab the screens bounds... brogue does well with just about any size
         self.hWindow = 1024;
-        self.vWindow = 748;
+        self.vWindow = 768;
         
         // Toss the arrays onto the heap
         _charArray = (unsigned short **)malloc(kCOLS * sizeof(unsigned short *));
@@ -128,6 +129,7 @@
 - (void)drawRect:(CGRect)rect {
   //  [MGBenchmark start:@"draw"];
     int i, j, startX, startY, endX, endY, width;
+    i = j = startX = startY = endX = endY = width = 0;
       
     startX = (int) (kCOLS * rect.origin.x / self.hWindow);
     endY = (int) (kCOLS * (rect.origin.y + rect.size.height + _vPixels - 1 ) / self.vWindow);
