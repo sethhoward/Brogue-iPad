@@ -90,7 +90,7 @@ void plotChar(uchar inputChar,
         _colorSpace = CGColorSpaceCreateDeviceRGB();
     }
     
-    @autoreleasepool {
+//    @autoreleasepool {
         CGColorRef backColor = nil;
         if (backRed != 0 || backGreen != 0 || backBlue != 0) {
             CGFloat backComponents[] = {(CGFloat)(backRed/100.), (CGFloat)(backGreen/100.), (CGFloat)(backBlue/100.), 1.};
@@ -109,7 +109,7 @@ void plotChar(uchar inputChar,
         }
         
         [theMainDisplay setString:uniLetter withBackgroundColor:backColor letterColor:foreColor atLocationX:xLoc locationY:yLoc withChar:inputChar];
-    }
+ //   }
 }
 
 __unused void pausingTimerStartsNow() {

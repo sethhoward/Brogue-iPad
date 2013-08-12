@@ -35,7 +35,7 @@
 @property (nonatomic, strong) UIFont *slowFont;
 @property (nonatomic, strong) UIFont *fastFont;
 //Used to display the square 'detected' magical items. bump down the font size to prevent artifacts.
-@property (nonatomic, strong) UIFont *squareFont;
+//@property (nonatomic, strong) UIFont *squareFont;
 @end
 
 @implementation Viewport {
@@ -86,7 +86,7 @@
         // TODO: this should just grab the screens bounds... brogue does well with just about any size
         self.hWindow = 1024;
         self.vWindow = 768;
-        
+ 
         // Toss the arrays onto the heap
         _charArray = (unsigned short **)malloc(kCOLS * sizeof(unsigned short *));
         _bgColorArray = (CGColorRef **)malloc(kCOLS * sizeof(CGColorRef *));
@@ -118,23 +118,22 @@
         _letterArray[x][y] = c;
         _bgColorArray[x][y] = bgColor;
         _letterColorArray[x][y] = letterColor;
-        _charArray[x][y] = character;
         
         [self setNeedsDisplayInRect:_rectArray[x][y]];
     });
+    
+    _charArray[x][y] = character;
 }
 
 #pragma mark - Draw Routines
-
 - (void)drawRect:(CGRect)rect {
-  //  [MGBenchmark start:@"draw"];
-    int i, j, startX, startY, endX, endY, width;
-    i = j = startX = startY = endX = endY = width = 0;
-      
-    startX = (int) (kCOLS * rect.origin.x / self.hWindow);
-    endY = (int) (kCOLS * (rect.origin.y + rect.size.height + _vPixels - 1 ) / self.vWindow);
-    endX = (int) (kCOLS * (rect.origin.x + rect.size.width + _hPixels - 1) / self.hWindow);
-    startY = (int) (kROWS * rect.origin.y / self.vWindow);
+ //   [MGBenchmark start:@"draw"];
+
+    int width = 0;
+    int startX = (int) (kCOLS * rect.origin.x / self.hWindow);
+    int endY = (int) (kCOLS * (rect.origin.y + rect.size.height + _vPixels - 1 ) / self.vWindow);
+    int endX = (int) (kCOLS * (rect.origin.x + rect.size.width + _hPixels - 1) / self.hWindow);
+    int startY = (int) (kROWS * rect.origin.y / self.vWindow);
 
     if (startX < 0) {
      startX = 0;
@@ -158,8 +157,8 @@
     // draw the background rect colors.
     // In order to speed things up we do not draw black rects
     // Also we combine rects that are the same color (striping across the row) and draw that as one rect instead of individual rects
-    for ( j = startY; j < endY; j++ ) {
-        for ( i = startX; i < endX; i++ ) {
+    for (int j = startY; j < endY; j++ ) {
+        for (int i = startX; i < endX; i++ ) {
             CGColorRef color = _bgColorArray[i][j];
             
             // if we have a mismatched color we need to draw. Otherwise we keep striping acrossed with the same color context and delay the draw
@@ -204,18 +203,18 @@
  
         // end of the row, reset values
         width = 0;
-        startRect = _rectArray[i][j];
+        startRect = _rectArray[0][j];
     }
     
-    _prevColor = _bgColorArray[startX][startY];
-    CGContextSetFillColorWithColor(_context, _prevColor);
+    _prevColor = nil;//_bgColorArray[startX][startY];
+    
     CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
     CGContextSetFontSize(_context, FONT_SIZE);
     CGContextSetFont(_context, _cgFont);
     
     // now draw the ascii chars
-    for ( j = startY; j < endY; j++ ) {
-        for ( i = startX; i < endX; i++ ) {
+    for (int j = startY; j < endY; j++ ) {
+        for (int i = startX; i < endX; i++ ) {
             [self drawTheString:_letterArray[i][j] centeredIn:_rectArray[i][j] withLetterColor:_letterColorArray[i][j] withChar:_charArray[i][j]];
         }
     }
@@ -227,8 +226,8 @@
 - (CGPoint)originForCharacterSize:(CGSize)fontSize andRect:(CGRect)rect {
     // center the characters
     CGPoint stringOrigin;
-    stringOrigin.x = rect.origin.x + (rect.size.width - fontSize.width) * 0.5;
-    stringOrigin.y = rect.origin.y + (rect.size.height - fontSize.height) * 0.5;
+    stringOrigin.x = rect.origin.x + (rect.size.width - fontSize.width) / 2;
+    stringOrigin.y = rect.origin.y + (rect.size.height - fontSize.height) / 2;
     
     return stringOrigin;
 }
@@ -250,18 +249,9 @@ CGGlyph glyphString[1];
     // we're not in ascii country... draw the unicode char the only way we know how
     if (character > 127 && character != 183) {
         CGPoint stringOrigin = [self originForCharacterSize:_slowFontCharacterSize andRect:rect];
+        stringOrigin.x += 1;
         
-        if (character == 10738 || character == 10739) {
-            [theString drawAtPoint:stringOrigin withFont:[self squareFont]];
-            
-            // strange results when rendering a different font size. reset some state
-            CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
-            CGContextSetFontSize(_context, FONT_SIZE);
-        }
-        else {
-            // super slow call.. only used occassionally though
-            [theString drawAtPoint:stringOrigin withFont:[self slowFont]];
-        }
+        [theString drawAtPoint:stringOrigin withFont:[self slowFont]];
         
         // seems like we need to change the context back or we render incorrect glyps. We do it here assuming we call this less than the show glyphs below
         CGContextSetFont(_context, _cgFont);
@@ -346,13 +336,6 @@ CGGlyph glyphString[1];
 		_fastFont = [UIFont fontWithName:@"Monaco" size:FONT_SIZE];
     }
 	return _fastFont;
-}
-
-- (UIFont *)squareFont {
-    if (!_squareFont) {
-        _squareFont = [UIFont fontWithName:@"ArialUnicodeMS" size:FONT_SIZE-2];
-	}
-	return _squareFont;
 }
 
 @end
