@@ -213,20 +213,34 @@ typedef enum {
     
     if (pinch.state == UIGestureRecognizerStateEnded || pinch.state == UIGestureRecognizerStateCancelled) {
         if (pinch.scale < 0.6f) {
-            [UIView animateWithDuration:0.2 animations:^{
-                self.directionalButtonSubContainer.transform = CGAffineTransformMakeScale(.0000001, .0000001);
-            }];
+            [self hideDirectionalArrows];
             
             _areDirectionalControlsHidden = YES;
         }
         else {
-            [UIView animateWithDuration:0.2 animations:^{
-                self.directionalButtonSubContainer.transform = CGAffineTransformMakeScale(1., 1.);
-            }];
+            [self showDirectionalArrows];
             
             _areDirectionalControlsHidden = NO;
         }
     }
+}
+
+- (void)hideDirectionalArrows {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [UIView animateWithDuration:0.2 animations:^{
+            self.directionalButtonSubContainer.transform = CGAffineTransformMakeScale(.0000001, .0000001);
+        }];
+    });
+    
+}
+
+- (void)showDirectionalArrows {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [UIView animateWithDuration:0.2 animations:^{
+            self.directionalButtonSubContainer.transform = CGAffineTransformMakeScale(1., 1.);
+        }];
+    });
+    
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
@@ -673,6 +687,10 @@ typedef enum {
         case BrogueGameEventOpenedInventory:
             _ignoreSideBarInteraction = YES;
             self.blockMagView = YES;
+            
+            if (!_areDirectionalControlsHidden) {
+                [self hideDirectionalArrows];
+            }
             break;
         // pretty much every inventory option
         case BrogueGameEventInventoryItemAction:
@@ -681,6 +699,9 @@ typedef enum {
         case BrogueGameEventClosedInventory:
             _ignoreSideBarInteraction = NO;
             self.blockMagView = NO;
+            if (!_areDirectionalControlsHidden) {
+                [self showDirectionalArrows];
+            }
             break;
         case BrogueGameEventKeyBoardInputRequired:
             [self showKeyboard];

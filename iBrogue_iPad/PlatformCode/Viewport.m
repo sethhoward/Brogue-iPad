@@ -106,6 +106,7 @@
         _cgFont = CGFontCreateWithFontName((CFStringRef)@"Monaco");
         _fastFontCharacterSize = [@"M" sizeWithFont:[self fastFont]];
         _slowFontCharacterSize = [@"M" sizeWithFont:[self slowFont]];
+        _slowFontCharacterSize.width += 2;
         _colorSpace = CGColorSpaceCreateDeviceRGB();
     });
 }
@@ -118,11 +119,11 @@
         _letterArray[x][y] = c;
         _bgColorArray[x][y] = bgColor;
         _letterColorArray[x][y] = letterColor;
+        _charArray[x][y] = character;
         
         [self setNeedsDisplayInRect:_rectArray[x][y]];
     });
     
-    _charArray[x][y] = character;
 }
 
 #pragma mark - Draw Routines
@@ -249,12 +250,14 @@ CGGlyph glyphString[1];
     // we're not in ascii country... draw the unicode char the only way we know how
     if (character > 127 && character != 183) {
         CGPoint stringOrigin = [self originForCharacterSize:_slowFontCharacterSize andRect:rect];
-        stringOrigin.x += 1;
+        stringOrigin.x += 2;
         
         [theString drawAtPoint:stringOrigin withFont:[self slowFont]];
         
         // seems like we need to change the context back or we render incorrect glyps. We do it here assuming we call this less than the show glyphs below
         CGContextSetFont(_context, _cgFont);
+        
+        CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
     }
     // plain jane characters. Draw them nice and fast.
     else {
