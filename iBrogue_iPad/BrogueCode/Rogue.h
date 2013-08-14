@@ -212,8 +212,12 @@
 #define CHAIN_LEFT			'-'
 #define CHAIN_RIGHT			'-'
 
-#define BAD_MAGIC_CHAR		0x29F2
-#define GOOD_MAGIC_CHAR		0x29F3
+// Seth: the two original defintions are not defined in my font set
+#define BAD_MAGIC_CHAR		0x1ECD
+#define GOOD_MAGIC_CHAR		0x00F2
+
+//#define BAD_MAGIC_CHAR		0x29F2
+//#define GOOD_MAGIC_CHAR		0x29F3
 
 #else
 

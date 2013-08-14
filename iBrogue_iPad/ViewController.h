@@ -25,6 +25,9 @@ typedef struct iBTouch iBTouch;
 
 // Used to trigger seed
 @property (nonatomic, readonly, getter = isSeedKeyDown) BOOL seedKeyDown;
+@property (nonatomic, readonly) BOOL hasEvent;
+@property (nonatomic, readonly) BOOL hasTouchEvent;
+@property (nonatomic, readonly) BOOL hasKeyEvent;
 
 - (void)setBrogueGameEvent:(BrogueGameEvent)brogueGameEvent;
 
@@ -32,9 +35,6 @@ typedef struct iBTouch iBTouch;
 - (iBTouch)getTouchAtIndex:(uint)index;
 - (void)removeTouchAtIndex:(uint)index;
 - (char)dequeKeyStroke;
-
-@property (readonly) uint cachedTouchesCount;
-@property (readonly) uint cachedKeyStrokeCount;
 
 // Settings
 - (void)turnOnPinchGesture;

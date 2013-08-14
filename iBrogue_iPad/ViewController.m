@@ -84,8 +84,9 @@ typedef enum {
     NSUInteger cachedKeyCount;
     NSUInteger cachedTouchCount;
 }
-@dynamic cachedKeyStrokeCount;
-@dynamic cachedTouchesCount;
+@dynamic hasEvent;
+@dynamic hasTouchEvent;
+@synthesize hasKeyEvent;
 
 - (void)viewDidLoad
 {
@@ -93,6 +94,8 @@ typedef enum {
     
     [GameCenterManager sharedInstance];
     [[GameCenterManager sharedInstance] authenticateLocalUser];
+    
+    [RogueDriver sharedInstance];
     
     if (!theMainDisplay) {
         theMainDisplay = self.secondaryDisplay;
@@ -423,6 +426,18 @@ typedef enum {
     }
 
     _ishandlingDoubleTap = NO;
+}
+
+- (BOOL)hasEvent {
+    return [self cachedKeyStrokeCount] + [self cachedTouchesCount];
+}
+
+- (BOOL)hasKeyEvent {
+    return [self cachedKeyStrokeCount];
+}
+
+- (BOOL)hasTouchEvent {
+    return [self cachedTouchesCount];
 }
 
 #pragma mark - Magnifier
