@@ -29,10 +29,9 @@
 
 #import "Rogue.h"
 
-extern NSMutableDictionary *cachedColors;
-
 @interface RogueDriver : NSObject
 
++ (id)sharedInstance;
 + (unsigned long)rogueSeed;
 void clearCursor();
 

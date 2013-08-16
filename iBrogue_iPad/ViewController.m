@@ -17,7 +17,7 @@
 #define kESC_Key @"\033"
 #define kStationaryTime 0.2f
 #define kGamePlayHitArea CGRectMake(209., 74., 810., 650.)     // seems to be a method in the c code that does this but didn't work as expected
-#define kGameSideBarArea CGRectMake(0., 0., 210., 748.)
+#define kGameSideBarArea CGRectMake(0., 0., 210., 768.)
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
 
@@ -81,15 +81,21 @@ typedef enum {
     BOOL _ishandlingDoubleTap;      // handles special double tap touch case
     BrogueGameEvent _lastBrogueGameEvent;
     BOOL _ignoreSideBarInteraction; // we could check if the last event was something like BrogueGameEventOpenedInventory but too fragile
+    NSUInteger cachedKeyCount;
+    NSUInteger cachedTouchCount;
 }
-@dynamic cachedKeyStrokeCount;
-@dynamic cachedTouchesCount;
+@dynamic hasEvent;
+@dynamic hasTouchEvent;
+@synthesize hasKeyEvent;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     [GameCenterManager sharedInstance];
     [[GameCenterManager sharedInstance] authenticateLocalUser];
+    
+    [RogueDriver sharedInstance];
     
     if (!theMainDisplay) {
         theMainDisplay = self.secondaryDisplay;
@@ -108,6 +114,10 @@ typedef enum {
     NSThread *thread = [[NSThread alloc] initWithTarget:self selector:@selector(playBrogue) object:nil];
     [thread setStackSize:350 * 4096];
     [thread start];
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return YES;
 }
 
 - (void)addNotificationObservers {
@@ -163,6 +173,7 @@ typedef enum {
     @synchronized(self.cachedKeyStrokes) {
         [self.cachedKeyStrokes removeAllObjects];
         [self.cachedKeyStrokes addObject:kESC_Key];
+        cachedKeyCount = [self.cachedKeyStrokes count];
     }
 }
 
@@ -205,20 +216,34 @@ typedef enum {
     
     if (pinch.state == UIGestureRecognizerStateEnded || pinch.state == UIGestureRecognizerStateCancelled) {
         if (pinch.scale < 0.6f) {
-            [UIView animateWithDuration:0.2 animations:^{
-                self.directionalButtonSubContainer.transform = CGAffineTransformMakeScale(.0000001, .0000001);
-            }];
+            [self hideDirectionalArrows];
             
             _areDirectionalControlsHidden = YES;
         }
         else {
-            [UIView animateWithDuration:0.2 animations:^{
-                self.directionalButtonSubContainer.transform = CGAffineTransformMakeScale(1., 1.);
-            }];
+            [self showDirectionalArrows];
             
             _areDirectionalControlsHidden = NO;
         }
     }
+}
+
+- (void)hideDirectionalArrows {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [UIView animateWithDuration:0.2 animations:^{
+            self.directionalButtonSubContainer.transform = CGAffineTransformMakeScale(.0000001, .0000001);
+        }];
+    });
+    
+}
+
+- (void)showDirectionalArrows {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [UIView animateWithDuration:0.2 animations:^{
+            self.directionalButtonSubContainer.transform = CGAffineTransformMakeScale(1., 1.);
+        }];
+    });
+    
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
@@ -257,6 +282,8 @@ typedef enum {
         touchUp.location = _lastTouchLocation;
         
         [self.cachedTouches addObject:[NSValue value:&touchUp withObjCType:@encode(iBTouch)]];
+        
+        cachedTouchCount = [self.cachedTouches count];
     }
 }
 
@@ -275,6 +302,7 @@ typedef enum {
         
         _lastTouchLocation = ibtouch.location;
         [self.cachedTouches addObject:[NSValue value:&ibtouch withObjCType:@encode(iBTouch)]];
+        cachedTouchCount = [self.cachedTouches count];
     }
 }
 
@@ -290,12 +318,13 @@ typedef enum {
     @synchronized(self.cachedTouches){
         if ([self.cachedTouches count] > 0) {
             [self.cachedTouches removeObjectAtIndex:index];
+            cachedTouchCount = [self.cachedTouches count];
         }
     }
 }
 
 - (uint)cachedTouchesCount {
-    return [self.cachedTouches count];
+    return cachedTouchCount;
 }
 
 - (void)handleStationary:(NSTimer *)timer {
@@ -315,10 +344,12 @@ typedef enum {
     @synchronized(self.cachedKeyStrokes){
         [self.cachedKeyStrokes removeAllObjects];
         [self.cachedKeyStrokes addObject:kESC_Key];
+        cachedKeyCount = [self.cachedKeyStrokes count];
     }
     
     @synchronized(self.cachedTouches) {
-                [self.cachedTouches removeAllObjects];
+        [self.cachedTouches removeAllObjects];
+        cachedTouchCount = [self.cachedTouches count];
     }
 }
 
@@ -347,6 +378,7 @@ typedef enum {
                     
                     // setting flag to handle some special logic on touchesEnded
                     _ishandlingDoubleTap = YES;
+                    cachedTouchCount = [self.cachedTouches count];
                 }
             }
         }
@@ -361,6 +393,7 @@ typedef enum {
                     touchMoved.phase = UITouchPhaseMoved;
                     touchMoved.location = touchPoint;
                     [self.cachedTouches addObject:[NSValue value:&touchMoved withObjCType:@encode(iBTouch)]];
+                    cachedTouchCount = [self.cachedTouches count];
                 }
                 
                 _isSideBarSingleTap = YES;
@@ -393,6 +426,18 @@ typedef enum {
     }
 
     _ishandlingDoubleTap = NO;
+}
+
+- (BOOL)hasEvent {
+    return [self cachedKeyStrokeCount] + [self cachedTouchesCount];
+}
+
+- (BOOL)hasKeyEvent {
+    return [self cachedKeyStrokeCount];
+}
+
+- (BOOL)hasTouchEvent {
+    return [self cachedTouchesCount];
 }
 
 #pragma mark - Magnifier
@@ -473,13 +518,14 @@ typedef enum {
 }
 
 - (uint)cachedKeyStrokeCount {
-    return [self.cachedKeyStrokes count];
+    return cachedKeyCount;
 }
 
 - (char)dequeKeyStroke {
     NSString *keyStroke = [self.cachedKeyStrokes objectAtIndex:0];
     @synchronized(self.cachedKeyStrokes){
         [self.cachedKeyStrokes removeObjectAtIndex:0];
+        cachedKeyCount = [self.cachedKeyStrokes count];
     }
     
     return [keyStroke characterAtIndex:0];
@@ -495,6 +541,7 @@ typedef enum {
 - (void)didHideKeyboard {
     if ([self.cachedKeyStrokes count] == 0) {
         [self.cachedKeyStrokes addObject:kESC_Key];
+        cachedKeyCount = [self.cachedKeyStrokes count];
     }
 
     self.escButton.hidden = YES;
@@ -506,6 +553,7 @@ typedef enum {
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [self.cachedKeyStrokes addObject:kEnterKey];
+    cachedKeyCount = [self.cachedKeyStrokes count];
     [textField resignFirstResponder];
     return YES;
 }
@@ -517,15 +565,18 @@ typedef enum {
     if (isBackSpace == -8) {
         // is backspace
         [self.cachedKeyStrokes addObject:kBackSpaceKey];
+        cachedKeyCount = [self.cachedKeyStrokes count];
     }
     else if([string isEqualToString:@"\n"]) {
         [textField resignFirstResponder];
         // enter
         [self.cachedKeyStrokes addObject:kEnterKey];
+        cachedKeyCount = [self.cachedKeyStrokes count];
     }
     else {
         // misc
         [self.cachedKeyStrokes addObject:string];
+        cachedKeyCount = [self.cachedKeyStrokes count];
     }
     
     return YES;
@@ -535,39 +586,48 @@ typedef enum {
 
 - (IBAction)escButtonPressed:(id)sender {
     [self.cachedKeyStrokes addObject:kEscKey];
+    cachedKeyCount = [self.cachedKeyStrokes count];
     [self.aTextField resignFirstResponder];
 }
 
 - (IBAction)upButtonPressed:(id)sender {
     [self.cachedKeyStrokes addObject:@"k"];
+    cachedKeyCount = [self.cachedKeyStrokes count];
 }
 
 - (IBAction)downButtonPressed:(id)sender {
     [self.cachedKeyStrokes addObject:@"j"];
+    cachedKeyCount = [self.cachedKeyStrokes count];
 }
 
 - (IBAction)rightButtonPressed:(id)sender {
     [self.cachedKeyStrokes addObject:@"l"];
+    cachedKeyCount = [self.cachedKeyStrokes count];
 }
 
 - (IBAction)leftButtonPressed:(id)sender {
     [self.cachedKeyStrokes addObject:@"h"];
+    cachedKeyCount = [self.cachedKeyStrokes count];
 }
 
 - (IBAction)upLeftButtonPressed:(id)sender {
     [self.cachedKeyStrokes addObject:@"y"];
+    cachedKeyCount = [self.cachedKeyStrokes count];
 }
 
 - (IBAction)upRightButtonPressed:(id)sender {
     [self.cachedKeyStrokes addObject:@"u"];
+    cachedKeyCount = [self.cachedKeyStrokes count];
 }
 
 - (IBAction)downLeftButtonPressed:(id)sender {
     [self.cachedKeyStrokes addObject:@"b"];
+    cachedKeyCount = [self.cachedKeyStrokes count];
 }
 
 - (IBAction)downRightButtonPressed:(id)sender {
     [self.cachedKeyStrokes addObject:@"n"];
+    cachedKeyCount = [self.cachedKeyStrokes count];
 }
 
 - (IBAction)seedKeyPressed:(id)sender {
@@ -596,6 +656,7 @@ typedef enum {
     @synchronized(self.cachedKeyStrokes){
         [self.cachedKeyStrokes removeAllObjects];
         [self.cachedKeyStrokes addObject:@"i"];
+        cachedKeyCount = [self.cachedKeyStrokes count];
     }
 }
 
@@ -641,6 +702,10 @@ typedef enum {
         case BrogueGameEventOpenedInventory:
             _ignoreSideBarInteraction = YES;
             self.blockMagView = YES;
+            
+            if (!_areDirectionalControlsHidden) {
+                [self hideDirectionalArrows];
+            }
             break;
         // pretty much every inventory option
         case BrogueGameEventInventoryItemAction:
@@ -649,6 +714,9 @@ typedef enum {
         case BrogueGameEventClosedInventory:
             _ignoreSideBarInteraction = NO;
             self.blockMagView = NO;
+            if (!_areDirectionalControlsHidden) {
+                [self showDirectionalArrows];
+            }
             break;
         case BrogueGameEventKeyBoardInputRequired:
             [self showKeyboard];
@@ -665,6 +733,7 @@ typedef enum {
             [self showAuxillaryScreensWithDirectionalControls:YES];
             @synchronized(self.cachedTouches) {
                 [self.cachedTouches removeAllObjects];
+                cachedTouchCount = [self.cachedTouches count];
             }
             self.blockMagView = NO;
             break;

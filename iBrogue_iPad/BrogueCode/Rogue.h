@@ -145,7 +145,8 @@
 
 #define FLOOR_CHAR		0x00b7
 #define LIQUID_CHAR		'~'
-#define CHASM_CHAR		0x2237
+// Seth: changing this character... we use a ton of them
+#define CHASM_CHAR		':'  // 0x2237
 #define TRAP_CHAR		0x25c7
 #define FIRE_CHAR		0x22CF
 #define GRASS_CHAR		'"'
@@ -211,8 +212,12 @@
 #define CHAIN_LEFT			'-'
 #define CHAIN_RIGHT			'-'
 
-#define BAD_MAGIC_CHAR		0x29F2
-#define GOOD_MAGIC_CHAR		0x29F3
+// Seth: the two original defintions are not defined in my font set
+#define BAD_MAGIC_CHAR		0x1ECD
+#define GOOD_MAGIC_CHAR		0x00F2
+
+//#define BAD_MAGIC_CHAR		0x29F2
+//#define GOOD_MAGIC_CHAR		0x29F3
 
 #else
 

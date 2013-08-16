@@ -34,12 +34,17 @@
 #import <QuartzCore/QuartzCore.h>
 #import "iRate.h"
 
+#import "MGBenchmark.h"
+#import "MGBenchmarkSession.h"
+
 #define kRateScore 3000
 
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
 
 // Objective-c Bridge
+
+static CGColorSpaceRef _colorSpace;
 
 short mouseX, mouseY;
 
@@ -60,6 +65,10 @@ short mouseX, mouseY;
     self = [super init];
     if (self) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+        
+        if (!_colorSpace) {
+            _colorSpace = CGColorSpaceCreateDeviceRGB();
+        }
     }
     return self;
 }
@@ -80,36 +89,38 @@ short mouseX, mouseY;
 
 //  plotChar: plots inputChar at (xLoc, yLoc) with specified background and foreground colors.
 //  Color components are given in ints from 0 to 100.
-static CGColorSpaceRef _colorSpace;
+
 void plotChar(uchar inputChar,
 			  short xLoc, short yLoc,
 			  short foreRed, short foreGreen, short foreBlue,
 			  short backRed, short backGreen, short backBlue) {
-    
-    if (!_colorSpace) {
-        _colorSpace = CGColorSpaceCreateDeviceRGB();
+//[MGBenchmark start:@"plot"];
+//    @autoreleasepool {
+    CGColorRef backColor = nil;
+    if (backRed != 0 || backGreen != 0 || backBlue != 0) {
+        CGFloat backComponents[] = {(CGFloat)(backRed * .01), (CGFloat)(backGreen * .01), (CGFloat)(backBlue * .01), 1.};
+        backColor = CGColorCreate(_colorSpace, backComponents);
     }
-    
-    @autoreleasepool {
-        CGColorRef backColor = nil;
-        if (backRed != 0 || backGreen != 0 || backBlue != 0) {
-            CGFloat backComponents[] = {(CGFloat)(backRed/100.), (CGFloat)(backGreen/100.), (CGFloat)(backBlue/100.), 1.};
-            backColor = CGColorCreate(_colorSpace, backComponents);
-        }
 
-        CGColorRef foreColor = nil;
+    CGColorRef foreColor = nil;
+    if (inputChar != ' ') {
         if ((foreRed != 0 || foreGreen != 0 || foreBlue != 0) && inputChar != ' ') {
-            CGFloat foreComponents[] = {(CGFloat)(foreRed/100.), (CGFloat)(foreGreen/100.), (CGFloat)(foreBlue/100.), 1.};
+            CGFloat foreComponents[] = {(CGFloat)(foreRed * .01), (CGFloat)(foreGreen * .01), (CGFloat)(foreBlue * .01), 1.};
             foreColor = CGColorCreate(_colorSpace, foreComponents);
         }
-
-        NSString *uniLetter;
-        if (inputChar > 127 && inputChar != 183) {
-            uniLetter = [NSString stringWithCharacters:&inputChar length:1];
-        }
-        
-        [theMainDisplay setString:uniLetter withBackgroundColor:backColor letterColor:foreColor atLocationX:xLoc locationY:yLoc withChar:inputChar];
     }
+    
+
+    NSString *uniLetter;
+    if (inputChar > 127 && inputChar != 183) {
+        uniLetter = [NSString stringWithCharacters:&inputChar length:1];
+    }
+    
+    [theMainDisplay setString:uniLetter withBackgroundColor:backColor letterColor:foreColor atLocationX:xLoc locationY:yLoc withChar:inputChar];
+ //   }
+    
+//    [[MGBenchmark session:@"plot"] total];
+//    [MGBenchmark finish:@"plot"];
 }
 
 __unused void pausingTimerStartsNow() {
@@ -128,8 +139,8 @@ boolean pauseForMilliseconds(short milliseconds) {
     BOOL hasEvent = NO;
     
     [NSThread sleepForTimeInterval:milliseconds/1000.];
-        
-    if ([viewController cachedTouchesCount] > 0 || [viewController cachedKeyStrokeCount] > 0) {
+    
+    if ([viewController hasEvent]) {
         hasEvent = YES;
     }
 
@@ -149,7 +160,7 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
             commitDraws();
         }
         
-        if ([viewController cachedKeyStrokeCount] > 0) {
+        if ([viewController hasKeyEvent]) {
             returnEvent->eventType = KEYSTROKE;
             returnEvent->param1 = [viewController dequeKeyStroke];
             //printf("\nKey pressed: %i", returnEvent->param1);
@@ -159,7 +170,7 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
             clearCursor();
             break;
         }
-        if ([viewController cachedTouchesCount] > 0) {
+        if ([viewController hasTouchEvent]) {
             iBTouch touch = [viewController getTouchAtIndex:0];
             [viewController removeTouchAtIndex:0];
             UITouchPhase phase = touch.phase;

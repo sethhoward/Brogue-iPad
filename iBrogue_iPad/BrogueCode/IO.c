@@ -2209,7 +2209,7 @@ void executeKeystroke(signed long keystroke, boolean controlKey, boolean shiftKe
 		case EXPLORE_KEY:
 			considerCautiousMode();
             // Seth:
-			explore(controlKey ? 1 : 15);
+			explore(controlKey ? 1 : 20);
 			break;
 		case AUTOPLAY_KEY:
 			autoPlayLevel(controlKey);

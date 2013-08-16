@@ -27,11 +27,11 @@
 
 #define kROWS		(30+3+1)
 #define kCOLS		100
-#define FONT_SIZE	13
+#define FONT_SIZE	17
 
 @interface Viewport : ACMagnifyingView
 
-- (void)setString:(NSString *)c withBackgroundColor:(CGColorRef)bgColor letterColor:(CGColorRef)letterColor atLocationX:(short)x locationY:(short)y withChar:(unsigned short)character;
+- (void)setString:(NSString *)cString withBackgroundColor:(CGColorRef)bgColor letterColor:(CGColorRef)letterColor atLocationX:(short)x locationY:(short)y withChar:(unsigned short)character;
 
 @property (nonatomic, assign) short hWindow;
 @property (nonatomic, assign) short vWindow;
