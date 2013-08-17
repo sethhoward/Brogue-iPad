@@ -49,11 +49,13 @@
 
 @implementation Viewport {
     @private
+    CGGlyph glyphString[1];
     NSString *_letterArray[kCOLS][kROWS];
     unsigned short **_charArray;
 	CGColorRef **_bgColorArray;
 	CGColorRef **_letterColorArray;
 	CGRect _rectArray[kCOLS][kROWS];
+    CGPoint _stringOriginArray[kCOLS][kROWS];    //we're going to do the string processing on the background thread
 }
 
 - (id)initWithFrame:(CGRect)rect {
@@ -108,6 +110,39 @@
 }
 
 - (void)setString:(NSString *)cString withBackgroundColor:(CGColorRef)bgColor letterColor:(CGColorRef)letterColor atLocationX:(short)x locationY:(short)y withChar:(unsigned short)character {
+    
+    CGSize stringSize;
+    
+    if (character > 127 && character != FLOOR_CHAR) {
+        stringSize = _slowFontCharacterSize;
+        // great code to include if you can run arial unicode. sadly arial unicode crashes ios 6
+        id cachedSize = [self.characterSizeDictionary objectForKey:cString];
+        if (cachedSize == nil) {
+            stringSize = [cString sizeWithFont:[self slowFont]];	// quite expensive
+            [self.characterSizeDictionary setObject:[NSValue valueWithCGSize:stringSize] forKey:cString];
+        } else {
+            stringSize = [[self.characterSizeDictionary objectForKey:cString] CGSizeValue];
+        }
+    }
+    else {
+        stringSize = _fastFontCharacterSize;
+    }
+    
+    __block CGPoint stringOrigin = [self originForCharacterSize:stringSize andRect:_rectArray[x][y]];
+    
+    if (character == FOLIAGE_CHAR) {
+        stringOrigin.x++;
+    }
+    else if(character == WEAPON_CHAR) {
+        stringOrigin.x += 2;
+    }
+    else if (character == FLOOR_CHAR) {
+        character = 46;
+        
+        // fudge the position with some magic numbers
+        stringOrigin.y -= 4;
+    }
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         CGColorRelease(_bgColorArray[x][y]);
         CGColorRelease(_letterColorArray[x][y]);
@@ -116,22 +151,20 @@
         _bgColorArray[x][y] = bgColor;
         _letterColorArray[x][y] = letterColor;
         _charArray[x][y] = character;
+        _stringOriginArray[x][y] = stringOrigin;
         
         // consider keeping
-        /*
-        if (character > 127 && character != 183) {
-            CGSize stringSize = [c sizeWithFont:[self slowFont]];
-            
-            if (stringSize.width >= _rectArray[x][y].size.width) { // custom update rectangle
+        
+        if (character == FOLIAGE_CHAR) {            
+     //       if (stringSize.width >= _rectArray[x][y].size.width) { // custom update rectangle
                 CGRect updateRect;
                 updateRect.origin.y = _rectArray[x][y].origin.y;
                 updateRect.size.height = _rectArray[x][y].size.height;
-                updateRect.origin.x = _rectArray[x][y].origin.x + (_rectArray[x][y].size.width - stringSize.width - 10)/2;
-                updateRect.size.width = stringSize.width + 10;
+                updateRect.origin.x = _rectArray[x][y].origin.x + (_rectArray[x][y].size.width - _slowFontCharacterSize.width - 10)/2;
+                updateRect.size.width = _slowFontCharacterSize.width + 10;
                 [self setNeedsDisplayInRect:updateRect];
-            }
+       //     }
         }
-        */
         
         [self setNeedsDisplayInRect:_rectArray[x][y]];
     });
@@ -229,7 +262,7 @@
         for (int i = startX; i < endX; i++ ) {
             // skip spaces... if there's isn't something to draw it's a space guaranteed
             if (_charArray[i][j] != 32) {
-                [self drawTheString:_letterArray[i][j] centeredIn:_rectArray[i][j] withLetterColor:_letterColorArray[i][j] withChar:_charArray[i][j]];
+                [self drawTheString:_letterArray[i][j] centeredIn:_rectArray[i][j] withLetterColor:_letterColorArray[i][j] withChar:_charArray[i][j] stringOrigin:_stringOriginArray[i][j]];
             }
         }
     }
@@ -239,8 +272,7 @@
 }
 
 // drawTheString vars declared outside the method. Seem to speed things up just a hair
-CGGlyph glyphString[1];
-- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withLetterColor:(CGColorRef)letterColor withChar:(unsigned short)character {
+- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withLetterColor:(CGColorRef)letterColor withChar:(unsigned short)character stringOrigin:(CGPoint)stringOrigin{
     // only switch color context when needed. This call is expensive
     if (!CGColorEqualToColor(letterColor, _prevColor)) {
         CGContextSetFillColorWithColor(_context, letterColor);
@@ -248,19 +280,10 @@ CGGlyph glyphString[1];
     }
     
     // we're not in ascii country... draw the unicode char the only way we know how
-    if (character > 127 && character != 183) {
-        CGSize stringSize = _slowFontCharacterSize;
-        // great code to include if you can run arial unicode. sadly arial unicode crashes ios 6
-       /* id cachedSize = [self.characterSizeDictionary objectForKey:theString];
-        if (cachedSize == nil) {
-            stringSize = [theString sizeWithFont:[self slowFont]];	// quite expensive
-            [self.characterSizeDictionary setObject:[NSValue valueWithCGSize:stringSize] forKey:theString];
-        } else {
-            stringSize = [[self.characterSizeDictionary objectForKey:theString] CGSizeValue];
-        }*/
+    if (character > 127) {
+              
+     //   CGPoint stringOrigin = _stringOriginArray//[self originForCharacterSize:stringSize andRect:rect];
         
-        CGPoint stringOrigin = [self originForCharacterSize:stringSize andRect:rect];
-
         [theString drawAtPoint:stringOrigin withFont:[self slowFont]];
         
         // seems like we need to change the context back or we render incorrect glyps. We do it here assuming we call this less than the show glyphs below
@@ -270,15 +293,10 @@ CGGlyph glyphString[1];
     }
     // plain jane characters. Draw them nice and fast.
     else {
-        CGPoint stringOrigin = [self originForCharacterSize:_fastFontCharacterSize andRect:rect];
+        //CGPoint stringOrigin = [self originForCharacterSize:_fastFontCharacterSize andRect:rect];
         // we have a unicode character. Draw it with drawAtPoint
         // if it's one of those fancy centered dots (183) toss it for a period. It's used a lot and slows things down
-        if (character == 183) {
-            character = 46;
-            
-            // fudge the position with some magic numbers
-            stringOrigin.y -= 4;
-        }
+        
         
         glyphString[0] = character-29;
         CGContextShowGlyphsAtPoint(_context, stringOrigin.x, stringOrigin.y + FONT_SIZE, glyphString, 1);
@@ -327,6 +345,7 @@ CGGlyph glyphString[1];
             _charArray[i][j] = ' ';            
             _bgColorArray[i][j] = nil;
             _letterColorArray[i][j] = nil;
+            _stringOriginArray[i][j] = CGPointZero;
         }
     }
 }
