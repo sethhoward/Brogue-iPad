@@ -81,8 +81,8 @@
     dispatch_once(&onceToken, ^{
         self.characterSizeDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
         // TODO: this should just grab the screens bounds... brogue does well with just about any size
-        self.hWindow = 1024;
-        self.vWindow = 768;
+        self.hWindow = [[UIScreen mainScreen] bounds].size.height;
+        self.vWindow = [[UIScreen mainScreen] bounds].size.width;
  
         // Toss the arrays onto the heap
         _charArray = (unsigned short **)malloc(kCOLS * sizeof(unsigned short *));
@@ -103,7 +103,6 @@
         _cgFont = CGFontCreateWithFontName((CFStringRef)@"Monaco");
         _fastFontCharacterSize = [@"M" sizeWithFont:[self fastFont]];
         _slowFontCharacterSize = [@"M" sizeWithFont:[self slowFont]];
-        //_slowFontCharacterSize.width += 1;
         _colorSpace = CGColorSpaceCreateDeviceRGB();
     });
 }
@@ -250,14 +249,15 @@ CGGlyph glyphString[1];
     
     // we're not in ascii country... draw the unicode char the only way we know how
     if (character > 127 && character != 183) {
-        CGSize stringSize;
-        id cachedSize = [self.characterSizeDictionary objectForKey:theString];
+        CGSize stringSize = _slowFontCharacterSize;
+        // great code to include if you can run arial unicode. sadly arial unicode crashes ios 6
+       /* id cachedSize = [self.characterSizeDictionary objectForKey:theString];
         if (cachedSize == nil) {
             stringSize = [theString sizeWithFont:[self slowFont]];	// quite expensive
             [self.characterSizeDictionary setObject:[NSValue valueWithCGSize:stringSize] forKey:theString];
         } else {
             stringSize = [[self.characterSizeDictionary objectForKey:theString] CGSizeValue];
-        }
+        }*/
         
         CGPoint stringOrigin = [self originForCharacterSize:stringSize andRect:rect];
 

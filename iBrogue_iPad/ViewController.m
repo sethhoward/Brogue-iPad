@@ -72,7 +72,6 @@ typedef enum {
 
 @implementation ViewController {
     @private
-    __unused NSTimer __strong *_autoSaveTimer;
     CGPoint _lastTouchLocation;
     NSTimer __strong *_stationaryTouchTimer;
     BOOL _areDirectionalControlsHidden;
