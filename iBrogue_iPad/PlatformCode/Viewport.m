@@ -165,8 +165,9 @@
                 [self setNeedsDisplayInRect:updateRect];
        //     }
         }
-        
-        [self setNeedsDisplayInRect:_rectArray[x][y]];
+        else {
+            [self setNeedsDisplayInRect:_rectArray[x][y]];
+        }
     });
     
 }
@@ -328,14 +329,6 @@
                                          ((int) (vPx * (j+1) / kROWS)) - ((int) (vPx * (j) / kROWS)));//vPixels + 1);
         }
     }
-}
-
-- (BOOL)isSHColorBlack:(CGColorRef)color {
-    if (!color) {
-        return YES;
-    }
-    
-    return NO;
 }
 
 - (void)clearColors {
