@@ -29,12 +29,7 @@
     [[iRate sharedInstance] setRemindPeriod:0.];
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    self.viewController = [[ViewController alloc] initWithNibName:@"ViewController" bundle:nil];
-    
+- (void)showSplashScreen {
     __block UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default-Landscape.png"]];
     [self.viewController.view addSubview:imageView];
     
@@ -44,10 +39,22 @@
         [imageView removeFromSuperview];
         imageView = nil;
     });
+}
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    [application setStatusBarHidden:YES];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    // Override point for customization after application launch.
+    self.viewController = [[ViewController alloc] initWithNibName:@"ViewController" bundle:nil];
+    
+    [self showSplashScreen];
     
     if ([[GameSettings sharedInstance] allowShake]) {
         application.applicationSupportsShakeToEdit = YES;
     }
+    
+  //  [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];

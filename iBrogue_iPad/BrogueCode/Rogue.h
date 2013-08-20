@@ -176,7 +176,7 @@
 #define FOOD_CHAR		':'
 #define SCROLL_CHAR		0x266A//'?'		// 0x039E
 //#define RING_CHAR		0x26AA //0xffee
-#define RING_CHAR		0xffee
+#define RING_CHAR		'o' //0xffee    // Seth: does not exist
 #define CHARM_CHAR      0x03DE
 #define POTION_CHAR		'!'
 #define ARMOR_CHAR		'['

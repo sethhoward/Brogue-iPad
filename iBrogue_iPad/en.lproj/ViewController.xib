@@ -171,7 +171,7 @@
 										<reference key="IBUIFont" ref="136923149"/>
 									</object>
 								</array>
-								<string key="NSFrame">{{-4, 483}, {794, 266}}</string>
+								<string key="NSFrame">{{-4, 501}, {794, 266}}</string>
 								<reference key="NSSuperview" ref="918948232"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="207917074"/>
@@ -507,7 +507,7 @@
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 									</object>
 								</array>
-								<string key="NSFrame">{{-2, 530}, {213, 214}}</string>
+								<string key="NSFrame">{{-3, 565}, {213, 214}}</string>
 								<reference key="NSSuperview" ref="918948232"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="943159232"/>

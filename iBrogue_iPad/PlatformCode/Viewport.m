@@ -49,6 +49,7 @@
 
 @implementation Viewport {
     @private
+    CGGlyph glyphString[1];
     NSString *_letterArray[kCOLS][kROWS];
     unsigned short **_charArray;
 	CGColorRef **_bgColorArray;
@@ -117,6 +118,9 @@
         _bgColorArray[x][y] = bgColor;
         _letterColorArray[x][y] = letterColor;
         _charArray[x][y] = character;
+        _stringOriginArray[x][y] = stringOrigin;
+        
+        // consider keeping
         
         // consider keeping
         /*
@@ -270,15 +274,9 @@ CGGlyph glyphString[1];
     }
     // plain jane characters. Draw them nice and fast.
     else {
-        CGPoint stringOrigin = [self originForCharacterSize:_fastFontCharacterSize andRect:rect];
+        //CGPoint stringOrigin = [self originForCharacterSize:_fastFontCharacterSize andRect:rect];
         // we have a unicode character. Draw it with drawAtPoint
         // if it's one of those fancy centered dots (183) toss it for a period. It's used a lot and slows things down
-        if (character == 183) {
-            character = 46;
-            
-            // fudge the position with some magic numbers
-            stringOrigin.y -= 4;
-        }
         
         glyphString[0] = character-29;
         CGContextShowGlyphsAtPoint(_context, stringOrigin.x, stringOrigin.y + FONT_SIZE, glyphString, 1);
@@ -312,14 +310,6 @@ CGGlyph glyphString[1];
     }
 }
 
-- (BOOL)isSHColorBlack:(CGColorRef)color {
-    if (!color) {
-        return YES;
-    }
-    
-    return NO;
-}
-
 - (void)clearColors {
     for (int j = 0; j < kROWS; j++) {
 		for (int i = 0; i < kCOLS; i++) {
@@ -327,6 +317,7 @@ CGGlyph glyphString[1];
             _charArray[i][j] = ' ';            
             _bgColorArray[i][j] = nil;
             _letterColorArray[i][j] = nil;
+            _stringOriginArray[i][j] = CGPointZero;
         }
     }
 }
