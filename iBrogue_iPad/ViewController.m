@@ -417,7 +417,7 @@ typedef enum {
     [self stopStationaryTouchTimer];
     
     // under certain conditions we don't actually want to pass through a 'mouse up'
-    if (!_ishandlingDoubleTap && !_isSideBarSingleTap) {
+    if ((!_ishandlingDoubleTap && !_isSideBarSingleTap) || _lastBrogueGameEvent == BrogueGameEventOpenedInventory) {
         [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
             // Get a single touch and it's location
             [self addUITouchToCache:touch];
