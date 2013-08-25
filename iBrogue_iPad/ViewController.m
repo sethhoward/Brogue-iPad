@@ -64,25 +64,23 @@ typedef enum {
 
 // gestures
 @property (nonatomic, strong) UIPinchGestureRecognizer *directionalPinch;
+@property (nonatomic, assign) CGPoint lastTouchLocation;
+@property (nonatomic, strong) NSTimer  *stationaryTouchTimer;
+
+@property (nonatomic, assign) BOOL areDirectionalControlsHidden;
+@property (nonatomic, assign, getter = isSideBarSingleTap) BOOL sideBarSingleTap;       // handles special touch cases when user touches the side bar
+@property (nonatomic, assign, getter = ishandlingDoubleTap) BOOL ishandlingDoubleTap;      // handles special double tap touch case
+@property (nonatomic, assign) BrogueGameEvent lastBrogueGameEvent;
+@property (nonatomic, assign) BOOL ignoreSideBarInteraction; // we could check if the last event was something like BrogueGameEventOpenedInventory but too fragile
+@property (nonatomic, assign) NSUInteger cachedKeyCount;
+@property (nonatomic, assign) NSUInteger cachedTouchCount;
 
 - (void)showTitle;
 - (void)showAuxillaryScreensWithDirectionalControls:(BOOL)controls;
 
 @end
 
-@implementation ViewController {
-    @private
-    CGPoint _lastTouchLocation;
-    NSTimer __strong *_stationaryTouchTimer;
-    BOOL _areDirectionalControlsHidden;
-    // TODO: set this to ivars and dynamic set. Pressing in the left side of the screen in high scores does not register the touch 
-    BOOL _isSideBarSingleTap;       // handles special touch cases when user touches the side bar
-    BOOL _ishandlingDoubleTap;      // handles special double tap touch case
-    BrogueGameEvent _lastBrogueGameEvent;
-    BOOL _ignoreSideBarInteraction; // we could check if the last event was something like BrogueGameEventOpenedInventory but too fragile
-    NSUInteger cachedKeyCount;
-    NSUInteger cachedTouchCount;
-}
+@implementation ViewController
 @dynamic hasEvent;
 @dynamic hasTouchEvent;
 @synthesize hasKeyEvent;
@@ -172,7 +170,7 @@ typedef enum {
     @synchronized(self.cachedKeyStrokes) {
         [self.cachedKeyStrokes removeAllObjects];
         [self.cachedKeyStrokes addObject:kESC_Key];
-        cachedKeyCount = [self.cachedKeyStrokes count];
+        self.cachedKeyCount = [self.cachedKeyStrokes count];
     }
 }
 
@@ -282,7 +280,7 @@ typedef enum {
         
         [self.cachedTouches addObject:[NSValue value:&touchUp withObjCType:@encode(iBTouch)]];
         
-        cachedTouchCount = [self.cachedTouches count];
+        self.cachedTouchCount = [self.cachedTouches count];
     }
 }
 
@@ -301,11 +299,11 @@ typedef enum {
         
         _lastTouchLocation = ibtouch.location;
         [self.cachedTouches addObject:[NSValue value:&ibtouch withObjCType:@encode(iBTouch)]];
-        cachedTouchCount = [self.cachedTouches count];
+        self.cachedTouchCount = [self.cachedTouches count];
     }
 }
 
-- (iBTouch)getTouchAtIndex:(uint)index {
+- (iBTouch)getTouchAtIndex:(NSUInteger)index {
     NSValue *anObj = [self.cachedTouches objectAtIndex:index];
     iBTouch touch;
     [anObj getValue:&touch];
@@ -313,17 +311,17 @@ typedef enum {
     return touch;
 }
 
-- (void)removeTouchAtIndex:(uint)index {
+- (void)removeTouchAtIndex:(NSUInteger)index {
     @synchronized(self.cachedTouches){
         if ([self.cachedTouches count] > 0) {
             [self.cachedTouches removeObjectAtIndex:index];
-            cachedTouchCount = [self.cachedTouches count];
+            self.cachedTouchCount = [self.cachedTouches count];
         }
     }
 }
 
-- (uint)cachedTouchesCount {
-    return cachedTouchCount;
+- (NSUInteger)cachedTouchesCount {
+    return _cachedTouchCount;
 }
 
 - (void)handleStationary:(NSTimer *)timer {
@@ -343,17 +341,17 @@ typedef enum {
     @synchronized(self.cachedKeyStrokes){
         [self.cachedKeyStrokes removeAllObjects];
         [self.cachedKeyStrokes addObject:kESC_Key];
-        cachedKeyCount = [self.cachedKeyStrokes count];
+        self.cachedKeyCount = [self.cachedKeyStrokes count];
     }
     
     @synchronized(self.cachedTouches) {
         [self.cachedTouches removeAllObjects];
-        cachedTouchCount = [self.cachedTouches count];
+        self.cachedTouchCount = [self.cachedTouches count];
     }
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-     _isSideBarSingleTap = NO;
+     self.sideBarSingleTap = NO;
 
     [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
         CGPoint touchPoint = [touch locationInView:theMainDisplay];
@@ -377,7 +375,7 @@ typedef enum {
                     
                     // setting flag to handle some special logic on touchesEnded
                     _ishandlingDoubleTap = YES;
-                    cachedTouchCount = [self.cachedTouches count];
+                    self.cachedTouchCount = [self.cachedTouches count];
                 }
             }
         }
@@ -392,10 +390,10 @@ typedef enum {
                     touchMoved.phase = UITouchPhaseMoved;
                     touchMoved.location = touchPoint;
                     [self.cachedTouches addObject:[NSValue value:&touchMoved withObjCType:@encode(iBTouch)]];
-                    cachedTouchCount = [self.cachedTouches count];
+                    self.cachedTouchCount = [self.cachedTouches count];
                 }
                 
-                _isSideBarSingleTap = YES;
+                self.sideBarSingleTap = YES;
             }
             
             // Get a single touch and it's location
@@ -417,7 +415,7 @@ typedef enum {
     [self stopStationaryTouchTimer];
     
     // under certain conditions we don't actually want to pass through a 'mouse up'
-    if ((!_ishandlingDoubleTap && !_isSideBarSingleTap) || _lastBrogueGameEvent == BrogueGameEventOpenedInventory) {
+    if ((!self.ishandlingDoubleTap && !self.isSideBarSingleTap) || self.lastBrogueGameEvent == BrogueGameEventOpenedInventory) {
         [touches enumerateObjectsUsingBlock:^(UITouch *touch, BOOL *stop) {
             // Get a single touch and it's location
             [self addUITouchToCache:touch];
@@ -516,15 +514,15 @@ typedef enum {
     });
 }
 
-- (uint)cachedKeyStrokeCount {
-    return cachedKeyCount;
+- (NSUInteger)cachedKeyStrokeCount {
+    return _cachedKeyCount;
 }
 
 - (char)dequeKeyStroke {
     NSString *keyStroke = [self.cachedKeyStrokes objectAtIndex:0];
     @synchronized(self.cachedKeyStrokes){
         [self.cachedKeyStrokes removeObjectAtIndex:0];
-        cachedKeyCount = [self.cachedKeyStrokes count];
+        _cachedKeyCount = [self.cachedKeyStrokes count];
     }
     
     return [keyStroke characterAtIndex:0];
@@ -540,7 +538,7 @@ typedef enum {
 - (void)didHideKeyboard {
     if ([self.cachedKeyStrokes count] == 0) {
         [self.cachedKeyStrokes addObject:kESC_Key];
-        cachedKeyCount = [self.cachedKeyStrokes count];
+        self.cachedKeyCount = [self.cachedKeyStrokes count];
     }
 
     self.escButton.hidden = YES;
@@ -552,30 +550,30 @@ typedef enum {
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [self.cachedKeyStrokes addObject:kEnterKey];
-    cachedKeyCount = [self.cachedKeyStrokes count];
+    self.cachedKeyCount = [self.cachedKeyStrokes count];
     [textField resignFirstResponder];
     return YES;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     const char *_char = [string cStringUsingEncoding:NSUTF8StringEncoding];
-    int isBackSpace = strcmp(_char, "\b");
+    NSInteger isBackSpace = strcmp(_char, "\b");
     
     if (isBackSpace == -8) {
         // is backspace
         [self.cachedKeyStrokes addObject:kBackSpaceKey];
-        cachedKeyCount = [self.cachedKeyStrokes count];
+        self.cachedKeyCount = [self.cachedKeyStrokes count];
     }
     else if([string isEqualToString:@"\n"]) {
         [textField resignFirstResponder];
         // enter
         [self.cachedKeyStrokes addObject:kEnterKey];
-        cachedKeyCount = [self.cachedKeyStrokes count];
+        self.cachedKeyCount = [self.cachedKeyStrokes count];
     }
     else {
         // misc
         [self.cachedKeyStrokes addObject:string];
-        cachedKeyCount = [self.cachedKeyStrokes count];
+        self.cachedKeyCount = [self.cachedKeyStrokes count];
     }
     
     return YES;
@@ -585,48 +583,48 @@ typedef enum {
 
 - (IBAction)escButtonPressed:(id)sender {
     [self.cachedKeyStrokes addObject:kEscKey];
-    cachedKeyCount = [self.cachedKeyStrokes count];
+   self. cachedKeyCount = [self.cachedKeyStrokes count];
     [self.aTextField resignFirstResponder];
 }
 
 - (IBAction)upButtonPressed:(id)sender {
     [self.cachedKeyStrokes addObject:@"k"];
-    cachedKeyCount = [self.cachedKeyStrokes count];
+    self.cachedKeyCount = [self.cachedKeyStrokes count];
 }
 
 - (IBAction)downButtonPressed:(id)sender {
     [self.cachedKeyStrokes addObject:@"j"];
-    cachedKeyCount = [self.cachedKeyStrokes count];
+    self.cachedKeyCount = [self.cachedKeyStrokes count];
 }
 
 - (IBAction)rightButtonPressed:(id)sender {
     [self.cachedKeyStrokes addObject:@"l"];
-    cachedKeyCount = [self.cachedKeyStrokes count];
+    self.cachedKeyCount = [self.cachedKeyStrokes count];
 }
 
 - (IBAction)leftButtonPressed:(id)sender {
     [self.cachedKeyStrokes addObject:@"h"];
-    cachedKeyCount = [self.cachedKeyStrokes count];
+    self.cachedKeyCount = [self.cachedKeyStrokes count];
 }
 
 - (IBAction)upLeftButtonPressed:(id)sender {
     [self.cachedKeyStrokes addObject:@"y"];
-    cachedKeyCount = [self.cachedKeyStrokes count];
+    self.cachedKeyCount = [self.cachedKeyStrokes count];
 }
 
 - (IBAction)upRightButtonPressed:(id)sender {
     [self.cachedKeyStrokes addObject:@"u"];
-    cachedKeyCount = [self.cachedKeyStrokes count];
+    self.cachedKeyCount = [self.cachedKeyStrokes count];
 }
 
 - (IBAction)downLeftButtonPressed:(id)sender {
     [self.cachedKeyStrokes addObject:@"b"];
-    cachedKeyCount = [self.cachedKeyStrokes count];
+    self.cachedKeyCount = [self.cachedKeyStrokes count];
 }
 
 - (IBAction)downRightButtonPressed:(id)sender {
     [self.cachedKeyStrokes addObject:@"n"];
-    cachedKeyCount = [self.cachedKeyStrokes count];
+    self.cachedKeyCount = [self.cachedKeyStrokes count];
 }
 
 - (IBAction)seedKeyPressed:(id)sender {
@@ -655,7 +653,7 @@ typedef enum {
     @synchronized(self.cachedKeyStrokes){
         [self.cachedKeyStrokes removeAllObjects];
         [self.cachedKeyStrokes addObject:@"i"];
-        cachedKeyCount = [self.cachedKeyStrokes count];
+        self.cachedKeyCount = [self.cachedKeyStrokes count];
     }
 }
 
@@ -732,7 +730,7 @@ typedef enum {
             [self showAuxillaryScreensWithDirectionalControls:YES];
             @synchronized(self.cachedTouches) {
                 [self.cachedTouches removeAllObjects];
-                cachedTouchCount = [self.cachedTouches count];
+                self.cachedTouchCount = [self.cachedTouches count];
             }
             self.blockMagView = NO;
             break;

@@ -29,7 +29,6 @@
 #import "MGBenchmarkSession.h"
 
 @interface Viewport ()
-- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withLetterColor:(CGColorRef)letterColor withChar:(unsigned short)character;
 - (void)setHorizWindow:(short)hPx vertWindow:(short)vPx;
 
 @property (nonatomic, strong) UIFont *slowFont;
@@ -49,7 +48,7 @@
 
 @implementation Viewport {
     @private
-    CGGlyph glyphString[1];
+    CGGlyph _glyphString[1];
     NSString *_letterArray[kCOLS][kROWS];
     unsigned short **_charArray;
 	CGColorRef **_bgColorArray;
@@ -91,7 +90,7 @@
         _bgColorArray = (CGColorRef **)malloc(kCOLS * sizeof(CGColorRef *));
         _letterColorArray = (CGColorRef **)malloc(kCOLS * sizeof(CGColorRef *));
         
-        for (int c = 0; c < kCOLS; c++) {
+        for (NSInteger c = 0; c < kCOLS; c++) {
             _charArray[c] = (unsigned short *)malloc(kROWS * sizeof(unsigned short));
             _bgColorArray[c] = (CGColorRef *)malloc(kROWS * sizeof(CGColorRef));
             _letterColorArray[c] = (CGColorRef *)malloc(kROWS * sizeof(CGColorRef));
@@ -110,34 +109,10 @@
     });
 }
 
-- (void)setString:(NSString *)cString withBackgroundColor:(CGColorRef)bgColor letterColor:(CGColorRef)letterColor atLocationX:(short)x locationY:(short)y withChar:(unsigned short)character {
+- (void)setString:(NSString *)cString withBackgroundColor:(CGColorRef)bgColor letterColor:(CGColorRef)letterColor atLocationX:(short)x locationY:(short)y withChar:(unsigned short)character { 
+    __block CGPoint stringOrigin = [self getStringOriginWithCharacter:character andString:cString atX:x andY:y];
     
-    CGSize stringSize;
-    
-    if (character > 127 && character != FLOOR_CHAR) {
-        stringSize = _slowFontCharacterSize;
-        // great code to include if you can run arial unicode. sadly arial unicode crashes ios 6
-        id cachedSize = [self.characterSizeDictionary objectForKey:cString];
-        if (cachedSize == nil) {
-            stringSize = [cString sizeWithFont:[self slowFont]];	// quite expensive
-            [self.characterSizeDictionary setObject:[NSValue valueWithCGSize:stringSize] forKey:cString];
-        } else {
-            stringSize = [[self.characterSizeDictionary objectForKey:cString] CGSizeValue];
-        }
-    }
-    else {
-        stringSize = _fastFontCharacterSize;
-    }
-    
-    __block CGPoint stringOrigin = [self originForCharacterSize:stringSize andRect:_rectArray[x][y]];
-    
-    if (character == FOLIAGE_CHAR) {
-        stringOrigin.x++;
-    }
-    else if(character == WEAPON_CHAR) {
-        stringOrigin.x += 2;
-    }
-    else if (character == FLOOR_CHAR) {
+    if (character == FLOOR_CHAR) {
         character = 46;
         
         // fudge the position with some magic numbers
@@ -154,34 +129,29 @@
         _charArray[x][y] = character;
         _stringOriginArray[x][y] = stringOrigin;
         
-        // consider keeping
-        
         if (character == FOLIAGE_CHAR) {            
-     //       if (stringSize.width >= _rectArray[x][y].size.width) { // custom update rectangle
-                CGRect updateRect;
-                updateRect.origin.y = _rectArray[x][y].origin.y;
-                updateRect.size.height = _rectArray[x][y].size.height;
-                updateRect.origin.x = _rectArray[x][y].origin.x + (_rectArray[x][y].size.width - _slowFontCharacterSize.width - 10)/2;
-                updateRect.size.width = _slowFontCharacterSize.width + 10;
-                [self setNeedsDisplayInRect:updateRect];
-       //     }
+            CGRect updateRect;
+            updateRect.origin.y = _rectArray[x][y].origin.y;
+            updateRect.size.height = _rectArray[x][y].size.height;
+            updateRect.origin.x = _rectArray[x][y].origin.x + (_rectArray[x][y].size.width - _slowFontCharacterSize.width - 10)/2;
+            updateRect.size.width = _slowFontCharacterSize.width + 10;
+            [self setNeedsDisplayInRect:updateRect];
         }
         else {
             [self setNeedsDisplayInRect:_rectArray[x][y]];
         }
     });
-    
 }
 
 #pragma mark - Draw Routines
 - (void)drawRect:(CGRect)rect {
 //    [MGBenchmark start:@"draw"];
 
-    int width = 0;
-    int startX = (int) (kCOLS * rect.origin.x / self.hWindow);
-    int endY = (int) (kCOLS * (rect.origin.y + rect.size.height + _vPixels - 1 ) / self.vWindow);
-    int endX = (int) (kCOLS * (rect.origin.x + rect.size.width + _hPixels - 1) / self.hWindow);
-    int startY = (int) (kROWS * rect.origin.y / self.vWindow);
+    NSInteger width = 0;
+    NSInteger startX = (NSInteger) (kCOLS * rect.origin.x / self.hWindow);
+    NSInteger endY = (NSInteger) (kCOLS * (rect.origin.y + rect.size.height + _vPixels - 1 ) / self.vWindow);
+    NSInteger endX = (NSInteger) (kCOLS * (rect.origin.x + rect.size.width + _hPixels - 1) / self.hWindow);
+    NSInteger startY = (NSInteger) (kROWS * rect.origin.y / self.vWindow);
 
     if (startX < 0) {
      startX = 0;
@@ -207,8 +177,8 @@
     // Also we combine rects that are the same color (striping across the row) and draw that as one rect instead of individual rects
     BOOL isColorEqual;
     CGColorRef color;
-    for (int j = startY; j < endY; j++ ) {
-        for (int i = startX; i < endX; i++ ) {
+    for (NSInteger j = startY; j < endY; j++ ) {
+        for (NSInteger i = startX; i < endX; i++ ) {
             color = _bgColorArray[i][j];
             isColorEqual = CGColorEqualToColor(color, _prevColor);
             
@@ -216,7 +186,7 @@
             if (!isColorEqual || i == endX - 1) {
                 // if it's not black draw it otherwise we skip drawing black rects to save time
                 if (_prevColor) {
-                    CGContextFillRect(_context, CGRectMake((int)startRect.origin.x, (int)startRect.origin.y, width, (int)_rectArray[i][j].size.height));
+                    CGContextFillRect(_context, CGRectMake((NSInteger)startRect.origin.x, (NSInteger)startRect.origin.y, width, (NSInteger)_rectArray[i][j].size.height));
                 }
                 
                 if (i == endX - 1) {
@@ -260,8 +230,8 @@
     CGContextSetFont(_context, _cgFont);
     
     // now draw the ascii chars
-    for (int j = startY; j < endY; j++ ) {
-        for (int i = startX; i < endX; i++ ) {
+    for (NSInteger j = startY; j < endY; j++ ) {
+        for (NSInteger i = startX; i < endX; i++ ) {
             // skip spaces... if there's isn't something to draw it's a space guaranteed
             if (_charArray[i][j] != 32) {
                 [self drawTheString:_letterArray[i][j] centeredIn:_rectArray[i][j] withLetterColor:_letterColorArray[i][j] withChar:_charArray[i][j] stringOrigin:_stringOriginArray[i][j]];
@@ -273,7 +243,6 @@
 //   [MGBenchmark finish:@"draw"];
 }
 
-// drawTheString vars declared outside the method. Seem to speed things up just a hair
 - (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withLetterColor:(CGColorRef)letterColor withChar:(unsigned short)character stringOrigin:(CGPoint)stringOrigin{
     // only switch color context when needed. This call is expensive
     if (!CGColorEqualToColor(letterColor, _prevColor)) {
@@ -283,8 +252,6 @@
     
     // we're not in ascii country... draw the unicode char the only way we know how
     if (character > 127) {
-              
-     //   CGPoint stringOrigin = _stringOriginArray//[self originForCharacterSize:stringSize andRect:rect];
         
         [theString drawAtPoint:stringOrigin withFont:[self slowFont]];
         
@@ -294,13 +261,9 @@
         CGContextSetFont(_context, _cgFont);
     }
     // plain jane characters. Draw them nice and fast.
-    else {
-        //CGPoint stringOrigin = [self originForCharacterSize:_fastFontCharacterSize andRect:rect];
-        // we have a unicode character. Draw it with drawAtPoint
-        // if it's one of those fancy centered dots (183) toss it for a period. It's used a lot and slows things down
-        
-        glyphString[0] = character-29;
-        CGContextShowGlyphsAtPoint(_context, stringOrigin.x, stringOrigin.y + FONT_SIZE, glyphString, 1);
+    else {        
+        _glyphString[0] = character-29;
+        CGContextShowGlyphsAtPoint(_context, stringOrigin.x, stringOrigin.y + FONT_SIZE, _glyphString, 1);
     }
 }
 
@@ -315,25 +278,55 @@
     return stringOrigin;
 }
 
+- (CGPoint)getStringOriginWithCharacter:(short)character andString:(NSString *)aString atX:(NSInteger)x andY:(NSInteger)y {
+    CGSize stringSize;
+    
+    if (character > 127 && character != FLOOR_CHAR) {
+        stringSize = _slowFontCharacterSize;
+        // great code to include if you can run arial unicode. sadly arial unicode crashes ios 6
+        id cachedSize = [self.characterSizeDictionary objectForKey:aString];
+        if (cachedSize == nil) {
+            stringSize = [aString sizeWithFont:[self slowFont]];	// quite expensive
+            [self.characterSizeDictionary setObject:[NSValue valueWithCGSize:stringSize] forKey:aString];
+        } else {
+            stringSize = [[self.characterSizeDictionary objectForKey:aString] CGSizeValue];
+        }
+    }
+    else {
+        stringSize = _fastFontCharacterSize;
+    }
+    
+    CGPoint stringOrigin = [self originForCharacterSize:stringSize andRect:_rectArray[x][y]];
+    
+    if (character == FOLIAGE_CHAR) {
+        stringOrigin.x++;
+    }
+    else if(character == WEAPON_CHAR) {
+        stringOrigin.x += 2;
+    }
+    
+    return stringOrigin;
+}
+
 - (void)setHorizWindow:(short)hPx vertWindow:(short)vPx {
     _hPixels = hPx / kCOLS;
     _vPixels = vPx / kROWS;
     self.hWindow = hPx;
     self.vWindow = vPx;
 
-    for (int j = 0; j < kROWS; j++) {
-        for (int i = 0; i < kCOLS; i++) {
-            _rectArray[i][j] = CGRectMake((int) (hPx * i / kCOLS),
-                                         (int) ((vPx * (j) / kROWS)),
-                                         ((int) (hPx * (i+1) / kCOLS)) - ((int) (hPx * (i) / kCOLS)),//hPixels + 1,
-                                         ((int) (vPx * (j+1) / kROWS)) - ((int) (vPx * (j) / kROWS)));//vPixels + 1);
+    for (NSInteger j = 0; j < kROWS; j++) {
+        for (NSInteger i = 0; i < kCOLS; i++) {
+            _rectArray[i][j] = CGRectMake((NSInteger) (hPx * i / kCOLS),
+                                         (NSInteger) ((vPx * (j) / kROWS)),
+                                         ((NSInteger) (hPx * (i+1) / kCOLS)) - ((NSInteger) (hPx * (i) / kCOLS)),//hPixels + 1,
+                                         ((NSInteger) (vPx * (j+1) / kROWS)) - ((NSInteger) (vPx * (j) / kROWS)));//vPixels + 1);
         }
     }
 }
 
 - (void)clearColors {
-    for (int j = 0; j < kROWS; j++) {
-		for (int i = 0; i < kCOLS; i++) {
+    for (NSInteger j = 0; j < kROWS; j++) {
+		for (NSInteger i = 0; i < kCOLS; i++) {
 			_letterArray[i][j] = @"";
             _charArray[i][j] = ' ';            
             _bgColorArray[i][j] = nil;
