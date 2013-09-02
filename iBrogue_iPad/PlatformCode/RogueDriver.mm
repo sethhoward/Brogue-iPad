@@ -104,10 +104,10 @@ void plotChar(uchar inputChar,
 
     CGColorRef foreColor = nil;
     if (inputChar != ' ') {
-        if ((foreRed != 0 || foreGreen != 0 || foreBlue != 0) && inputChar != ' ') {
+  //      if ((foreRed != 0 || foreGreen != 0 || foreBlue != 0) && inputChar != ' ') {
             CGFloat foreComponents[] = {(CGFloat)(foreRed * .01), (CGFloat)(foreGreen * .01), (CGFloat)(foreBlue * .01), 1.};
             foreColor = CGColorCreate(_colorSpace, foreComponents);
-        }
+  //      }
     }
     
 

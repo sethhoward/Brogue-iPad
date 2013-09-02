@@ -290,6 +290,10 @@ static GameCenterManager *sharedGameCenterManager;
 	// before you submit.  Otherwise you'll end up with a race condition between loadAchievementsWithCompletionHandler
 	// and reportAchievementWithCompletionHandler.  To avoid this, we fetch the current achievement list once,
 	// then cache it and keep it updated with any new achievements.
+    if (!identifier) {
+        return;
+    }
+    
 	if(self.earnedAchievementCache == nil){
 		[GKAchievement loadAchievementsWithCompletionHandler: ^(NSArray *scores, NSError *error){
 			if(error == nil){

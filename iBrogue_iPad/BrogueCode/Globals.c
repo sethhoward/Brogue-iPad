@@ -2242,8 +2242,8 @@ itemTable charmTable[NUMBER_CHARM_KINDS] = {
 
 const feat featTable[FEAT_COUNT] = {
     {"Pure Mage",       "Ascend without using fists or a weapon.", true, "brogue_pure_mage"},
-    {"Pure Warrior",    "Ascend without using a staff, wand or charm.", true},
-    {"Pacifist",        "Ascend without attacking a creature.", true, "pure_warrior"},
+    {"Pure Warrior",    "Ascend without using a staff, wand or charm.", true, "pure_warrior"},
+    {"Pacifist",        "Ascend without attacking a creature.", true, "brogue_pacifist"},
     {"Archivist",       "Ascend without drinking a potion or reading a scroll.", true, "brogue_archivist"},
     {"Companion",       "Journey with an ally through 20 depths.", false, "brogue_companion"},
     {"Specialist",      "Enchant an item up to or above +16.", false, "brogue_specialist"},

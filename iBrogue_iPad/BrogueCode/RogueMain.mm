@@ -1140,7 +1140,7 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
                 y++;
                 
                 // Seth:
- //               [[GameCenterManager sharedInstance] submitAchievement:[NSString stringWithUTF8String:featTable[i].achievementKey] percentComplete:100.];
+                [[GameCenterManager sharedInstance] submitAchievement:[NSString stringWithUTF8String:featTable[i].achievementKey] percentComplete:100.];
             }
         }
         
@@ -1231,6 +1231,10 @@ void victory(boolean superVictory) {
             sprintf(buf, "%s: %s", featTable[j].name, featTable[j].description);
             printString(buf, mapToWindowX(2), i, &advancementMessageColor, &black, dbuf);
             i++;
+            
+            // Seth:
+            NSString *temp = [NSString stringWithUTF8String:featTable[j].achievementKey ];
+            [[GameCenterManager sharedInstance] submitAchievement:[NSString stringWithUTF8String:featTable[j].achievementKey] percentComplete:100.];
         }
     }
 	

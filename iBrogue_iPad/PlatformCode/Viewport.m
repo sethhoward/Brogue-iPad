@@ -169,8 +169,9 @@
     _context = UIGraphicsGetCurrentContext();
     CGRect startRect = _rectArray[startX][startY];
 
-    _prevColor = _bgColorArray[startX][startY];
-    CGContextSetFillColorWithColor(_context, _prevColor);
+    _prevColor = nil;
+   // _prevColor = _bgColorArray[startX][startY];
+ //   CGContextSetFillColorWithColor(_context, _prevColor);
 
     // draw the background rect colors.
     // In order to speed things up we do not draw black rects
@@ -189,7 +190,7 @@
                     CGContextFillRect(_context, CGRectMake((NSInteger)startRect.origin.x, (NSInteger)startRect.origin.y, width, (NSInteger)_rectArray[i][j].size.height));
                 }
                 
-                if (i == endX - 1) {
+                if (i == endX - 1 || !_prevColor) {
                     if (color) {
                         CGContextSetFillColorWithColor(_context, color);
                         CGContextFillRect(_context, _rectArray[i][j]);
@@ -216,6 +217,9 @@
                     width += _rectArray[i][j].size.width;
                 }
             }
+            
+            // prevents draw issues on the left hand side of the screen where no color may be present
+            _prevColor = nil;
         }
         
         // end of the row, reset values
@@ -235,6 +239,8 @@
                 [self drawTheString:_letterArray[i][j] centeredIn:_rectArray[i][j] withLetterColor:_letterColorArray[i][j] withChar:_charArray[i][j] stringOrigin:_stringOriginArray[i][j]];
             }
         }
+        
+       // _prevColor = nil;
     }
     
 //   [[MGBenchmark session:@"draw"] total];

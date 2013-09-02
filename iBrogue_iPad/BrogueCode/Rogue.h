@@ -2344,7 +2344,7 @@ typedef struct feat {
 	char name[100];
     char description[200];
     boolean initialValue;
-    char achievementKey[100];
+    char achievementKey[50];
 } feat;
 
 #define PDS_FORBIDDEN   -1

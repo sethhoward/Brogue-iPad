@@ -640,8 +640,8 @@ typedef enum {
 }
 
 - (IBAction)showLeaderBoardButtonPressed:(id)sender {
-  //  [self rgGCshowLeaderBoardWithCategory:kBrogueHighScoreLeaderBoard];
-    [self rgGCshowAchievements];
+    [self rgGCshowLeaderBoardWithCategory:kBrogueHighScoreLeaderBoard];
+  //  [self rgGCshowAchievements];
 }
 
 - (IBAction)aboutButtonPressed:(id)sender {
@@ -725,6 +725,7 @@ typedef enum {
             [self showInventoryOnDeathButton:NO];
             [self showTitle];
             [self hideKeyboard];
+            [self hideDirectionalArrows];
             self.blockMagView = YES;
             break;
         case BrogueGameEventStartNewGame:
