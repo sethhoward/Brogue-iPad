@@ -4,7 +4,7 @@
  *
  *  Created by Brian Walker on 12/26/08.
  *  Copyright 2012. All rights reserved.
- *  
+ *
  *  This file is part of Brogue.
  *
  *  This program is free software: you can redistribute it and/or modify

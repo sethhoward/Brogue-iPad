@@ -112,6 +112,27 @@ void findReplaceGrid(short **grid, short findValueMin, short findValueMax, short
 	}
 }
 
+// Flood-fills the grid from (x, y) along cells that are within the eligible range.
+// Returns the total count of filled cells.
+short floodFillGrid(short **grid, short x, short y, short eligibleValueMin, short eligibleValueMax, short fillValue) {
+    enum directions dir;
+	short newX, newY, fillCount = 1;
+    
+  //  assert(fillValue < eligibleValueMin || fillValue > eligibleValueMax);
+    
+    grid[x][y] = fillValue;
+    for (dir = 0; dir < 4; dir++) {
+        newX = x + nbDirs[dir][0];
+        newY = y + nbDirs[dir][1];
+        if (coordinatesAreInMap(newX, newY)
+            && grid[newX][newY] >= eligibleValueMin
+            && grid[newX][newY] <= eligibleValueMax) {
+            fillCount += floodFillGrid(grid, newX, newY, eligibleValueMin, eligibleValueMax, fillValue);
+        }
+    }
+    return fillCount;
+}
+
 void drawRectangleOnGrid(short **grid, short x, short y, short width, short height, short value) {
     short i, j;
     
@@ -346,12 +367,12 @@ boolean getQualifyingPathLocNear(short *retValX, short *retValY,
     // Get the solution.
     randomLeastPositiveLocationInGrid(grid, retValX, retValY, deterministic);
     
-//    dumpLevelToScreen();
-//    displayGrid(grid);
-//    if (coordinatesAreInMap(*retValX, *retValY)) {
-//        hiliteCell(*retValX, *retValY, &yellow, 100, true);
-//    }
-//    temporaryMessage("Qualifying path selected:", true);
+    //    dumpLevelToScreen();
+    //    displayGrid(grid);
+    //    if (coordinatesAreInMap(*retValX, *retValY)) {
+    //        hiliteCell(*retValX, *retValY, &yellow, 100, true);
+    //    }
+    //    temporaryMessage("Qualifying path selected:", true);
     
     freeGrid(grid);
     freeGrid(costMap);
@@ -454,22 +475,22 @@ void createBlobOnGrid(short **grid,
 			}
 		}
 		
-//        colorOverDungeon(&darkGray);
-//        hiliteGrid(grid, &white, 100);
-//        temporaryMessage("Random starting noise:", true);
+        //        colorOverDungeon(&darkGray);
+        //        hiliteGrid(grid, &white, 100);
+        //        temporaryMessage("Random starting noise:", true);
 		
 		// Some iterations of cellular automata
 		for (k=0; k<roundCount; k++) {
 			cellularAutomataRound(grid, birthParameters, survivalParameters);
             
-//            colorOverDungeon(&darkGray);
-//            hiliteGrid(grid, &white, 100);
-//            temporaryMessage("Cellular automata progress:", true);
+            //            colorOverDungeon(&darkGray);
+            //            hiliteGrid(grid, &white, 100);
+            //            temporaryMessage("Cellular automata progress:", true);
 		}
         
-//        colorOverDungeon(&darkGray);
-//        hiliteGrid(grid, &white, 100);
-//        temporaryMessage("Cellular automata result:", true);
+        //        colorOverDungeon(&darkGray);
+        //        hiliteGrid(grid, &white, 100);
+        //        temporaryMessage("Cellular automata result:", true);
         
 		// Now to measure the result. These are best-of variables; start them out at worst-case values.
 		topBlobSize =   0;

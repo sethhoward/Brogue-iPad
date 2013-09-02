@@ -225,9 +225,7 @@
     
     _prevColor = nil;
     
-    CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
-    CGContextSetFontSize(_context, FONT_SIZE);
-    CGContextSetFont(_context, _cgFont);
+    [self resetTextContext];
     
     // now draw the ascii chars
     for (NSInteger j = startY; j < endY; j++ ) {
@@ -243,7 +241,14 @@
 //   [MGBenchmark finish:@"draw"];
 }
 
-- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withLetterColor:(CGColorRef)letterColor withChar:(unsigned short)character stringOrigin:(CGPoint)stringOrigin{
+- (void)resetTextContext {
+    CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
+    CGContextSetFontSize(_context, FONT_SIZE);
+    CGContextSetFont(_context, _cgFont);
+}
+
+
+- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withLetterColor:(CGColorRef)letterColor withChar:(unsigned short)character stringOrigin:(CGPoint)stringOrigin {
     // only switch color context when needed. This call is expensive
     if (!CGColorEqualToColor(letterColor, _prevColor)) {
         CGContextSetFillColorWithColor(_context, letterColor);
@@ -256,9 +261,7 @@
         [theString drawAtPoint:stringOrigin withFont:[self slowFont]];
         
         // seems like we need to change the context back or we render incorrect glyps. We do it here assuming we call this less than the show glyphs below
-        CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
-        CGContextSetFontSize(_context, FONT_SIZE);
-        CGContextSetFont(_context, _cgFont);
+        [self resetTextContext];
     }
     // plain jane characters. Draw them nice and fast.
     else {        

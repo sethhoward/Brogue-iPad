@@ -224,6 +224,10 @@ boolean shiftKeyIsDown() {
     return NO;
 }
 
+void submitAchievementForCharString(char *achievementKey) {
+    [[GameCenterManager sharedInstance] submitAchievement:[NSString stringWithUTF8String:achievementKey] percentComplete:100.];
+}
+
 #pragma mark - OSX->iOS implementation
 
 void initHighScores() {

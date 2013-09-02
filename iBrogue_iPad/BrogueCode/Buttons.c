@@ -327,15 +327,15 @@ short buttonInputLoop(brogueButton *buttons,
 	
 	initializeButtonState(&state, buttons, buttonCount, winX, winY, winWidth, winHeight);
 	
-//	short i, j;
-//	for (i=0; i<COLS; i++) {
-//		for (j=0; j<COLS; j++) {
-//			if (i >= winX		&& i < winX + winWidth
-//				&& j >= winY	&& j < winY + winHeight) {
-//				plotCharWithColor(' ', i, j, &white, &gray);
-//			}
-//		}
-//	}
+    //	short i, j;
+    //	for (i=0; i<COLS; i++) {
+    //		for (j=0; j<COLS; j++) {
+    //			if (i >= winX		&& i < winX + winWidth
+    //				&& j >= winY	&& j < winY + winHeight) {
+    //				plotCharWithColor(' ', i, j, &white, &gray);
+    //			}
+    //		}
+    //	}
 	
 	do {
 		// Update the display.

@@ -11,6 +11,7 @@
 #import "Viewport.h"
 #import "GameCenterManager.h"
 #import "UIViewController+UIViewController_GCLeaderBoardView.h"
+#import "UIViewController+UIViewController_GCAchievementView.h"
 #import "AboutViewController.h"
 #import "GameSettings.h"
 
@@ -639,7 +640,8 @@ typedef enum {
 }
 
 - (IBAction)showLeaderBoardButtonPressed:(id)sender {
-    [self rgGCshowLeaderBoardWithCategory:kBrogueHighScoreLeaderBoard];
+  //  [self rgGCshowLeaderBoardWithCategory:kBrogueHighScoreLeaderBoard];
+    [self rgGCshowAchievements];
 }
 
 - (IBAction)aboutButtonPressed:(id)sender {
