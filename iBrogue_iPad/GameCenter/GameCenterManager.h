@@ -15,6 +15,19 @@
 // Leaderboards
 #define kBrogueHighScoreLeaderBoard @"iBrogue_High_Score"
 
+// Achievements
+#define kAchievementArchivist @"brogue_archivist"
+#define kAchievementCompanion @"brogue_companion"
+#define kAchievementDragonslayer @"brogue_dragonslayer"
+#define kAchievementIndomitable @"brogue_indomitable"
+#define kAchievementJellymancer @"brogue_jellymancer"
+#define kAchievementMystic @"brogue_mystic"
+#define kAchievementPacifist @"brogue_pacifist"
+#define kAchievementPaladin @"brogue_paladin"
+#define kAchievementPureMage @"brogue_pure_mage"
+#define kAchievementPureWarrior @"pure_warrior"
+#define kAchievementSpecialist @"brogue_specialist"
+
 @class GKLeaderboard, GKAchievement, GKPlayer;
 @interface GameCenterManager : NSObject {
 	NSMutableDictionary* earnedAchievementCache;

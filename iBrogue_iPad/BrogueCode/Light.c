@@ -4,7 +4,7 @@
  *
  *  Created by Brian Walker on 1/21/09.
  *  Copyright 2012. All rights reserved.
- *  
+ *
  *  This file is part of Brogue.
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -162,7 +162,7 @@ void updateDisplayDetail() {
 		for (j = 0; j < DROWS; j++) {
 			if (tmap[i][j].light[0] < -10
 				&& tmap[i][j].light[1] < -10
-				&& tmap[i][j].light[0] < -10) {
+				&& tmap[i][j].light[2] < -10) {
 				
 				displayDetail[i][j] = DV_DARK;
 			} else if (pmap[i][j].flags & IS_IN_SHADOW) {
@@ -212,7 +212,7 @@ void updateLighting() {
 	enum dungeonLayers layer;
 	enum tileType tile;
 	creature *monst;
-
+    
 	// Copy Light over oldLight
     recordOldLights();
     
@@ -239,7 +239,7 @@ void updateLighting() {
 	}
 	
 	// Cycle through monsters and paint their lights:
-	CYCLE_MONSTERS_AND_PLAYERS(monst) {	
+	CYCLE_MONSTERS_AND_PLAYERS(monst) {
 		if (monst->info.flags & MONST_INTRINSIC_LIGHT) {
 			paintLight(&lightCatalog[monst->info.intrinsicLightType], monst->xLoc, monst->yLoc, false, false);
 		}

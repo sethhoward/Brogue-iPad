@@ -169,8 +169,9 @@
     _context = UIGraphicsGetCurrentContext();
     CGRect startRect = _rectArray[startX][startY];
 
-    _prevColor = _bgColorArray[startX][startY];
-    CGContextSetFillColorWithColor(_context, _prevColor);
+    _prevColor = nil;
+   // _prevColor = _bgColorArray[startX][startY];
+ //   CGContextSetFillColorWithColor(_context, _prevColor);
 
     // draw the background rect colors.
     // In order to speed things up we do not draw black rects
@@ -189,7 +190,7 @@
                     CGContextFillRect(_context, CGRectMake((NSInteger)startRect.origin.x, (NSInteger)startRect.origin.y, width, (NSInteger)_rectArray[i][j].size.height));
                 }
                 
-                if (i == endX - 1) {
+                if (i == endX - 1 || !_prevColor) {
                     if (color) {
                         CGContextSetFillColorWithColor(_context, color);
                         CGContextFillRect(_context, _rectArray[i][j]);
@@ -216,6 +217,9 @@
                     width += _rectArray[i][j].size.width;
                 }
             }
+            
+            // prevents draw issues on the left hand side of the screen where no color may be present
+            _prevColor = nil;
         }
         
         // end of the row, reset values
@@ -225,9 +229,7 @@
     
     _prevColor = nil;
     
-    CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
-    CGContextSetFontSize(_context, FONT_SIZE);
-    CGContextSetFont(_context, _cgFont);
+    [self resetTextContext];
     
     // now draw the ascii chars
     for (NSInteger j = startY; j < endY; j++ ) {
@@ -237,13 +239,22 @@
                 [self drawTheString:_letterArray[i][j] centeredIn:_rectArray[i][j] withLetterColor:_letterColorArray[i][j] withChar:_charArray[i][j] stringOrigin:_stringOriginArray[i][j]];
             }
         }
+        
+       // _prevColor = nil;
     }
     
 //   [[MGBenchmark session:@"draw"] total];
 //   [MGBenchmark finish:@"draw"];
 }
 
-- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withLetterColor:(CGColorRef)letterColor withChar:(unsigned short)character stringOrigin:(CGPoint)stringOrigin{
+- (void)resetTextContext {
+    CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
+    CGContextSetFontSize(_context, FONT_SIZE);
+    CGContextSetFont(_context, _cgFont);
+}
+
+
+- (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withLetterColor:(CGColorRef)letterColor withChar:(unsigned short)character stringOrigin:(CGPoint)stringOrigin {
     // only switch color context when needed. This call is expensive
     if (!CGColorEqualToColor(letterColor, _prevColor)) {
         CGContextSetFillColorWithColor(_context, letterColor);
@@ -256,9 +267,7 @@
         [theString drawAtPoint:stringOrigin withFont:[self slowFont]];
         
         // seems like we need to change the context back or we render incorrect glyps. We do it here assuming we call this less than the show glyphs below
-        CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
-        CGContextSetFontSize(_context, FONT_SIZE);
-        CGContextSetFont(_context, _cgFont);
+        [self resetTextContext];
     }
     // plain jane characters. Draw them nice and fast.
     else {        

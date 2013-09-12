@@ -33,7 +33,10 @@
 void recordChar(unsigned char c) {
 	inputRecordBuffer[locationInRecordingBuffer++] = c;
 	recordingLocation++;
-	if (locationInRecordingBuffer >= INPUT_RECORD_BUFFER) {
+}
+
+void considerFlushingBufferToFile() {
+    if (locationInRecordingBuffer >= INPUT_RECORD_BUFFER) {
 		flushBufferToFile();
 	}
 }
@@ -234,7 +237,7 @@ void flushBufferToFile() {
 #pragma mark Playback functions
 
 void fillBufferFromFile() {
-//	short i;
+    //	short i;
 	FILE *recordFile;
 	
 	recordFile = fopen(currentFilePath, "rb");
@@ -298,7 +301,6 @@ void playbackPanic() {
 		rogue.playbackFastForward = false;
 		rogue.playbackPaused = true;
 		rogue.playbackOOS = true;
-        
         
         // Seth Added:
         setBrogueGameEvent(BrogueGameEventPlayBackPanic);
@@ -525,12 +527,16 @@ void OOSCheck(unsigned long x, short numberOfBytes) {
 		if (eventType != RNG_CHECK || recordedNumber != x) {
 			if (eventType != RNG_CHECK) {
 				message("Event type mismatch in RNG check.", false);
-			}
-			playbackPanic();
+                playbackPanic();
+			} else if (recordedNumber != x) {
+                printf("\nExpected RNG output of %li; got %i.", recordedNumber, (int) x);
+                playbackPanic();
+            }
 		}
 	} else {
 		recordChar(RNG_CHECK);
 		recordNumber(x, numberOfBytes);
+        considerFlushingBufferToFile();
 	}
 }
 
@@ -542,9 +548,9 @@ void RNGCheck() {
 	oldRNG = rogue.RNG;
 	rogue.RNG = RNG_SUBSTANTIVE;
 	
-//#ifdef AUDIT_RNG
-//reportRNGState();
-//#endif
+    //#ifdef AUDIT_RNG
+    //reportRNGState();
+    //#endif
 	
 	randomNumber = (unsigned long) rand_range(0, 255);
 	OOSCheck(randomNumber, 1);
@@ -620,7 +626,11 @@ void printPlaybackHelpScreen() {
 void advanceToLocation(unsigned long destinationFrame) {
 	unsigned long progressBarInterval, initialFrameNumber;
 	rogueEvent theEvent;
-    boolean useProgressBar;
+    boolean useProgressBar, omniscient, stealth, trueColors;
+    
+    omniscient = rogue.playbackOmniscience;
+    stealth = rogue.displayAggroRangeMode;
+    trueColors = rogue.trueColorMode;
 	
 	cellDisplayBuffer dbuf[COLS][ROWS];
     
@@ -666,6 +676,11 @@ void advanceToLocation(unsigned long destinationFrame) {
         rogue.RNG = RNG_SUBSTANTIVE;
         executeEvent(&theEvent);
     }
+    
+    rogue.playbackOmniscience = omniscient;
+    rogue.displayAggroRangeMode = stealth;
+    rogue.trueColorMode = trueColors;
+    
     rogue.playbackPaused = true;
     rogue.playbackFastForward = false;
     confirmMessages();
@@ -707,7 +722,8 @@ void promptToAdvanceToLocation(short keystroke) {
 void pausePlayback() {
 	if (!rogue.playbackPaused) {
 		rogue.playbackPaused = true;
-		messageWithColor("recording paused. Press space to play.", &teal, false);
+		messageWithColor(KEYBOARD_LABELS ? "recording paused. Press space to play." : "recording paused.",
+                         &teal, false);
 		refreshSideBar(-1, -1, false);
 		mainInputLoop();
 		
@@ -754,7 +770,6 @@ void executePlaybackInput(rogueEvent *recordingInput) {
 			case ACKNOWLEDGE_KEY:
 				if (rogue.playbackOOS && rogue.playbackPaused) {
 					flashTemporaryAlert(" Out of sync ", 2000);
-                    
                     // Seth: Added to ensure we exit when oos
                     rogue.gameHasEnded = true;
 				} else {
@@ -775,7 +790,7 @@ void executePlaybackInput(rogueEvent *recordingInput) {
 				pauseState = rogue.playbackPaused;
                 previousDeepestLevel = rogue.deepestLevel;
 				if (!rogue.playbackPaused || unpause()) {
-					if (rogue.deepestLevel < maxLevelChanges) {
+					if ((unsigned long) rogue.deepestLevel < maxLevelChanges) {
 						displayCenteredAlert(" Loading... ");
 						pauseBrogue(5);
 						rogue.playbackFastForward = true;
@@ -825,7 +840,7 @@ void executePlaybackInput(rogueEvent *recordingInput) {
                         destinationFrame = rogue.playerTurnNumber + frameCount;
                     }
                 } else {
-                    destinationFrame = min(rogue.playerTurnNumber + frameCount, rogue.howManyTurns - 1);    
+                    destinationFrame = min(rogue.playerTurnNumber + frameCount, rogue.howManyTurns - 1);
                 }
                 
                 if (destinationFrame == rogue.playerTurnNumber) {
@@ -847,7 +862,7 @@ void executePlaybackInput(rogueEvent *recordingInput) {
                             rogue.RNG = RNG_SUBSTANTIVE;
                             executeEvent(&theEvent);
                         }
-                        rogue.playbackPaused = true;
+                        //rogue.playbackPaused = true;
                         if (rogue.playbackFastForward) {
                             rogue.playbackFastForward = false;
                             displayLevel();
@@ -917,9 +932,23 @@ void executePlaybackInput(rogueEvent *recordingInput) {
                 displayLevel();
                 refreshSideBar(-1, -1, false);
                 if (rogue.trueColorMode) {
-                    messageWithColor("Color effects disabled. Press '\\' again to enable.", &teal, false);
+                    messageWithColor(KEYBOARD_LABELS ? "Color effects disabled. Press '\\' again to enable." : "Color effects disabled.",
+                                     &teal, false);
                 } else {
-                    messageWithColor("Color effects enabled. Press '\\' again to disable.", &teal, false);
+                    messageWithColor(KEYBOARD_LABELS ? "Color effects enabled. Press '\\' again to disable." : "Color effects enabled.",
+                                     &teal, false);
+                }
+                break;
+            case AGGRO_DISPLAY_KEY:
+                rogue.displayAggroRangeMode = !rogue.displayAggroRangeMode;
+                displayLevel();
+                refreshSideBar(-1, -1, false);
+                if (rogue.displayAggroRangeMode) {
+                    messageWithColor(KEYBOARD_LABELS ? "Stealth range displayed. Press ']' again to hide." : "Stealth range displayed.",
+                                     &teal, false);
+                } else {
+                    messageWithColor(KEYBOARD_LABELS ? "Stealth range hidden. Press ']' again to display." : "Stealth range hidden.",
+                                     &teal, false);
                 }
                 break;
 			case SEED_KEY:
@@ -931,6 +960,7 @@ void executePlaybackInput(rogueEvent *recordingInput) {
 			default:
 				if (key >= '0' && key <= '9'
 					|| key >= NUMPAD_0 && key <= NUMPAD_9) {
+                    
 					promptToAdvanceToLocation(key);
 				}
 				break;
@@ -944,9 +974,9 @@ void executePlaybackInput(rogueEvent *recordingInput) {
 			displayMessageArchive();
 			rogue.playbackMode = true;
 		}
-        
-        // SETH: 
+        // SETH:
         pausePlayback();
+        
 	} else if (recordingInput->eventType == RIGHT_MOUSE_UP) {
 		rogue.playbackMode = false;
 		displayInventory(ALL_ITEMS, 0, 0, true, false);
@@ -970,6 +1000,14 @@ void getAvailableFilePath(char *returnPath, const char *defaultPath, const char 
 	}
 }
 
+boolean characterForbiddenInFilename(const char theChar) {
+    if (theChar == '/' || theChar == '\\' || theChar == ':') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 void saveGame() {
 	char filePath[BROGUE_FILENAME_MAX], defaultPath[BROGUE_FILENAME_MAX];
 	boolean askAgain;
@@ -984,8 +1022,7 @@ void saveGame() {
 	do {
 		askAgain = false;
 		if (getInputTextString(filePath, "Save game as (<esc> to cancel): ",
-							   BROGUE_FILENAME_MAX - strlen(GAME_SUFFIX), defaultPath, GAME_SUFFIX, TEXT_INPUT_NORMAL, false)) {
-			
+							   BROGUE_FILENAME_MAX - strlen(GAME_SUFFIX), defaultPath, GAME_SUFFIX, TEXT_INPUT_FILENAME, false)) {
 			strcat(filePath, GAME_SUFFIX);
 			if (!fileExists(filePath) || confirm("File of that name already exists. Overwrite?", true)) {
 				remove(filePath);
@@ -1016,7 +1053,7 @@ void saveRecording() {
 	do {
 		askAgain = false;
 		if (getInputTextString(filePath, "Save recording as (<esc> to cancel): ",
-							   BROGUE_FILENAME_MAX - strlen(RECORDING_SUFFIX), defaultPath, RECORDING_SUFFIX, TEXT_INPUT_NORMAL, false)) {
+							   BROGUE_FILENAME_MAX - strlen(RECORDING_SUFFIX), defaultPath, RECORDING_SUFFIX, TEXT_INPUT_FILENAME, false)) {
 			
 			strcat(filePath, RECORDING_SUFFIX);
 			if (!fileExists(filePath) || confirm("File of that name already exists. Overwrite?", true)) {

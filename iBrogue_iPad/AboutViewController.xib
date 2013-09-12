@@ -43,7 +43,6 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrame">{{14, 6}, {497, 339}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="850764362"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="528669538">
@@ -93,7 +92,6 @@ cmVhdGVmb3J1bWhvc3RpbmcuY29tL2Jyb2d1ZS1nZW5lcmFsLWRpc2N1c3Npb24tZjEuaHRtbA</byte
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{187, 471}, {151, 30}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="974692759"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -131,7 +129,6 @@ cmVhdGVmb3J1bWhvc3RpbmcuY29tL2Jyb2d1ZS1nZW5lcmFsLWRpc2N1c3Npb24tZjEuaHRtbA</byte
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{394, 354}, {94, 27}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="533727172"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -145,7 +142,6 @@ cmVhdGVmb3J1bWhvc3RpbmcuY29tL2Jyb2d1ZS1nZW5lcmFsLWRpc2N1c3Npb24tZjEuaHRtbA</byte
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{394, 392}, {94, 27}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="255433906"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -159,7 +155,6 @@ cmVhdGVmb3J1bWhvc3RpbmcuY29tL2Jyb2d1ZS1nZW5lcmFsLWRpc2N1c3Npb24tZjEuaHRtbA</byte
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{394, 430}, {94, 27}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="4180553"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -173,7 +168,6 @@ cmVhdGVmb3J1bWhvc3RpbmcuY29tL2Jyb2d1ZS1nZW5lcmFsLWRpc2N1c3Npb24tZjEuaHRtbA</byte
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{38, 357}, {91, 21}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1067189266"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -207,7 +201,6 @@ cmVhdGVmb3J1bWhvc3RpbmcuY29tL2Jyb2d1ZS1nZW5lcmFsLWRpc2N1c3Npb24tZjEuaHRtbA</byte
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{38, 395}, {272, 21}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="641883109"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -232,7 +225,6 @@ cmVhdGVmb3J1bWhvc3RpbmcuY29tL2Jyb2d1ZS1nZW5lcmFsLWRpc2N1c3Npb24tZjEuaHRtbA</byte
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{38, 433}, {164, 21}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="649070182"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -257,15 +249,13 @@ cmVhdGVmb3J1bWhvc3RpbmcuY29tL2Jyb2d1ZS1nZW5lcmFsLWRpc2N1c3Npb24tZjEuaHRtbA</byte
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{446, 498}, {61, 21}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<string key="IBUIText">v 1.0.9</string>
+						<string key="IBUIText">v 1.1.0</string>
 						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MSAxIDEAA</bytes>
@@ -280,7 +270,6 @@ cmVhdGVmb3J1bWhvc3RpbmcuY29tL2Jyb2d1ZS1nZW5lcmFsLWRpc2N1c3Npb24tZjEuaHRtbA</byte
 				</array>
 				<string key="NSFrameSize">{526, 525}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="837846453"/>
 				<reference key="IBUIBackgroundColor" ref="528669538"/>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -469,71 +458,7 @@ cmVhdGVmb3J1bWhvc3RpbmcuY29tL2Jyb2d1ZS1nZW5lcmFsLWRpc2N1c3Npb24tZjEuaHRtbA</byte
 			<nil key="sourceID"/>
 			<int key="maxID">283</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">AboutViewController</string>
-					<string key="superclassName">UIViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="dismissButtonPressed:">id</string>
-						<string key="escGesture:">id</string>
-						<string key="magnifierSwitch:">id</string>
-						<string key="pinchSwitch:">id</string>
-						<string key="shakeSwitch:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="dismissButtonPressed:">
-							<string key="name">dismissButtonPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="escGesture:">
-							<string key="name">escGesture:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="magnifierSwitch:">
-							<string key="name">magnifierSwitch:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="pinchSwitch:">
-							<string key="name">pinchSwitch:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="shakeSwitch:">
-							<string key="name">shakeSwitch:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="escGestureSwitch">UISwitch</string>
-						<string key="magnifierSwitch">UISwitch</string>
-						<string key="pinchDirectionalSwitch">UISwitch</string>
-						<string key="shakeSwitch">UISwitch</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="escGestureSwitch">
-							<string key="name">escGestureSwitch</string>
-							<string key="candidateClassName">UISwitch</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="magnifierSwitch">
-							<string key="name">magnifierSwitch</string>
-							<string key="candidateClassName">UISwitch</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="pinchDirectionalSwitch">
-							<string key="name">pinchDirectionalSwitch</string>
-							<string key="candidateClassName">UISwitch</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="shakeSwitch">
-							<string key="name">shakeSwitch</string>
-							<string key="candidateClassName">UISwitch</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/AboutViewController.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>

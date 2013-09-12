@@ -11,6 +11,7 @@
 #import "Viewport.h"
 #import "GameCenterManager.h"
 #import "UIViewController+UIViewController_GCLeaderBoardView.h"
+#import "UIViewController+UIViewController_GCAchievementView.h"
 #import "AboutViewController.h"
 #import "GameSettings.h"
 
@@ -644,6 +645,7 @@ typedef enum {
 
 - (IBAction)showLeaderBoardButtonPressed:(id)sender {
     [self rgGCshowLeaderBoardWithCategory:kBrogueHighScoreLeaderBoard];
+  //  [self rgGCshowAchievements];
 }
 
 - (IBAction)aboutButtonPressed:(id)sender {
@@ -727,9 +729,11 @@ typedef enum {
             [self showInventoryOnDeathButton:NO];
             [self showTitle];
             [self hideKeyboard];
+            [self hideDirectionalArrows];
             self.blockMagView = YES;
             break;
         case BrogueGameEventStartNewGame:
+            [self showDirectionalArrows];
         case BrogueGameEventOpenGame:
             [self showAuxillaryScreensWithDirectionalControls:YES];
             @synchronized(self.cachedTouches) {
@@ -746,6 +750,7 @@ typedef enum {
         case BrogueGameEventPlayBackPanic:
             [self showAuxillaryScreensWithDirectionalControls:NO];
             self.blockMagView = YES;
+            [self hideDirectionalArrows];
             break;
         case BrogueGameEventMessagePlayerHasDied:
             [self showInventoryOnDeathButton:YES];
