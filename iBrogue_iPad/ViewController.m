@@ -113,6 +113,10 @@ typedef enum {
     [thread start];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    return UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
+}
+
 - (BOOL)prefersStatusBarHidden {
     return YES;
 }

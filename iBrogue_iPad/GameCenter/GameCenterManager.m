@@ -138,75 +138,70 @@ static GameCenterManager *sharedGameCenterManager;
 }
 
 - (void)authenticateLocalUser{
-    //return;
-	NSLog(@"LocalPlayer: %@", [GKLocalPlayer localPlayer]);
-    if (!self.checkingLocalPlayer) {
-        self.checkingLocalPlayer = YES;
-        GKLocalPlayer *thisPlayer = [GKLocalPlayer localPlayer];
-        
-        if (!thisPlayer.authenticated) {
-            if (YES) {
-                
-                [thisPlayer setAuthenticateHandler:(^(UIViewController* aViewcontroller, NSError *error) {
-                    
-                    if (aViewcontroller) {
-                      //  [self.delegate presentViewController:viewcontroller];
-                        int64_t delayInSeconds = 1.0;
-                        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-                        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                            UIViewController *view = (UIViewController *)[(AppDelegate *)[[UIApplication sharedApplication] delegate] viewController];
-                          
-                            [view presentModalViewController:aViewcontroller animated:YES];
-                        //    [[[viewController navigationController] topViewController] presentViewController:viewcontroller animated:YES completion:nil];
-                        });
-                        
-                    } else {
-                        [self finishGameCenterAuthWithError:error];
-                    }
-                    
-                })];
-                
-            } else {
-                
-                [[GKLocalPlayer localPlayer]
-                 authenticateWithCompletionHandler:^(NSError *error)
-                 {
-                     [self finishGameCenterAuthWithError:error];
-                 }
-                 ];
-            }
-            
-        }
-    }
     
-    return;
-    
-	if([GKLocalPlayer localPlayer].authenticated == NO)
-    {
-		[[GKLocalPlayer localPlayer] authenticateWithCompletionHandler:^(NSError *error) {
-			if (error == nil) {
-                //insert code here to handle a successful auth
+    GKLocalPlayer *thisPlayer = [GKLocalPlayer localPlayer];
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+        // iOS 6 and up
+        // Set our authentication handler
+        thisPlayer.authenticateHandler = ^(UIViewController *viewController, NSError *error) {
+            if (viewController != nil) {
+                int64_t delayInSeconds = 1.0;
+                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                    UIViewController *view = (UIViewController *)[(AppDelegate *)[[UIApplication sharedApplication] delegate] viewController];
+                    
+                    [view presentModalViewController:viewController animated:YES];
+                });
+            } else if (thisPlayer.isAuthenticated) {
+                // Successful authorization
                 _gameCenterFeaturesEnabled = TRUE;
 				_loginCount = 0;
+                
+            } else {
+                [self finishGameCenterAuthWithError:error];
             }
-            else {
-                //your app can process the error
+        };
+        
+    } else {
+        // iOS 5
+		[thisPlayer authenticateWithCompletionHandler:^(NSError *error) {
+            if (thisPlayer.isAuthenticated) {
+                // Successful login
+                _gameCenterFeaturesEnabled = TRUE;
+				_loginCount = 0;
+            } else {
+                // Process the error
                 NSLog(@"game center auth error: %@", error);
                 _gameCenterFeaturesEnabled = FALSE;
 				_loginCount++;
+           
+                // If the user has previously refused to log into GameCenter in the game, then GC gets disabled permanently by the OS for our game.
+                // The only thing that we can do is prompt the user to log into GC via the GC app.
+                // Ref: http://blog.palominolabs.com/2013/06/12/ios-game-center-integration/
+                if (error) {
+                    if (error.code == 2 && [error.domain isEqualToString:@"GKErrorDomain"]) {
+                        UIAlertView *alertView = [[UIAlertView alloc]
+                                                  initWithTitle:@"Game Center"
+                                                  message:@"Please log into GameCenter via the GameCenter app."
+                                                  delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:@"Open Game Center", nil];
+                        
+                        [alertView show];
+                    }
+                }
                 
-				if (_loginCount < 3) {
-					UIAlertView* alert = [[[UIAlertView alloc] initWithTitle: @"Game Center Account Required" message:[NSString stringWithFormat: @"Reason: %@", [error localizedDescription]] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Try Again", nil] autorelease];
-					[alert show];
-				} else {
-					//Still not logging in but let's not get stuck in a repeat loop
-					NSLog(@"Not logging in repeat loop");
-				}
             }
 		}];
-	}
+    }
+    
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"gamecenter:"]];
+    }
+}
 
 - (void)authenticationChanged{
 	if ([GKLocalPlayer localPlayer].authenticated) {

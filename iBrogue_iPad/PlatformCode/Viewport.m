@@ -340,7 +340,7 @@
 
 - (UIFont *)slowFont {
 	if (!_slowFont) {
-        _slowFont = [UIFont fontWithName:@"ArialUnicodeMS" size:FONT_SIZE];
+        _slowFont = [UIFont fontWithName:@"DejaVuSansMono" size:FONT_SIZE];
 	}
 	return _slowFont;
 }
