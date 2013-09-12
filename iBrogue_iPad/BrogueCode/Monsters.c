@@ -96,7 +96,7 @@ creature *generateMonster(short monsterID, boolean itemPossible, boolean mutatio
 	monst->turnsSpentStationary = 0;
 	monst->xpxp = 0;
     monst->machineHome = 0;
-	monst->newPowerCount = 0;
+	monst->newPowerCount = monst->totalPowerCount = 0;
 	monst->targetCorpseLoc[0] = monst->targetCorpseLoc[1] = 0;
     monst->targetWaypointIndex = -1;
     for (i=0; i < MAX_WAYPOINT_COUNT; i++) {
@@ -233,6 +233,7 @@ boolean monsterWillAttackTarget(const creature *attacker, const creature *defend
         return true;
     }
     if (attacker->creatureState == MONSTER_ALLY
+        && attacker != &player
         && defender->status[STATUS_ENTRANCED]) {
         
         return false;
@@ -422,7 +423,7 @@ void empowerMonster(creature *monst) {
     monst->info.accuracy += 15;
     monst->info.damage.lowerBound += max(1, monst->info.damage.lowerBound / 7);
     monst->info.damage.upperBound += max(1, monst->info.damage.upperBound / 7);
-    monst->newPowerCount++;
+    monst->totalPowerCount++;
     
     if (canSeeMonster(monst)) {
         monsterName(theMonsterName, monst, true);
@@ -1414,11 +1415,11 @@ boolean awareOfTarget(creature *observer, creature *target) {
     assert(perceivedDistance >= 0 && awareness >= 0);
 #endif
 	
-	if (perceivedDistance > awareness + 5) {
+	if (perceivedDistance > awareness * 3) {
 		// out of awareness range, even if hunting
 		retval = false;
     } else if (target->status[STATUS_INVISIBLE]
-               && perceivedDistance > awareness * 3) {
+               && perceivedDistance > awareness + (4)) {
         retval = false;
 	} else if (observer->creatureState == MONSTER_TRACKING_SCENT) {
 		// already aware of the target

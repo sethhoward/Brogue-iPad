@@ -1581,9 +1581,10 @@ void itemDetails(char *buf, item *theItem) {
 						tableForItemCategory(theItem->category)[theItem->kind].flavor);
 				break;
 			case RING:
-				sprintf(buf2, "This metal band is adorned with a large %s gem that glitters in the darkness. \
+				sprintf(buf2, "This metal band is adorned with a%s %s gem that glitters in the darkness. \
                         Who knows what effect it has when worn? ",
-						tableForItemCategory(theItem->category)[theItem->kind].flavor);
+                            isVowelish(tableForItemCategory(theItem->category)[theItem->kind].flavor) ? "n" : "",
+                            tableForItemCategory(theItem->category)[theItem->kind].flavor);
 				break;
 			case CHARM: // Should never be displayed.
 				strcat(buf2, "What a perplexing charm!");
@@ -3227,6 +3228,8 @@ void negate(creature *monst) {
 			refreshDungeonCell(monst->xLoc, monst->yLoc);
 			refreshSideBar(-1, -1, false);
 		}
+        
+         monst->newPowerCount = monst->totalPowerCount; // Allies can re-learn lost ability slots.
 		applyInstantTileEffectsToCreature(monst); // in case it should immediately die or fall into a chasm
 	}
 }
@@ -5370,7 +5373,7 @@ boolean useStaffOrWand(item *theItem, boolean *commandsRecorded) {
     if (((theItem->category & STAFF) && staffTable[theItem->kind].identified &&
          (theItem->kind == STAFF_HEALING || theItem->kind == STAFF_HASTE || theItem->kind == STAFF_PROTECTION))
         || ((theItem->category & WAND) && wandTable[theItem->kind].identified &&
-            (theItem->kind == WAND_INVISIBILITY || theItem->kind == WAND_PLENTY))) {
+            (theItem->kind == WAND_INVISIBILITY || theItem->kind == WAND_PLENTY || theItem->kind == WAND_EMPOWERMENT))) {
             targetAllies = true;
         }
     passThroughCreatures = false;

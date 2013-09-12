@@ -729,6 +729,7 @@ typedef enum {
             self.blockMagView = YES;
             break;
         case BrogueGameEventStartNewGame:
+            [self showDirectionalArrows];
         case BrogueGameEventOpenGame:
             [self showAuxillaryScreensWithDirectionalControls:YES];
             @synchronized(self.cachedTouches) {
@@ -745,6 +746,7 @@ typedef enum {
         case BrogueGameEventPlayBackPanic:
             [self showAuxillaryScreensWithDirectionalControls:NO];
             self.blockMagView = YES;
+            [self hideDirectionalArrows];
             break;
         case BrogueGameEventMessagePlayerHasDied:
             [self showInventoryOnDeathButton:YES];
