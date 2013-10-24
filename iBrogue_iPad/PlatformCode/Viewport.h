@@ -31,9 +31,20 @@
 
 @interface Viewport : ACMagnifyingView
 
-- (void)setString:(NSString *)cString withBackgroundColor:(CGColorRef)bgColor letterColor:(CGColorRef)letterColor atLocationX:(short)x locationY:(short)y withChar:(unsigned short)character;
+/**
+ Adds a character to the screen at a particular location.
+ 
+ @param cString The character's NSString representation. The caller will pass nil unless the character is unicode.
+ @param bgColor The backing pixel/rectangle color at the position of this character.
+ @param letterColor The color of the letter.
+ @param location The rectangle as represented by it's x and y coords in a 2D array.
+ @param character Passed along for preferred ASCII drawing as well as short comparisons.
+ */
+- (void)setString:(NSString *)cString withBackgroundColor:(CGColorRef)bgColor letterColor:(CGColorRef)letterColor atLocation:(CGPoint)location withChar:(unsigned short)character;
 
-@property (nonatomic, assign) short hWindow;
-@property (nonatomic, assign) short vWindow;
+/// The game's horizontal window size.
+@property (nonatomic, readonly) short hWindow;
+/// The game's vertical window size.
+@property (nonatomic, readonly) short vWindow;
 
 @end

@@ -95,7 +95,7 @@ void plotChar(uchar inputChar,
 			  short foreRed, short foreGreen, short foreBlue,
 			  short backRed, short backGreen, short backBlue) {
 //[MGBenchmark start:@"plot"];
-//    @autoreleasepool {
+
     CGColorRef backColor = nil;
     if (backRed != 0 || backGreen != 0 || backBlue != 0) {
         CGFloat backComponents[] = {(CGFloat)(backRed * .01), (CGFloat)(backGreen * .01), (CGFloat)(backBlue * .01), 1.};
@@ -104,10 +104,8 @@ void plotChar(uchar inputChar,
 
     CGColorRef foreColor = nil;
     if (inputChar != ' ') {
-  //      if ((foreRed != 0 || foreGreen != 0 || foreBlue != 0) && inputChar != ' ') {
-            CGFloat foreComponents[] = {(CGFloat)(foreRed * .01), (CGFloat)(foreGreen * .01), (CGFloat)(foreBlue * .01), 1.};
-            foreColor = CGColorCreate(_colorSpace, foreComponents);
-  //      }
+        CGFloat foreComponents[] = {(CGFloat)(foreRed * .01), (CGFloat)(foreGreen * .01), (CGFloat)(foreBlue * .01), 1.};
+        foreColor = CGColorCreate(_colorSpace, foreComponents);
     }
     
 
@@ -116,8 +114,7 @@ void plotChar(uchar inputChar,
         uniLetter = [NSString stringWithCharacters:&inputChar length:1];
     }
     
-    [theMainDisplay setString:uniLetter withBackgroundColor:backColor letterColor:foreColor atLocationX:xLoc locationY:yLoc withChar:inputChar];
- //   }
+    [theMainDisplay setString:uniLetter withBackgroundColor:backColor letterColor:foreColor atLocation:CGPointMake(xLoc, yLoc) withChar:inputChar];
     
 //    [[MGBenchmark session:@"plot"] total];
 //    [MGBenchmark finish:@"plot"];
