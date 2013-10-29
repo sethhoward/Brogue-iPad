@@ -15,7 +15,9 @@
 extern Viewport *theMainDisplay;
 extern ViewController *viewController;
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController {
+    NSMutableArray *_commands;
+}
 
 struct iBTouch {
     UITouchPhase phase;

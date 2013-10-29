@@ -114,6 +114,25 @@ typedef enum {
     [thread start];
 }
 
+- (NSArray *)keyCommands {
+    if(!_commands) {
+        _commands = [[NSMutableArray alloc] init];
+
+        for(char i = 'a'; i <= 'z'; i++) {
+            NSString *key = [NSString stringWithFormat:@"%c", i];
+            UIKeyCommand *keyCommand = [UIKeyCommand keyCommandWithInput: key modifierFlags:0 action:@selector(executeKeyCommand:)];
+            [_commands addObject:keyCommand];
+
+        }
+    }
+    return _commands;
+}
+
+- (void)executeKeyCommand:(UIKeyCommand *)keyCommand {
+    [self.cachedKeyStrokes addObject:keyCommand.input];
+    self.cachedKeyCount = [self.cachedKeyStrokes count];
+}
+
 - (BOOL)prefersStatusBarHidden {
     return YES;
 }
