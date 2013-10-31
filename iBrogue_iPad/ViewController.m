@@ -25,6 +25,8 @@
 Viewport *theMainDisplay;
 ViewController *viewController;
 
+NSDictionary* keyCommands;
+
 typedef enum {
     KeyDownUp = 0,
     KeyDownRight,
@@ -86,6 +88,7 @@ typedef enum {
 @dynamic hasTouchEvent;
 @synthesize hasKeyEvent;
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -116,21 +119,56 @@ typedef enum {
 
 - (NSArray *)keyCommands {
     if(!_commands) {
+        _keyCommandsTranslator = @{UIKeyInputUpArrow: @"k",
+                                   UIKeyInputDownArrow: @"j",
+                                   UIKeyInputLeftArrow: @"h",
+                                   UIKeyInputRightArrow: @"l",
+                                   UIKeyInputEscape: @"\033"};
+
+        NSArray *keys = [[NSArray alloc] initWithObjects:
+                         @">", @"<", @" ", @"\\",
+                         @"]", @"?", @"~",  @"&",
+                         @"\n", @"\t", @".",
+                         nil];
+
         _commands = [[NSMutableArray alloc] init];
 
         for(char i = 'a'; i <= 'z'; i++) {
             NSString *key = [NSString stringWithFormat:@"%c", i];
-            UIKeyCommand *keyCommand = [UIKeyCommand keyCommandWithInput: key modifierFlags:0 action:@selector(executeKeyCommand:)];
-            [_commands addObject:keyCommand];
+            [_commands addObject:[UIKeyCommand keyCommandWithInput:key modifierFlags:0 action:@selector(executeKeyCommand:)]];
+            [_commands addObject:[UIKeyCommand keyCommandWithInput:key modifierFlags:UIKeyModifierShift action:@selector(executeKeyCommand:)]];
+        }
 
+        for(id key in keys) {
+            [_commands addObject:[UIKeyCommand keyCommandWithInput:key modifierFlags:0 action:@selector(executeKeyCommand:)]];
+        }
+
+        for(NSString *key in _keyCommandsTranslator) {
+            [_commands addObject:[UIKeyCommand keyCommandWithInput:key modifierFlags:0 action:@selector(executeKeyCommand:)]];
         }
     }
     return _commands;
 }
 
 - (void)executeKeyCommand:(UIKeyCommand *)keyCommand {
-    [self.cachedKeyStrokes addObject:keyCommand.input];
-    self.cachedKeyCount = [self.cachedKeyStrokes count];
+    NSString *key = nil;
+    if(keyCommand.modifierFlags == UIKeyModifierShift) {
+        if([keyCommand.input length] == 1
+           && [keyCommand.input characterAtIndex:0] >= 'a'
+           && [keyCommand.input characterAtIndex:0] <= 'z') {
+            key = [keyCommand.input uppercaseString];
+        }
+    } else {
+        key = [_keyCommandsTranslator objectForKey:keyCommand.input];
+        if(key == nil) {
+            key = keyCommand.input;
+        }
+    }
+
+    if(key != nil) {
+        [self.cachedKeyStrokes addObject:key];
+        self.cachedKeyCount = [self.cachedKeyStrokes count];
+    }
 }
 
 - (BOOL)prefersStatusBarHidden {

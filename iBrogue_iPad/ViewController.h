@@ -16,7 +16,10 @@ extern Viewport *theMainDisplay;
 extern ViewController *viewController;
 
 @interface ViewController : UIViewController {
+    @private
     NSMutableArray *_commands;
+    @private
+    NSDictionary *_keyCommandsTranslator;
 }
 
 struct iBTouch {
