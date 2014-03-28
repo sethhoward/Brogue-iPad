@@ -680,7 +680,7 @@ void startLevel(short oldLevelNumber, short stairDirection) {
 	
 	for (i=0; i<DCOLS; i++) {
 		for (j=0; j<DROWS; j++) {
-			for (layer = (dungeonLayers)0; layer < NUMBER_TERRAIN_LAYERS; layer++) {
+			for (int layer = 0; layer < NUMBER_TERRAIN_LAYERS; layer++) {
 				levels[oldLevelNumber - 1].mapStorage[i][j].layers[layer] = pmap[i][j].layers[layer];
 			}
 			levels[oldLevelNumber - 1].mapStorage[i][j].volume = pmap[i][j].volume;
@@ -751,7 +751,7 @@ void startLevel(short oldLevelNumber, short stairDirection) {
 		
 		for (i=0; i<DCOLS; i++) {
 			for (j=0; j<DROWS; j++) {
-				for (layer = (dungeonLayers)0; layer < NUMBER_TERRAIN_LAYERS; layer++) {
+				for (int layer = (dungeonLayers)0; layer < NUMBER_TERRAIN_LAYERS; layer++) {
 					pmap[i][j].layers[layer] = levels[rogue.depthLevel - 1].mapStorage[i][j].layers[layer];
 				}
 				pmap[i][j].volume = levels[rogue.depthLevel - 1].mapStorage[i][j].volume;

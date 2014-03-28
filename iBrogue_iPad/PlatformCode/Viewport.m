@@ -148,9 +148,8 @@
 
 #pragma mark - Draw Routines
 - (void)drawRect:(CGRect)rect {
-    //    [MGBenchmark start:@"draw"];
+//        [MGBenchmark start:@"draw"];
     
-    NSInteger width = 0;
     NSInteger startX = (NSInteger) (kCOLS * rect.origin.x / self.hWindow);
     NSInteger endY = (NSInteger) (kCOLS * (rect.origin.y + rect.size.height + _vPixels - 1 ) / self.vWindow);
     NSInteger endX = (NSInteger) (kCOLS * (rect.origin.x + rect.size.width + _hPixels - 1) / self.hWindow);
@@ -170,80 +169,50 @@
     }
     
     _context = UIGraphicsGetCurrentContext();
-    CGRect startRect = _rectArray[startX][startY];
-    
     _prevColor = nil;
     
     // draw the background rect colors.
     // In order to speed things up we do not draw black rects
     // Also we combine rects that are the same color (striping across the row) and draw that as one rect instead of individual rects
-    BOOL isColorEqual;
+   // BOOL isColorEqual;
     CGColorRef color;
     for (NSInteger j = startY; j < endY; j++ ) {
         for (NSInteger i = startX; i < endX; i++ ) {
             color = _bgColorArray[i][j];
-            isColorEqual = CGColorEqualToColor(color, _prevColor);
             
-            // if we have a mismatched color we need to draw. Otherwise we keep striping acrossed with the same color context and delay the draw
-            if (!isColorEqual || i == endX - 1) {
-                // if it's not black draw it otherwise we skip drawing black rects to save time
-                if (_prevColor) {
-                    CGContextFillRect(_context, CGRectMake((NSInteger)startRect.origin.x, (NSInteger)startRect.origin.y, width, (NSInteger)_rectArray[i][j].size.height));
+            if (_bgColorArray[i][j]) {
+                if (!CGColorEqualToColor(color, _prevColor)) {
+                    CGContextSetFillColorWithColor(_context, _bgColorArray[i][j]);
                 }
                 
-                if (i == endX - 1 || !_prevColor) {
-                    if (color) {
-                        CGContextSetFillColorWithColor(_context, color);
-                        CGContextFillRect(_context, _rectArray[i][j]);
-                    }
-                }
-                else {
-                    // if it's not black change the color
-                    if (color) {
-                        CGContextSetFillColorWithColor(_context, color);
-                    }
-                    
-                    startRect = _rectArray[i][j];
-                    width = _rectArray[i][j].size.width;
-                }
-                
-                _prevColor = color;
-            }
-            else {
-                // we're dealing with black. don't track
-                if (color == nil) {
-                    startRect = _rectArray[i][j];
-                }
-                else {
-                    width += _rectArray[i][j].size.width;
-                }
+                CGContextFillRect(_context, _rectArray[i][j]);
             }
             
-            // prevents draw issues on the left hand side of the screen where no color may be present
-            _prevColor = nil;
+            _prevColor = color;
         }
-        
-        // end of the row, reset values
-        width = 0;
-        startRect = _rectArray[startX][j];
     }
     
     _prevColor = nil;
     
-    [self resetTextContext];
+    CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
+    CGContextSetFontSize(_context, FONT_SIZE);
+    CGContextSetFont(_context, _cgFont);
+    
+    typedef void (*DrawTheStringIMP)(id object, SEL sel, NSString *string, CGRect rect, CGColorRef letterColor, unsigned short character, CGPoint origin);
+    DrawTheStringIMP drawTheStringIMP = (DrawTheStringIMP)[self methodForSelector:@selector(drawTheString:centeredIn:withLetterColor:withChar:stringOrigin:)];
     
     // now draw the ascii chars
     for (NSInteger j = startY; j < endY; j++ ) {
         for (NSInteger i = startX; i < endX; i++ ) {
             // skip spaces... if there's isn't something to draw it's a space guaranteed
             if (_charArray[i][j] != 32) {
-                [self drawTheString:_letterArray[i][j] centeredIn:_rectArray[i][j] withLetterColor:_letterColorArray[i][j] withChar:_charArray[i][j] stringOrigin:_stringOriginArray[i][j]];
+                drawTheStringIMP(self, @selector(drawTheString:centeredIn:withLetterColor:withChar:stringOrigin:), nil, _rectArray[i][j], _letterColorArray[i][j], _charArray[i][j], _stringOriginArray[i][j]);
             }
         }
     }
     
-    //   [[MGBenchmark session:@"draw"] total];
-    //   [MGBenchmark finish:@"draw"];
+//       [[MGBenchmark session:@"draw"] total];
+ //      [MGBenchmark finish:@"draw"];
 }
 
 - (void)resetTextContext {
@@ -262,7 +231,6 @@
     
     // we're not in ascii country... draw the unicode char the only way we know how
     if (character > 127) {
-        
         [theString drawAtPoint:stringOrigin withFont:[self slowFont]];
         
         // seems like we need to change the context back or we render incorrect glyps. We do it here assuming we call this less than the show glyphs below

@@ -634,7 +634,7 @@ void scum(unsigned long startingSeed, short numberOfSeedsToScan, short scanThrou
 void mainBrogueJunction() {
 	rogueEvent theEvent;
 	char path[BROGUE_FILENAME_MAX], buf[100], seedDefault[100];
-	char maxSeed[20];
+	char maxSeed[100] = {0};
 	short i, j, k;
 	boolean seedTooBig;
 	

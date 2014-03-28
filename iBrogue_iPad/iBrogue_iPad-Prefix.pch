@@ -14,8 +14,3 @@
     #import "GameCenterManager.h"
 #endif
 
-#if TARGET_IPHONE_SIMULATOR
-#define NSLog(fmt,...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
-#else
-#define NSLog(...)
-#endif
