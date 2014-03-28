@@ -2112,7 +2112,7 @@ boolean pauseBrogue(short milliseconds) {
 	} else {
 		interrupted = pauseForMilliseconds(milliseconds);
 	}
-	pausingTimerStartsNow();
+	//pausingTimerStartsNow();
 	return interrupted;
 }
 
@@ -2151,7 +2151,7 @@ void nextBrogueEvent(rogueEvent *returnEvent, boolean textInput, boolean colorsD
 		// recording done elsewhere
 	}
 	
-	pausingTimerStartsNow();
+	//pausingTimerStartsNow();
 	
 	if (returnEvent->eventType == EVENT_ERROR) {
 		rogue.playbackPaused = rogue.playbackMode; // pause if replaying

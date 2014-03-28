@@ -641,7 +641,6 @@ typedef enum {
 
 - (IBAction)showLeaderBoardButtonPressed:(id)sender {
     [self rgGCshowLeaderBoardWithCategory:kBrogueHighScoreLeaderBoard];
-  //  [self rgGCshowAchievements];
 }
 
 - (IBAction)aboutButtonPressed:(id)sender {

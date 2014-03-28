@@ -110,11 +110,10 @@
 }
 
 - (void)setString:(NSString *)cString withBackgroundColor:(CGColorRef)bgColor letterColor:(CGColorRef)letterColor atLocation:(CGPoint)location withChar:(unsigned short)character {
-    __block CGPoint stringOrigin = [self getStringOriginWithCharacter:character andString:cString atLocation:location];
+    CGPoint stringOrigin = [self getStringOriginWithCharacter:character andString:cString atLocation:location];
     
     if (character == FLOOR_CHAR) {
         character = 46;
-        
         // fudge the position with some magic numbers
         stringOrigin.y -= 4;
     }
@@ -150,10 +149,10 @@
 - (void)drawRect:(CGRect)rect {
 //        [MGBenchmark start:@"draw"];
     
-    NSInteger startX = (NSInteger) (kCOLS * rect.origin.x / self.hWindow);
-    NSInteger endY = (NSInteger) (kCOLS * (rect.origin.y + rect.size.height + _vPixels - 1 ) / self.vWindow);
-    NSInteger endX = (NSInteger) (kCOLS * (rect.origin.x + rect.size.width + _hPixels - 1) / self.hWindow);
-    NSInteger startY = (NSInteger) (kROWS * rect.origin.y / self.vWindow);
+    NSInteger startX = (NSInteger) (kCOLS * rect.origin.x / _hWindow);
+    NSInteger endY = (NSInteger) (kCOLS * (rect.origin.y + rect.size.height + _vPixels - 1 ) / _vWindow);
+    NSInteger endX = (NSInteger) (kCOLS * (rect.origin.x + rect.size.width + _hPixels - 1) / _hWindow);
+    NSInteger startY = (NSInteger) (kROWS * rect.origin.y / _vWindow);
     
     if (startX < 0) {
         startX = 0;
@@ -194,6 +193,7 @@
     
     _prevColor = nil;
     
+    // reset text context
     CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
     CGContextSetFontSize(_context, FONT_SIZE);
     CGContextSetFont(_context, _cgFont);
@@ -211,16 +211,9 @@
         }
     }
     
-//       [[MGBenchmark session:@"draw"] total];
- //      [MGBenchmark finish:@"draw"];
+ //     [[MGBenchmark session:@"draw"] total];
+//    [MGBenchmark finish:@"draw"];
 }
-
-- (void)resetTextContext {
-    CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
-    CGContextSetFontSize(_context, FONT_SIZE);
-    CGContextSetFont(_context, _cgFont);
-}
-
 
 - (void)drawTheString:(NSString *)theString centeredIn:(CGRect)rect withLetterColor:(CGColorRef)letterColor withChar:(unsigned short)character stringOrigin:(CGPoint)stringOrigin {
     // only switch color context when needed. This call is expensive
@@ -234,7 +227,9 @@
         [theString drawAtPoint:stringOrigin withFont:[self slowFont]];
         
         // seems like we need to change the context back or we render incorrect glyps. We do it here assuming we call this less than the show glyphs below
-        [self resetTextContext];
+        CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
+        CGContextSetFontSize(_context, FONT_SIZE);
+        CGContextSetFont(_context, _cgFont);
     }
     // plain jane characters. Draw them nice and fast.
     else {
