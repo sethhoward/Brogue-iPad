@@ -26,20 +26,29 @@
 #include <math.h>
 #include <time.h>
 
+// Draws the smooth gradient that appears on a button when you hover over or depress it.
+// Returns the percentage by which the current tile should be averaged toward a hilite color.
+short smoothHiliteGradient(const short currentXValue, const short maxXValue) {
+    return (short) (100 * sin(PI * currentXValue / (maxXValue)));
+}
+
 // Draws the button to the screen, or to a display buffer if one is given.
 // Button back color fades from -50% intensity at the edges to the back color in the middle.
 // Text is white, but can use color escapes.
 //		Hovering highlight augments fore and back colors with buttonHoverColor by 20%.
 //		Pressed darkens the middle color (or turns it the hover color if the button is black).
 void drawButton(brogueButton *button, enum buttonDrawStates highlight, cellDisplayBuffer dbuf[COLS][ROWS]) {
-	short i, textLoc, width, midPercent, symbolNumber, opacity;
+	short i, textLoc, width, midPercent, symbolNumber, opacity, oldRNG;
 	color fColor, bColor, fColorBase, bColorBase, bColorEdge, bColorMid;
 	uchar displayCharacter;
 	
 	if (!(button->flags & B_DRAW)) {
 		return;
 	}
-	
+    //assureCosmeticRNG;
+	oldRNG = rogue.RNG;
+    rogue.RNG = RNG_COSMETIC;
+    
 	symbolNumber = 0;
 	
 	width = strLenWithoutEscapes(button->text);
@@ -79,7 +88,7 @@ void drawButton(brogueButton *button, enum buttonDrawStates highlight, cellDispl
 		fColor = fColorBase;
 		
 		if (button->flags & B_GRADIENT) {
-			midPercent = (short) (100 * sin(PI * i / (width-1)));
+            midPercent = smoothHiliteGradient(i, width - 1);
 			bColor = bColorEdge;
 			applyColorAverage(&bColor, &bColorMid, midPercent);
 		}
@@ -113,6 +122,7 @@ void drawButton(brogueButton *button, enum buttonDrawStates highlight, cellDispl
 			}
 		}
 	}
+    restoreRNG;
 }
 
 void initializeButton(brogueButton *button) {

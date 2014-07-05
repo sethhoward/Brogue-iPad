@@ -434,6 +434,11 @@
 			attributes = {
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Seth howard";
+				TargetAttributes = {
+					C57A962416D7EAD500C233F1 = {
+						DevelopmentTeam = KKMWNTN39N;
+					};
+				};
 			};
 			buildConfigurationList = C57A962016D7EAD500C233F1 /* Build configuration list for PBXProject "iBrogue_iPad" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -616,9 +621,13 @@
 		C57A964916D7EAD500C233F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_DEADCODE_DEADSTORES = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Seth Howard (XAXWUJ2H47)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iBrogue_iPad/iBrogue_iPad-Prefix.pch";
 				INFOPLIST_FILE = "iBrogue_iPad/iBrogue_iPad-Info.plist";
@@ -634,8 +643,13 @@
 		C57A964A16D7EAD500C233F1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_DEADCODE_DEADSTORES = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iBrogue_iPad/iBrogue_iPad-Prefix.pch";
 				INFOPLIST_FILE = "iBrogue_iPad/iBrogue_iPad-Info.plist";

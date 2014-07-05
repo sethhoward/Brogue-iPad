@@ -29,7 +29,6 @@ extern short terrainRandomValues[DCOLS][DROWS][8];
 extern short **safetyMap;										// used to help monsters flee
 extern short **allySafetyMap;
 extern short **chokeMap;
-extern short **playerPathingMap;
 
 extern const short nbDirs[8][2];
 extern const short cDirs[8][2];
@@ -39,6 +38,7 @@ extern playerCharacter rogue;
 extern creature *monsters;
 extern creature *dormantMonsters;
 extern creature *graveyard;
+extern creature *purgatory;
 extern item *floorItems;
 extern item *packItems;
 extern item *monsterItemsHopper;
@@ -126,6 +126,7 @@ extern color torchLightColor;
 extern color deepWaterLightColor;
 extern color redFlashColor;
 
+extern color discordColor;
 extern color memoryColor;
 extern color memoryOverlay;
 extern color magicMapColor;
@@ -171,8 +172,9 @@ extern color backgroundMessageColor;
 
 extern color flavorTextColor;
 
-extern color flameSourceColor;
-extern color flameTitleColor;
+extern const color flameSourceColor;
+extern const color flameSourceColorSecondary;
+extern const color flameTitleColor;
 
 extern const color superVictoryColor;
 
@@ -183,6 +185,7 @@ extern const autoGenerator autoGeneratorCatalog[NUMBER_AUTOGENERATORS];
 extern floorTileType tileCatalog[NUMBER_TILETYPES];
 
 extern dungeonFeature dungeonFeatureCatalog[NUMBER_DUNGEON_FEATURES];
+extern struct dungeonProfile dungeonProfileCatalog[NUMBER_DUNGEON_PROFILES];
 
 extern lightSource lightCatalog[NUMBER_LIGHT_KINDS];
 
@@ -192,10 +195,9 @@ extern creatureType monsterCatalog[NUMBER_MONSTER_KINDS];
 extern monsterWords monsterText[NUMBER_MONSTER_KINDS];
 extern hordeType hordeCatalog[NUMBER_HORDES];
 extern const mutation mutationCatalog[NUMBER_MUTATORS];
+extern const monsterClass monsterClassCatalog[MONSTER_CLASS_COUNT];
 
 extern const feat featTable[FEAT_COUNT];
-
-extern color *boltColors[NUMBER_BOLT_KINDS];
 
 // ITEMS
 extern char itemTitles[NUMBER_SCROLL_KINDS][30];
@@ -220,10 +222,13 @@ extern itemTable wandTable[NUMBER_WAND_KINDS];
 extern itemTable staffTable[NUMBER_STAFF_KINDS];
 extern itemTable ringTable[NUMBER_RING_KINDS];
 extern itemTable charmTable[NUMBER_CHARM_KINDS];
+
+extern const bolt boltCatalog[NUMBER_BOLT_KINDS];
+
 extern const char weaponRunicNames[NUMBER_WEAPON_RUNIC_KINDS][30];
 
 extern const char armorRunicNames[NUMBER_ARMOR_ENCHANT_KINDS][30];
 
-extern char monsterBehaviorFlagDescriptions[32][COLS];
-extern char monsterAbilityFlagDescriptions[32][COLS];
-extern char monsterBookkeepingFlagDescriptions[32][COLS];
+extern const char monsterBehaviorFlagDescriptions[32][COLS];
+extern const char monsterAbilityFlagDescriptions[32][COLS];
+extern const char monsterBookkeepingFlagDescriptions[32][COLS];

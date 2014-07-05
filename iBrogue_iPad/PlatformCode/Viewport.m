@@ -83,8 +83,8 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         self.characterSizeDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
-        self.hWindow = [[UIScreen mainScreen] bounds].size.height;
-        self.vWindow = [[UIScreen mainScreen] bounds].size.width;
+        self.hWindow = 1024.;//[[UIScreen mainScreen] bounds].size.width;
+        self.vWindow = 768.;//[[UIScreen mainScreen] bounds].size.height;
         
         // Toss the arrays onto the heap
         _charArray = (unsigned short **)malloc(kCOLS * sizeof(unsigned short *));
@@ -206,7 +206,7 @@
         for (NSInteger i = startX; i < endX; i++ ) {
             // skip spaces... if there's isn't something to draw it's a space guaranteed
             if (_charArray[i][j] != 32) {
-                drawTheStringIMP(self, @selector(drawTheString:centeredIn:withLetterColor:withChar:stringOrigin:), nil, _rectArray[i][j], _letterColorArray[i][j], _charArray[i][j], _stringOriginArray[i][j]);
+                drawTheStringIMP(self, @selector(drawTheString:centeredIn:withLetterColor:withChar:stringOrigin:), _letterArray[i][j], _rectArray[i][j], _letterColorArray[i][j], _charArray[i][j], _stringOriginArray[i][j]);
             }
         }
     }

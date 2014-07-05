@@ -261,7 +261,7 @@ void calculateDistances(short **distanceMap,
 			char cost;
             monst = monsterAtLoc(i, j);
             if (monst
-                && (monst->info.flags & MONST_IMMUNE_TO_WEAPONS)
+                && (monst->info.flags & (MONST_IMMUNE_TO_WEAPONS | MONST_INVULNERABLE))
                 && (monst->info.flags & (MONST_IMMOBILE | MONST_GETS_TURN_ON_ACTIVATION))) {
                 
                 // Always avoid damage-immune stationary monsters.

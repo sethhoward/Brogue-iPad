@@ -110,7 +110,7 @@ typedef enum {
     // bump up the default stack size for a background thread. Anything less than the magic number below
     // risks blowing up the stack. A good test is seed #15
     NSThread *thread = [[NSThread alloc] initWithTarget:self selector:@selector(playBrogue) object:nil];
-    [thread setStackSize:350 * 4096];
+    [thread setStackSize:350 * 8192];
     [thread start];
 }
 
@@ -188,6 +188,8 @@ typedef enum {
         [self turnOnPinchGesture];
     }
 }
+
+
 
 // Pinch to hide the directional controls
 - (void)turnOnPinchGesture {
@@ -763,6 +765,10 @@ typedef enum {
     [self setATextField:nil];
     [self setEscButton:nil];
     [super viewDidUnload];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight;
 }
 
 @end

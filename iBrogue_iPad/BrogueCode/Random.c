@@ -134,9 +134,7 @@ int rand_range(int lowerBound, int upperBound) {
 	int retval;
 	char RNGMessage[100];
 	
-#ifdef BROGUE_ASSERTS
-	assert(lowerBound <= INT_MAX && upperBound <= INT_MAX);
-#endif
+    brogueAssert(lowerBound <= INT_MAX && upperBound <= INT_MAX);
 	
 	if (upperBound <= lowerBound) {
 		return lowerBound;
@@ -153,9 +151,7 @@ int rand_range(int lowerBound, int upperBound) {
 }
 #else // normal version
 int rand_range(int lowerBound, int upperBound) {
-#ifdef BROGUE_ASSERTS
-	assert(lowerBound <= INT_MAX && upperBound <= INT_MAX);
-#endif
+    brogueAssert(lowerBound <= INT_MAX && upperBound <= INT_MAX);
 	if (upperBound <= lowerBound) {
 		return lowerBound;
 	}
