@@ -113,7 +113,6 @@
 		C57A964016D7EAD500C233F1 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		C57A964116D7EAD500C233F1 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		C57A964416D7EAD500C233F1 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
-		C57A964C16D7EB4C00C233F1 /* PlatformDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlatformDefines.h; sourceTree = "<group>"; };
 		C57A964D16D7EB4C00C233F1 /* RogueDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RogueDriver.h; sourceTree = "<group>"; };
 		C57A964E16D7EB4C00C233F1 /* RogueDriver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RogueDriver.mm; sourceTree = "<group>"; };
 		C57A964F16D7EB4C00C233F1 /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
@@ -304,7 +303,6 @@
 		C57A964B16D7EB4C00C233F1 /* PlatformCode */ = {
 			isa = PBXGroup;
 			children = (
-				C57A964C16D7EB4C00C233F1 /* PlatformDefines.h */,
 				C57A964D16D7EB4C00C233F1 /* RogueDriver.h */,
 				C57A964E16D7EB4C00C233F1 /* RogueDriver.mm */,
 				C57A964F16D7EB4C00C233F1 /* Viewport.h */,
