@@ -3896,7 +3896,7 @@ void printHighScores(boolean hiliteMostRecent) {
 		}
 	}
 	
-	leftOffset = min(COLS - maxLength - 21 - 1, COLS/5);
+	leftOffset = min(COLS - maxLength - 21 - 1, COLS/6);
 	
 	scoreColor = black;
 	applyColorAverage(&scoreColor, &itemMessageColor, 100);
@@ -3922,8 +3922,18 @@ void printHighScores(boolean hiliteMostRecent) {
 		// date
 		printString(list[i].date, leftOffset + 12, i + 2, &scoreColor, &black, 0);
 		
-		// description
-		printString(list[i].description, leftOffset + 21, i + 2, &scoreColor, &black, 0);
+        // Seth
+        if (list[i].seed != 0) {
+            // seed
+            sprintf(buf, "[Seed: #%lu]", list[i].seed);
+            printString(buf, leftOffset + 21, i + 2, &scoreColor, &black, 0);
+            // description
+            printString(list[i].description, leftOffset + 39, i + 2, &scoreColor, &black, 0);
+        }
+        else {
+            // description
+            printString(list[i].description, leftOffset + 21, i + 2, &scoreColor, &black, 0);
+        }
 	}
 	
 	scoreColor = black;

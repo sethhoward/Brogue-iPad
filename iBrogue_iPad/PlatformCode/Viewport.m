@@ -171,15 +171,14 @@
     _prevColor = nil;
     
     // draw the background rect colors.
-    // In order to speed things up we do not draw black rects
-    // Also we combine rects that are the same color (striping across the row) and draw that as one rect instead of individual rects
-   // BOOL isColorEqual;
+    // We could get a small increase by not context filling black rects. Unnoticable on newer hardware. So we don't over optimize.
     CGColorRef color;
     for (NSInteger j = startY; j < endY; j++ ) {
         for (NSInteger i = startX; i < endX; i++ ) {
             color = _bgColorArray[i][j];
             
             if (_bgColorArray[i][j]) {
+                // don't switch color context unless we have a new color
                 if (!CGColorEqualToColor(color, _prevColor)) {
                     CGContextSetFillColorWithColor(_context, _bgColorArray[i][j]);
                 }
@@ -198,6 +197,7 @@
     CGContextSetFontSize(_context, FONT_SIZE);
     CGContextSetFont(_context, _cgFont);
     
+    // cache the message call and speed things up.
     typedef void (*DrawTheStringIMP)(id object, SEL sel, NSString *string, CGRect rect, CGColorRef letterColor, unsigned short character, CGPoint origin);
     DrawTheStringIMP drawTheStringIMP = (DrawTheStringIMP)[self methodForSelector:@selector(drawTheString:centeredIn:withLetterColor:withChar:stringOrigin:)];
     
@@ -240,27 +240,18 @@
 
 #pragma mark - Private Helpers
 
-- (CGPoint)originForCharacterSize:(CGSize)fontSize andRect:(CGRect)rect {
-    // center the characters
-    CGPoint stringOrigin;
-    stringOrigin.x = rect.origin.x + (rect.size.width - fontSize.width) / 2;
-    stringOrigin.y = rect.origin.y + (rect.size.height - fontSize.height) / 2;
-    
-    return stringOrigin;
-}
-
 - (CGPoint)getStringOriginWithCharacter:(short)character andString:(NSString *)aString atLocation:(CGPoint)location {
     CGSize stringSize;
     
     if (character > 127 && character != FLOOR_CHAR) {
         stringSize = _slowFontCharacterSize;
         // great code to include if you can run arial unicode. sadly arial unicode crashes ios 6
-        id cachedSize = [self.characterSizeDictionary objectForKey:aString];
+        id cachedSize = [_characterSizeDictionary objectForKey:aString];
         if (cachedSize == nil) {
             stringSize = [aString sizeWithFont:[self slowFont]];	// quite expensive
-            [self.characterSizeDictionary setObject:[NSValue valueWithCGSize:stringSize] forKey:aString];
+            [_characterSizeDictionary setObject:[NSValue valueWithCGSize:stringSize] forKey:aString];
         } else {
-            stringSize = [[self.characterSizeDictionary objectForKey:aString] CGSizeValue];
+            stringSize = [[_characterSizeDictionary objectForKey:aString] CGSizeValue];
         }
     }
     else {
@@ -269,7 +260,10 @@
     
     NSInteger x = location.x;
     NSInteger y = location.y;
-    CGPoint stringOrigin = [self originForCharacterSize:stringSize andRect:_rectArray[x][y]];
+    
+    CGPoint stringOrigin;
+    stringOrigin.x = _rectArray[x][y].origin.x + (_rectArray[x][y].size.width - stringSize.width) / 2;
+    stringOrigin.y = _rectArray[x][y].origin.y + (_rectArray[x][y].size.height - stringSize.height) / 2;
     
     if (character == FOLIAGE_CHAR) {
         stringOrigin.x++;

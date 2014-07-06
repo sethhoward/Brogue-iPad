@@ -347,6 +347,8 @@ typedef struct rogueHighScoresEntry {
 	signed long score;
 	char date[100];
 	char description[DCOLS];
+    //Seth
+    unsigned long seed;
 } rogueHighScoresEntry;
 
 typedef struct fileEntry {

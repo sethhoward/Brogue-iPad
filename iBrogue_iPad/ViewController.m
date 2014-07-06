@@ -16,7 +16,7 @@
 #import "GameSettings.h"
 
 #define kESC_Key @"\033"
-#define kStationaryTime 0.2f
+#define kStationaryTime 0.1f
 #define kGamePlayHitArea CGRectMake(209., 74., 810., 650.)     // seems to be a method in the c code that does this but didn't work as expected
 #define kGameSideBarArea CGRectMake(0., 0., 210., 768.)
 #define BROGUE_VERSION	4	// A special version number that's incremented only when

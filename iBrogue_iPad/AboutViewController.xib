@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -7,45 +7,30 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AboutViewController">
             <connections>
-                <outlet property="magnifierSwitch" destination="79" id="122"/>
-                <outlet property="pinchDirectionalSwitch" destination="66" id="121"/>
-                <outlet property="shakeSwitch" destination="58" id="119"/>
                 <outlet property="view" destination="2" id="3"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="2">
-            <rect key="frame" x="0.0" y="0.0" width="526" height="525"/>
+            <rect key="frame" x="0.0" y="0.0" width="526" height="597"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4">
-                    <rect key="frame" x="14" y="6" width="497" height="339"/>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" editable="NO" id="4">
+                    <rect key="frame" x="20" y="6" width="491" height="171"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="497" id="113"/>
-                        <constraint firstAttribute="height" constant="339" id="224"/>
-                    </constraints>
-                    <mutableString key="text">Use the directional controls to control the @ symbol (that's you!). 
+                    <string key="text">Pinch to hide the directional controls. Pull in the bottom left of the screen to show the the directional controls. Shake to 'esc'.
 
-Alternatively double tap or drag and release to move to a location. Stop moving your finger to bring up a magnifying glass to fine tune your movement.
+Brogue was originally written by Brian Walker and was ported to iPad by Seth and Alyson Howard. We hope you enjoy and appreciate your feedback.
 
-Single tap a location to get a description of what is there.
-
-Pinch to hide the directional controls. Pull (opposite of pinch) in the bottom left of the screen to show the the directional controls.
-
-Nope, no keyboard commands.
-
-Brogue was originally written by Brian walker and was ported to iPad by Seth and Alyson Howard. We hope you enjoy and appreciate your feedback.
-
-Join the community and check out weekly contests @http://brogue.createforumhosting.com/brogue-general-discussion-f1.html</mutableString>
+Join the community and check out weekly contests @http://brogue.createforumhosting.com/brogue-general-discussion-f1.html</string>
                     <color key="textColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     <dataDetectorType key="dataDetectorTypes" link="YES"/>
                 </textView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="13">
-                    <rect key="frame" x="187" y="471" width="151" height="30"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="13">
+                    <rect key="frame" x="187" y="549" width="151" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" image="brogue_dismissbutton.png">
@@ -59,80 +44,106 @@ Join the community and check out weekly contests @http://brogue.createforumhosti
                         <action selector="dismissButtonPressed:" destination="-1" eventType="touchUpInside" id="14"/>
                     </connections>
                 </button>
-                <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="58">
-                    <rect key="frame" x="437" y="350" width="51" height="31"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <connections>
-                        <action selector="shakeSwitch:" destination="-1" eventType="valueChanged" id="115"/>
-                    </connections>
-                </switch>
-                <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="66">
-                    <rect key="frame" x="437" y="388" width="51" height="31"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <connections>
-                        <action selector="pinchSwitch:" destination="-1" eventType="valueChanged" id="117"/>
-                    </connections>
-                </switch>
-                <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="79">
-                    <rect key="frame" x="437" y="426" width="51" height="31"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <connections>
-                        <action selector="magnifierSwitch:" destination="-1" eventType="valueChanged" id="118"/>
-                    </connections>
-                </switch>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Shake 'esc':" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="83">
-                    <rect key="frame" x="38" y="355" width="95" height="21"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="app ver. 1.2.0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="182">
+                    <rect key="frame" x="353" y="572" width="154" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Pinch in/out to hide/show directions:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="92">
-                    <rect key="frame" x="38" y="393" width="281" height="21"/>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" editable="NO" id="Toy-sj-dl2">
+                    <rect key="frame" x="20" y="177" width="486" height="352"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Long touch magnifier:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="95">
-                    <rect key="frame" x="38" y="431" width="168" height="21"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <mutableString key="text">New with v1.7.4:
+
+New content:
+⁃	Added the Warden of Yendor, a slow but invulnerable creature that will permanently stalk you after you take the amulet.
+⁃	Added whips as a new weapon type with a unique attack pattern (now shared by salamanders).
+⁃	Added flails as a new weapon type with a unique attack pattern.
+⁃	Added rings of reaping, which recharge your staffs and charms in proportion to the melee damage you inflict.
+⁃	Added commutation altars, which swap the enchantment levels between two items, as a possible vault in depths 13-26.
+⁃	Added resurrection altars, which raise your most recently deceased ally from the dead, as a possible vault in depths 13-26.
+⁃	Added glass dewars, which release large quantities of gas when broken.
+⁃	Added scrolls of discord and scrolls of sanctuary.
+⁃	Added a new legendary ally: the mangrove dryad.
+⁃	Added two new quest rooms and more dungeon flavor.
+⁃	Added an alarm trap, which aggravates monsters from up to half of the radius of the level.
+
+Gameplay changes:
+⁃	Maces and war hammers take two turns only when your attack hits; misses take only one turn.
+⁃	Daggers do 5x damage upon a sneak attack instead of 3x.
+⁃	Weapons generally have been rebalanced: daggers require 12 strength instead of 10; maces and war hammers deal less damage per hit; axes, war axes and war pikes deal slightly more damage; and weapon damage overall has slightly less variance.
+⁃	Stealth radius starts at 7 instead of 6. Stealth radius is fixed at 1 when you are invisible. When visible and not resting, stealth has a lower bound of 2.
+⁃	Rings of transference provide 5% recovery per enchantment level instead of 10%, but now work on all direct damage (including thrown weapons, lightning and firebolts) instead of only melee damage.
+⁃	Turrets and totems other than mirror totems will fire on you only if they are within your stealth radius.
+⁃	An item vault will not spawn more than one of the same item type.
+⁃	Weapons of slaying and armor of immunity are effective against a class of monsters instead of just a single monster type.
+⁃	Monster mutations are more common in the deeper epilogue depths.
+⁃	Poison deals escalating damage with each additional dose.
+⁃	The food clock is slightly more generous at deeper levels.
+⁃	Weapons, armor, staffs, rings and charms can be found, rarely, with higher natural enchantment levels.
+⁃	Goblins, ogres and dar will try to avoid attacking in corridors when they’re in groups.
+⁃	Scrolls of aggravate monster will cause monsters to hunt you from across the level.
+⁃	Empowerment fully heals creatures and cures status ailments.
+⁃	Traps are present much earlier in the dungeon, but are pre-revealed on these earlier depths.
+⁃	Bridges collapse systematically when any portion is burned.
+⁃	Allies do not flee from mirror totems.
+⁃	Fleeing enemies will sometimes try to hide in secret rooms.
+⁃	Monkeys are less common.
+⁃	Decreased the recharge delay of the charm of recharging at higher enchantment levels.
+⁃	The effect of wands of slowing lasts for 50 turns.
+⁃	Obstruction crystals will darken one turn before vanishing, and obstruction crystals in which creatures or the player are embedded will vanish one turn after being exposed to air.
+⁃	Invisible creatures standing in gas can be targeted by other creatures’ projectile attacks.
+⁃	Corrosion by acid will remove good runics from weapons and armor when their enchantment value reaches zero.
+⁃	Vampiric monsters won’t regain health from you if you have runic armor of immunity that is effective against that monster type.
+⁃	Captive monsters can’t submerge.
+⁃	Non-aquatic grappling monsters can hit levitating monsters.
+⁃	Items that fall through a hidden trap door while in view will reveal the trap door.
+⁃	Wands of empowerment auto-identify when used.
+⁃	Allies won’t defect if you hurl another monster against them with a weapon of force, although they will still take damage from the impact.
+
+UI changes:
+⁃	Added percentage displays to the item discoveries screen, which reflect how likely an unidentified item of a given category is to be a particular type. (No percentage is listed for potions of strength or life or scrolls of enchanting because those items’ prevalence is dynamically adjusted so that roughly the same number are found at roughly the same pace between games.)
+⁃	When color effects are disabled, there is a visual indicator of light level, and allies are displayed in white for greater visual distinctiveness.
+⁃	Exploration mode indicates where it will take you before activating, and is interrupted when you see a key or locked door.
+⁃	Pathing will not indirectly reveal changes of terrain in areas that are out of view.
+⁃	Added a relabel command to change the reference letter of items in your pack.
+⁃	Mousing over an item you remember seeing elsewhere on the level will reveal item kind and quantity as well as item category.
+⁃	Objects that can be seen directly are listed in the sidebar above objects that can be seen via telepathy/clairvoyance/omniscience.
+⁃	Added failsafes to guard against accidentally blinking into lava.
+⁃	Monster mutations are no longer displayed while you’re hallucinating.
+⁃	Nets, webs and nausea won’t interrupt auto-explore; nor will the reappearance of a monster that was in view when exploration/travel began.
+⁃	Targeting indicators for identified wands and staffs are colored to match the bolt of the wand/staff to reduce instances of accidentally throwing staffs.
+⁃	Explosive creatures have an intense orange glow.
+⁃	Added easy mode activation to the action menu.
+⁃	Item descriptions reveal what depth the item was found on, and item descriptions for staffs reveal how many turns it typically takes to recover a charge.
+
+Bug fixes:
+⁃	Fixed a crash when a vampire summoned bats.
+⁃	Fixed a crash when exploring goblin warrens.
+⁃	Fixed a bug that could cause certain door-opening pressure plates to be walled off from the level.
+⁃	Fixed a bug that double-counted weakness status penalties against the player.
+⁃	Fixed a bug that allowed monsters to escape from webs and nets faster than the player.
+⁃	Fixed several sources of out-of-sync errors during replays and saved game reloading.
+⁃	Spectral clones of explosive or infected enemies created by armor of multiplicity do not explode or infect upon death or expiration.
+⁃	Split clones of mutated jellies will properly inherit any mutation effects of their progenitor.
+⁃	Fixed several bugs with replay UI.
+⁃	Fixed a bug that sometimes caused polymorph to do nothing (when the randomly chosen polymorph type was already the type of the monster).
+⁃	Fixed a bug that permitted allies to cast bolts at reflective opponents.
+⁃	Fixed a bug that caused polymorphed monkeys/imps with a stolen item to continue fleeing.</mutableString>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Brogue ver. 1.7.4" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6y1-nz-ukD">
+                    <rect key="frame" x="353" y="549" width="153" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="v 1.2.0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="182">
-                    <rect key="frame" x="446" y="498" width="61" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="61" id="190"/>
-                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-            <constraints>
-                <constraint firstItem="79" firstAttribute="leading" secondItem="66" secondAttribute="leading" id="81"/>
-                <constraint firstItem="83" firstAttribute="centerY" secondItem="58" secondAttribute="centerY" id="87"/>
-                <constraint firstItem="83" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="38" id="88"/>
-                <constraint firstItem="95" firstAttribute="leading" secondItem="92" secondAttribute="leading" id="96"/>
-                <constraint firstItem="13" firstAttribute="centerX" secondItem="4" secondAttribute="centerX" id="114"/>
-                <constraint firstItem="58" firstAttribute="leading" secondItem="66" secondAttribute="leading" id="123"/>
-                <constraint firstItem="83" firstAttribute="leading" secondItem="92" secondAttribute="leading" id="125"/>
-                <constraint firstItem="66" firstAttribute="centerY" secondItem="92" secondAttribute="centerY" id="165"/>
-                <constraint firstItem="79" firstAttribute="centerY" secondItem="95" secondAttribute="centerY" id="178"/>
-                <constraint firstAttribute="bottom" secondItem="182" secondAttribute="bottom" constant="6" id="185"/>
-                <constraint firstAttribute="bottom" secondItem="13" secondAttribute="bottom" constant="24" id="215"/>
-                <constraint firstItem="4" firstAttribute="centerX" secondItem="2" secondAttribute="centerX" id="217"/>
-                <constraint firstAttribute="trailing" secondItem="182" secondAttribute="trailing" constant="19" id="218"/>
-                <constraint firstAttribute="trailing" secondItem="58" secondAttribute="trailing" constant="40" id="219"/>
-                <constraint firstItem="4" firstAttribute="top" secondItem="2" secondAttribute="top" constant="6" id="274"/>
-                <constraint firstAttribute="bottom" secondItem="58" secondAttribute="bottom" constant="144" id="281"/>
-                <constraint firstAttribute="bottom" secondItem="79" secondAttribute="bottom" constant="68" id="282"/>
-                <constraint firstAttribute="bottom" secondItem="66" secondAttribute="bottom" constant="106" id="283"/>
-            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>

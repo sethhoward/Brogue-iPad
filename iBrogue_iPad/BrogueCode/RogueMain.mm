@@ -1144,6 +1144,9 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
 		sprintf(buf, "Killed by a%s %s on depth %i", (isVowelish(killedBy) ? "n" : ""), killedBy,
 				rogue.depthLevel);
 	}
+    
+    // Seth:
+    theEntry.seed = rogue.seed;
     theEntry.score = rogue.gold;
 	if (rogue.easyMode) {
 		theEntry.score /= 10;

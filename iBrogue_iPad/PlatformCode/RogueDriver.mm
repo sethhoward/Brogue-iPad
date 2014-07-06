@@ -272,6 +272,15 @@ void initHighScores() {
 		[[NSUserDefaults standardUserDefaults] setObject:datesArray forKey:@"high scores dates"];
 	}
     
+    if ([[NSUserDefaults standardUserDefaults] arrayForKey:@"high scores seeds"] == nil) {
+        NSMutableArray *seedArray = [NSMutableArray arrayWithCapacity:HIGH_SCORES_COUNT];
+        for (j = 0; j < HIGH_SCORES_COUNT; j++) {
+            [seedArray addObject:[NSNumber numberWithInt:0]];
+        }
+        
+        [[NSUserDefaults standardUserDefaults] setObject:seedArray forKey:@"high scores seeds"];
+    }
+    
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -295,6 +304,7 @@ short getHighScoresList(rogueHighScoresEntry returnList[HIGH_SCORES_COUNT]) {
 	scoresArray = [[NSUserDefaults standardUserDefaults] arrayForKey:@"high scores scores"];
 	textArray = [[NSUserDefaults standardUserDefaults] arrayForKey:@"high scores text"];
 	datesArray = [[NSUserDefaults standardUserDefaults] arrayForKey:@"high scores dates"];
+    NSArray *seedArray = [[NSUserDefaults standardUserDefaults] arrayForKey:@"high scores seeds"];
     
 	mostRecentDate = [NSDate distantPast];
     
@@ -313,6 +323,7 @@ short getHighScoresList(rogueHighScoresEntry returnList[HIGH_SCORES_COUNT]) {
 		returnList[i].score = [[scoresArray objectAtIndex:maxIndex] longValue];
 		strcpy(returnList[i].description, [[textArray objectAtIndex:maxIndex] cStringUsingEncoding:NSASCIIStringEncoding]);
 		strcpy(returnList[i].date, [[dateFormatter stringFromDate:[datesArray objectAtIndex:maxIndex]] cStringUsingEncoding:NSASCIIStringEncoding]);
+        returnList[i].seed = [[seedArray objectAtIndex:maxIndex] longValue];
         
 		// if this is the most recent score we've seen so far
 		if ([mostRecentDate compare:[datesArray objectAtIndex:maxIndex]] == NSOrderedAscending) {
@@ -346,6 +357,7 @@ boolean saveHighScore(rogueHighScoresEntry theEntry) {
 	scoresArray = [NSMutableArray arrayWithCapacity:HIGH_SCORES_COUNT];
 	textArray = [NSMutableArray arrayWithCapacity:HIGH_SCORES_COUNT];
 	datesArray = [NSMutableArray arrayWithCapacity:HIGH_SCORES_COUNT];
+    NSMutableArray *seedArray = [[[NSUserDefaults standardUserDefaults] arrayForKey:@"high scores seeds"] mutableCopy];
     
 	[scoresArray setArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"high scores scores"]];
 	[textArray setArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"high scores text"]];
@@ -375,13 +387,17 @@ boolean saveHighScore(rogueHighScoresEntry theEntry) {
 	// minIndex identifies the score entry to be replaced
 	newScore = [NSNumber numberWithLong:theEntry.score];
 	newText = [NSString stringWithCString:theEntry.description encoding:NSASCIIStringEncoding];
+    NSNumber *seed = [NSNumber numberWithLong:theEntry.seed];
+    
 	[scoresArray replaceObjectAtIndex:minIndex withObject:newScore];
 	[textArray replaceObjectAtIndex:minIndex withObject:newText];
 	[datesArray replaceObjectAtIndex:minIndex withObject:[NSDate date]];
+    [seedArray replaceObjectAtIndex:minIndex withObject:seed];
     
 	[[NSUserDefaults standardUserDefaults] setObject:scoresArray forKey:@"high scores scores"];
 	[[NSUserDefaults standardUserDefaults] setObject:textArray forKey:@"high scores text"];
 	[[NSUserDefaults standardUserDefaults] setObject:datesArray forKey:@"high scores dates"];
+    [[NSUserDefaults standardUserDefaults] setObject:seedArray forKey:@"high scores seeds"];
 	[[NSUserDefaults standardUserDefaults] synchronize];
     
 	return true;
