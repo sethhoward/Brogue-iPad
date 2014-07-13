@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03CBCB9A8698459797B41B1E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB486759F204A38BF191AD3 /* libPods.a */; };
 		C5105B1216E65EDB00E09905 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5105B1016E65EDB00E09905 /* AboutViewController.m */; };
 		C5105B1316E65EDB00E09905 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5105B1116E65EDB00E09905 /* AboutViewController.xib */; };
 		C5105B1616EE90A400E09905 /* GameSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = C5105B1516EE90A300E09905 /* GameSettings.m */; };
@@ -18,6 +19,8 @@
 		C52B092416E5848500675CC7 /* UIViewController+UIViewController_GCAchievementView.m in Sources */ = {isa = PBXBuildFile; fileRef = C52B091F16E5848500675CC7 /* UIViewController+UIViewController_GCAchievementView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C52B092516E5848500675CC7 /* UIViewController+UIViewController_GCLeaderBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = C52B092116E5848500675CC7 /* UIViewController+UIViewController_GCLeaderBoardView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C52B092716E5853900675CC7 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C52B092616E5853900675CC7 /* GameKit.framework */; };
+		C532C8A61971AB8800695956 /* DirectionControlsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C532C8A41971AB8800695956 /* DirectionControlsViewController.m */; };
+		C532C8A71971AB8800695956 /* DirectionControlsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C532C8A51971AB8800695956 /* DirectionControlsViewController.xib */; };
 		C57A962916D7EAD500C233F1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C57A962816D7EAD500C233F1 /* UIKit.framework */; };
 		C57A962B16D7EAD500C233F1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C57A962A16D7EAD500C233F1 /* Foundation.framework */; };
 		C57A962D16D7EAD500C233F1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C57A962C16D7EAD500C233F1 /* CoreGraphics.framework */; };
@@ -79,6 +82,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3AB486759F204A38BF191AD3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FFBE458A22F4AE29887D7A3 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C5105B0F16E65EDB00E09905 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		C5105B1016E65EDB00E09905 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		C5105B1116E65EDB00E09905 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
@@ -97,6 +102,9 @@
 		C52B092016E5848500675CC7 /* UIViewController+UIViewController_GCLeaderBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+UIViewController_GCLeaderBoardView.h"; sourceTree = "<group>"; };
 		C52B092116E5848500675CC7 /* UIViewController+UIViewController_GCLeaderBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+UIViewController_GCLeaderBoardView.m"; sourceTree = "<group>"; };
 		C52B092616E5853900675CC7 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		C532C8A31971AB8800695956 /* DirectionControlsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectionControlsViewController.h; sourceTree = "<group>"; };
+		C532C8A41971AB8800695956 /* DirectionControlsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectionControlsViewController.m; sourceTree = "<group>"; };
+		C532C8A51971AB8800695956 /* DirectionControlsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectionControlsViewController.xib; sourceTree = "<group>"; };
 		C57A962516D7EAD500C233F1 /* Brogue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Brogue.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C57A962816D7EAD500C233F1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C57A962A16D7EAD500C233F1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -186,6 +194,7 @@
 				C57A962916D7EAD500C233F1 /* UIKit.framework in Frameworks */,
 				C57A962B16D7EAD500C233F1 /* Foundation.framework in Frameworks */,
 				C57A962D16D7EAD500C233F1 /* CoreGraphics.framework in Frameworks */,
+				03CBCB9A8698459797B41B1E /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,6 +251,7 @@
 				C57A962E16D7EAD500C233F1 /* iBrogue_iPad */,
 				C57A962716D7EAD500C233F1 /* Frameworks */,
 				C57A962616D7EAD500C233F1 /* Products */,
+				5FFBE458A22F4AE29887D7A3 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -259,6 +269,7 @@
 				C57A962816D7EAD500C233F1 /* UIKit.framework */,
 				C57A962A16D7EAD500C233F1 /* Foundation.framework */,
 				C57A962C16D7EAD500C233F1 /* CoreGraphics.framework */,
+				3AB486759F204A38BF191AD3 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -281,6 +292,9 @@
 				C5105B1116E65EDB00E09905 /* AboutViewController.xib */,
 				C5105B1416EE90A300E09905 /* GameSettings.h */,
 				C5105B1516EE90A300E09905 /* GameSettings.m */,
+				C532C8A31971AB8800695956 /* DirectionControlsViewController.h */,
+				C532C8A41971AB8800695956 /* DirectionControlsViewController.m */,
+				C532C8A51971AB8800695956 /* DirectionControlsViewController.xib */,
 			);
 			path = iBrogue_iPad;
 			sourceTree = "<group>";
@@ -411,9 +425,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C57A964816D7EAD500C233F1 /* Build configuration list for PBXNativeTarget "iBrogue_iPad" */;
 			buildPhases = (
+				86682B10BFC74EDFA3F5C16F /* Check Pods Manifest.lock */,
 				C57A962116D7EAD500C233F1 /* Sources */,
 				C57A962216D7EAD500C233F1 /* Frameworks */,
 				C57A962316D7EAD500C233F1 /* Resources */,
+				F01FFCFC1FC04A27A64350BD /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -482,6 +498,7 @@
 				C5958C74174AFFBB00519AD9 /* brogue_seed.png in Resources */,
 				C5958C75174AFFBB00519AD9 /* brogue_seed@2x.png in Resources */,
 				C5958C76174AFFBB00519AD9 /* brogue_showinventory_button.png in Resources */,
+				C532C8A71971AB8800695956 /* DirectionControlsViewController.xib in Resources */,
 				C5958C77174AFFBB00519AD9 /* brogue_showinventory_button@2x.png in Resources */,
 				C5FFC5DF17B9A9DB007A05F3 /* Default-Landscape~ipad.png in Resources */,
 				C5958C78174AFFBB00519AD9 /* brogue_sproutedseed.png in Resources */,
@@ -494,6 +511,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		86682B10BFC74EDFA3F5C16F /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		F01FFCFC1FC04A27A64350BD /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		C57A962116D7EAD500C233F1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -505,6 +555,7 @@
 				C57A965116D7EB4C00C233F1 /* RogueDriver.mm in Sources */,
 				C57A965216D7EB4C00C233F1 /* Viewport.m in Sources */,
 				C57A966516D7EB5500C233F1 /* Architect.c in Sources */,
+				C532C8A61971AB8800695956 /* DirectionControlsViewController.m in Sources */,
 				C57A966616D7EB5500C233F1 /* Buttons.c in Sources */,
 				C57A966716D7EB5500C233F1 /* Combat.c in Sources */,
 				C57A966816D7EB5500C233F1 /* Dijkstra.c in Sources */,
@@ -618,6 +669,7 @@
 		};
 		C57A964916D7EAD500C233F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5FFBE458A22F4AE29887D7A3 /* Pods.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_DEADCODE_DEADSTORES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -640,6 +692,7 @@
 		};
 		C57A964A16D7EAD500C233F1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5FFBE458A22F4AE29887D7A3 /* Pods.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_DEADCODE_DEADSTORES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";

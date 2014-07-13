@@ -54,8 +54,6 @@
         application.applicationSupportsShakeToEdit = YES;
     }
     
-  //  [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-    
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     return YES;

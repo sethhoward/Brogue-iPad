@@ -14,8 +14,14 @@
 #import "UIViewController+UIViewController_GCAchievementView.h"
 #import "AboutViewController.h"
 #import "GameSettings.h"
+#import "DirectionControlsViewController.h"
+#import <KVOController/FBKVOController.h>
 
-#define kESC_Key @"\033"
+static NSString *kESC_Key = @"\033";
+
+#define kEnterKey @"\015"
+#define kBackSpaceKey @"\177"
+
 #define kStationaryTime 0.1f
 #define kGamePlayHitArea CGRectMake(209., 74., 810., 650.)     // seems to be a method in the c code that does this but didn't work as expected
 #define kGameSideBarArea CGRectMake(0., 0., 210., 768.)
@@ -25,59 +31,37 @@
 Viewport *theMainDisplay;
 ViewController *viewController;
 
-typedef enum {
-    KeyDownUp = 0,
-    KeyDownRight,
-    KeyDownDown,
-    KeyDownLeft,
-}KeyDown;
-
-
 @interface ViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
-- (IBAction)escButtonPressed:(id)sender;
-- (IBAction)upButtonPressed:(id)sender;
-- (IBAction)downButtonPressed:(id)sender;
-- (IBAction)rightButtonPressed:(id)sender;
-- (IBAction)leftButtonPressed:(id)sender;
-- (IBAction)upLeftButtonPressed:(id)sender;
-- (IBAction)upRightButtonPressed:(id)sender;
-- (IBAction)downLeftButtonPressed:(id)sender;
-- (IBAction)downRightButtonPressed:(id)sender;
-- (IBAction)seedKeyPressed:(id)sender;
-- (IBAction)showLeaderBoardButtonPressed:(id)sender;
-- (IBAction)aboutButtonPressed:(id)sender;
-- (IBAction)showInventoryButtonPressed:(id)sender;
-- (void)showInventoryOnDeathButton:(BOOL)show;
-
 @property (weak, nonatomic) IBOutlet UIView *titleButtonView;
-@property (weak, nonatomic) IBOutlet UIView *directionalButtonSubContainer;
+// @property (weak, nonatomic) IBOutlet UIView *directionalButtonSubContainer;
 @property (weak, nonatomic) IBOutlet UIButton *seedButton;
 @property (weak, nonatomic) IBOutlet Viewport *secondaryDisplay;   // game etc
 @property (weak, nonatomic) IBOutlet UIButton *escButton;
 @property (nonatomic, strong) NSMutableArray *cachedTouches; // collection of iBTouches
-@property (weak, nonatomic) IBOutlet UIView *playerControlView;
+// @property (weak, nonatomic) IBOutlet UIView *playerControlView;
 @property (weak, nonatomic) IBOutlet UITextField *aTextField;
 @property (nonatomic, strong) NSMutableArray *cachedKeyStrokes;
 @property (weak, nonatomic) IBOutlet UIButton *showInventoryButton;
-@property (weak, nonatomic) IBOutlet UILabel *seedLabel;
 
 @property (nonatomic, assign) BOOL blockMagView;    // block the magnifying glass from appearing
 
 // gestures
-@property (nonatomic, strong) UIPinchGestureRecognizer *directionalPinch;
+// @property (nonatomic, strong) UIPinchGestureRecognizer *directionalPinch;
 @property (nonatomic, assign) CGPoint lastTouchLocation;
 @property (nonatomic, strong) NSTimer  *stationaryTouchTimer;
 
-@property (nonatomic, assign) BOOL areDirectionalControlsHidden;
 @property (nonatomic, assign, getter = isSideBarSingleTap) BOOL sideBarSingleTap;       // handles special touch cases when user touches the side bar
 @property (nonatomic, assign, getter = ishandlingDoubleTap) BOOL ishandlingDoubleTap;      // handles special double tap touch case
 @property (nonatomic, assign) BrogueGameEvent lastBrogueGameEvent;
 @property (nonatomic, assign) BOOL ignoreSideBarInteraction; // we could check if the last event was something like BrogueGameEventOpenedInventory but too fragile
+
+// Cache the count. The game loop nails the array count method slowing things down
 @property (nonatomic, assign) NSUInteger cachedKeyCount;
 @property (nonatomic, assign) NSUInteger cachedTouchCount;
 
-- (void)showTitle;
-- (void)showAuxillaryScreensWithDirectionalControls:(BOOL)controls;
+// Directional Controls
+@property (nonatomic, strong) DirectionControlsViewController *directionControlsViewController;
+@property (nonatomic, strong) FBKVOController *kvoDirectionControlButton;
 
 @end
 
@@ -93,6 +77,9 @@ typedef enum {
     [GameCenterManager sharedInstance];
     [[GameCenterManager sharedInstance] authenticateLocalUser];
     
+    [self loadDirectionControlsViewController];
+    [self createDirectionControlListener];
+    
     [RogueDriver sharedInstance];
     
     if (!theMainDisplay) {
@@ -102,7 +89,6 @@ typedef enum {
         _cachedKeyStrokes = [NSMutableArray arrayWithCapacity:1];
         
         [self addNotificationObservers];
-        [self initGestureRecognizers];
     }
     
     [self becomeFirstResponder];
@@ -114,8 +100,60 @@ typedef enum {
     [thread start];
 }
 
+- (void)createDirectionControlListener {
+    self.kvoDirectionControlButton = [FBKVOController controllerWithObserver:self];
+    
+    __weak typeof(self) weakSelf = self;
+    [self.kvoDirectionControlButton observe:self.directionControlsViewController keyPath:@"directionalButton" options:NSKeyValueObservingOptionNew block:^(id observer, id object, NSDictionary *change) {
+        UIButton *directionalButton = change[@"new"];
+        
+        if ([directionalButton isEqual:[NSNull null]]) {
+            return;
+        }
+        
+        enum ControlDirection controlDirection = directionalButton.tag;
+        
+        switch (controlDirection) {
+            case ControlDirectionUp:
+                [weakSelf addKeyStroke:kUP_Key];
+                break;
+            case ControlDirectionRight:
+                [weakSelf addKeyStroke:kRIGHT_key];
+                break;
+            case ControlDirectionDown:
+                [weakSelf addKeyStroke:kDOWN_key];
+                break;
+            case ControlDirectionLeft:
+                [weakSelf addKeyStroke:kLEFT_key];
+                break;
+            case ControlDirectionUpLeft:
+                [weakSelf addKeyStroke:kUPLEFT_key];
+                break;
+            case ControlDirectionUpRight:
+                [weakSelf addKeyStroke:kUPRight_key];
+                break;
+            case ControlDirectionDownRight:
+                [weakSelf addKeyStroke:kDOWNRIGHT_key];
+                break;
+            case ControlDirectionDownLeft:
+                [weakSelf addKeyStroke:kDOWNLEFT_key];
+                break;
+            default:
+                break;
+        }
+    }];
+}
+
 - (BOOL)prefersStatusBarHidden {
     return YES;
+}
+
+- (void)loadDirectionControlsViewController {
+    self.directionControlsViewController = [[DirectionControlsViewController alloc] init];
+    [self.view addSubview:self.directionControlsViewController.view];
+    [self addChildViewController:self.directionControlsViewController];
+    
+    self.directionControlsViewController.view.center = CGPointMake(104., 662.);
 }
 
 - (void)addNotificationObservers {
@@ -176,86 +214,6 @@ typedef enum {
 }
 
 #pragma mark - touches
-
-- (void)initGestureRecognizers {
-    // IS slow as shit. Leaving the code in so no one ever gets the bright idea to create a double tap gesture
-   // UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
-   // doubleTap.numberOfTapsRequired = 2;
-   // doubleTap.delegate = self;
-  //  [self.secondaryDisplay addGestureRecognizer:doubleTap];
-    
-    if ([[GameSettings sharedInstance] allowPinchToZoomDirectional]) {
-        [self turnOnPinchGesture];
-    }
-}
-
-
-
-// Pinch to hide the directional controls
-- (void)turnOnPinchGesture {
-    if (!self.directionalPinch) {
-        self.directionalPinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
-        [self.playerControlView addGestureRecognizer:self.directionalPinch];
-    }
-}
-
-- (void)turnOffPinchGesture {
-    if (self.directionalPinch) {
-        [self.playerControlView removeGestureRecognizer:self.directionalPinch];
-        self.directionalPinch = nil;
-    }
-}
-
-- (void)handlePinch:(UIPinchGestureRecognizer *)pinch {
-    if (pinch.velocity < 0 && !_areDirectionalControlsHidden) {
-        self.directionalButtonSubContainer.transform = CGAffineTransformMakeScale(pinch.scale, pinch.scale);
-    }
-    else if(pinch.velocity > 0 && _areDirectionalControlsHidden){
-        self.directionalButtonSubContainer.transform = CGAffineTransformMakeScale(1 - pinch.scale, 1 - pinch.scale);
-    }
-    
-    if (pinch.state == UIGestureRecognizerStateEnded || pinch.state == UIGestureRecognizerStateCancelled) {
-        if (pinch.scale < 0.6f) {
-            [self hideDirectionalArrows];
-            
-            _areDirectionalControlsHidden = YES;
-        }
-        else {
-            [self showDirectionalArrows];
-            
-            _areDirectionalControlsHidden = NO;
-        }
-    }
-}
-
-- (void)hideDirectionalArrows {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [UIView animateWithDuration:0.2 animations:^{
-            self.directionalButtonSubContainer.transform = CGAffineTransformMakeScale(.0000001, .0000001);
-        }];
-    });
-    
-}
-
-- (void)showDirectionalArrows {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [UIView animateWithDuration:0.2 animations:^{
-            self.directionalButtonSubContainer.transform = CGAffineTransformMakeScale(1., 1.);
-        }];
-    });
-    
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    CGPoint pointInView = [touch locationInView:gestureRecognizer.view];
-    
-    if ( [gestureRecognizer isMemberOfClass:[UITapGestureRecognizer class]]
-        && CGRectContainsPoint(self.playerControlView.frame, pointInView)) {
-        return NO;
-    }
-    
-    return YES;
-}
 
 // TODO: touches are manually cached here instead of going through a central point
 // we save the last touch point so the second tap doesn't stray to far from the first tap. Otherwise the user's expectations of where they want to go and where they go might not match up
@@ -476,15 +434,14 @@ typedef enum {
 
 - (void)showTitle {
     dispatch_async(dispatch_get_main_queue(), ^{
-    double delayInSeconds = 0.5;
-    [self.playerControlView setHidden:YES];
-        
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            if (_lastBrogueGameEvent == BrogueGameEventShowTitle || _lastBrogueGameEvent == BrogueGameEventOpenGameFinished) {
-                [self.titleButtonView setHidden:NO];
-            }
-        });
+        double delayInSeconds = 0.5;
+     
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                if (_lastBrogueGameEvent == BrogueGameEventShowTitle || _lastBrogueGameEvent == BrogueGameEventOpenGameFinished) {
+                    [self.titleButtonView setHidden:NO];
+                }
+            });
     });
 }
 
@@ -496,14 +453,7 @@ typedef enum {
 
 - (void)showAuxillaryScreensWithDirectionalControls:(BOOL)controls {
     dispatch_async(dispatch_get_main_queue(), ^{
-        double delayInSeconds = .75;
-        
         [self.titleButtonView setHidden:YES];
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self.playerControlView setHidden:!controls];
-            
-        });
     });
 }
 
@@ -532,10 +482,6 @@ typedef enum {
 }
 
 #pragma mark - UITextFieldDelegate
-
-#define kEnterKey @"\015"
-#define kBackSpaceKey @"\177"
-#define kEscKey @"\033"
 
 // when using the hide keyboard button on the UIKit keyboard we treat it like an escape
 - (void)didHideKeyboard {
@@ -584,50 +530,14 @@ typedef enum {
 
 #pragma mark - Actions
 
+- (void)addKeyStroke:(NSString *)key {
+    [self.cachedKeyStrokes addObject:key];
+    self.cachedKeyCount = [self.cachedKeyStrokes count];
+}
+
 - (IBAction)escButtonPressed:(id)sender {
-    [self.cachedKeyStrokes addObject:kEscKey];
-   self. cachedKeyCount = [self.cachedKeyStrokes count];
+    [self addKeyStroke:kESC_Key];
     [self.aTextField resignFirstResponder];
-}
-
-- (IBAction)upButtonPressed:(id)sender {
-    [self.cachedKeyStrokes addObject:@"k"];
-    self.cachedKeyCount = [self.cachedKeyStrokes count];
-}
-
-- (IBAction)downButtonPressed:(id)sender {
-    [self.cachedKeyStrokes addObject:@"j"];
-    self.cachedKeyCount = [self.cachedKeyStrokes count];
-}
-
-- (IBAction)rightButtonPressed:(id)sender {
-    [self.cachedKeyStrokes addObject:@"l"];
-    self.cachedKeyCount = [self.cachedKeyStrokes count];
-}
-
-- (IBAction)leftButtonPressed:(id)sender {
-    [self.cachedKeyStrokes addObject:@"h"];
-    self.cachedKeyCount = [self.cachedKeyStrokes count];
-}
-
-- (IBAction)upLeftButtonPressed:(id)sender {
-    [self.cachedKeyStrokes addObject:@"y"];
-    self.cachedKeyCount = [self.cachedKeyStrokes count];
-}
-
-- (IBAction)upRightButtonPressed:(id)sender {
-    [self.cachedKeyStrokes addObject:@"u"];
-    self.cachedKeyCount = [self.cachedKeyStrokes count];
-}
-
-- (IBAction)downLeftButtonPressed:(id)sender {
-    [self.cachedKeyStrokes addObject:@"b"];
-    self.cachedKeyCount = [self.cachedKeyStrokes count];
-}
-
-- (IBAction)downRightButtonPressed:(id)sender {
-    [self.cachedKeyStrokes addObject:@"n"];
-    self.cachedKeyCount = [self.cachedKeyStrokes count];
 }
 
 - (IBAction)seedKeyPressed:(id)sender {
@@ -673,14 +583,6 @@ typedef enum {
 - (void)showInventoryOnDeathButton:(BOOL)show {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.showInventoryButton.hidden = !show;
-        
-        if (show) {
-            self.seedLabel.hidden = NO;
-            [self.seedLabel setText:[NSString stringWithFormat:@"Seed:%li", [RogueDriver rogueSeed]]];
-        }
-        else {
-            self.seedLabel.hidden = YES;
-        }
     });
 }
 
@@ -703,8 +605,8 @@ typedef enum {
             _ignoreSideBarInteraction = YES;
             self.blockMagView = YES;
             
-            if (!_areDirectionalControlsHidden) {
-                [self hideDirectionalArrows];
+            if (!self.directionControlsViewController.areDirectionalControlsHidden) {
+                [self.directionControlsViewController hideWithAnimation:YES];
             }
             break;
         // pretty much every inventory option
@@ -714,8 +616,8 @@ typedef enum {
         case BrogueGameEventClosedInventory:
             _ignoreSideBarInteraction = NO;
             self.blockMagView = NO;
-            if (!_areDirectionalControlsHidden) {
-                [self showDirectionalArrows];
+            if (!self.directionControlsViewController.areDirectionalControlsHidden) {
+                [self.directionControlsViewController showWithAnimation:YES];
             }
             break;
         case BrogueGameEventKeyBoardInputRequired:
@@ -726,12 +628,12 @@ typedef enum {
             [self showInventoryOnDeathButton:NO];
             [self showTitle];
             [self hideKeyboard];
-            [self hideDirectionalArrows];
+            [self.directionControlsViewController hideWithAnimation:YES];
             self.blockMagView = YES;
             break;
         case BrogueGameEventStartNewGame:
         case BrogueGameEventOpenGame:
-            [self showDirectionalArrows];
+            [self.directionControlsViewController showWithAnimation:YES];
             [self showAuxillaryScreensWithDirectionalControls:YES];
             @synchronized(self.cachedTouches) {
                 [self.cachedTouches removeAllObjects];
@@ -747,7 +649,7 @@ typedef enum {
         case BrogueGameEventPlayBackPanic:
             [self showAuxillaryScreensWithDirectionalControls:NO];
             self.blockMagView = YES;
-            [self hideDirectionalArrows];
+            [self.directionControlsViewController hideWithAnimation:YES];
             break;
         case BrogueGameEventMessagePlayerHasDied:
             [self showInventoryOnDeathButton:YES];
@@ -761,7 +663,6 @@ typedef enum {
 }
 
 - (void)viewDidUnload {
-    [self setPlayerControlView:nil];
     [self setATextField:nil];
     [self setEscButton:nil];
     [super viewDidUnload];
