@@ -44,7 +44,7 @@ Join the community and check out weekly contests @http://brogue.createforumhosti
                         <action selector="dismissButtonPressed:" destination="-1" eventType="touchUpInside" id="14"/>
                     </connections>
                 </button>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="app ver. 1.2.0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="182">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="app ver. 1.2.1" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="182">
                     <rect key="frame" x="353" y="572" width="154" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -52,10 +52,14 @@ Join the community and check out weekly contests @http://brogue.createforumhosti
                     <nil key="highlightedColor"/>
                 </label>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" editable="NO" id="Toy-sj-dl2">
-                    <rect key="frame" x="20" y="177" width="486" height="352"/>
+                    <rect key="frame" x="22" y="177" width="486" height="351"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <mutableString key="text">New with v1.7.4:
+                    <mutableString key="text">1.2.1 Application changes:
+-      Added support for Blue Tooth keyboards. Note that due to limitations to Apple’s keyboard support key presses are not repeated when key is held.
+-      Directional controls will now repeat when held.
+
+New with v1.7.4:
 
 New content:
 ⁃	Added the Warden of Yendor, a slow but invulnerable creature that will permanently stalk you after you take the amulet.

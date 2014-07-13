@@ -157,6 +157,7 @@ NSDictionary* keyCommands;
 
 - (void)loadDirectionControlsViewController {
     self.directionControlsViewController = [[DirectionControlsViewController alloc] init];
+ //   [self.view insertSubview:self.directionControlsViewController.view belowSubview:self.titleButtonView];
     [self.view addSubview:self.directionControlsViewController.view];
     [self addChildViewController:self.directionControlsViewController];
     
@@ -461,6 +462,7 @@ NSDictionary* keyCommands;
 - (void)showTitle {
     dispatch_async(dispatch_get_main_queue(), ^{
         double delayInSeconds = 0.5;
+        [self.directionControlsViewController.view setHidden:YES];
      
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -480,6 +482,10 @@ NSDictionary* keyCommands;
 - (void)showAuxillaryScreensWithDirectionalControls:(BOOL)controls {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.titleButtonView setHidden:YES];
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self.directionControlsViewController.view setHidden:!controls];
+        });
     });
 }
 
