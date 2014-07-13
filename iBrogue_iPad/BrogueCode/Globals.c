@@ -45,6 +45,8 @@ item *floorItems;
 item *packItems;
 item *monsterItemsHopper;
 
+int KEYBOARD_LABELS = true;
+
 char displayedMessage[MESSAGE_LINES][COLS*2];
 boolean messageConfirmed[MESSAGE_LINES];
 char combatText[COLS * 2];

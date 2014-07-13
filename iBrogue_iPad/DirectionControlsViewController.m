@@ -108,7 +108,7 @@ NSString *kDOWNRIGHT_key = @"n";
         if (self.buttonDown) {
             [self.repeatTimer invalidate];
             self.repeatTimer = nil;
-            self.repeatTimer = [NSTimer scheduledTimerWithTimeInterval:0.065 target:self selector:@selector(handleRepeatKeyPress) userInfo:nil repeats:YES];
+            self.repeatTimer = [NSTimer scheduledTimerWithTimeInterval:0.08 target:self selector:@selector(handleRepeatKeyPress) userInfo:nil repeats:YES];
         }
     });
 }

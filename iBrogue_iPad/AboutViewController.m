@@ -71,13 +71,13 @@
     UISwitch *aSwitch = (UISwitch *)sender;
     [[GameSettings sharedInstance] setAllowPinchToZoomDirectional:aSwitch.on];
     
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+ //   AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     
     if (aSwitch.on) {
-        [appDelegate.viewController turnOnPinchGesture];
+  //      [appDelegate.viewController turnOnPinchGesture];
     }
     else {
-        [appDelegate.viewController turnOffPinchGesture];
+  //      [appDelegate.viewController turnOffPinchGesture];
     }
 }
 

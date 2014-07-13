@@ -36,8 +36,4 @@ typedef struct iBTouch iBTouch;
 - (void)removeTouchAtIndex:(uint)index;
 - (char)dequeKeyStroke;
 
-// Settings
-- (void)turnOnPinchGesture;
-- (void)turnOffPinchGesture;
-
 @end

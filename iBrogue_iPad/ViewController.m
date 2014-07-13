@@ -16,6 +16,7 @@
 #import "GameSettings.h"
 #import "DirectionControlsViewController.h"
 #import <KVOController/FBKVOController.h>
+#import "IncludeGlobals.h"
 
 static NSString *kESC_Key = @"\033";
 
@@ -86,24 +87,24 @@ NSDictionary* keyCommands;
     [self loadDirectionControlsViewController];
     [self createDirectionControlListener];
     
-    [RogueDriver sharedInstance];
+    [self addNotificationObservers];
     
-    if (!theMainDisplay) {
-        theMainDisplay = self.secondaryDisplay;
-        viewController = self;
-        _cachedTouches = [NSMutableArray arrayWithCapacity:1];
-        _cachedKeyStrokes = [NSMutableArray arrayWithCapacity:1];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [RogueDriver sharedInstance];
         
-        [self addNotificationObservers];
-    }
-    
-    [self becomeFirstResponder];
-  
-    // bump up the default stack size for a background thread. Anything less than the magic number below
-    // risks blowing up the stack. A good test is seed #15
-    NSThread *thread = [[NSThread alloc] initWithTarget:self selector:@selector(playBrogue) object:nil];
-    [thread setStackSize:350 * 8192];
-    [thread start];
+        if (!theMainDisplay) {
+            theMainDisplay = self.secondaryDisplay;
+            viewController = self;
+            _cachedTouches = [NSMutableArray arrayWithCapacity:1];
+            _cachedKeyStrokes = [NSMutableArray arrayWithCapacity:1];
+        }
+        
+        // bump up the default stack size for a background thread. Anything less than the magic number below
+        // risks blowing up the stack. A good test is seed #15
+        NSThread *thread = [[NSThread alloc] initWithTarget:self selector:@selector(playBrogue) object:nil];
+        [thread setStackSize:350 * 8192];
+        [thread start];
+    });
 }
 
 - (void)createDirectionControlListener {
@@ -167,6 +168,25 @@ NSDictionary* keyCommands;
     [center addObserver:self selector:@selector(didShowKeyboard) name:UIKeyboardDidShowNotification object:nil];
     [center addObserver:self selector:@selector(didHideKeyboard) name:UIKeyboardWillHideNotification object:nil];
     [center addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [center addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    
+     [self hideKeyboard];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2. * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (!KEYBOARD_LABELS) {
+            return;
+        }
+        
+        BOOL hasShownKeyBoardWarning = NO;//[[NSUserDefaults standardUserDefaults] boolForKey:@"Has Shown Keyboard Warning"];
+        
+        if (!hasShownKeyBoardWarning) {
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"Has Shown Keyboard Warning"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Keyboard Detected" message:@"There's a bluetooth keyboard detected. The in game keyboard will not be displayed. Turn off blue tooth if you do not plan on using an external keyboard." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+        }
+    });
 }
 
 - (void)applicationDidBecomeActive {
@@ -731,6 +751,11 @@ NSDictionary* keyCommands;
     if(key) {
         [self addKeyStroke:key];
     }
+}
+
+// UIKeyboardWillShowNotification
+- (void)keyboardWillShow:(NSNotification *)notification {
+    KEYBOARD_LABELS = 0;
 }
 
 @end
