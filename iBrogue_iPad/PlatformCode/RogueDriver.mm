@@ -127,8 +127,8 @@ __unused void pausingTimerStartsNow() {
 #pragma mark - input
 
 void clearCursor() {
-    rogue.cursorLoc[0] = -1;
-    rogue.cursorLoc[1] = -1;
+  //  rogue.cursorLoc[0] = -1;
+  //  rogue.cursorLoc[1] = -1;
 }
 
 // Returns true if the player interrupted the wait with a keystroke; otherwise false.

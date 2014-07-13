@@ -31,6 +31,8 @@ static NSString *kESC_Key = @"\033";
 Viewport *theMainDisplay;
 ViewController *viewController;
 
+NSDictionary* keyCommands;
+
 @interface ViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
 @property (weak, nonatomic) IBOutlet UIView *titleButtonView;
 // @property (weak, nonatomic) IBOutlet UIView *directionalButtonSubContainer;
@@ -65,7 +67,11 @@ ViewController *viewController;
 
 @end
 
-@implementation ViewController
+@implementation ViewController{
+@private
+    NSMutableArray *_commands;
+    NSDictionary *_keyCommandsTranslator;
+}
 @dynamic hasEvent;
 @dynamic hasTouchEvent;
 @synthesize hasKeyEvent;
@@ -670,6 +676,61 @@ ViewController *viewController;
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight;
+}
+
+#pragma mark - Keyboard
+
+- (NSArray *)keyCommands {
+    if(!_commands) {
+        _keyCommandsTranslator = @{UIKeyInputUpArrow: kUP_Key,
+                                   UIKeyInputDownArrow: kDOWN_key,
+                                   UIKeyInputLeftArrow: kLEFT_key,
+                                   UIKeyInputRightArrow: kRIGHT_key,
+                                   UIKeyInputEscape: @"\033"};
+        
+        NSArray *keys = [[NSArray alloc] initWithObjects:
+                         @">", @"<", @" ", @"\\",
+                         @"]", @"?", @"~",  @"&",
+                         @"\n", @"\t", @".",
+                         nil];
+        
+        _commands = [[NSMutableArray alloc] init];
+        
+        for(char i = 'a'; i <= 'z'; i++) {
+            NSString *key = [NSString stringWithFormat:@"%c", i];
+            [_commands addObject:[UIKeyCommand keyCommandWithInput:key modifierFlags:0 action:@selector(executeKeyCommand:)]];
+            [_commands addObject:[UIKeyCommand keyCommandWithInput:key modifierFlags:UIKeyModifierShift action:@selector(executeKeyCommand:)]];
+        }
+        
+        for(id key in keys) {
+            [_commands addObject:[UIKeyCommand keyCommandWithInput:key modifierFlags:0 action:@selector(executeKeyCommand:)]];
+        }
+        
+        for(NSString *key in _keyCommandsTranslator) {
+            [_commands addObject:[UIKeyCommand keyCommandWithInput:key modifierFlags:0 action:@selector(executeKeyCommand:)]];
+        }
+    }
+    return _commands;
+}
+
+- (void)executeKeyCommand:(UIKeyCommand *)keyCommand {
+    NSString *key;
+    if(keyCommand.modifierFlags == UIKeyModifierShift) {
+        if([keyCommand.input length] == 1
+           && [keyCommand.input characterAtIndex:0] >= 'a'
+           && [keyCommand.input characterAtIndex:0] <= 'z') {
+            key = [keyCommand.input uppercaseString];
+        }
+    } else {
+        key = [_keyCommandsTranslator objectForKey:keyCommand.input];
+        if(key == nil) {
+            key = keyCommand.input;
+        }
+    }
+    
+    if(key) {
+        [self addKeyStroke:key];
+    }
 }
 
 @end
