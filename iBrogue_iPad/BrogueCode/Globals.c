@@ -2497,18 +2497,19 @@ const bolt boltCatalog[NUMBER_BOLT_KINDS] = {
 
 #pragma mark Feat definitions
 
+// Seth:
 const feat featTable[FEAT_COUNT] = {
-    {"Pure Mage",       "Ascend without using fists or a weapon.", true},
-    {"Pure Warrior",    "Ascend without using a staff, wand or charm.", true},
-    {"Pacifist",        "Ascend without attacking a creature.", true},
-    {"Archivist",       "Ascend without drinking a potion or reading a scroll.", true},
-    {"Companion",       "Journey with an ally through 20 depths.", false},
-    {"Specialist",      "Enchant an item up to or above +16.", false},
-    {"Jellymancer",     "Obtain at least 90 jelly allies simultaneously.", false},
-    {"Indomitable",     "Ascend without taking damage.", true},
-    {"Mystic",          "Ascend without eating.", true},
-    {"Dragonslayer",    "Kill a dragon with a melee attack.", false},
-    {"Paladin",         "Ascend without attacking an unaware or fleeing creature.", true},
+    {"Pure Mage",       "Ascend without using fists or a weapon.", true, "brogue_pure_mage"},
+    {"Pure Warrior",    "Ascend without using a staff, wand or charm.", true, "pure_warrior"},
+    {"Pacifist",        "Ascend without attacking a creature.", true, "brogue_pacifist"},
+    {"Archivist",       "Ascend without drinking a potion or reading a scroll.", true, "brogue_archivist"},
+    {"Companion",       "Journey with an ally through 20 depths.", false, "brogue_companion"},
+    {"Specialist",      "Enchant an item up to or above +16.", false, "brogue_specialist"},
+    {"Jellymancer",     "Obtain at least 90 jelly allies simultaneously.", false, "brogue_jellymancer"},
+    {"Indomitable",     "Ascend without taking damage.", true, "brogue_indomitable"},
+    {"Mystic",          "Ascend without eating.", true, "brogue_mystic"},
+    {"Dragonslayer",    "Kill a dragon with a melee attack.", false, "brogue_dragonslayer"},
+    {"Paladin",         "Ascend without attacking an unaware or fleeing creature.", true, "brogue_paladin"},
 };
 
 #pragma mark Miscellaneous definitions

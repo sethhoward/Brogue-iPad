@@ -6559,6 +6559,9 @@ void readScroll(item *theItem) {
                 && theItem->enchant1 >= 16) {
                 
                 rogue.featRecord[FEAT_SPECIALIST] = true;
+                
+                //Seth:
+                submitAchievementForCharString(kAchievementUTF8Specialist);
             }
 			if (theItem->flags & ITEM_EQUIPPED) {
 				equipItem(theItem, true);

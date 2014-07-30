@@ -599,6 +599,9 @@ creature *cloneMonster(creature *monst, boolean announce, boolean placeClone) {
         }
         if (jellyCount >= 90) {
             rogue.featRecord[FEAT_JELLYMANCER] = true;
+            
+            //Seth:
+            submitAchievementForCharString(kAchievementUTF8Jellymancer);
         }
     }
 	return newMonst;

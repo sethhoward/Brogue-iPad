@@ -2543,10 +2543,12 @@ typedef struct autoGenerator {
 
 #define NUMBER_AUTOGENERATORS 49
 
+// Seth:
 typedef struct feat {
 	char name[100];
     char description[200];
     boolean initialValue;
+    char achievementKey[40];
 } feat;
 
 #define PDS_FORBIDDEN   -1

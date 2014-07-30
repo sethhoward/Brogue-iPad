@@ -1165,6 +1165,9 @@ boolean attack(creature *attacker, creature *defender, boolean lungeAttack) {
                        && defender->info.monsterID == MK_DRAGON) {
                 
                 rogue.featRecord[FEAT_DRAGONSLAYER] = true;
+                
+                //Seth:
+                submitAchievementForCharString(kAchievementUTF8Dragonslayer);
             }
 		} else { // if the defender survived
 			if (!rogue.blockCombatText && (canSeeMonster(attacker) || canSeeMonster(defender))) {

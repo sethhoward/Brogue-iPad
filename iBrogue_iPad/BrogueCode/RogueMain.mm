@@ -1270,7 +1270,6 @@ void victory(boolean superVictory) {
             i++;
             
             // Seth:
-            NSString *temp = [NSString stringWithUTF8String:featTable[j].name ];
             [[GameCenterManager sharedInstance] submitAchievement:[NSString stringWithUTF8String:featTable[j].name] percentComplete:100.];
         }
     }
