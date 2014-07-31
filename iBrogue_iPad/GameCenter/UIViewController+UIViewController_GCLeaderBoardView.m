@@ -18,7 +18,7 @@
     GKLeaderboardViewController *leaderBoardController = [[[GKLeaderboardViewController alloc] init] autorelease];
     
     leaderBoardController.category = category;
-    leaderBoardController.timeScope = GKLeaderboardTimeScopeAllTime;
+    leaderBoardController.timeScope = GKLeaderboardTimeScopeWeek;
     leaderBoardController.leaderboardDelegate = self;
     
     [self presentModalViewController:leaderBoardController animated:YES];
