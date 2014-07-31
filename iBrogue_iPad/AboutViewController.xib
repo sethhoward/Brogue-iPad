@@ -44,7 +44,7 @@ Join the community and check out weekly contests @http://brogue.createforumhosti
                         <action selector="dismissButtonPressed:" destination="-1" eventType="touchUpInside" id="14"/>
                     </connections>
                 </button>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="app ver. 1.2.1" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="182">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="app ver. 1.2.2" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="182">
                     <rect key="frame" x="353" y="572" width="154" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -55,7 +55,7 @@ Join the community and check out weekly contests @http://brogue.createforumhosti
                     <rect key="frame" x="22" y="177" width="486" height="351"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <mutableString key="text">1.2.1 Application changes:
+                    <string key="text">1.2.1 Application changes:
 -      Added support for Blue Tooth keyboards. Note that due to limitations to Apple’s keyboard support key presses are not repeated when key is held.
 -      Directional controls will now repeat when held.
 
@@ -135,7 +135,7 @@ Bug fixes:
 ⁃	Fixed several bugs with replay UI.
 ⁃	Fixed a bug that sometimes caused polymorph to do nothing (when the randomly chosen polymorph type was already the type of the monster).
 ⁃	Fixed a bug that permitted allies to cast bolts at reflective opponents.
-⁃	Fixed a bug that caused polymorphed monkeys/imps with a stolen item to continue fleeing.</mutableString>
+⁃	Fixed a bug that caused polymorphed monkeys/imps with a stolen item to continue fleeing.</string>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
