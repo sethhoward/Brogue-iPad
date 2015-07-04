@@ -717,7 +717,7 @@ NSDictionary* keyCommands;
         NSArray *keys = [[NSArray alloc] initWithObjects:
                          @">", @"<", @" ", @"\\",
                          @"]", @"?", @"~",  @"&",
-                         @"\n", @"\t", @".",
+                         @"\r", @"\t", @".",
                          nil];
         
         _commands = [[NSMutableArray alloc] init];
