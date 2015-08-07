@@ -11,6 +11,7 @@
 		C5105B1216E65EDB00E09905 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5105B1016E65EDB00E09905 /* AboutViewController.m */; };
 		C5105B1316E65EDB00E09905 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5105B1116E65EDB00E09905 /* AboutViewController.xib */; };
 		C5105B1616EE90A400E09905 /* GameSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = C5105B1516EE90A300E09905 /* GameSettings.m */; };
+		C5213CD21B7533AE00E97A27 /* Arial Unicode.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C5213CD11B75308E00E97A27 /* Arial Unicode.ttf */; };
 		C528726A17526D7F000B4F05 /* iRate.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C528726717526D7F000B4F05 /* iRate.bundle */; };
 		C528726B17526D7F000B4F05 /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = C528726917526D7F000B4F05 /* iRate.m */; };
 		C528726E17526FB8000B4F05 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C528726D17526FB8000B4F05 /* StoreKit.framework */; };
@@ -70,7 +71,6 @@
 		C5958C7A174AFFBB00519AD9 /* gamecenterlogo_brogue.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C6A174AFFBB00519AD9 /* gamecenterlogo_brogue.png */; };
 		C5958C7B174AFFBB00519AD9 /* gamecenterlogo_brogue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C6B174AFFBB00519AD9 /* gamecenterlogo_brogue@2x.png */; };
 		C59B21C716EA48E0007018DE /* MONACO.TTF in Resources */ = {isa = PBXBuildFile; fileRef = C59B21C616EA48E0007018DE /* MONACO.TTF */; };
-		C5ADC3B91B48323B0030F347 /* Arial Unicode.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C5ADC3B81B48323B0030F347 /* Arial Unicode.ttf */; };
 		C5B9B66C17D23BEA00D8459E /* Time.mm in Sources */ = {isa = PBXBuildFile; fileRef = C5B9B66B17D23BE900D8459E /* Time.mm */; };
 		C5D5EC6C16FC07EB00E9A9AF /* icon_72x72.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D5EC6B16FC07EB00E9A9AF /* icon_72x72.png */; };
 		C5D5EC6E16FC07F300E9A9AF /* icon_144x144.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D5EC6D16FC07F300E9A9AF /* icon_144x144.png */; };
@@ -90,6 +90,7 @@
 		C5105B1116E65EDB00E09905 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
 		C5105B1416EE90A300E09905 /* GameSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameSettings.h; sourceTree = "<group>"; };
 		C5105B1516EE90A300E09905 /* GameSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameSettings.m; sourceTree = "<group>"; };
+		C5213CD11B75308E00E97A27 /* Arial Unicode.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arial Unicode.ttf"; sourceTree = "<group>"; };
 		C528726717526D7F000B4F05 /* iRate.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = iRate.bundle; sourceTree = "<group>"; };
 		C528726817526D7F000B4F05 /* iRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iRate.h; sourceTree = "<group>"; };
 		C528726917526D7F000B4F05 /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iRate.m; sourceTree = "<group>"; };
@@ -169,7 +170,6 @@
 		C5958C6A174AFFBB00519AD9 /* gamecenterlogo_brogue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gamecenterlogo_brogue.png; sourceTree = "<group>"; };
 		C5958C6B174AFFBB00519AD9 /* gamecenterlogo_brogue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gamecenterlogo_brogue@2x.png"; sourceTree = "<group>"; };
 		C59B21C616EA48E0007018DE /* MONACO.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = MONACO.TTF; sourceTree = "<group>"; };
-		C5ADC3B81B48323B0030F347 /* Arial Unicode.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Arial Unicode.ttf"; path = "../../../../Documents/Exported Fonts/Arial Unicode MS/Arial Unicode.ttf"; sourceTree = "<group>"; };
 		C5B9B66B17D23BE900D8459E /* Time.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Time.mm; sourceTree = "<group>"; };
 		C5D5EC6B16FC07EB00E9A9AF /* icon_72x72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_72x72.png; sourceTree = "<group>"; };
 		C5D5EC6D16FC07F300E9A9AF /* icon_144x144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_144x144.png; sourceTree = "<group>"; };
@@ -304,7 +304,7 @@
 		C57A962F16D7EAD500C233F1 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				C5ADC3B81B48323B0030F347 /* Arial Unicode.ttf */,
+				C5213CD11B75308E00E97A27 /* Arial Unicode.ttf */,
 				C59B21C616EA48E0007018DE /* MONACO.TTF */,
 				C57A963016D7EAD500C233F1 /* iBrogue_iPad-Info.plist */,
 				C57A963116D7EAD500C233F1 /* InfoPlist.strings */,
@@ -505,7 +505,7 @@
 				C5958C77174AFFBB00519AD9 /* brogue_showinventory_button@2x.png in Resources */,
 				C5FFC5DF17B9A9DB007A05F3 /* Default-Landscape~ipad.png in Resources */,
 				C5958C78174AFFBB00519AD9 /* brogue_sproutedseed.png in Resources */,
-				C5ADC3B91B48323B0030F347 /* Arial Unicode.ttf in Resources */,
+				C5213CD21B7533AE00E97A27 /* Arial Unicode.ttf in Resources */,
 				C5958C79174AFFBB00519AD9 /* brogue_sproutedseed@2x.png in Resources */,
 				C5958C7A174AFFBB00519AD9 /* gamecenterlogo_brogue.png in Resources */,
 				C5958C7B174AFFBB00519AD9 /* gamecenterlogo_brogue@2x.png in Resources */,
@@ -681,11 +681,12 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iBrogue_iPad/iBrogue_iPad-Prefix.pch";
 				INFOPLIST_FILE = "iBrogue_iPad/iBrogue_iPad-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = Brogue;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -704,11 +705,12 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CURRENT_PROJECT_VERSION = 1;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iBrogue_iPad/iBrogue_iPad-Prefix.pch";
 				INFOPLIST_FILE = "iBrogue_iPad/iBrogue_iPad-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = Brogue;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 2;
