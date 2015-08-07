@@ -39,6 +39,7 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Arial Unicode.ttf</string>
 		<string>MONACO.TTF</string>
 	</array>
 	<key>UIFileSharingEnabled</key>
