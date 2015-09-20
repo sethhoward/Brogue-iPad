@@ -83,8 +83,8 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         self.characterSizeDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
-        self.hWindow = 1024.;//[[UIScreen mainScreen] bounds].size.width;
-        self.vWindow = 768.;//[[UIScreen mainScreen] bounds].size.height;
+        self.hWindow = [[UIScreen mainScreen] bounds].size.width;
+        self.vWindow = [[UIScreen mainScreen] bounds].size.height;
         
         // Toss the arrays onto the heap
         _charArray = (unsigned short **)malloc(kCOLS * sizeof(unsigned short *));
@@ -289,6 +289,13 @@
                                           ((NSInteger) (vPx * (j+1) / kROWS)) - ((NSInteger) (vPx * (j) / kROWS)));//vPixels + 1);
         }
     }
+    
+    CGFloat sideBarWidth = 22 * self.hPixels;
+    CGFloat topDropDownArea = 3 * self.vPixels;
+    CGFloat bottomMenu = 2 * self.vPixels;
+    
+    _sideBarArea = CGRectMake(0, 0, sideBarWidth, self.vWindow);
+    _gameArea = CGRectMake(sideBarWidth, topDropDownArea, self.hWindow - sideBarWidth, self.vWindow - topDropDownArea - bottomMenu);
 }
 
 - (void)clearColors {

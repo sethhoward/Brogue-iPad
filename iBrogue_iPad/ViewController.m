@@ -24,8 +24,8 @@ static NSString *kESC_Key = @"\033";
 #define kBackSpaceKey @"\177"
 
 #define kStationaryTime 0.1f
-#define kGamePlayHitArea CGRectMake(209., 74., 810., 650.)     // seems to be a method in the c code that does this but didn't work as expected
-#define kGameSideBarArea CGRectMake(0., 0., 210., 768.)
+//#define kGamePlayHitArea CGRectMake(209., 74., 810., 650.)     // seems to be a method in the c code that does this but didn't work as expected
+//#define kGameSideBarArea CGRectMake(0., 0., 210., 768.)
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
 
@@ -371,7 +371,7 @@ NSDictionary* keyCommands;
         else {
             // if we touch in the side bar we want to block the touches up and so we set a bool here to do just that. This forces the user to double tap anything in the side bar that they actually want to run to and allows a single tap to bring up the selection information.
             // when a user touches the screen we need to 'nudge' the movement so brogue event handles can update (highlight, show popup, etc) where we touched
-            if (CGRectContainsPoint(kGameSideBarArea, touchPoint) && _lastBrogueGameEvent != BrogueGameEventShowHighScores && !_ignoreSideBarInteraction) {
+            if (CGRectContainsPoint(self.secondaryDisplay.sideBarArea, touchPoint) && _lastBrogueGameEvent != BrogueGameEventShowHighScores && !_ignoreSideBarInteraction) {
 
                 @synchronized(self.cachedTouches) {
                     iBTouch touchMoved;
@@ -449,7 +449,9 @@ NSDictionary* keyCommands;
 #pragma mark - views
 
 - (BOOL)isPointInGamePlayArea:(CGPoint)point {
-    CGRect boundaryRect = kGamePlayHitArea;
+    //CGRect boundaryRect = kGamePlayHitArea;
+    CGRect boundaryRect = self.secondaryDisplay.gameArea;
+    //#define kGamePlayHitArea CGRectMake(209., 74., 810., 650.) 
     
     if (!CGRectContainsPoint(boundaryRect, point)) {
         // NSLog(@"out of bounds");
