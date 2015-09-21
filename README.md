@@ -11,3 +11,5 @@ PreReqs:
 CocoaPods installed on your system
 Run 'pod install'
 Open the project's workspace.
+
+This project can be run on iPhone. Change the proj settings to univerasal and build away. Too small for the app store.
