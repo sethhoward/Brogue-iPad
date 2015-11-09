@@ -1,0 +1,9 @@
+Presenting Brian Walker's traditional 26-level crawl to the Amulet of Yendor where you'll succeed or die (over and over) trying. There's one way to win but an infinite number of ways to die. 
+
+Game play focuses on a smooth learning curve with strategic depth and intuitive/beautiful appearance within the strictures of ASCII/Unicode display.
+
+"...on the iPad, Brogue is an even more incredible feat than it is on the Mac: there aren’t a lot of roguelikes that can jump from a keyboard to a touch-based interface without coming off worse for wear. It’s every bit as good on the iPad as it is on the Mac." - Cult of Mac
+
+"[...] it manages to make use of its ASCII visuals to create some truly impressive-looking environments [...] it’s high fantasy to the core; filled with kobolds, goblins, wands, spell scrolls, and more." - 148Apps
+
+"It's a bit weird and clunky, but yeah, it's still Brogue" - Roguelike Radio

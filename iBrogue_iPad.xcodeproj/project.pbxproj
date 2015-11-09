@@ -83,8 +83,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1727E3F1ABCC0BBE0A0D1238 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		3AB486759F204A38BF191AD3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		5FFBE458A22F4AE29887D7A3 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C5105B0F16E65EDB00E09905 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		C5105B1016E65EDB00E09905 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		C5105B1116E65EDB00E09905 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
@@ -183,6 +183,7 @@
 		C5EFC0E816ECE398008BD644 /* kb-loupe-hi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kb-loupe-hi.png"; sourceTree = "<group>"; };
 		C5FFC5DC17B9A913007A05F3 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
 		C5FFC5DE17B9A9DB007A05F3 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
+		F1A2CA23E2F43F45D0D59545 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,6 +204,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4611965B5EF7657D5A60D6BE /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F1A2CA23E2F43F45D0D59545 /* Pods.debug.xcconfig */,
+				1727E3F1ABCC0BBE0A0D1238 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		C528726617526D7F000B4F05 /* iRate */ = {
 			isa = PBXGroup;
 			children = (
@@ -253,7 +263,7 @@
 				C57A962E16D7EAD500C233F1 /* iBrogue_iPad */,
 				C57A962716D7EAD500C233F1 /* Frameworks */,
 				C57A962616D7EAD500C233F1 /* Products */,
-				5FFBE458A22F4AE29887D7A3 /* Pods.xcconfig */,
+				4611965B5EF7657D5A60D6BE /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -543,7 +553,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -657,7 +667,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -673,7 +684,7 @@
 		};
 		C57A964916D7EAD500C233F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5FFBE458A22F4AE29887D7A3 /* Pods.xcconfig */;
+			baseConfigurationReference = F1A2CA23E2F43F45D0D59545 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_DEADCODE_DEADSTORES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -697,13 +708,13 @@
 		};
 		C57A964A16D7EAD500C233F1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5FFBE458A22F4AE29887D7A3 /* Pods.xcconfig */;
+			baseConfigurationReference = 1727E3F1ABCC0BBE0A0D1238 /* Pods.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_DEADCODE_DEADSTORES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
