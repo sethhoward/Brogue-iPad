@@ -12,9 +12,9 @@
 		C5105B1316E65EDB00E09905 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5105B1116E65EDB00E09905 /* AboutViewController.xib */; };
 		C5105B1616EE90A400E09905 /* GameSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = C5105B1516EE90A300E09905 /* GameSettings.m */; };
 		C5213CD21B7533AE00E97A27 /* Arial Unicode.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C5213CD11B75308E00E97A27 /* Arial Unicode.ttf */; };
+		C5213CD41B75445F00E97A27 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5213CD31B75445F00E97A27 /* StoreKit.framework */; };
 		C528726A17526D7F000B4F05 /* iRate.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C528726717526D7F000B4F05 /* iRate.bundle */; };
 		C528726B17526D7F000B4F05 /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = C528726917526D7F000B4F05 /* iRate.m */; };
-		C528726E17526FB8000B4F05 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C528726D17526FB8000B4F05 /* StoreKit.framework */; };
 		C52B092216E5848500675CC7 /* GameCenterIOS4.m in Sources */ = {isa = PBXBuildFile; fileRef = C52B091B16E5848500675CC7 /* GameCenterIOS4.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C52B092316E5848500675CC7 /* GameCenterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C52B091D16E5848500675CC7 /* GameCenterManager.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C52B092416E5848500675CC7 /* UIViewController+UIViewController_GCAchievementView.m in Sources */ = {isa = PBXBuildFile; fileRef = C52B091F16E5848500675CC7 /* UIViewController+UIViewController_GCAchievementView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -78,6 +78,7 @@
 		C5EFC0EA16ECE398008BD644 /* ACMagnifyingGlass.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFC0E416ECE398008BD644 /* ACMagnifyingGlass.m */; };
 		C5EFC0EB16ECE398008BD644 /* ACMagnifyingView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFC0E616ECE398008BD644 /* ACMagnifyingView.m */; };
 		C5EFC0EC16ECE398008BD644 /* kb-loupe-hi.png in Resources */ = {isa = PBXBuildFile; fileRef = C5EFC0E816ECE398008BD644 /* kb-loupe-hi.png */; };
+		C5FA67961BAFA252005911AE /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5FA67951BAFA252005911AE /* ReplayKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		C5FFC5DD17B9A913007A05F3 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C5FFC5DC17B9A913007A05F3 /* Default-Landscape@2x~ipad.png */; };
 		C5FFC5DF17B9A9DB007A05F3 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C5FFC5DE17B9A9DB007A05F3 /* Default-Landscape~ipad.png */; };
 /* End PBXBuildFile section */
@@ -91,10 +92,10 @@
 		C5105B1416EE90A300E09905 /* GameSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameSettings.h; sourceTree = "<group>"; };
 		C5105B1516EE90A300E09905 /* GameSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameSettings.m; sourceTree = "<group>"; };
 		C5213CD11B75308E00E97A27 /* Arial Unicode.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arial Unicode.ttf"; sourceTree = "<group>"; };
+		C5213CD31B75445F00E97A27 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		C528726717526D7F000B4F05 /* iRate.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = iRate.bundle; sourceTree = "<group>"; };
 		C528726817526D7F000B4F05 /* iRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iRate.h; sourceTree = "<group>"; };
 		C528726917526D7F000B4F05 /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iRate.m; sourceTree = "<group>"; };
-		C528726D17526FB8000B4F05 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		C52B091A16E5848500675CC7 /* GameCenterIOS4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenterIOS4.h; sourceTree = "<group>"; };
 		C52B091B16E5848500675CC7 /* GameCenterIOS4.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameCenterIOS4.m; sourceTree = "<group>"; };
 		C52B091C16E5848500675CC7 /* GameCenterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenterManager.h; sourceTree = "<group>"; };
@@ -181,6 +182,7 @@
 		C5EFC0E516ECE398008BD644 /* ACMagnifyingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMagnifyingView.h; sourceTree = "<group>"; };
 		C5EFC0E616ECE398008BD644 /* ACMagnifyingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACMagnifyingView.m; sourceTree = "<group>"; };
 		C5EFC0E816ECE398008BD644 /* kb-loupe-hi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kb-loupe-hi.png"; sourceTree = "<group>"; };
+		C5FA67951BAFA252005911AE /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
 		C5FFC5DC17B9A913007A05F3 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
 		C5FFC5DE17B9A9DB007A05F3 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		F1A2CA23E2F43F45D0D59545 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -191,8 +193,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C528726E17526FB8000B4F05 /* StoreKit.framework in Frameworks */,
+				C5FA67961BAFA252005911AE /* ReplayKit.framework in Frameworks */,
 				C52B092716E5853900675CC7 /* GameKit.framework in Frameworks */,
+				C5213CD41B75445F00E97A27 /* StoreKit.framework in Frameworks */,
 				C57A967516DBF1CE00C233F1 /* QuartzCore.framework in Frameworks */,
 				C57A962916D7EAD500C233F1 /* UIKit.framework in Frameworks */,
 				C57A962B16D7EAD500C233F1 /* Foundation.framework in Frameworks */,
@@ -252,7 +255,6 @@
 		C57A961C16D7EAD500C233F1 = {
 			isa = PBXGroup;
 			children = (
-				C528726D17526FB8000B4F05 /* StoreKit.framework */,
 				C5EA72D616FE92DC00AE688A /* CoreText.framework */,
 				C5D5EC6D16FC07F300E9A9AF /* icon_144x144.png */,
 				C5D5EC6B16FC07EB00E9A9AF /* icon_72x72.png */,
@@ -278,6 +280,8 @@
 		C57A962716D7EAD500C233F1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C5FA67951BAFA252005911AE /* ReplayKit.framework */,
+				C5213CD31B75445F00E97A27 /* StoreKit.framework */,
 				C57A962816D7EAD500C233F1 /* UIKit.framework */,
 				C57A962A16D7EAD500C233F1 /* Foundation.framework */,
 				C57A962C16D7EAD500C233F1 /* CoreGraphics.framework */,
@@ -464,6 +468,11 @@
 				TargetAttributes = {
 					C57A962416D7EAD500C233F1 = {
 						DevelopmentTeam = KKMWNTN39N;
+						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -692,16 +701,16 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 14;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iBrogue_iPad/iBrogue_iPad-Prefix.pch";
 				INFOPLIST_FILE = "iBrogue_iPad/iBrogue_iPad-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = Brogue;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -714,17 +723,17 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 14;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iBrogue_iPad/iBrogue_iPad-Prefix.pch";
 				INFOPLIST_FILE = "iBrogue_iPad/iBrogue_iPad-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = Brogue;
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

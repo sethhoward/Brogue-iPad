@@ -46,6 +46,8 @@
 @property (nonatomic, assign) short hWindow;
 @property (nonatomic, assign) short vWindow;
 
+@property CGFloat theFontSize;
+
 @end
 
 @implementation Viewport {
@@ -83,8 +85,8 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         self.characterSizeDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
-        self.hWindow = 1024.;//[[UIScreen mainScreen] bounds].size.width;
-        self.vWindow = 768.;//[[UIScreen mainScreen] bounds].size.height;
+        self.hWindow = [[UIScreen mainScreen] bounds].size.width;
+        self.vWindow = [[UIScreen mainScreen] bounds].size.height;
         
         // Toss the arrays onto the heap
         _charArray = (unsigned short **)malloc(kCOLS * sizeof(unsigned short *));
@@ -194,7 +196,7 @@
     
     // reset text context
     CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
-    CGContextSetFontSize(_context, FONT_SIZE);
+    CGContextSetFontSize(_context, self.theFontSize);
     CGContextSetFont(_context, _cgFont);
     
     // cache the message call and speed things up.
@@ -228,13 +230,13 @@
         
         // seems like we need to change the context back or we render incorrect glyps. We do it here assuming we call this less than the show glyphs below
         CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
-        CGContextSetFontSize(_context, FONT_SIZE);
+        CGContextSetFontSize(_context, self.theFontSize);
         CGContextSetFont(_context, _cgFont);
     }
     // plain jane characters. Draw them nice and fast.
     else {
         _glyphString[0] = character-29;
-        CGContextShowGlyphsAtPoint(_context, stringOrigin.x, stringOrigin.y + FONT_SIZE, _glyphString, 1);
+        CGContextShowGlyphsAtPoint(_context, stringOrigin.x, stringOrigin.y + self.theFontSize, _glyphString, 1);
     }
 }
 
@@ -289,6 +291,16 @@
                                           ((NSInteger) (vPx * (j+1) / kROWS)) - ((NSInteger) (vPx * (j) / kROWS)));//vPixels + 1);
         }
     }
+    
+    CGFloat sideBarWidth = 22 * self.hPixels;
+    CGFloat topDropDownArea = 3 * self.vPixels;
+    CGFloat bottomMenu = 2 * self.vPixels;
+    
+    _sideBarArea = CGRectMake(0, 0, sideBarWidth, self.vWindow);
+    _gameArea = CGRectMake(sideBarWidth, topDropDownArea, self.hWindow - sideBarWidth, self.vWindow - topDropDownArea - bottomMenu);
+    
+    // font size
+    self.theFontSize = min(FONT_SIZE * self.hWindow / (11 * kCOLS), FONT_SIZE * self.vWindow / (16 * kROWS));
 }
 
 - (void)clearColors {
@@ -307,14 +319,14 @@
 
 - (UIFont *)slowFont {
 	if (!_slowFont) {
-        _slowFont = [UIFont fontWithName:@"ArialUnicodeMS" size:FONT_SIZE];
+        _slowFont = [UIFont fontWithName:@"ArialUnicodeMS" size:self.theFontSize];
 	}
 	return _slowFont;
 }
 
 - (UIFont *)fastFont {
 	if (!_fastFont) {
-		_fastFont = [UIFont fontWithName:@"Monaco" size:FONT_SIZE];
+		_fastFont = [UIFont fontWithName:@"Monaco" size:self.theFontSize];
     }
 	return _fastFont;
 }

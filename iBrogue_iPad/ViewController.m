@@ -17,6 +17,7 @@
 #import "DirectionControlsViewController.h"
 #import <KVOController/FBKVOController.h>
 #import "IncludeGlobals.h"
+#import <ReplayKit/ReplayKit.h>
 
 static NSString *kESC_Key = @"\033";
 
@@ -24,8 +25,8 @@ static NSString *kESC_Key = @"\033";
 #define kBackSpaceKey @"\177"
 
 #define kStationaryTime 0.1f
-#define kGamePlayHitArea CGRectMake(209., 74., 810., 650.)     // seems to be a method in the c code that does this but didn't work as expected
-#define kGameSideBarArea CGRectMake(0., 0., 210., 768.)
+//#define kGamePlayHitArea CGRectMake(209., 74., 810., 650.)     // seems to be a method in the c code that does this but didn't work as expected
+//#define kGameSideBarArea CGRectMake(0., 0., 210., 768.)
 #define BROGUE_VERSION	4	// A special version number that's incremented only when
 // something about the OS X high scores file structure changes.
 
@@ -34,7 +35,7 @@ ViewController *viewController;
 
 NSDictionary* keyCommands;
 
-@interface ViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
+@interface ViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate, RPPreviewViewControllerDelegate, RPScreenRecorderDelegate>
 @property (weak, nonatomic) IBOutlet UIView *titleButtonView;
 // @property (weak, nonatomic) IBOutlet UIView *directionalButtonSubContainer;
 @property (weak, nonatomic) IBOutlet UIButton *seedButton;
@@ -66,9 +67,11 @@ NSDictionary* keyCommands;
 @property (nonatomic, strong) DirectionControlsViewController *directionControlsViewController;
 @property (nonatomic, strong) FBKVOController *kvoDirectionControlButton;
 
+
+
 @end
 
-@implementation ViewController{
+@implementation ViewController {
 @private
     NSMutableArray *_commands;
     NSDictionary *_keyCommandsTranslator;
@@ -158,10 +161,20 @@ NSDictionary* keyCommands;
 - (void)loadDirectionControlsViewController {
     self.directionControlsViewController = [[DirectionControlsViewController alloc] init];
  //   [self.view insertSubview:self.directionControlsViewController.view belowSubview:self.titleButtonView];
+    
+    
+    // temp until we rewrite with autolayout in mind
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.directionControlsViewController.view.center = CGPointMake(104., 662.);
+    }
+    else {
+        CGRect frame = self.directionControlsViewController.view.frame;
+        self.directionControlsViewController.view.frame = frame;
+        self.directionControlsViewController.view.center = CGPointMake(20., 140.);
+    }
+    
     [self.view addSubview:self.directionControlsViewController.view];
     [self addChildViewController:self.directionControlsViewController];
-    
-    self.directionControlsViewController.view.center = CGPointMake(104., 662.);
 }
 
 - (void)addNotificationObservers {
@@ -371,7 +384,7 @@ NSDictionary* keyCommands;
         else {
             // if we touch in the side bar we want to block the touches up and so we set a bool here to do just that. This forces the user to double tap anything in the side bar that they actually want to run to and allows a single tap to bring up the selection information.
             // when a user touches the screen we need to 'nudge' the movement so brogue event handles can update (highlight, show popup, etc) where we touched
-            if (CGRectContainsPoint(kGameSideBarArea, touchPoint) && _lastBrogueGameEvent != BrogueGameEventShowHighScores && !_ignoreSideBarInteraction) {
+            if (CGRectContainsPoint(self.secondaryDisplay.sideBarArea, touchPoint) && _lastBrogueGameEvent != BrogueGameEventShowHighScores && !_ignoreSideBarInteraction) {
 
                 @synchronized(self.cachedTouches) {
                     iBTouch touchMoved;
@@ -449,7 +462,9 @@ NSDictionary* keyCommands;
 #pragma mark - views
 
 - (BOOL)isPointInGamePlayArea:(CGPoint)point {
-    CGRect boundaryRect = kGamePlayHitArea;
+    //CGRect boundaryRect = kGamePlayHitArea;
+    CGRect boundaryRect = self.secondaryDisplay.gameArea;
+    //#define kGamePlayHitArea CGRectMake(209., 74., 810., 650.) 
     
     if (!CGRectContainsPoint(boundaryRect, point)) {
         // NSLog(@"out of bounds");
@@ -561,6 +576,48 @@ NSDictionary* keyCommands;
 }
 
 #pragma mark - Actions
+
+BOOL startedRecording = NO;
+- (IBAction)startRecording:(id)sender {
+    if (startedRecording) {
+        [self stopRecording];
+        startedRecording = NO;
+        return;
+    }
+    
+    RPScreenRecorder *sharedRecorder = RPScreenRecorder.sharedRecorder;
+    sharedRecorder.delegate = self;
+    
+    [sharedRecorder startRecordingWithMicrophoneEnabled:YES handler:^(NSError * _Nullable error) {
+        if (error) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Recording Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+        }
+        else {
+            startedRecording = YES;
+        }
+    }];
+}
+
+- (void)previewControllerDidFinish:(RPPreviewViewController *)previewController {
+    [previewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)stopRecording {
+    [[RPScreenRecorder sharedRecorder] stopRecordingWithHandler:^(RPPreviewViewController * _Nullable previewViewController, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"%@", error);
+        }
+        
+        previewViewController.previewControllerDelegate = self;
+        
+        previewViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+        UIViewController *vc = self.view.window.rootViewController;
+        [vc presentViewController:previewViewController animated:YES completion:nil];
+        
+       // rootViewController.presentViewController(previewViewController, animated: YES, completion:nil);
+    }];
+}
 
 - (void)addKeyStroke:(NSString *)key {
     [self.cachedKeyStrokes addObject:key];

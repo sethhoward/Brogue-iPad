@@ -47,4 +47,7 @@
 /// The game's vertical window size.
 @property (nonatomic, readonly) short vWindow;
 
+@property (readonly) CGRect gameArea;
+@property (readonly) CGRect sideBarArea;
+
 @end
