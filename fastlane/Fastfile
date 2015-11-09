@@ -16,7 +16,7 @@
 
 # This is the minimum version number required.
 # Update this, if you use features of a newer version
-fastlane_version "1.32.1"
+fastlane_version "1.37.0"
 
 default_platform :ios
 
@@ -77,5 +77,6 @@ platform :ios do
 end
 
 
-# More information about multiple platforms in fastlane: 
-# https://github.com/KrauseFx/fastlane/blob/master/docs/Platforms.md
+
+# More information about multiple platforms in fastlane: https://github.com/KrauseFx/fastlane/blob/master/docs/Platforms.md
+# All available actions: https://github.com/KrauseFx/fastlane/blob/master/docs/Actions.md
