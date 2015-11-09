@@ -78,7 +78,6 @@
 		C5EFC0EA16ECE398008BD644 /* ACMagnifyingGlass.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFC0E416ECE398008BD644 /* ACMagnifyingGlass.m */; };
 		C5EFC0EB16ECE398008BD644 /* ACMagnifyingView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFC0E616ECE398008BD644 /* ACMagnifyingView.m */; };
 		C5EFC0EC16ECE398008BD644 /* kb-loupe-hi.png in Resources */ = {isa = PBXBuildFile; fileRef = C5EFC0E816ECE398008BD644 /* kb-loupe-hi.png */; };
-		C5FA67961BAFA252005911AE /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5FA67951BAFA252005911AE /* ReplayKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		C5FFC5DD17B9A913007A05F3 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C5FFC5DC17B9A913007A05F3 /* Default-Landscape@2x~ipad.png */; };
 		C5FFC5DF17B9A9DB007A05F3 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C5FFC5DE17B9A9DB007A05F3 /* Default-Landscape~ipad.png */; };
 /* End PBXBuildFile section */
@@ -86,8 +85,6 @@
 /* Begin PBXFileReference section */
 		1727E3F1ABCC0BBE0A0D1238 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		3AB486759F204A38BF191AD3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		6A33D777619F8E3B7D79C319 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		9946AC8EC11653183E61D66E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		C5105B0F16E65EDB00E09905 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		C5105B1016E65EDB00E09905 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		C5105B1116E65EDB00E09905 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
@@ -184,7 +181,6 @@
 		C5EFC0E516ECE398008BD644 /* ACMagnifyingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMagnifyingView.h; sourceTree = "<group>"; };
 		C5EFC0E616ECE398008BD644 /* ACMagnifyingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACMagnifyingView.m; sourceTree = "<group>"; };
 		C5EFC0E816ECE398008BD644 /* kb-loupe-hi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kb-loupe-hi.png"; sourceTree = "<group>"; };
-		C5FA67951BAFA252005911AE /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
 		C5FFC5DC17B9A913007A05F3 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
 		C5FFC5DE17B9A9DB007A05F3 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		F1A2CA23E2F43F45D0D59545 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -195,7 +191,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C5FA67961BAFA252005911AE /* ReplayKit.framework in Frameworks */,
 				C52B092716E5853900675CC7 /* GameKit.framework in Frameworks */,
 				C5213CD41B75445F00E97A27 /* StoreKit.framework in Frameworks */,
 				C57A967516DBF1CE00C233F1 /* QuartzCore.framework in Frameworks */,
@@ -282,7 +277,6 @@
 		C57A962716D7EAD500C233F1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C5FA67951BAFA252005911AE /* ReplayKit.framework */,
 				C5213CD31B75445F00E97A27 /* StoreKit.framework */,
 				C57A962816D7EAD500C233F1 /* UIKit.framework */,
 				C57A962A16D7EAD500C233F1 /* Foundation.framework */,
