@@ -576,7 +576,7 @@ NSDictionary* keyCommands;
 }
 
 #pragma mark - Actions
-
+/*
 BOOL startedRecording = NO;
 - (IBAction)startRecording:(id)sender {
     if (startedRecording) {
@@ -617,7 +617,7 @@ BOOL startedRecording = NO;
         
        // rootViewController.presentViewController(previewViewController, animated: YES, completion:nil);
     }];
-}
+}*/
 
 - (void)addKeyStroke:(NSString *)key {
     [self.cachedKeyStrokes addObject:key];
