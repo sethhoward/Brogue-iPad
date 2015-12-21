@@ -17,6 +17,7 @@
 #import "DirectionControlsViewController.h"
 #import <KVOController/FBKVOController.h>
 #import "IncludeGlobals.h"
+// #import <ReplayKit/ReplayKit.h>
 
 static NSString *kESC_Key = @"\033";
 
@@ -34,7 +35,7 @@ ViewController *viewController;
 
 NSDictionary* keyCommands;
 
-@interface ViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
+@interface ViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate, RPPreviewViewControllerDelegate, RPScreenRecorderDelegate>
 @property (weak, nonatomic) IBOutlet UIView *titleButtonView;
 // @property (weak, nonatomic) IBOutlet UIView *directionalButtonSubContainer;
 @property (weak, nonatomic) IBOutlet UIButton *seedButton;
@@ -66,9 +67,11 @@ NSDictionary* keyCommands;
 @property (nonatomic, strong) DirectionControlsViewController *directionControlsViewController;
 @property (nonatomic, strong) FBKVOController *kvoDirectionControlButton;
 
+
+
 @end
 
-@implementation ViewController{
+@implementation ViewController {
 @private
     NSMutableArray *_commands;
     NSDictionary *_keyCommandsTranslator;
@@ -158,10 +161,20 @@ NSDictionary* keyCommands;
 - (void)loadDirectionControlsViewController {
     self.directionControlsViewController = [[DirectionControlsViewController alloc] init];
  //   [self.view insertSubview:self.directionControlsViewController.view belowSubview:self.titleButtonView];
+    
+    
+    // temp until we rewrite with autolayout in mind
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.directionControlsViewController.view.center = CGPointMake(104., 662.);
+    }
+    else {
+        CGRect frame = self.directionControlsViewController.view.frame;
+        self.directionControlsViewController.view.frame = frame;
+        self.directionControlsViewController.view.center = CGPointMake(20., 140.);
+    }
+    
     [self.view addSubview:self.directionControlsViewController.view];
     [self addChildViewController:self.directionControlsViewController];
-    
-    self.directionControlsViewController.view.center = CGPointMake(104., 662.);
 }
 
 - (void)addNotificationObservers {
@@ -563,6 +576,48 @@ NSDictionary* keyCommands;
 }
 
 #pragma mark - Actions
+/*
+BOOL startedRecording = NO;
+- (IBAction)startRecording:(id)sender {
+    if (startedRecording) {
+        [self stopRecording];
+        startedRecording = NO;
+        return;
+    }
+    
+    RPScreenRecorder *sharedRecorder = RPScreenRecorder.sharedRecorder;
+    sharedRecorder.delegate = self;
+    
+    [sharedRecorder startRecordingWithMicrophoneEnabled:YES handler:^(NSError * _Nullable error) {
+        if (error) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Recording Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+        }
+        else {
+            startedRecording = YES;
+        }
+    }];
+}
+
+- (void)previewControllerDidFinish:(RPPreviewViewController *)previewController {
+    [previewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)stopRecording {
+    [[RPScreenRecorder sharedRecorder] stopRecordingWithHandler:^(RPPreviewViewController * _Nullable previewViewController, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"%@", error);
+        }
+        
+        previewViewController.previewControllerDelegate = self;
+        
+        previewViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+        UIViewController *vc = self.view.window.rootViewController;
+        [vc presentViewController:previewViewController animated:YES completion:nil];
+        
+       // rootViewController.presentViewController(previewViewController, animated: YES, completion:nil);
+    }];
+}*/
 
 - (void)addKeyStroke:(NSString *)key {
     [self.cachedKeyStrokes addObject:key];
