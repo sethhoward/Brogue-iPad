@@ -285,8 +285,16 @@ NSDictionary* keyCommands;
     }
 }
 
+static iBTouch _lastTouch;
+
 - (void)addUITouchToCache:(UITouch *)touch {
     @synchronized(self.cachedTouches){
+       // if(_lastTouch) {
+            if(_lastTouch.phase == touch.phase && CGPointEqualToPoint(_lastTouch.location, [touch locationInView:theMainDisplay])) {
+                return;
+            }
+      //  }
+        
         iBTouch ibtouch;
         ibtouch.phase = touch.phase;
         
@@ -301,6 +309,7 @@ NSDictionary* keyCommands;
         _lastTouchLocation = ibtouch.location;
         [self.cachedTouches addObject:[NSValue value:&ibtouch withObjCType:@encode(iBTouch)]];
         self.cachedTouchCount = [self.cachedTouches count];
+        _lastTouch = ibtouch;
     }
 }
 
@@ -446,7 +455,7 @@ NSDictionary* keyCommands;
 }
 
 - (void)startStationaryTouchTimerWithTouch:(UITouch *)touch andTimeout:(NSTimeInterval)timeOut {
-    if ([[GameSettings sharedInstance] allowMagnifier]) {
+    if ([[GameSettings sharedInstance] allowMagnifier] && touch.type != UITouchTypeStylus) {
         [self stopStationaryTouchTimer];
         
         if ([self isPointInGamePlayArea:[touch locationInView:self.secondaryDisplay]]) {
