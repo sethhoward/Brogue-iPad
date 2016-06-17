@@ -105,8 +105,8 @@
         [self clearColors];
         
         self.cgFont = CGFontCreateWithFontName((CFStringRef)@"Monaco");
-        self.fastFontCharacterSize = [@"M" sizeWithFont:[self fastFont]];
-        self.slowFontCharacterSize = [@"M" sizeWithFont:[self slowFont]];
+        self.fastFontCharacterSize = [@"M" sizeWithAttributes: @{NSFontAttributeName: [self fastFont]}];
+        self.slowFontCharacterSize = [@"M" sizeWithAttributes: @{NSFontAttributeName: [self slowFont]}];
         self.colorSpace = CGColorSpaceCreateDeviceRGB();
     });
 }

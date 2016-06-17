@@ -313,7 +313,7 @@ static iBTouch _lastTouch;
     }
 }
 
-- (iBTouch)getTouchAtIndex:(NSUInteger)index {
+- (iBTouch)getTouchAtIndex:(uint)index {
     NSValue *anObj = [self.cachedTouches objectAtIndex:index];
     iBTouch touch;
     [anObj getValue:&touch];
@@ -321,7 +321,7 @@ static iBTouch _lastTouch;
     return touch;
 }
 
-- (void)removeTouchAtIndex:(NSUInteger)index {
+- (void)removeTouchAtIndex:(uint)index {
     @synchronized(self.cachedTouches){
         if ([self.cachedTouches count] > 0) {
             [self.cachedTouches removeObjectAtIndex:index];
