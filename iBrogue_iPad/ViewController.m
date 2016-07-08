@@ -17,7 +17,7 @@
 #import "DirectionControlsViewController.h"
 #import <KVOController/FBKVOController.h>
 #import "IncludeGlobals.h"
-#import <ReplayKit/ReplayKit.h>
+// #import <ReplayKit/ReplayKit.h>
 
 static NSString *kESC_Key = @"\033";
 
@@ -585,7 +585,7 @@ static iBTouch _lastTouch;
 }
 
 #pragma mark - Actions
-
+/*
 BOOL startedRecording = NO;
 - (IBAction)startRecording:(id)sender {
     if (startedRecording) {
@@ -626,7 +626,7 @@ BOOL startedRecording = NO;
         
        // rootViewController.presentViewController(previewViewController, animated: YES, completion:nil);
     }];
-}
+}*/
 
 - (void)addKeyStroke:(NSString *)key {
     [self.cachedKeyStrokes addObject:key];
