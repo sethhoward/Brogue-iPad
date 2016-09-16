@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		30BAC90442FD7F11CF2864DA /* libPods-iBrogue_iPad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FDB9B0E57F9377F8B07EBC0 /* libPods-iBrogue_iPad.a */; };
 		C5105B1216E65EDB00E09905 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5105B1016E65EDB00E09905 /* AboutViewController.m */; };
 		C5105B1316E65EDB00E09905 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5105B1116E65EDB00E09905 /* AboutViewController.xib */; };
 		C5105B1616EE90A400E09905 /* GameSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = C5105B1516EE90A300E09905 /* GameSettings.m */; };
@@ -85,6 +86,7 @@
 /* Begin PBXFileReference section */
 		13C7957143F74F7EE3795380 /* Pods-iBrogue_iPad.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iBrogue_iPad.release.xcconfig"; path = "Pods/Target Support Files/Pods-iBrogue_iPad/Pods-iBrogue_iPad.release.xcconfig"; sourceTree = "<group>"; };
 		1727E3F1ABCC0BBE0A0D1238 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		1FDB9B0E57F9377F8B07EBC0 /* libPods-iBrogue_iPad.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iBrogue_iPad.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		99866F2E60EFD7B6A61DA966 /* Pods-iBrogue_iPad.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iBrogue_iPad.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iBrogue_iPad/Pods-iBrogue_iPad.debug.xcconfig"; sourceTree = "<group>"; };
 		C5105B0F16E65EDB00E09905 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		C5105B1016E65EDB00E09905 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 				C57A962916D7EAD500C233F1 /* UIKit.framework in Frameworks */,
 				C57A962B16D7EAD500C233F1 /* Foundation.framework in Frameworks */,
 				C57A962D16D7EAD500C233F1 /* CoreGraphics.framework in Frameworks */,
+				30BAC90442FD7F11CF2864DA /* libPods-iBrogue_iPad.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +287,7 @@
 				C57A962816D7EAD500C233F1 /* UIKit.framework */,
 				C57A962A16D7EAD500C233F1 /* Foundation.framework */,
 				C57A962C16D7EAD500C233F1 /* CoreGraphics.framework */,
+				1FDB9B0E57F9377F8B07EBC0 /* libPods-iBrogue_iPad.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -746,8 +750,8 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 14;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
