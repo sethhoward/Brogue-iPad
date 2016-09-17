@@ -32,7 +32,6 @@
 #include "Rogue.h"
 #import "GameCenterManager.h"
 #import <QuartzCore/QuartzCore.h>
-#import "iRate.h"
 
 #import "MGBenchmark.h"
 #import "MGBenchmarkSession.h"
@@ -355,11 +354,6 @@ boolean saveHighScore(rogueHighScoresEntry theEntry) {
 
     if (theEntry.score > 0) {
         [[GameCenterManager sharedInstance] reportScore:theEntry.score forCategory:kBrogueHighScoreLeaderBoard];
-        
-        // attempt to rate the app
-        if (theEntry.score > kRateScore && ![[iRate sharedInstance] declinedThisVersion] && ![[iRate sharedInstance] ratedThisVersion]) {
-            [[iRate sharedInstance] promptIfNetworkAvailable];
-        }
     }
     
 	if (minIndex == -1) { // didn't qualify

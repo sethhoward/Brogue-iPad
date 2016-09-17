@@ -13,11 +13,8 @@
 		C5105B1616EE90A400E09905 /* GameSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = C5105B1516EE90A300E09905 /* GameSettings.m */; };
 		C5213CD21B7533AE00E97A27 /* Arial Unicode.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C5213CD11B75308E00E97A27 /* Arial Unicode.ttf */; };
 		C5213CD41B75445F00E97A27 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5213CD31B75445F00E97A27 /* StoreKit.framework */; };
-		C528726A17526D7F000B4F05 /* iRate.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C528726717526D7F000B4F05 /* iRate.bundle */; };
-		C528726B17526D7F000B4F05 /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = C528726917526D7F000B4F05 /* iRate.m */; };
 		C52B092216E5848500675CC7 /* GameCenterIOS4.m in Sources */ = {isa = PBXBuildFile; fileRef = C52B091B16E5848500675CC7 /* GameCenterIOS4.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C52B092316E5848500675CC7 /* GameCenterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C52B091D16E5848500675CC7 /* GameCenterManager.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		C52B092416E5848500675CC7 /* UIViewController+UIViewController_GCAchievementView.m in Sources */ = {isa = PBXBuildFile; fileRef = C52B091F16E5848500675CC7 /* UIViewController+UIViewController_GCAchievementView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C52B092516E5848500675CC7 /* UIViewController+UIViewController_GCLeaderBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = C52B092116E5848500675CC7 /* UIViewController+UIViewController_GCLeaderBoardView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C52B092716E5853900675CC7 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C52B092616E5853900675CC7 /* GameKit.framework */; };
 		C532C8A61971AB8800695956 /* DirectionControlsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C532C8A41971AB8800695956 /* DirectionControlsViewController.m */; };
@@ -32,7 +29,6 @@
 		C57A963D16D7EAD500C233F1 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C57A963C16D7EAD500C233F1 /* Default@2x.png */; };
 		C57A963F16D7EAD500C233F1 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C57A963E16D7EAD500C233F1 /* Default-568h@2x.png */; };
 		C57A964216D7EAD500C233F1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A964116D7EAD500C233F1 /* ViewController.m */; };
-		C57A964516D7EAD500C233F1 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C57A964316D7EAD500C233F1 /* ViewController.xib */; };
 		C57A965116D7EB4C00C233F1 /* RogueDriver.mm in Sources */ = {isa = PBXBuildFile; fileRef = C57A964E16D7EB4C00C233F1 /* RogueDriver.mm */; };
 		C57A965216D7EB4C00C233F1 /* Viewport.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A965016D7EB4C00C233F1 /* Viewport.m */; };
 		C57A966516D7EB5500C233F1 /* Architect.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965416D7EB5500C233F1 /* Architect.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -97,15 +93,11 @@
 		C5105B1516EE90A300E09905 /* GameSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameSettings.m; sourceTree = "<group>"; };
 		C5213CD11B75308E00E97A27 /* Arial Unicode.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arial Unicode.ttf"; sourceTree = "<group>"; };
 		C5213CD31B75445F00E97A27 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		C528726717526D7F000B4F05 /* iRate.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = iRate.bundle; sourceTree = "<group>"; };
-		C528726817526D7F000B4F05 /* iRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iRate.h; sourceTree = "<group>"; };
-		C528726917526D7F000B4F05 /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iRate.m; sourceTree = "<group>"; };
 		C52B091A16E5848500675CC7 /* GameCenterIOS4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenterIOS4.h; sourceTree = "<group>"; };
 		C52B091B16E5848500675CC7 /* GameCenterIOS4.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameCenterIOS4.m; sourceTree = "<group>"; };
 		C52B091C16E5848500675CC7 /* GameCenterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenterManager.h; sourceTree = "<group>"; };
 		C52B091D16E5848500675CC7 /* GameCenterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameCenterManager.m; sourceTree = "<group>"; };
 		C52B091E16E5848500675CC7 /* UIViewController+UIViewController_GCAchievementView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+UIViewController_GCAchievementView.h"; sourceTree = "<group>"; };
-		C52B091F16E5848500675CC7 /* UIViewController+UIViewController_GCAchievementView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+UIViewController_GCAchievementView.m"; path = "../GameCenter/UIViewController+UIViewController_GCAchievementView.m"; sourceTree = "<group>"; };
 		C52B092016E5848500675CC7 /* UIViewController+UIViewController_GCLeaderBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+UIViewController_GCLeaderBoardView.h"; sourceTree = "<group>"; };
 		C52B092116E5848500675CC7 /* UIViewController+UIViewController_GCLeaderBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+UIViewController_GCLeaderBoardView.m"; sourceTree = "<group>"; };
 		C52B092616E5853900675CC7 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
@@ -127,7 +119,6 @@
 		C57A963E16D7EAD500C233F1 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		C57A964016D7EAD500C233F1 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		C57A964116D7EAD500C233F1 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		C57A964416D7EAD500C233F1 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
 		C57A964D16D7EB4C00C233F1 /* RogueDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RogueDriver.h; sourceTree = "<group>"; };
 		C57A964E16D7EB4C00C233F1 /* RogueDriver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RogueDriver.mm; sourceTree = "<group>"; };
 		C57A964F16D7EB4C00C233F1 /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
@@ -223,24 +214,12 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		C528726617526D7F000B4F05 /* iRate */ = {
-			isa = PBXGroup;
-			children = (
-				C52B091F16E5848500675CC7 /* UIViewController+UIViewController_GCAchievementView.m */,
-				C528726717526D7F000B4F05 /* iRate.bundle */,
-				C528726817526D7F000B4F05 /* iRate.h */,
-				C528726917526D7F000B4F05 /* iRate.m */,
-			);
-			path = iRate;
-			sourceTree = "<group>";
-		};
 		C528726C17526D84000B4F05 /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
 				C52B091916E5848500675CC7 /* GameCenter */,
 				C5EFC0E016ECE398008BD644 /* MagnifyingGlass */,
 				C5865EDB170399C500B18C2B /* MGBenchmark */,
-				C528726617526D7F000B4F05 /* iRate */,
 			);
 			name = "Third Party";
 			sourceTree = "<group>";
@@ -309,7 +288,6 @@
 				C57A964016D7EAD500C233F1 /* ViewController.h */,
 				C57A964116D7EAD500C233F1 /* ViewController.m */,
 				C5B7FF1A1D8D933D00F04098 /* Main.storyboard */,
-				C57A964316D7EAD500C233F1 /* ViewController.xib */,
 				C57A962F16D7EAD500C233F1 /* Supporting Files */,
 				C5105B0F16E65EDB00E09905 /* AboutViewController.h */,
 				C5105B1016E65EDB00E09905 /* AboutViewController.m */,
@@ -515,7 +493,6 @@
 				C57A963D16D7EAD500C233F1 /* Default@2x.png in Resources */,
 				C5B7FF191D8D912100F04098 /* launch-pro.png in Resources */,
 				C57A963F16D7EAD500C233F1 /* Default-568h@2x.png in Resources */,
-				C57A964516D7EAD500C233F1 /* ViewController.xib in Resources */,
 				C5FFC5DD17B9A913007A05F3 /* Default-Landscape@2x~ipad.png in Resources */,
 				C5105B1316E65EDB00E09905 /* AboutViewController.xib in Resources */,
 				C59B21C716EA48E0007018DE /* MONACO.TTF in Resources */,
@@ -542,7 +519,6 @@
 				C5958C79174AFFBB00519AD9 /* brogue_sproutedseed@2x.png in Resources */,
 				C5958C7A174AFFBB00519AD9 /* gamecenterlogo_brogue.png in Resources */,
 				C5958C7B174AFFBB00519AD9 /* gamecenterlogo_brogue@2x.png in Resources */,
-				C528726A17526D7F000B4F05 /* iRate.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -624,7 +600,6 @@
 				C57A967316D7EB5500C233F1 /* RogueMain.mm in Sources */,
 				C52B092216E5848500675CC7 /* GameCenterIOS4.m in Sources */,
 				C52B092316E5848500675CC7 /* GameCenterManager.m in Sources */,
-				C52B092416E5848500675CC7 /* UIViewController+UIViewController_GCAchievementView.m in Sources */,
 				C52B092516E5848500675CC7 /* UIViewController+UIViewController_GCLeaderBoardView.m in Sources */,
 				C5105B1216E65EDB00E09905 /* AboutViewController.m in Sources */,
 				C5EFC0E916ECE398008BD644 /* ACLoupe.m in Sources */,
@@ -634,7 +609,6 @@
 				C5865EE5170399C500B18C2B /* MGBenchmark.m in Sources */,
 				C5865EE6170399C500B18C2B /* MGBenchmarkSession.m in Sources */,
 				C5865EE7170399C500B18C2B /* MGConsoleOutput.m in Sources */,
-				C528726B17526D7F000B4F05 /* iRate.m in Sources */,
 				C5B9B66C17D23BEA00D8459E /* Time.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -648,14 +622,6 @@
 				C57A963216D7EAD500C233F1 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		C57A964316D7EAD500C233F1 /* ViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C57A964416D7EAD500C233F1 /* en */,
-			);
-			name = ViewController.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
