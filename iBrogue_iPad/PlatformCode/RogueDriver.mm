@@ -147,7 +147,6 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
             returnEvent->param2 = 0;
             returnEvent->controlKey = 0;//([theEvent modifierFlags] & NSControlKeyMask ? 1 : 0);
             returnEvent->shiftKey = 0;//([theEvent modifierFlags] & NSShiftKeyMask ? 1 : 0);
-            clearCursor();
             break;
         }
         if ([viewController hasTouchEvent]) {

@@ -33,6 +33,5 @@
 
 + (id)sharedInstance;
 + (unsigned long)rogueSeed;
-void clearCursor();
 
 @end
