@@ -1,5 +1,6 @@
-platform :ios, '6.0'
+platform :ios, '8.0'
 inhibit_all_warnings!
 
-xcodeproj 'iBrogue_iPad.xcodeproj'
-pod 'KVOController'
+target 'iBrogue_iPad' do
+  pod 'KVOController'
+end

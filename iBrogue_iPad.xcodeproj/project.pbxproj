@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		03CBCB9A8698459797B41B1E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB486759F204A38BF191AD3 /* libPods.a */; };
+		30BAC90442FD7F11CF2864DA /* libPods-iBrogue_iPad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FDB9B0E57F9377F8B07EBC0 /* libPods-iBrogue_iPad.a */; };
 		C5105B1216E65EDB00E09905 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5105B1016E65EDB00E09905 /* AboutViewController.m */; };
 		C5105B1316E65EDB00E09905 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5105B1116E65EDB00E09905 /* AboutViewController.xib */; };
 		C5105B1616EE90A400E09905 /* GameSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = C5105B1516EE90A300E09905 /* GameSettings.m */; };
@@ -72,6 +72,7 @@
 		C5958C7B174AFFBB00519AD9 /* gamecenterlogo_brogue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C6B174AFFBB00519AD9 /* gamecenterlogo_brogue@2x.png */; };
 		C59B21C716EA48E0007018DE /* MONACO.TTF in Resources */ = {isa = PBXBuildFile; fileRef = C59B21C616EA48E0007018DE /* MONACO.TTF */; };
 		C5B9B66C17D23BEA00D8459E /* Time.mm in Sources */ = {isa = PBXBuildFile; fileRef = C5B9B66B17D23BE900D8459E /* Time.mm */; };
+		C5D117041D8B786800356DBA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5D117031D8B786800356DBA /* Images.xcassets */; };
 		C5D5EC6C16FC07EB00E9A9AF /* icon_72x72.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D5EC6B16FC07EB00E9A9AF /* icon_72x72.png */; };
 		C5D5EC6E16FC07F300E9A9AF /* icon_144x144.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D5EC6D16FC07F300E9A9AF /* icon_144x144.png */; };
 		C5EFC0E916ECE398008BD644 /* ACLoupe.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFC0E216ECE398008BD644 /* ACLoupe.m */; };
@@ -83,8 +84,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		13C7957143F74F7EE3795380 /* Pods-iBrogue_iPad.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iBrogue_iPad.release.xcconfig"; path = "Pods/Target Support Files/Pods-iBrogue_iPad/Pods-iBrogue_iPad.release.xcconfig"; sourceTree = "<group>"; };
 		1727E3F1ABCC0BBE0A0D1238 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		3AB486759F204A38BF191AD3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		1FDB9B0E57F9377F8B07EBC0 /* libPods-iBrogue_iPad.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iBrogue_iPad.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		99866F2E60EFD7B6A61DA966 /* Pods-iBrogue_iPad.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iBrogue_iPad.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iBrogue_iPad/Pods-iBrogue_iPad.debug.xcconfig"; sourceTree = "<group>"; };
 		C5105B0F16E65EDB00E09905 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		C5105B1016E65EDB00E09905 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		C5105B1116E65EDB00E09905 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
@@ -171,6 +174,7 @@
 		C5958C6B174AFFBB00519AD9 /* gamecenterlogo_brogue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gamecenterlogo_brogue@2x.png"; sourceTree = "<group>"; };
 		C59B21C616EA48E0007018DE /* MONACO.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = MONACO.TTF; sourceTree = "<group>"; };
 		C5B9B66B17D23BE900D8459E /* Time.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Time.mm; sourceTree = "<group>"; };
+		C5D117031D8B786800356DBA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		C5D5EC6B16FC07EB00E9A9AF /* icon_72x72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_72x72.png; sourceTree = "<group>"; };
 		C5D5EC6D16FC07F300E9A9AF /* icon_144x144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_144x144.png; sourceTree = "<group>"; };
 		C5EA72D616FE92DC00AE688A /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -197,7 +201,7 @@
 				C57A962916D7EAD500C233F1 /* UIKit.framework in Frameworks */,
 				C57A962B16D7EAD500C233F1 /* Foundation.framework in Frameworks */,
 				C57A962D16D7EAD500C233F1 /* CoreGraphics.framework in Frameworks */,
-				03CBCB9A8698459797B41B1E /* libPods.a in Frameworks */,
+				30BAC90442FD7F11CF2864DA /* libPods-iBrogue_iPad.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,6 +213,8 @@
 			children = (
 				F1A2CA23E2F43F45D0D59545 /* Pods.debug.xcconfig */,
 				1727E3F1ABCC0BBE0A0D1238 /* Pods.release.xcconfig */,
+				99866F2E60EFD7B6A61DA966 /* Pods-iBrogue_iPad.debug.xcconfig */,
+				13C7957143F74F7EE3795380 /* Pods-iBrogue_iPad.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -281,7 +287,7 @@
 				C57A962816D7EAD500C233F1 /* UIKit.framework */,
 				C57A962A16D7EAD500C233F1 /* Foundation.framework */,
 				C57A962C16D7EAD500C233F1 /* CoreGraphics.framework */,
-				3AB486759F204A38BF191AD3 /* libPods.a */,
+				1FDB9B0E57F9377F8B07EBC0 /* libPods-iBrogue_iPad.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -307,6 +313,7 @@
 				C532C8A31971AB8800695956 /* DirectionControlsViewController.h */,
 				C532C8A41971AB8800695956 /* DirectionControlsViewController.m */,
 				C532C8A51971AB8800695956 /* DirectionControlsViewController.xib */,
+				C5D117031D8B786800356DBA /* Images.xcassets */,
 			);
 			path = iBrogue_iPad;
 			sourceTree = "<group>";
@@ -438,11 +445,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C57A964816D7EAD500C233F1 /* Build configuration list for PBXNativeTarget "iBrogue_iPad" */;
 			buildPhases = (
-				86682B10BFC74EDFA3F5C16F /* Check Pods Manifest.lock */,
+				86682B10BFC74EDFA3F5C16F /* [CP] Check Pods Manifest.lock */,
 				C57A962116D7EAD500C233F1 /* Sources */,
 				C57A962216D7EAD500C233F1 /* Frameworks */,
 				C57A962316D7EAD500C233F1 /* Resources */,
-				F01FFCFC1FC04A27A64350BD /* Copy Pods Resources */,
+				F01FFCFC1FC04A27A64350BD /* [CP] Copy Pods Resources */,
+				0C257EE6C84573CD51B04FFA /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -496,6 +504,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C57A963316D7EAD500C233F1 /* InfoPlist.strings in Resources */,
+				C5D117041D8B786800356DBA /* Images.xcassets in Resources */,
 				C57A963B16D7EAD500C233F1 /* Default.png in Resources */,
 				C57A963D16D7EAD500C233F1 /* Default@2x.png in Resources */,
 				C57A963F16D7EAD500C233F1 /* Default-568h@2x.png in Resources */,
@@ -532,14 +541,29 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		86682B10BFC74EDFA3F5C16F /* Check Pods Manifest.lock */ = {
+		0C257EE6C84573CD51B04FFA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iBrogue_iPad/Pods-iBrogue_iPad-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		86682B10BFC74EDFA3F5C16F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -547,19 +571,19 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		F01FFCFC1FC04A27A64350BD /* Copy Pods Resources */ = {
+		F01FFCFC1FC04A27A64350BD /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iBrogue_iPad/Pods-iBrogue_iPad-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -691,8 +715,9 @@
 		};
 		C57A964916D7EAD500C233F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F1A2CA23E2F43F45D0D59545 /* Pods.debug.xcconfig */;
+			baseConfigurationReference = 99866F2E60EFD7B6A61DA966 /* Pods-iBrogue_iPad.debug.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_DEADCODE_DEADSTORES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libstdc++";
@@ -705,6 +730,7 @@
 				GCC_PREFIX_HEADER = "iBrogue_iPad/iBrogue_iPad-Prefix.pch";
 				INFOPLIST_FILE = "iBrogue_iPad/iBrogue_iPad-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = SethHoward.iBrogue;
 				PRODUCT_NAME = Brogue;
 				PROVISIONING_PROFILE = "";
@@ -717,20 +743,22 @@
 		};
 		C57A964A16D7EAD500C233F1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1727E3F1ABCC0BBE0A0D1238 /* Pods.release.xcconfig */;
+			baseConfigurationReference = 13C7957143F74F7EE3795380 /* Pods-iBrogue_iPad.release.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_DEADCODE_DEADSTORES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 14;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iBrogue_iPad/iBrogue_iPad-Prefix.pch";
 				INFOPLIST_FILE = "iBrogue_iPad/iBrogue_iPad-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = SethHoward.iBrogue;
 				PRODUCT_NAME = Brogue;
 				PROVISIONING_PROFILE = "";
