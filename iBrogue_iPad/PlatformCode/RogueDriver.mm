@@ -64,21 +64,11 @@ short mouseX, mouseY;
 {
     self = [super init];
     if (self) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
-        
         if (!_colorSpace) {
             _colorSpace = CGColorSpaceCreateDeviceRGB();
         }
     }
     return self;
-}
-
-- (void)applicationDidBecomeActive {
-    double delayInSeconds = .5;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        clearCursor();
-    });
 }
 
 + (unsigned long)rogueSeed {
@@ -122,13 +112,6 @@ void plotChar(uchar inputChar,
 
 __unused void pausingTimerStartsNow() {
     // unused
-}
-
-#pragma mark - input
-
-void clearCursor() {
-  //  rogue.cursorLoc[0] = -1;
-  //  rogue.cursorLoc[1] = -1;
 }
 
 // Returns true if the player interrupted the wait with a keystroke; otherwise false.

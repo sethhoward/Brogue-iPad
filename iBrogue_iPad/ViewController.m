@@ -82,12 +82,13 @@ NSDictionary* keyCommands;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.directionControlsViewController.view setHidden:YES];
     
     [GameCenterManager sharedInstance];
     [[GameCenterManager sharedInstance] authenticateLocalUser];
     
     [self loadDirectionControlsViewController];
+    [self.directionControlsViewController.view setHidden:YES];
+    
     [self createDirectionControlListener];
     
     [self addNotificationObservers];
