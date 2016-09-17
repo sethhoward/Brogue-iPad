@@ -71,6 +71,8 @@
 		C5958C7A174AFFBB00519AD9 /* gamecenterlogo_brogue.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C6A174AFFBB00519AD9 /* gamecenterlogo_brogue.png */; };
 		C5958C7B174AFFBB00519AD9 /* gamecenterlogo_brogue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C6B174AFFBB00519AD9 /* gamecenterlogo_brogue@2x.png */; };
 		C59B21C716EA48E0007018DE /* MONACO.TTF in Resources */ = {isa = PBXBuildFile; fileRef = C59B21C616EA48E0007018DE /* MONACO.TTF */; };
+		C5B7FF191D8D912100F04098 /* launch-pro.png in Resources */ = {isa = PBXBuildFile; fileRef = C5B7FF181D8D912100F04098 /* launch-pro.png */; };
+		C5B7FF1B1D8D933D00F04098 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5B7FF1A1D8D933D00F04098 /* Main.storyboard */; };
 		C5B9B66C17D23BEA00D8459E /* Time.mm in Sources */ = {isa = PBXBuildFile; fileRef = C5B9B66B17D23BE900D8459E /* Time.mm */; };
 		C5D117041D8B786800356DBA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5D117031D8B786800356DBA /* Images.xcassets */; };
 		C5D5EC6C16FC07EB00E9A9AF /* icon_72x72.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D5EC6B16FC07EB00E9A9AF /* icon_72x72.png */; };
@@ -173,6 +175,8 @@
 		C5958C6A174AFFBB00519AD9 /* gamecenterlogo_brogue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gamecenterlogo_brogue.png; sourceTree = "<group>"; };
 		C5958C6B174AFFBB00519AD9 /* gamecenterlogo_brogue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gamecenterlogo_brogue@2x.png"; sourceTree = "<group>"; };
 		C59B21C616EA48E0007018DE /* MONACO.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = MONACO.TTF; sourceTree = "<group>"; };
+		C5B7FF181D8D912100F04098 /* launch-pro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "launch-pro.png"; sourceTree = "<group>"; };
+		C5B7FF1A1D8D933D00F04098 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C5B9B66B17D23BE900D8459E /* Time.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Time.mm; sourceTree = "<group>"; };
 		C5D117031D8B786800356DBA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		C5D5EC6B16FC07EB00E9A9AF /* icon_72x72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_72x72.png; sourceTree = "<group>"; };
@@ -260,6 +264,7 @@
 			children = (
 				C5EA72D616FE92DC00AE688A /* CoreText.framework */,
 				C5D5EC6D16FC07F300E9A9AF /* icon_144x144.png */,
+				C5B7FF181D8D912100F04098 /* launch-pro.png */,
 				C5D5EC6B16FC07EB00E9A9AF /* icon_72x72.png */,
 				C5FFC5DC17B9A913007A05F3 /* Default-Landscape@2x~ipad.png */,
 				C5FFC5DE17B9A9DB007A05F3 /* Default-Landscape~ipad.png */,
@@ -303,6 +308,7 @@
 				C57A963816D7EAD500C233F1 /* AppDelegate.m */,
 				C57A964016D7EAD500C233F1 /* ViewController.h */,
 				C57A964116D7EAD500C233F1 /* ViewController.m */,
+				C5B7FF1A1D8D933D00F04098 /* Main.storyboard */,
 				C57A964316D7EAD500C233F1 /* ViewController.xib */,
 				C57A962F16D7EAD500C233F1 /* Supporting Files */,
 				C5105B0F16E65EDB00E09905 /* AboutViewController.h */,
@@ -507,6 +513,7 @@
 				C5D117041D8B786800356DBA /* Images.xcassets in Resources */,
 				C57A963B16D7EAD500C233F1 /* Default.png in Resources */,
 				C57A963D16D7EAD500C233F1 /* Default@2x.png in Resources */,
+				C5B7FF191D8D912100F04098 /* launch-pro.png in Resources */,
 				C57A963F16D7EAD500C233F1 /* Default-568h@2x.png in Resources */,
 				C57A964516D7EAD500C233F1 /* ViewController.xib in Resources */,
 				C5FFC5DD17B9A913007A05F3 /* Default-Landscape@2x~ipad.png in Resources */,
@@ -525,6 +532,7 @@
 				C5958C73174AFFBB00519AD9 /* brogue_escapebutton@2x.png in Resources */,
 				C5958C74174AFFBB00519AD9 /* brogue_seed.png in Resources */,
 				C5958C75174AFFBB00519AD9 /* brogue_seed@2x.png in Resources */,
+				C5B7FF1B1D8D933D00F04098 /* Main.storyboard in Resources */,
 				C5958C76174AFFBB00519AD9 /* brogue_showinventory_button.png in Resources */,
 				C532C8A71971AB8800695956 /* DirectionControlsViewController.xib in Resources */,
 				C5958C77174AFFBB00519AD9 /* brogue_showinventory_button@2x.png in Resources */,
@@ -718,6 +726,7 @@
 			baseConfigurationReference = 99866F2E60EFD7B6A61DA966 /* Pods-iBrogue_iPad.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ANALYZER_DEADCODE_DEADSTORES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libstdc++";
@@ -746,6 +755,7 @@
 			baseConfigurationReference = 13C7957143F74F7EE3795380 /* Pods-iBrogue_iPad.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ANALYZER_DEADCODE_DEADSTORES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libstdc++";

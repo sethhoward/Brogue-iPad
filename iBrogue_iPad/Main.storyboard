@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Ait-CV-2Oi">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="7Nv-tK-HBW">
+            <objects>
+                <viewController id="Ait-CV-2Oi" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="fWz-TN-j3t"/>
+                        <viewControllerLayoutGuide type="bottom" id="CQy-1S-p2J"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kdj-Z3-z5a">
+                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4Ik-gc-Wju">
+                                <frame key="frameInset" minX="634" minY="497" width="97" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Ait-CV-2Oi" id="vKd-x1-Acz"/>
+                                </connections>
+                            </textField>
+                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7EN-Bf-6DC" customClass="Viewport">
+                                <subviews>
+                                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AjU-U7-BZU">
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mk6-f3-PfO">
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                                <state key="normal" image="gamecenterlogo_brogue.png">
+                                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <state key="highlighted">
+                                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="showLeaderBoardButtonPressed:" destination="Ait-CV-2Oi" eventType="touchUpInside" id="FYE-lD-dZg"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5aW-lD-46u">
+                                                <frame key="frameInset" minX="141" minY="399" width="96" height="84"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                                <state key="normal" image="brogue_seed.png">
+                                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <state key="highlighted">
+                                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="seedKeyPressed:" destination="Ait-CV-2Oi" eventType="touchUpInside" id="agc-8r-r2D"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="Mk6-f3-PfO" firstAttribute="leading" secondItem="AjU-U7-BZU" secondAttribute="leading" constant="26" id="jqE-Zo-6WV"/>
+                                            <constraint firstAttribute="bottom" secondItem="Mk6-f3-PfO" secondAttribute="bottom" id="nys-UT-55v"/>
+                                        </constraints>
+                                    </view>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cjr-if-tXB">
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="K1k-Q6-rPf"/>
+                                            <constraint firstAttribute="width" constant="253" id="zag-3R-gdn"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                        <state key="normal" image="brogue_showinventory_button.png">
+                                            <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="showInventoryButtonPressed:" destination="Ait-CV-2Oi" eventType="touchUpInside" id="IxY-QJ-eBt"/>
+                                        </connections>
+                                    </button>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UAZ-FF-wCU">
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="31" id="T2A-Qx-nr4"/>
+                                            <constraint firstAttribute="width" constant="151" id="iM9-TS-TyX"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                        <state key="normal" image="brogue_escapebutton.png">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="escButtonPressed:" destination="Ait-CV-2Oi" eventType="touchUpInside" id="LB9-uY-uI1"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="AjU-U7-BZU" secondAttribute="bottom" constant="20" id="6l1-Hp-Rb0"/>
+                                    <constraint firstItem="AjU-U7-BZU" firstAttribute="leading" secondItem="7EN-Bf-6DC" secondAttribute="leading" constant="-4" id="C4V-O8-ihn"/>
+                                    <constraint firstItem="cjr-if-tXB" firstAttribute="top" secondItem="7EN-Bf-6DC" secondAttribute="top" constant="76" id="QMZ-62-6K8"/>
+                                    <constraint firstItem="UAZ-FF-wCU" firstAttribute="top" secondItem="7EN-Bf-6DC" secondAttribute="top" constant="8" id="Zl4-sD-Uc1"/>
+                                    <constraint firstItem="UAZ-FF-wCU" firstAttribute="leading" secondItem="7EN-Bf-6DC" secondAttribute="leading" constant="20" id="qNY-bC-FOx"/>
+                                    <constraint firstItem="AjU-U7-BZU" firstAttribute="top" secondItem="7EN-Bf-6DC" secondAttribute="top" constant="501" id="rLn-dn-TbA"/>
+                                    <constraint firstItem="cjr-if-tXB" firstAttribute="leading" secondItem="7EN-Bf-6DC" secondAttribute="leading" constant="210" id="uB8-3O-tJI"/>
+                                    <constraint firstAttribute="trailing" secondItem="AjU-U7-BZU" secondAttribute="trailing" constant="576" id="uNy-tK-Clp"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="CQy-1S-p2J" firstAttribute="top" secondItem="7EN-Bf-6DC" secondAttribute="bottom" id="2by-b9-hmv"/>
+                            <constraint firstItem="7EN-Bf-6DC" firstAttribute="top" secondItem="fWz-TN-j3t" secondAttribute="bottom" id="MiE-My-IhO"/>
+                            <constraint firstAttribute="trailing" secondItem="7EN-Bf-6DC" secondAttribute="trailing" id="udA-4b-Km6"/>
+                            <constraint firstItem="7EN-Bf-6DC" firstAttribute="leading" secondItem="kdj-Z3-z5a" secondAttribute="leading" id="x6B-b5-L5k"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="aTextField" destination="4Ik-gc-Wju" id="enC-XW-nXE"/>
+                        <outlet property="escButton" destination="UAZ-FF-wCU" id="zlz-3R-frq"/>
+                        <outlet property="secondaryDisplay" destination="7EN-Bf-6DC" id="4Kk-u0-jNy"/>
+                        <outlet property="showInventoryButton" destination="cjr-if-tXB" id="4EG-cg-X7g"/>
+                        <outlet property="titleButtonView" destination="AjU-U7-BZU" id="Mmg-BY-jfE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NbC-ff-bJn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-144.07027818448023" y="368.5546875"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="brogue_escapebutton.png" width="576" height="123"/>
+        <image name="brogue_seed.png" width="20" height="43"/>
+        <image name="brogue_showinventory_button.png" width="693" height="123"/>
+        <image name="gamecenterlogo_brogue.png" width="81" height="84"/>
+    </resources>
+</document>

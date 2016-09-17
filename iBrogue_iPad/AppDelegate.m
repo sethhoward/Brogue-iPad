@@ -29,33 +29,21 @@
     [[iRate sharedInstance] setRemindPeriod:0.];
 }
 
-- (void)showSplashScreen {
-    __block UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default-Landscape.png"]];
-    [self.viewController.view addSubview:imageView];
-    
-    double delayInSeconds = 2.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [imageView removeFromSuperview];
-        imageView = nil;
-    });
-}
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [application setStatusBarHidden:YES];
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    self.viewController = [[ViewController alloc] initWithNibName:@"ViewController" bundle:nil];
-    
-    [self showSplashScreen];
-    
+//    [application setStatusBarHidden:YES];
+//    CGRect frame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width * 2, [[UIScreen mainScreen] bounds].size.height * 2);
+//    self.window = [[UIWindow alloc] initWithFrame:frame];
+//    // Override point for customization after application launch.
+//    self.viewController = [[ViewController alloc] initWithNibName:@"ViewController" bundle:nil];
+//    //self.viewController.view.frame = CGRectMake(0, 0, self.window.bounds.size.width, self.window.bounds.size.height);
+//    
     if ([[GameSettings sharedInstance] allowShake]) {
         application.applicationSupportsShakeToEdit = YES;
     }
-    
-    self.window.rootViewController = self.viewController;
-    [self.window makeKeyAndVisible];
+//
+//    self.window.rootViewController = self.viewController;
+//    [self.window makeKeyAndVisible];
     return YES;
 }
 

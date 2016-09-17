@@ -83,6 +83,7 @@ NSDictionary* keyCommands;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.directionControlsViewController.view setHidden:YES];
     
     [GameCenterManager sharedInstance];
     [[GameCenterManager sharedInstance] authenticateLocalUser];
@@ -160,12 +161,13 @@ NSDictionary* keyCommands;
 
 - (void)loadDirectionControlsViewController {
     self.directionControlsViewController = [[DirectionControlsViewController alloc] init];
- //   [self.view insertSubview:self.directionControlsViewController.view belowSubview:self.titleButtonView];
-    
-    
+
     // temp until we rewrite with autolayout in mind
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        self.directionControlsViewController.view.center = CGPointMake(104., 662.);
+        CGRect viewFrame = self.view.frame;
+        CGRect directionalFrame = self.directionControlsViewController.view.frame;
+        CGPoint point = CGPointMake(104, viewFrame.size.height - directionalFrame.size.height/2 - 10);
+        self.directionControlsViewController.view.center = point;
     }
     else {
         CGRect frame = self.directionControlsViewController.view.frame;
