@@ -17,6 +17,7 @@ extern ViewController *viewController;
 
 @interface ViewController : UIViewController
 
+// some sort of hack to cache value types of touches
 struct iBTouch {
     UITouchPhase phase;
     CGPoint location;
