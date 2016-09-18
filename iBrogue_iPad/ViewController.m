@@ -17,7 +17,6 @@
 #import "DirectionControlsViewController.h"
 #import <KVOController/FBKVOController.h>
 #import "IncludeGlobals.h"
-// #import <ReplayKit/ReplayKit.h>
 
 static NSString *kESC_Key = @"\033";
 
@@ -88,6 +87,8 @@ NSDictionary* keyCommands;
     [[GameCenterManager sharedInstance] authenticateLocalUser];
     
     [self loadDirectionControlsViewController];
+    [self.directionControlsViewController.view setHidden:YES];
+    
     [self createDirectionControlListener];
     
     [self addNotificationObservers];
@@ -160,12 +161,13 @@ NSDictionary* keyCommands;
 
 - (void)loadDirectionControlsViewController {
     self.directionControlsViewController = [[DirectionControlsViewController alloc] init];
- //   [self.view insertSubview:self.directionControlsViewController.view belowSubview:self.titleButtonView];
-    
-    
+
     // temp until we rewrite with autolayout in mind
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        self.directionControlsViewController.view.center = CGPointMake(104., 662.);
+        CGRect viewFrame = self.view.frame;
+        CGRect directionalFrame = self.directionControlsViewController.view.frame;
+        CGPoint point = CGPointMake(104, viewFrame.size.height - directionalFrame.size.height/2 - 10);
+        self.directionControlsViewController.view.center = point;
     }
     else {
         CGRect frame = self.directionControlsViewController.view.frame;
@@ -186,12 +188,12 @@ NSDictionary* keyCommands;
     
      [self hideKeyboard];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2. * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5. * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if (!KEYBOARD_LABELS) {
             return;
         }
         
-        BOOL hasShownKeyBoardWarning = NO;//[[NSUserDefaults standardUserDefaults] boolForKey:@"Has Shown Keyboard Warning"];
+        BOOL hasShownKeyBoardWarning = [[NSUserDefaults standardUserDefaults] boolForKey:@"Has Shown Keyboard Warning"];
         
         if (!hasShownKeyBoardWarning) {
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"Has Shown Keyboard Warning"];
@@ -583,51 +585,6 @@ static iBTouch _lastTouch;
     
     return YES;
 }
-
-#pragma mark - Actions
-/*
-BOOL startedRecording = NO;
-- (IBAction)startRecording:(id)sender {
-    if (startedRecording) {
-        [self stopRecording];
-        startedRecording = NO;
-        return;
-    }
-    
-    RPScreenRecorder *sharedRecorder = RPScreenRecorder.sharedRecorder;
-    sharedRecorder.delegate = self;
-    
-    [sharedRecorder startRecordingWithMicrophoneEnabled:YES handler:^(NSError * _Nullable error) {
-        if (error) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Recording Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
-        }
-        else {
-            startedRecording = YES;
-        }
-    }];
-}
-
-- (void)previewControllerDidFinish:(RPPreviewViewController *)previewController {
-    [previewController dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)stopRecording {
-    [[RPScreenRecorder sharedRecorder] stopRecordingWithHandler:^(RPPreviewViewController * _Nullable previewViewController, NSError * _Nullable error) {
-        if (error) {
-            NSLog(@"%@", error);
-        }
-        
-        previewViewController.previewControllerDelegate = self;
-        
-        previewViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-        UIViewController *vc = self.view.window.rootViewController;
-        [vc presentViewController:previewViewController animated:YES completion:nil];
-        
-       // rootViewController.presentViewController(previewViewController, animated: YES, completion:nil);
-    }];
-}*/
-
 - (void)addKeyStroke:(NSString *)key {
     [self.cachedKeyStrokes addObject:key];
     self.cachedKeyCount = [self.cachedKeyStrokes count];

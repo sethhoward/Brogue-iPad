@@ -54,6 +54,7 @@ NSString *kDOWNRIGHT_key = @"n";
     dispatch_async(dispatch_get_main_queue(), ^{
         [UIView animateWithDuration:0.2 animations:^{
             self.controlsContainer.transform = CGAffineTransformMakeScale(.0000001, .0000001);
+            [self buttonUp:nil];
         }];
     });
 }
@@ -62,6 +63,7 @@ NSString *kDOWNRIGHT_key = @"n";
     dispatch_async(dispatch_get_main_queue(), ^{
         [UIView animateWithDuration:0.2 animations:^{
             self.controlsContainer.transform = CGAffineTransformMakeScale(1., 1.);
+            [self buttonUp:nil];
         }];
     });
 }

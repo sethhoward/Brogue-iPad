@@ -32,7 +32,6 @@
 #include "Rogue.h"
 #import "GameCenterManager.h"
 #import <QuartzCore/QuartzCore.h>
-#import "iRate.h"
 
 #import "MGBenchmark.h"
 #import "MGBenchmarkSession.h"
@@ -64,21 +63,11 @@ short mouseX, mouseY;
 {
     self = [super init];
     if (self) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
-        
         if (!_colorSpace) {
             _colorSpace = CGColorSpaceCreateDeviceRGB();
         }
     }
     return self;
-}
-
-- (void)applicationDidBecomeActive {
-    double delayInSeconds = .5;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        clearCursor();
-    });
 }
 
 + (unsigned long)rogueSeed {
@@ -124,13 +113,6 @@ __unused void pausingTimerStartsNow() {
     // unused
 }
 
-#pragma mark - input
-
-void clearCursor() {
-  //  rogue.cursorLoc[0] = -1;
-  //  rogue.cursorLoc[1] = -1;
-}
-
 // Returns true if the player interrupted the wait with a keystroke; otherwise false.
 boolean pauseForMilliseconds(short milliseconds) {
     BOOL hasEvent = NO;
@@ -164,7 +146,6 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
             returnEvent->param2 = 0;
             returnEvent->controlKey = 0;//([theEvent modifierFlags] & NSControlKeyMask ? 1 : 0);
             returnEvent->shiftKey = 0;//([theEvent modifierFlags] & NSShiftKeyMask ? 1 : 0);
-            clearCursor();
             break;
         }
         if ([viewController hasTouchEvent]) {
@@ -373,11 +354,6 @@ boolean saveHighScore(rogueHighScoresEntry theEntry) {
 
     if (theEntry.score > 0) {
         [[GameCenterManager sharedInstance] reportScore:theEntry.score forCategory:kBrogueHighScoreLeaderBoard];
-        
-        // attempt to rate the app
-        if (theEntry.score > kRateScore && ![[iRate sharedInstance] declinedThisVersion] && ![[iRate sharedInstance] ratedThisVersion]) {
-            [[iRate sharedInstance] promptIfNetworkAvailable];
-        }
     }
     
 	if (minIndex == -1) { // didn't qualify

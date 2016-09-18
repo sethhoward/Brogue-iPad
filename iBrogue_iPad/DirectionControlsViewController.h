@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-NS_ENUM(NSInteger, ControlDirection) {
+typedef NS_ENUM(NSInteger, ControlDirection) {
     ControlDirectionUp = 1,
     ControlDirectionRight,
     ControlDirectionDown,
