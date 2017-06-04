@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+// TODO: rewrite in swift so it's not so shitty
+
 typedef NS_ENUM(NSInteger, ControlDirection) {
     ControlDirectionUp = 1,
     ControlDirectionRight,
@@ -33,7 +35,7 @@ extern NSString *kDOWNRIGHT_key;
 - (void)hideWithAnimation:(BOOL)animation;
 - (void)showWithAnimation:(BOOL)animation;
 
-@property (nonatomic, strong) UIButton *directionalButton;
+@property (nonatomic, strong, nullable) UIButton *directionalButton;
 @property (nonatomic, readonly) BOOL areDirectionalControlsHidden;
 
 @end

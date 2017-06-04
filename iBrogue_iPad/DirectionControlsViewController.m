@@ -95,6 +95,13 @@ NSString *kDOWNRIGHT_key = @"n";
     }
 }
 
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    NSLog(@"%@", segue.sourceViewController);
+    NSLog(@"%@", segue.destinationViewController);
+}
+
+
 #pragma mark -
 
 - (void)handleRepeatKeyPress {

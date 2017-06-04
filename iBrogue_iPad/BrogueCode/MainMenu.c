@@ -697,7 +697,7 @@ void mainBrogueJunction() {
 				// Run the main menu to get a decision out of the player.
                 
                 // Seth: Added
-                setBrogueGameEvent(BrogueGameEventShowTitle);
+                setBrogueGameEvent(CBrogueGameEventShowTitle);
                 
 				titleMenu();
 				break;
@@ -757,7 +757,7 @@ void mainBrogueJunction() {
 				}
 				
                 // Seth: Added
-                setBrogueGameEvent(BrogueGameEventStartNewGame);
+                setBrogueGameEvent(CBrogueGameEventStartNewGame);
 				rogue.nextGame = NG_NOTHING;
 				initializeRogue(rogue.nextGameSeed);
 				startLevel(rogue.depthLevel, 1); // descending into level 1
@@ -769,7 +769,7 @@ void mainBrogueJunction() {
 				rogue.nextGame = NG_NOTHING;
                 
                 // Seth: Added
-                setBrogueGameEvent(BrogueGameEventBeginOpenGame);
+                setBrogueGameEvent(CBrogueGameEventBeginOpenGame);
 				path[0] = '\0';
 				if (rogue.nextGamePath[0]) {
 					strcpy(path, rogue.nextGamePath);
@@ -782,7 +782,7 @@ void mainBrogueJunction() {
 				if (openFile(path)) {
 					loadSavedGame();
                     // Seth: Added
-                    setBrogueGameEvent(BrogueGameEventOpenGame);
+                    setBrogueGameEvent(CBrogueGameEventOpenGame);
 					mainInputLoop();
 					freeEverything();
 				} else {
@@ -791,12 +791,12 @@ void mainBrogueJunction() {
 				rogue.playbackMode = false;
 				rogue.playbackOOS = false;
 				// Seth: Added
-                setBrogueGameEvent(BrogueGameEventOpenGameFinished);
+                setBrogueGameEvent(CBrogueGameEventOpenGameFinished);
 				break;
 			case NG_VIEW_RECORDING:
 				rogue.nextGame = NG_NOTHING;
 				// Seth: Added
-                setBrogueGameEvent(BrogueGameEventBeginOpenGame);
+                setBrogueGameEvent(CBrogueGameEventBeginOpenGame);
 				path[0] = '\0';
 				if (rogue.nextGamePath[0]) {
 					strcpy(path, rogue.nextGamePath);
@@ -808,7 +808,7 @@ void mainBrogueJunction() {
 				
 				if (openFile(path)) {
                     // Seth: Added
-                    setBrogueGameEvent(BrogueGameEventPlayRecording);
+                    setBrogueGameEvent(CBrogueGameEventPlayRecording);
 					randomNumbersGenerated = 0;
 					rogue.playbackMode = true;
 					initializeRogue(0); // Seed argument is ignored because we're in playback.
@@ -847,7 +847,7 @@ void mainBrogueJunction() {
 			case NG_HIGH_SCORES:
 				rogue.nextGame = NG_NOTHING;
                 // Seth: Added
-                setBrogueGameEvent(BrogueGameEventShowHighScores);
+                setBrogueGameEvent(CBrogueGameEventShowHighScores);
 				printHighScores(false);
 				break;
             case NG_SCUM:

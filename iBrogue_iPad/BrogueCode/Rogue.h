@@ -205,7 +205,7 @@
 #define SCROLL_CHAR		0x266A//'?'		// 0x039E
 //#define RING_CHAR		0x26AA //0xffee
 #define RING_CHAR		0xffee
-#define CHARM_CHAR      0x03DE
+#define CHARM_CHAR      0x03DF//0x03DE
 #define POTION_CHAR		'!'
 #define ARMOR_CHAR		'['
 #define WEAPON_CHAR		0x2191
@@ -2746,7 +2746,7 @@ extern "C" {
 	color colorFromComponents(char rgb[3]);
 	void overlayDisplayBuffer(cellDisplayBuffer overBuf[COLS][ROWS], cellDisplayBuffer previousBuf[COLS][ROWS]);
 	void flashForeground(short *x, short *y, color **flashColor, short *flashStrength, short count, short frames);
-	void flash(color *theColor, short frames, short x, short y);
+	//void flash(color *theColor, short frames, short x, short y);
 	void colorFlash(const color *theColor, unsigned long reqTerrainFlags, unsigned long reqTileFlags, short frames, short maxRadius, short x, short y);
 	void printString(const char *theString, short x, short y, color *foreColor, color*backColor, cellDisplayBuffer dbuf[COLS][ROWS]);
 	short wrapText(char *to, const char *sourceText, short width);
@@ -3183,27 +3183,27 @@ extern "C" {
     void submitAchievementForCharString(char *achievementKey);
     
     typedef enum{
-        BrogueGameEventActionMenuOpen = 0,
-        BrogueGameEventActionMenuClose,
-        BrogueGameEventKeyBoardInputRequired,
-        BrogueGameEventWaitingForConfirmation,
-        BrogueGameEventConfirmationComplete,
-        BrogueGameEventOpenedInventory,
-        BrogueGameEventClosedInventory,
-        BrogueGameEventInventoryItemAction,
-        BrogueGameEventShowTitle,
-        BrogueGameEventStartNewGame,
-        BrogueGameEventOpenGame,
-        BrogueGameEventBeginOpenGame,
-        BrogueGameEventOpenGameFinished,
-        BrogueGameEventPlayRecording,
-        BrogueGameEventShowHighScores,
-        BrogueGameEventPlayBackPanic,
-        BrogueGameEventMessagePlayerHasDied,
-        BrogueGameEventPlayerHasDiedMessageAcknowledged,
-    } BrogueGameEvent;
+        CBrogueGameEventActionMenuOpen = 0,
+        CBrogueGameEventActionMenuClose,
+        CBrogueGameEventKeyBoardInputRequired,
+        CBrogueGameEventWaitingForConfirmation,
+        CBrogueGameEventConfirmationComplete,
+        CBrogueGameEventOpenedInventory,
+        CBrogueGameEventClosedInventory,
+        CBrogueGameEventInventoryItemAction,
+        CBrogueGameEventShowTitle,
+        CBrogueGameEventStartNewGame,
+        CBrogueGameEventOpenGame,
+        CBrogueGameEventBeginOpenGame,
+        CBrogueGameEventOpenGameFinished,
+        CBrogueGameEventPlayRecording,
+        CBrogueGameEventShowHighScores,
+        CBrogueGameEventPlayBackPanic,
+        CBrogueGameEventMessagePlayerHasDied,
+        CBrogueGameEventPlayerHasDiedMessageAcknowledged,
+    } CBrogueGameEvent;
     
-    void setBrogueGameEvent(BrogueGameEvent brogueGameState);
+    void setBrogueGameEvent(CBrogueGameEvent brogueGameState);
     
 #if defined __cplusplus
 }

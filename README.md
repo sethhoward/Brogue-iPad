@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Brogue-iPad
 ===========
 
@@ -13,3 +14,20 @@ Run 'pod install'
 Open the project's workspace.
 
 This project can be run on iPhone. Change the proj settings to universal and build away. Too small for the app store.
+=======
+# The CocoaPods Master Repo
+
+This repository contains the public [CocoaPods](https://github.com/CocoaPods/CocoaPods) specifications.
+
+## Links
+
+- [Specs and the Specs Repo](http://guides.cocoapods.org/making/specs-and-specs-repo.html): Learn about creating Podspec's and the Spec repo.
+- [Getting setup with Trunk](http://guides.cocoapods.org/making/getting-setup-with-trunk.html): Instructions for creating a CocoaPods user account
+
+
+## License
+
+These specifications and CocoaPods are available under the [MIT license](http://www.opensource.org/licenses/mit-license.php).
+
+
+>>>>>>> d387a15850ab94b74a72a3d14aa00591f9edf6bd

@@ -23,7 +23,6 @@
 //
 
 #import "Viewport.h"
-#import "ViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "MGBenchmark.h"
 #import "MGBenchmarkSession.h"
@@ -33,7 +32,6 @@
 
 @property (nonatomic, strong) UIFont *slowFont;
 @property (nonatomic, strong) UIFont *fastFont;
-@property (nonatomic, strong) UIFont *largeUniFont;
 @property (nonatomic, strong) NSMutableDictionary *characterSizeDictionary;
 // The approximate size of one rectangle, which can be off by up to 1 pixel:
 @property (nonatomic, assign) short vPixels;
@@ -227,11 +225,7 @@
     
     // we're not in ascii country... draw the unicode char the only way we know how
     if (character > 127) {
-        if (character == FOLIAGE_CHAR || character == CHARM_CHAR) {
-            [theString drawAtPoint:stringOrigin withFont:[self largeUniFont]];
-        } else {
-            [theString drawAtPoint:stringOrigin withFont:[self slowFont]];
-        }
+        [theString drawAtPoint:stringOrigin withFont:[self slowFont]];
         
         // seems like we need to change the context back or we render incorrect glyps. We do it here assuming we call this less than the show glyphs below
         CGContextSetTextMatrix(_context, CGAffineTransformMakeScale(1.0, -1.0));
@@ -247,7 +241,7 @@
 
 #pragma mark - Private Helpers
 
-- (CGPoint)getStringOriginWithCharacter:(unsigned short)character andString:(NSString *)aString atLocation:(CGPoint)location {
+- (CGPoint)getStringOriginWithCharacter:(short)character andString:(NSString *)aString atLocation:(CGPoint)location {
     CGSize stringSize;
     
     if (character > 127 && character != FLOOR_CHAR) {
@@ -255,12 +249,7 @@
         // great code to include if you can run arial unicode. sadly arial unicode crashes ios 6
         id cachedSize = [_characterSizeDictionary objectForKey:aString];
         if (cachedSize == nil) {
-            if (character == FOLIAGE_CHAR || character == CHARM_CHAR) {
-                stringSize = [aString sizeWithFont:[self largeUniFont]];	// quite expensive
-            } else {
-                stringSize = [aString sizeWithFont:[self slowFont]];	// quite expensive
-            }
-            
+            stringSize = [aString sizeWithFont:[self slowFont]];	// quite expensive
             [_characterSizeDictionary setObject:[NSValue valueWithCGSize:stringSize] forKey:aString];
         } else {
             stringSize = [[_characterSizeDictionary objectForKey:aString] CGSizeValue];
@@ -277,9 +266,12 @@
     stringOrigin.x = _rectArray[x][y].origin.x + (_rectArray[x][y].size.width - stringSize.width) / 2;
     stringOrigin.y = _rectArray[x][y].origin.y + (_rectArray[x][y].size.height - stringSize.height) / 2;
     
-    if (character == RING_CHAR) {
-        stringOrigin.y -= 1;
-    }
+//    if (character == FOLIAGE_CHAR) {
+//        stringOrigin.x++;
+//    }
+//    else if(character == WEAPON_CHAR) {
+//        stringOrigin.x += 2;
+//    }
     
     return stringOrigin;
 }
@@ -329,14 +321,6 @@
         _slowFont = [UIFont fontWithName:@"ArialUnicodeMS" size:self.theFontSize + 4];
 	}
 	return _slowFont;
-}
-
-- (UIFont *)largeUniFont {
-    if (!_largeUniFont) {
-        _largeUniFont = [UIFont fontWithName:@"ArialUnicodeMS" size:self.theFontSize + 1];
-    }
-    
-    return _largeUniFont;
 }
 
 - (UIFont *)fastFont {
