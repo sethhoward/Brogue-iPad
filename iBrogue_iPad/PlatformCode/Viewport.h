@@ -27,7 +27,7 @@
 
 #define kROWS		(30+3+1)
 #define kCOLS		100
-#define FONT_SIZE	16
+#define FONT_SIZE	18
 
 @interface Viewport : ACMagnifyingView
 
