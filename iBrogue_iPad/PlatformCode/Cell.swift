@@ -13,6 +13,7 @@ class MagCell: Cell {
         self.init(x: cell.position.x, y: cell.position.y, size: CGSize(width: cell.size.width * (magnify), height: cell.size.height * (magnify)))
         fgcolor = cell.fgcolor
         bgcolor = cell.bgcolor
+        
         if cell.glyph != nil {
             glyph = cell.glyph
         }

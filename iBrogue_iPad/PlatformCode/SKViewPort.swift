@@ -22,8 +22,8 @@ class SKViewPort: SKView {
         rogueScene.scaleMode = .fill
         super.init(coder: aDecoder)
         
-        showsFPS = true
-        showsNodeCount = true
+      //  showsFPS = true
+      //  showsNodeCount = true
         ignoresSiblingOrder = true
     }
     

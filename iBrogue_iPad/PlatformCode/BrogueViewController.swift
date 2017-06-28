@@ -12,7 +12,7 @@ import SpriteKit
 fileprivate let kESC_Key: UInt8 = 27
 fileprivate let kEnterKey = "\n"
 
-func synchronized<T>(_ lock: Any, _ body: () throws -> T) rethrows -> T {
+private func synchronized<T>(_ lock: Any, _ body: () throws -> T) rethrows -> T {
     objc_sync_enter(lock)
     defer { objc_sync_exit(lock) }
     return try body()
@@ -222,9 +222,7 @@ extension BrogueViewController {
         super.touchesEnded(touches, with: event)
         
         if let touch = touches.first {
-            let location: CGPoint = {
-                return touch.location(in: view)
-            }()
+            let location = touch.location(in: view)
             
             if pointIsInSideBar(point: location) {
                 // side bar

@@ -27,7 +27,6 @@ extension CGSize {
 @objc public class RogueScene: SKScene {
     fileprivate let grid: CGSize
     fileprivate let cellSize: CGSize
-    fileprivate let initialSize: CGSize
     
     fileprivate var fgTextures = [SKTexture]()
     fileprivate var bgTextures = [SKTexture]()
@@ -45,11 +44,9 @@ extension CGSize {
     }()
     
     public init(size: CGSize, rows: Int, cols: Int) {
-        initialSize = size
         grid = CGSize(rows: rows, cols: cols)
         cellSize = CGSize(width: CGFloat(size.width) / CGFloat(cols), height: CGFloat(size.height) / CGFloat(rows))
         super.init(size: size)
-        anchorPoint = CGPoint(x: 0, y: 0)
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -74,19 +71,15 @@ extension RogueScene {
                 let newCell = Cell(x: CGFloat(x) * cellSize.width, y: CGFloat(grid.rows - y - 1) * cellSize.height, size: CGSize(width: cellSize.width, height: cellSize.height))
                 row.append(newCell)
             }
-            cells.append(row);
+            cells.append(row)
         }
     }
     
     override public func didMove(to view: SKView) {
-        self.anchorPoint = CGPoint(x: 0, y: 0)
-        
-        for x in 0...grid.cols-1 {
-            for y in 0...grid.rows-1 {
-                cells[x][y].background.anchorPoint = CGPoint(x: 0, y: 0)
-                addChild(cells[x][y].background)
-                addChild(cells[x][y].foreground)
-            }
+        (cells.flatMap { $0 }).forEach {
+            $0.background.anchorPoint = CGPoint(x: 0, y: 0)
+            addChild($0.background)
+            addChild($0.foreground)
         }
     }
 }
