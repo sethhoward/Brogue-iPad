@@ -30,8 +30,8 @@ fileprivate func getCellCoords(at point: CGPoint) -> CGPoint {
 
 // TODO: switch to Character
 extension String {
-    var ascii: [UInt8] {
-        return unicodeScalars.map { UInt8($0.value) }
+    var ascii: UInt8 {
+        return (unicodeScalars.map { UInt8($0.value) }).first!
     }
 }
 
@@ -70,7 +70,7 @@ extension BrogueGameEvent {
         }
     }
     
-    func handleDirectionControlDisplay(_ directionsViewController : DirectionControlsViewController?) {
+    func handleDirectionControlDisplay(_ directionsViewController: DirectionControlsViewController?) {
         switch self {
         case .waitingForConfirmation, .actionMenuOpen, .openedInventory, .showTitle, .openGameFinished, .playRecording, .showHighScores, .playBackPanic:
             directionsViewController?.view.isHidden = true
@@ -165,7 +165,7 @@ final class BrogueViewController: UIViewController {
     }
     
     @IBAction func showInventoryButtonPressed(_ sender: Any) {
-        addKeyEvent(event: "i".ascii.first!)
+        addKeyEvent(event: "i".ascii)
     }
     
     @IBAction func showLeaderBoardButtonPressed(_ sender: Any) {
@@ -361,7 +361,7 @@ extension BrogueViewController {
                 key = kDOWNLEFT_key
             }
             
-            addKeyEvent(event: key.ascii.first!)
+            addKeyEvent(event: key.ascii)
         }
     }
     
@@ -394,7 +394,7 @@ extension BrogueViewController {
 extension BrogueViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         inputTextField.resignFirstResponder()
-        addKeyEvent(event: "\n".ascii.first!)
+        addKeyEvent(event: "\n".ascii)
         escButton.isHidden = true
         return true
     }
@@ -410,7 +410,7 @@ extension BrogueViewController: UITextFieldDelegate {
         if (isBackSpace == -92) {
             addKeyEvent(event: 127)
         } else {
-            addKeyEvent(event: string.ascii.first!)
+            addKeyEvent(event: string.ascii)
         }
         
         return true
@@ -445,7 +445,7 @@ extension BrogueViewController {
     }
     
     @objc fileprivate func executeKeyCommand(keyCommand: UIKeyCommand) {
-        addKeyEvent(event: keyCommand.input.ascii.first!)
+        addKeyEvent(event: keyCommand.input.ascii)
     }
 }
 
@@ -553,16 +553,16 @@ final class SKMagView: SKView {
         }
         
         var position: CGPoint {
-            let screenScale: CGFloat = UIScreen.main.scale
-            let magnificationOffset: CGFloat = magnification + 1
+            let screenScale = UIScreen.main.scale
+            let magnificationOffset = magnification + 1
             
             // take the touch point and figure out how far off from 0,0 inside the node we are. Magical fudge of magoffset ensure we move smoothly from one cell to the next.
-            let xMouseOffset: CGFloat = (point.x - (currentCellXY.x * (viewToMagnify.rogueScene.cells[0][0].size.width / screenScale))) * magnificationOffset
-            let yMouseOffset: CGFloat = (point.y - (currentCellXY.y * (viewToMagnify.rogueScene.cells[0][0].size.height / screenScale))) * magnificationOffset
+            let xMouseOffset = (point.x - (currentCellXY.x * (viewToMagnify.rogueScene.cells[0][0].size.width / screenScale))) * magnificationOffset
+            let yMouseOffset = (point.y - (currentCellXY.y * (viewToMagnify.rogueScene.cells[0][0].size.height / screenScale))) * magnificationOffset
             
             // center cell is 3,2 and should be in the middle of the magnifying glass view. As touches move so does the view need to move to follow.
-            let xFinalOffset: CGFloat = ((CGFloat(rows) * cellSize.width - self.size.width/2) + cellSize.width/2) + xMouseOffset
-            let yFinalOffset: CGFloat = ((CGFloat(rows - cols - 1) * cellSize.height - self.size.height / 2) + cellSize.height / 2) - yMouseOffset
+            let xFinalOffset = ((CGFloat(rows) * cellSize.width - self.size.width/2) + cellSize.width/2) + xMouseOffset
+            let yFinalOffset = ((CGFloat(rows - cols - 1) * cellSize.height - self.size.height / 2) + cellSize.height / 2) - yMouseOffset
             
             return CGPoint(x: -xFinalOffset + cellSize.width / 2, y: -yFinalOffset - cellSize.height / 2)
         }
