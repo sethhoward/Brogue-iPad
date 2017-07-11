@@ -26,15 +26,10 @@
 #include <unistd.h>
 #include "CoreFoundation/CoreFoundation.h"
 #import "RogueDriver.h"
-#import "ViewController.h"
-#import "AppDelegate.h"
 #include "IncludeGlobals.h"
 #include "Rogue.h"
 #import "GameCenterManager.h"
 #import <QuartzCore/QuartzCore.h>
-
-#import "MGBenchmark.h"
-#import "MGBenchmarkSession.h"
 
 #define kRateScore 3000
 
@@ -44,16 +39,19 @@
 // Objective-c Bridge
 
 static CGColorSpaceRef _colorSpace;
-
-short mouseX, mouseY;
+// quick and easy bridge for C/C++ code. Could be cleaned up.
+static SKViewPort *skviewPort;
+static BrogueViewController *brogueViewController;
 
 @implementation RogueDriver 
 
-+ (id)sharedInstance {
++ (id)sharedInstanceWithViewPort:(SKViewPort *)viewPort viewController:(BrogueViewController *)viewController {
     static RogueDriver *instance;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         instance = [[RogueDriver alloc] init];
+        brogueViewController = viewController;
+        skviewPort = viewPort;
     });
     
     return instance;
@@ -83,35 +81,22 @@ void plotChar(uchar inputChar,
 			  short xLoc, short yLoc,
 			  short foreRed, short foreGreen, short foreBlue,
 			  short backRed, short backGreen, short backBlue) {
-//[MGBenchmark start:@"plot"];
-
-    CGColorRef backColor = nil;
-    if (backRed != 0 || backGreen != 0 || backBlue != 0) {
-        CGFloat backComponents[] = {(CGFloat)(backRed * .01), (CGFloat)(backGreen * .01), (CGFloat)(backBlue * .01), 1.};
-        backColor = CGColorCreate(_colorSpace, backComponents);
-    }
-
-    CGColorRef foreColor = nil;
-    if (inputChar != ' ') {
-        CGFloat foreComponents[] = {(CGFloat)(foreRed * .01), (CGFloat)(foreGreen * .01), (CGFloat)(foreBlue * .01), 1.};
-        foreColor = CGColorCreate(_colorSpace, foreComponents);
-    }
     
+   // NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    
+    CGFloat backComponents[] = {(CGFloat)(backRed * .01), (CGFloat)(backGreen * .01), (CGFloat)(backBlue * .01), 1.};
+    CGColorRef backColor = CGColorCreate(_colorSpace, backComponents);
 
-    NSString *uniLetter;
-    if (inputChar > 127 && inputChar != 183) {
-        uniLetter = [NSString stringWithCharacters:&inputChar length:1];
-    }
+    CGFloat foreComponents[] = {(CGFloat)(foreRed * .01), (CGFloat)(foreGreen * .01), (CGFloat)(foreBlue * .01), 1.};
+    CGColorRef foreColor = CGColorCreate(_colorSpace, foreComponents);
+
+    [skviewPort setCellWithX:xLoc y:yLoc code:inputChar bgColor:backColor fgColor:foreColor];
     
-    [theMainDisplay setString:uniLetter withBackgroundColor:backColor letterColor:foreColor atLocation:CGPointMake(xLoc, yLoc) withChar:inputChar];
-    
-//    [[MGBenchmark session:@"plot"] total];
-//    [MGBenchmark finish:@"plot"];
+    CGColorRelease(backColor);
+    CGColorRelease(foreColor);
 }
 
-__unused void pausingTimerStartsNow() {
-    // unused
-}
+__unused void pausingTimerStartsNow() {}
 
 // Returns true if the player interrupted the wait with a keystroke; otherwise false.
 boolean pauseForMilliseconds(short milliseconds) {
@@ -119,7 +104,7 @@ boolean pauseForMilliseconds(short milliseconds) {
     
     [NSThread sleepForTimeInterval:milliseconds/1000.];
     
-    if ([viewController hasEvent]) {
+    if (brogueViewController.hasTouchEvent || brogueViewController.hasKeyEvent) {
         hasEvent = YES;
     }
 
@@ -127,34 +112,34 @@ boolean pauseForMilliseconds(short milliseconds) {
 }
 
 void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, boolean colorsDance) {
-	CGPoint event_location;
 	short x, y;
+    float width = [[UIScreen mainScreen] bounds].size.width;
+    float height = [[UIScreen mainScreen] bounds].size.height;
     
     for(;;) {
+        // we should be ok to block here. We don't seem to call pauseForMilli and this at the same time
+        // 60Hz
+       // [NSThread sleepForTimeInterval:0.016667];
+        
         if (colorsDance) {
-            // we should be ok to block here. We don't seem to call pauseForMilli and this at the same time
-            // 60Hz
-            [NSThread sleepForTimeInterval:0.016667];
             shuffleTerrainColors(3, true);
             commitDraws();
         }
         
-        if ([viewController hasKeyEvent]) {
+        if ([brogueViewController hasKeyEvent]) {
             returnEvent->eventType = KEYSTROKE;
-            returnEvent->param1 = [viewController dequeKeyStroke];
+            returnEvent->param1 = [brogueViewController dequeKeyEvent];
             //printf("\nKey pressed: %i", returnEvent->param1);
             returnEvent->param2 = 0;
             returnEvent->controlKey = 0;//([theEvent modifierFlags] & NSControlKeyMask ? 1 : 0);
             returnEvent->shiftKey = 0;//([theEvent modifierFlags] & NSShiftKeyMask ? 1 : 0);
             break;
         }
-        if ([viewController hasTouchEvent]) {
-            iBTouch touch = [viewController getTouchAtIndex:0];
-            [viewController removeTouchAtIndex:0];
-            UITouchPhase phase = touch.phase;
+        if (brogueViewController.hasTouchEvent) {
+            UIBrogueTouchEvent *touch = [brogueViewController dequeTouchEvent];
             
-            if (phase != UITouchPhaseCancelled) {
-                switch (phase) {
+            if (touch.phase != UITouchPhaseCancelled) {
+                switch (touch.phase) {
                     case UITouchPhaseBegan:
                     case UITouchPhaseStationary:
                         returnEvent->eventType = MOUSE_DOWN;
@@ -169,9 +154,8 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
                         break;
                 }
                 
-                event_location = touch.location;
-                x = COLS * event_location.x / [theMainDisplay hWindow];
-                y = (ROWS * event_location.y / [theMainDisplay vWindow]);
+                x = COLS * touch.location.x / width;
+                y = ROWS * touch.location.y / height;
                 
                 returnEvent->param1 = x;
                 returnEvent->param2 = y;
@@ -186,12 +170,12 @@ void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, bo
 
 #pragma mark - bridge
 
-void setBrogueGameEvent(BrogueGameEvent brogueGameEvent) {
-    [viewController setBrogueGameEvent:brogueGameEvent];
+void setBrogueGameEvent(CBrogueGameEvent brogueGameEvent) {
+    brogueViewController.lastBrogueGameEvent = (BrogueGameEvent)brogueGameEvent;
 }
 
 boolean controlKeyIsDown() {
-    if ([viewController isSeedKeyDown]) {
+    if (brogueViewController.seedKeyDown) {
         return 1;
     }
     

@@ -12,5 +12,6 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import "GameCenterManager.h"
+    #import <Brogue-Swift.h>
 #endif
 

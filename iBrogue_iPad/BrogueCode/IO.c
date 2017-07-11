@@ -23,7 +23,7 @@
 
 #include <math.h>
 #include <time.h>
-
+#include <unistd.h>
 #include "Rogue.h"
 #include "IncludeGlobals.h"
 
@@ -373,12 +373,12 @@ short actionMenu(short x, boolean playingBack) {
         overlayDisplayBuffer(dbuf, rbuf);
         
         // Seth:
-        setBrogueGameEvent(BrogueGameEventActionMenuOpen);
+        setBrogueGameEvent(CBrogueGameEventActionMenuOpen);
         
         buttonChosen = buttonInputLoop(buttons, buttonCount, x - 1, y, longestName + 2, buttonCount, NULL);
         
         // Seth:
-        setBrogueGameEvent(BrogueGameEventActionMenuClose);
+        setBrogueGameEvent(CBrogueGameEventActionMenuClose);
         
         overlayDisplayBuffer(rbuf, NULL);
         if (buttonChosen == -1) {
@@ -1749,6 +1749,8 @@ void commitDraws() {
 			}
 		}
 	}
+    
+    usleep(16000);
 }
 
 // Debug feature: display the level to the screen without regard to lighting, field of view, etc.
@@ -1954,17 +1956,17 @@ void flashForeground(short *x, short *y, color **flashColor, short *flashStrengt
 	restoreRNG;
 }
 
-void flash(color *theColor, short frames, short x, short y) {
-	short i;
-	boolean interrupted = false;
-	
-	for (i=0; i<frames && !interrupted; i++) {
-		colorBlendCell(x, y, theColor, 100 - 100 * i / frames);
-		interrupted = pauseBrogue(50);
-	}
-	
-	refreshDungeonCell(x, y);
-}
+//void flash(color *theColor, short frames, short x, short y) {
+//	short i;
+//	boolean interrupted = false;
+//	
+//	for (i=0; i<frames && !interrupted; i++) {
+//		colorBlendCell(x, y, theColor, 100 - 100 * i / frames);
+//		interrupted = pauseBrogue(50);
+//	}
+//	
+//	refreshDungeonCell(x, y);
+//}
 
 // special effect expanding flash of light at dungeon coordinates (x, y) restricted to tiles with matching flags
 void colorFlash(const color *theColor, unsigned long reqTerrainFlags,
@@ -2653,7 +2655,7 @@ boolean getInputTextString(char *inputText,
 		plotCharWithColor((suffix[0] ? suffix[0] : ' '), x + charNum, y, &black, &white);
         
         // SETH: custom function
-        setBrogueGameEvent(BrogueGameEventKeyBoardInputRequired);
+        setBrogueGameEvent(CBrogueGameEventKeyBoardInputRequired);
         
 		keystroke = nextKeyPress(true);
 		if (keystroke == DELETE_KEY && charNum > 0) {
@@ -2796,7 +2798,7 @@ boolean confirm(char *prompt, boolean alsoDuringPlayback) {
 	}
     
     // Seth:
-    setBrogueGameEvent(BrogueGameEventWaitingForConfirmation);
+    setBrogueGameEvent(CBrogueGameEventWaitingForConfirmation);
 	
 	encodeMessageColor(whiteColorEscape, 0, &white);
 	encodeMessageColor(yellowColorEscape, 0, KEYBOARD_LABELS ? &yellow : &white);
@@ -2821,7 +2823,7 @@ boolean confirm(char *prompt, boolean alsoDuringPlayback) {
 	overlayDisplayBuffer(rbuf, NULL);
     
     // Seth:
-    setBrogueGameEvent(BrogueGameEventConfirmationComplete);
+    setBrogueGameEvent(CBrogueGameEventConfirmationComplete);
 	
 	if (retVal == -1 || retVal == 1) { // If they canceled or pressed no.
 		return false;

@@ -25,13 +25,33 @@
 // Used as a bridge between the c and the objective-c
 
 #import <UIKit/UIKit.h>
-#import "Viewport.h"
 
-#import "Rogue.h"
+typedef NS_ENUM(NSInteger, BrogueGameEvent) {
+    BrogueGameEventActionMenuOpen = 0,
+    BrogueGameEventActionMenuClose,
+    BrogueGameEventKeyBoardInputRequired,
+    BrogueGameEventWaitingForConfirmation,
+    BrogueGameEventConfirmationComplete,
+    BrogueGameEventOpenedInventory,
+    BrogueGameEventClosedInventory,
+    BrogueGameEventInventoryItemAction,
+    BrogueGameEventShowTitle,
+    BrogueGameEventStartNewGame,
+    BrogueGameEventOpenGame,
+    BrogueGameEventBeginOpenGame,
+    BrogueGameEventOpenGameFinished,
+    BrogueGameEventPlayRecording,
+    BrogueGameEventShowHighScores,
+    BrogueGameEventPlayBackPanic,
+    BrogueGameEventMessagePlayerHasDied,
+    BrogueGameEventPlayerHasDiedMessageAcknowledged,
+};
 
+
+@class SKViewPort;
 @interface RogueDriver : NSObject
 
-+ (id)sharedInstance;
++ (id)sharedInstanceWithViewPort:(SKViewPort *)viewPort viewController:(UIViewController *)viewController;
 + (unsigned long)rogueSeed;
 
 @end

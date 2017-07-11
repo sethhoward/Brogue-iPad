@@ -1080,10 +1080,10 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
         refreshSideBar(-1, -1, false);
         
         // Seth:
-        setBrogueGameEvent(BrogueGameEventMessagePlayerHasDied);
+        setBrogueGameEvent(CBrogueGameEventMessagePlayerHasDied);
         
         // Seth:
-        setBrogueGameEvent(BrogueGameEventMessagePlayerHasDied);
+        setBrogueGameEvent(CBrogueGameEventMessagePlayerHasDied);
         
 		messageWithColor(buf, &badMessageColor, false);
         displayMoreSignWithoutWaitingForAcknowledgment();
@@ -1107,7 +1107,7 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
                    || theEvent.eventType == MOUSE_UP));
         
         // Seth:
-        setBrogueGameEvent(BrogueGameEventPlayerHasDiedMessageAcknowledged);
+        setBrogueGameEvent(CBrogueGameEventPlayerHasDiedMessageAcknowledged);
         
         confirmMessages();
         

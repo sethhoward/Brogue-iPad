@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		30BAC90442FD7F11CF2864DA /* libPods-iBrogue_iPad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FDB9B0E57F9377F8B07EBC0 /* libPods-iBrogue_iPad.a */; };
-		C5105B1216E65EDB00E09905 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5105B1016E65EDB00E09905 /* AboutViewController.m */; };
-		C5105B1316E65EDB00E09905 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5105B1116E65EDB00E09905 /* AboutViewController.xib */; };
 		C5105B1616EE90A400E09905 /* GameSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = C5105B1516EE90A300E09905 /* GameSettings.m */; };
 		C5213CD21B7533AE00E97A27 /* Arial Unicode.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C5213CD11B75308E00E97A27 /* Arial Unicode.ttf */; };
 		C5213CD41B75445F00E97A27 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5213CD31B75445F00E97A27 /* StoreKit.framework */; };
@@ -28,9 +25,7 @@
 		C57A963B16D7EAD500C233F1 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = C57A963A16D7EAD500C233F1 /* Default.png */; };
 		C57A963D16D7EAD500C233F1 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C57A963C16D7EAD500C233F1 /* Default@2x.png */; };
 		C57A963F16D7EAD500C233F1 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C57A963E16D7EAD500C233F1 /* Default-568h@2x.png */; };
-		C57A964216D7EAD500C233F1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A964116D7EAD500C233F1 /* ViewController.m */; };
 		C57A965116D7EB4C00C233F1 /* RogueDriver.mm in Sources */ = {isa = PBXBuildFile; fileRef = C57A964E16D7EB4C00C233F1 /* RogueDriver.mm */; };
-		C57A965216D7EB4C00C233F1 /* Viewport.m in Sources */ = {isa = PBXBuildFile; fileRef = C57A965016D7EB4C00C233F1 /* Viewport.m */; };
 		C57A966516D7EB5500C233F1 /* Architect.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965416D7EB5500C233F1 /* Architect.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A966616D7EB5500C233F1 /* Buttons.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965516D7EB5500C233F1 /* Buttons.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A966716D7EB5500C233F1 /* Combat.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A965616D7EB5500C233F1 /* Combat.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -47,9 +42,6 @@
 		C57A967216D7EB5500C233F1 /* Recordings.c in Sources */ = {isa = PBXBuildFile; fileRef = C57A966216D7EB5500C233F1 /* Recordings.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A967316D7EB5500C233F1 /* RogueMain.mm in Sources */ = {isa = PBXBuildFile; fileRef = C57A966416D7EB5500C233F1 /* RogueMain.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C57A967516DBF1CE00C233F1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C57A967416DBF1CE00C233F1 /* QuartzCore.framework */; };
-		C5865EE5170399C500B18C2B /* MGBenchmark.m in Sources */ = {isa = PBXBuildFile; fileRef = C5865EDE170399C500B18C2B /* MGBenchmark.m */; };
-		C5865EE6170399C500B18C2B /* MGBenchmarkSession.m in Sources */ = {isa = PBXBuildFile; fileRef = C5865EE0170399C500B18C2B /* MGBenchmarkSession.m */; };
-		C5865EE7170399C500B18C2B /* MGConsoleOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = C5865EE4170399C500B18C2B /* MGConsoleOutput.m */; };
 		C5958C6C174AFFBB00519AD9 /* about_brogue.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C5C174AFFBB00519AD9 /* about_brogue.png */; };
 		C5958C6D174AFFBB00519AD9 /* about_brogue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C5D174AFFBB00519AD9 /* about_brogue@2x.png */; };
 		C5958C6E174AFFBB00519AD9 /* brogue_directionals.png in Resources */ = {isa = PBXBuildFile; fileRef = C5958C5E174AFFBB00519AD9 /* brogue_directionals.png */; };
@@ -78,16 +70,13 @@
 		C5EFC0EC16ECE398008BD644 /* kb-loupe-hi.png in Resources */ = {isa = PBXBuildFile; fileRef = C5EFC0E816ECE398008BD644 /* kb-loupe-hi.png */; };
 		C5FFC5DD17B9A913007A05F3 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C5FFC5DC17B9A913007A05F3 /* Default-Landscape@2x~ipad.png */; };
 		C5FFC5DF17B9A9DB007A05F3 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C5FFC5DE17B9A9DB007A05F3 /* Default-Landscape~ipad.png */; };
+		ECBE68A71EC0D4A200E9F366 /* RogueScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBE68A61EC0D4A200E9F366 /* RogueScene.swift */; };
+		ECBE68A91EC0D4C600E9F366 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBE68A81EC0D4C600E9F366 /* Cell.swift */; };
+		ECBE68AB1EC0DB1800E9F366 /* SKViewPort.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBE68AA1EC0DB1800E9F366 /* SKViewPort.swift */; };
+		ECBE68AD1EC0E1C600E9F366 /* BrogueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBE68AC1EC0E1C600E9F366 /* BrogueViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		13C7957143F74F7EE3795380 /* Pods-iBrogue_iPad.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iBrogue_iPad.release.xcconfig"; path = "Pods/Target Support Files/Pods-iBrogue_iPad/Pods-iBrogue_iPad.release.xcconfig"; sourceTree = "<group>"; };
-		1727E3F1ABCC0BBE0A0D1238 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		1FDB9B0E57F9377F8B07EBC0 /* libPods-iBrogue_iPad.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iBrogue_iPad.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		99866F2E60EFD7B6A61DA966 /* Pods-iBrogue_iPad.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iBrogue_iPad.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iBrogue_iPad/Pods-iBrogue_iPad.debug.xcconfig"; sourceTree = "<group>"; };
-		C5105B0F16E65EDB00E09905 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
-		C5105B1016E65EDB00E09905 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
-		C5105B1116E65EDB00E09905 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
 		C5105B1416EE90A300E09905 /* GameSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameSettings.h; sourceTree = "<group>"; };
 		C5105B1516EE90A300E09905 /* GameSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameSettings.m; sourceTree = "<group>"; };
 		C5213CD11B75308E00E97A27 /* Arial Unicode.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arial Unicode.ttf"; sourceTree = "<group>"; };
@@ -116,12 +105,8 @@
 		C57A963A16D7EAD500C233F1 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		C57A963C16D7EAD500C233F1 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		C57A963E16D7EAD500C233F1 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		C57A964016D7EAD500C233F1 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		C57A964116D7EAD500C233F1 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		C57A964D16D7EB4C00C233F1 /* RogueDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RogueDriver.h; sourceTree = "<group>"; };
 		C57A964E16D7EB4C00C233F1 /* RogueDriver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RogueDriver.mm; sourceTree = "<group>"; };
-		C57A964F16D7EB4C00C233F1 /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
-		C57A965016D7EB4C00C233F1 /* Viewport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Viewport.m; sourceTree = "<group>"; };
 		C57A965416D7EB5500C233F1 /* Architect.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Architect.c; sourceTree = "<group>"; };
 		C57A965516D7EB5500C233F1 /* Buttons.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Buttons.c; sourceTree = "<group>"; };
 		C57A965616D7EB5500C233F1 /* Combat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Combat.c; sourceTree = "<group>"; };
@@ -140,14 +125,6 @@
 		C57A966316D7EB5500C233F1 /* Rogue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rogue.h; sourceTree = "<group>"; };
 		C57A966416D7EB5500C233F1 /* RogueMain.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RogueMain.mm; sourceTree = "<group>"; };
 		C57A967416DBF1CE00C233F1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		C5865EDC170399C500B18C2B /* MGBenchmark-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MGBenchmark-Prefix.pch"; sourceTree = "<group>"; };
-		C5865EDD170399C500B18C2B /* MGBenchmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGBenchmark.h; sourceTree = "<group>"; };
-		C5865EDE170399C500B18C2B /* MGBenchmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGBenchmark.m; sourceTree = "<group>"; };
-		C5865EDF170399C500B18C2B /* MGBenchmarkSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGBenchmarkSession.h; sourceTree = "<group>"; };
-		C5865EE0170399C500B18C2B /* MGBenchmarkSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGBenchmarkSession.m; sourceTree = "<group>"; };
-		C5865EE2170399C500B18C2B /* MGBenchmarkTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGBenchmarkTarget.h; sourceTree = "<group>"; };
-		C5865EE3170399C500B18C2B /* MGConsoleOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGConsoleOutput.h; sourceTree = "<group>"; };
-		C5865EE4170399C500B18C2B /* MGConsoleOutput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGConsoleOutput.m; sourceTree = "<group>"; };
 		C5958C5C174AFFBB00519AD9 /* about_brogue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = about_brogue.png; sourceTree = "<group>"; };
 		C5958C5D174AFFBB00519AD9 /* about_brogue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "about_brogue@2x.png"; sourceTree = "<group>"; };
 		C5958C5E174AFFBB00519AD9 /* brogue_directionals.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brogue_directionals.png; sourceTree = "<group>"; };
@@ -180,7 +157,11 @@
 		C5EFC0E816ECE398008BD644 /* kb-loupe-hi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kb-loupe-hi.png"; sourceTree = "<group>"; };
 		C5FFC5DC17B9A913007A05F3 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
 		C5FFC5DE17B9A9DB007A05F3 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
-		F1A2CA23E2F43F45D0D59545 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		ECBE68A51EC0D45200E9F366 /* iBrogue_iPad-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iBrogue_iPad-Bridging-Header.h"; sourceTree = "<group>"; };
+		ECBE68A61EC0D4A200E9F366 /* RogueScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RogueScene.swift; sourceTree = "<group>"; };
+		ECBE68A81EC0D4C600E9F366 /* Cell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
+		ECBE68AA1EC0DB1800E9F366 /* SKViewPort.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKViewPort.swift; sourceTree = "<group>"; };
+		ECBE68AC1EC0E1C600E9F366 /* BrogueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrogueViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -194,30 +175,17 @@
 				C57A962916D7EAD500C233F1 /* UIKit.framework in Frameworks */,
 				C57A962B16D7EAD500C233F1 /* Foundation.framework in Frameworks */,
 				C57A962D16D7EAD500C233F1 /* CoreGraphics.framework in Frameworks */,
-				30BAC90442FD7F11CF2864DA /* libPods-iBrogue_iPad.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4611965B5EF7657D5A60D6BE /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				F1A2CA23E2F43F45D0D59545 /* Pods.debug.xcconfig */,
-				1727E3F1ABCC0BBE0A0D1238 /* Pods.release.xcconfig */,
-				99866F2E60EFD7B6A61DA966 /* Pods-iBrogue_iPad.debug.xcconfig */,
-				13C7957143F74F7EE3795380 /* Pods-iBrogue_iPad.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		C528726C17526D84000B4F05 /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
 				C52B091916E5848500675CC7 /* GameCenter */,
 				C5EFC0E016ECE398008BD644 /* MagnifyingGlass */,
-				C5865EDB170399C500B18C2B /* MGBenchmark */,
 			);
 			name = "Third Party";
 			sourceTree = "<group>";
@@ -249,7 +217,6 @@
 				C57A962E16D7EAD500C233F1 /* iBrogue_iPad */,
 				C57A962716D7EAD500C233F1 /* Frameworks */,
 				C57A962616D7EAD500C233F1 /* Products */,
-				4611965B5EF7657D5A60D6BE /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -268,7 +235,6 @@
 				C57A962816D7EAD500C233F1 /* UIKit.framework */,
 				C57A962A16D7EAD500C233F1 /* Foundation.framework */,
 				C57A962C16D7EAD500C233F1 /* CoreGraphics.framework */,
-				1FDB9B0E57F9377F8B07EBC0 /* libPods-iBrogue_iPad.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -282,13 +248,8 @@
 				C57A964B16D7EB4C00C233F1 /* PlatformCode */,
 				C57A963716D7EAD500C233F1 /* AppDelegate.h */,
 				C57A963816D7EAD500C233F1 /* AppDelegate.m */,
-				C57A964016D7EAD500C233F1 /* ViewController.h */,
-				C57A964116D7EAD500C233F1 /* ViewController.m */,
 				C5B7FF1A1D8D933D00F04098 /* Main.storyboard */,
 				C57A962F16D7EAD500C233F1 /* Supporting Files */,
-				C5105B0F16E65EDB00E09905 /* AboutViewController.h */,
-				C5105B1016E65EDB00E09905 /* AboutViewController.m */,
-				C5105B1116E65EDB00E09905 /* AboutViewController.xib */,
 				C5105B1416EE90A300E09905 /* GameSettings.h */,
 				C5105B1516EE90A300E09905 /* GameSettings.m */,
 				C532C8A31971AB8800695956 /* DirectionControlsViewController.h */,
@@ -318,10 +279,13 @@
 		C57A964B16D7EB4C00C233F1 /* PlatformCode */ = {
 			isa = PBXGroup;
 			children = (
+				ECBE68A81EC0D4C600E9F366 /* Cell.swift */,
+				ECBE68A61EC0D4A200E9F366 /* RogueScene.swift */,
 				C57A964D16D7EB4C00C233F1 /* RogueDriver.h */,
 				C57A964E16D7EB4C00C233F1 /* RogueDriver.mm */,
-				C57A964F16D7EB4C00C233F1 /* Viewport.h */,
-				C57A965016D7EB4C00C233F1 /* Viewport.m */,
+				ECBE68A51EC0D45200E9F366 /* iBrogue_iPad-Bridging-Header.h */,
+				ECBE68AA1EC0DB1800E9F366 /* SKViewPort.swift */,
+				ECBE68AC1EC0E1C600E9F366 /* BrogueViewController.swift */,
 			);
 			path = PlatformCode;
 			sourceTree = "<group>";
@@ -349,29 +313,6 @@
 				C57A966416D7EB5500C233F1 /* RogueMain.mm */,
 			);
 			path = BrogueCode;
-			sourceTree = "<group>";
-		};
-		C5865EDB170399C500B18C2B /* MGBenchmark */ = {
-			isa = PBXGroup;
-			children = (
-				C5865EDC170399C500B18C2B /* MGBenchmark-Prefix.pch */,
-				C5865EDD170399C500B18C2B /* MGBenchmark.h */,
-				C5865EDE170399C500B18C2B /* MGBenchmark.m */,
-				C5865EDF170399C500B18C2B /* MGBenchmarkSession.h */,
-				C5865EE0170399C500B18C2B /* MGBenchmarkSession.m */,
-				C5865EE1170399C500B18C2B /* Output */,
-			);
-			path = MGBenchmark;
-			sourceTree = "<group>";
-		};
-		C5865EE1170399C500B18C2B /* Output */ = {
-			isa = PBXGroup;
-			children = (
-				C5865EE2170399C500B18C2B /* MGBenchmarkTarget.h */,
-				C5865EE3170399C500B18C2B /* MGConsoleOutput.h */,
-				C5865EE4170399C500B18C2B /* MGConsoleOutput.m */,
-			);
-			path = Output;
 			sourceTree = "<group>";
 		};
 		C5958C5B174AFFBB00519AD9 /* Image Assets */ = {
@@ -426,12 +367,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C57A964816D7EAD500C233F1 /* Build configuration list for PBXNativeTarget "iBrogue_iPad" */;
 			buildPhases = (
-				86682B10BFC74EDFA3F5C16F /* [CP] Check Pods Manifest.lock */,
 				C57A962116D7EAD500C233F1 /* Sources */,
 				C57A962216D7EAD500C233F1 /* Frameworks */,
 				C57A962316D7EAD500C233F1 /* Resources */,
-				F01FFCFC1FC04A27A64350BD /* [CP] Copy Pods Resources */,
-				0C257EE6C84573CD51B04FFA /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -448,11 +386,12 @@
 		C57A961D16D7EAD500C233F1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Seth howard";
 				TargetAttributes = {
 					C57A962416D7EAD500C233F1 = {
 						DevelopmentTeam = KKMWNTN39N;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
@@ -490,7 +429,6 @@
 				C57A963D16D7EAD500C233F1 /* Default@2x.png in Resources */,
 				C57A963F16D7EAD500C233F1 /* Default-568h@2x.png in Resources */,
 				C5FFC5DD17B9A913007A05F3 /* Default-Landscape@2x~ipad.png in Resources */,
-				C5105B1316E65EDB00E09905 /* AboutViewController.xib in Resources */,
 				C59B21C716EA48E0007018DE /* MONACO.TTF in Resources */,
 				C5EFC0EC16ECE398008BD644 /* kb-loupe-hi.png in Resources */,
 				C5D5EC6C16FC07EB00E9A9AF /* icon_72x72.png in Resources */,
@@ -520,54 +458,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		0C257EE6C84573CD51B04FFA /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iBrogue_iPad/Pods-iBrogue_iPad-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		86682B10BFC74EDFA3F5C16F /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		F01FFCFC1FC04A27A64350BD /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iBrogue_iPad/Pods-iBrogue_iPad-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		C57A962116D7EAD500C233F1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -575,16 +465,17 @@
 			files = (
 				C57A963516D7EAD500C233F1 /* main.m in Sources */,
 				C57A963916D7EAD500C233F1 /* AppDelegate.m in Sources */,
-				C57A964216D7EAD500C233F1 /* ViewController.m in Sources */,
+				ECBE68A91EC0D4C600E9F366 /* Cell.swift in Sources */,
 				C57A965116D7EB4C00C233F1 /* RogueDriver.mm in Sources */,
-				C57A965216D7EB4C00C233F1 /* Viewport.m in Sources */,
 				C57A966516D7EB5500C233F1 /* Architect.c in Sources */,
 				C532C8A61971AB8800695956 /* DirectionControlsViewController.m in Sources */,
 				C57A966616D7EB5500C233F1 /* Buttons.c in Sources */,
 				C57A966716D7EB5500C233F1 /* Combat.c in Sources */,
+				ECBE68AD1EC0E1C600E9F366 /* BrogueViewController.swift in Sources */,
 				C57A966816D7EB5500C233F1 /* Dijkstra.c in Sources */,
 				C57A966916D7EB5500C233F1 /* Globals.c in Sources */,
 				C57A966A16D7EB5500C233F1 /* Grid.c in Sources */,
+				ECBE68AB1EC0DB1800E9F366 /* SKViewPort.swift in Sources */,
 				C57A966B16D7EB5500C233F1 /* IO.c in Sources */,
 				C57A966C16D7EB5500C233F1 /* Items.c in Sources */,
 				C57A966D16D7EB5500C233F1 /* Light.c in Sources */,
@@ -596,15 +487,12 @@
 				C57A967316D7EB5500C233F1 /* RogueMain.mm in Sources */,
 				C52B092216E5848500675CC7 /* GameCenterIOS4.m in Sources */,
 				C52B092316E5848500675CC7 /* GameCenterManager.m in Sources */,
+				ECBE68A71EC0D4A200E9F366 /* RogueScene.swift in Sources */,
 				C52B092516E5848500675CC7 /* UIViewController+UIViewController_GCLeaderBoardView.m in Sources */,
-				C5105B1216E65EDB00E09905 /* AboutViewController.m in Sources */,
 				C5EFC0E916ECE398008BD644 /* ACLoupe.m in Sources */,
 				C5EFC0EA16ECE398008BD644 /* ACMagnifyingGlass.m in Sources */,
 				C5EFC0EB16ECE398008BD644 /* ACMagnifyingView.m in Sources */,
 				C5105B1616EE90A400E09905 /* GameSettings.m in Sources */,
-				C5865EE5170399C500B18C2B /* MGBenchmark.m in Sources */,
-				C5865EE6170399C500B18C2B /* MGBenchmarkSession.m in Sources */,
-				C5865EE7170399C500B18C2B /* MGConsoleOutput.m in Sources */,
 				C5B9B66C17D23BEA00D8459E /* Time.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -658,7 +546,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -693,9 +581,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -703,13 +592,13 @@
 		};
 		C57A964916D7EAD500C233F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 99866F2E60EFD7B6A61DA966 /* Pods-iBrogue_iPad.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ANALYZER_DEADCODE_DEADSTORES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -719,13 +608,17 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iBrogue_iPad/iBrogue_iPad-Prefix.pch";
 				INFOPLIST_FILE = "iBrogue_iPad/iBrogue_iPad-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = SethHoward.iBrogue;
 				PRODUCT_NAME = Brogue;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "iBrogue_iPad/PlatformCode/iBrogue_iPad-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
 			};
@@ -733,13 +626,13 @@
 		};
 		C57A964A16D7EAD500C233F1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 13C7957143F74F7EE3795380 /* Pods-iBrogue_iPad.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ANALYZER_DEADCODE_DEADSTORES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -749,12 +642,15 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iBrogue_iPad/iBrogue_iPad-Prefix.pch";
 				INFOPLIST_FILE = "iBrogue_iPad/iBrogue_iPad-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = SethHoward.iBrogue;
 				PRODUCT_NAME = Brogue;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "iBrogue_iPad/PlatformCode/iBrogue_iPad-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
 			};

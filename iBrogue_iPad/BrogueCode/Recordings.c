@@ -300,7 +300,7 @@ void playbackPanic() {
 		rogue.playbackPaused = true;
 		rogue.playbackOOS = true;
         // Seth Added:
-        setBrogueGameEvent(BrogueGameEventPlayBackPanic);
+        setBrogueGameEvent(CBrogueGameEventPlayBackPanic);
         blackOutScreen();
 		displayLevel();
 		refreshSideBar(-1, -1, false);
