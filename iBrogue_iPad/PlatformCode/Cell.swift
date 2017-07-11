@@ -2,9 +2,7 @@
 //  Cell.swift
 //  Brogue
 //
-//  Created by Anthony DeSouza on 2017-04-22.
-//
-//
+
 
 import SpriteKit
 
