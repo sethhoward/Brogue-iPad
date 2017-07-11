@@ -64,10 +64,6 @@
 		C5D117041D8B786800356DBA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5D117031D8B786800356DBA /* Images.xcassets */; };
 		C5D5EC6C16FC07EB00E9A9AF /* icon_72x72.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D5EC6B16FC07EB00E9A9AF /* icon_72x72.png */; };
 		C5D5EC6E16FC07F300E9A9AF /* icon_144x144.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D5EC6D16FC07F300E9A9AF /* icon_144x144.png */; };
-		C5EFC0E916ECE398008BD644 /* ACLoupe.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFC0E216ECE398008BD644 /* ACLoupe.m */; };
-		C5EFC0EA16ECE398008BD644 /* ACMagnifyingGlass.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFC0E416ECE398008BD644 /* ACMagnifyingGlass.m */; };
-		C5EFC0EB16ECE398008BD644 /* ACMagnifyingView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFC0E616ECE398008BD644 /* ACMagnifyingView.m */; };
-		C5EFC0EC16ECE398008BD644 /* kb-loupe-hi.png in Resources */ = {isa = PBXBuildFile; fileRef = C5EFC0E816ECE398008BD644 /* kb-loupe-hi.png */; };
 		C5FFC5DD17B9A913007A05F3 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C5FFC5DC17B9A913007A05F3 /* Default-Landscape@2x~ipad.png */; };
 		C5FFC5DF17B9A9DB007A05F3 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C5FFC5DE17B9A9DB007A05F3 /* Default-Landscape~ipad.png */; };
 		ECBE68A71EC0D4A200E9F366 /* RogueScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBE68A61EC0D4A200E9F366 /* RogueScene.swift */; };
@@ -148,13 +144,6 @@
 		C5D5EC6B16FC07EB00E9A9AF /* icon_72x72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_72x72.png; sourceTree = "<group>"; };
 		C5D5EC6D16FC07F300E9A9AF /* icon_144x144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_144x144.png; sourceTree = "<group>"; };
 		C5EA72D616FE92DC00AE688A /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
-		C5EFC0E116ECE398008BD644 /* ACLoupe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACLoupe.h; sourceTree = "<group>"; };
-		C5EFC0E216ECE398008BD644 /* ACLoupe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACLoupe.m; sourceTree = "<group>"; };
-		C5EFC0E316ECE398008BD644 /* ACMagnifyingGlass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMagnifyingGlass.h; sourceTree = "<group>"; };
-		C5EFC0E416ECE398008BD644 /* ACMagnifyingGlass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACMagnifyingGlass.m; sourceTree = "<group>"; };
-		C5EFC0E516ECE398008BD644 /* ACMagnifyingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMagnifyingView.h; sourceTree = "<group>"; };
-		C5EFC0E616ECE398008BD644 /* ACMagnifyingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACMagnifyingView.m; sourceTree = "<group>"; };
-		C5EFC0E816ECE398008BD644 /* kb-loupe-hi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kb-loupe-hi.png"; sourceTree = "<group>"; };
 		C5FFC5DC17B9A913007A05F3 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
 		C5FFC5DE17B9A9DB007A05F3 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		ECBE68A51EC0D45200E9F366 /* iBrogue_iPad-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iBrogue_iPad-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -185,7 +174,6 @@
 			isa = PBXGroup;
 			children = (
 				C52B091916E5848500675CC7 /* GameCenter */,
-				C5EFC0E016ECE398008BD644 /* MagnifyingGlass */,
 			);
 			name = "Third Party";
 			sourceTree = "<group>";
@@ -208,10 +196,6 @@
 			isa = PBXGroup;
 			children = (
 				C5EA72D616FE92DC00AE688A /* CoreText.framework */,
-				C5D5EC6D16FC07F300E9A9AF /* icon_144x144.png */,
-				C5D5EC6B16FC07EB00E9A9AF /* icon_72x72.png */,
-				C5FFC5DC17B9A913007A05F3 /* Default-Landscape@2x~ipad.png */,
-				C5FFC5DE17B9A9DB007A05F3 /* Default-Landscape~ipad.png */,
 				C52B092616E5853900675CC7 /* GameKit.framework */,
 				C57A967416DBF1CE00C233F1 /* QuartzCore.framework */,
 				C57A962E16D7EAD500C233F1 /* iBrogue_iPad */,
@@ -252,9 +236,6 @@
 				C57A962F16D7EAD500C233F1 /* Supporting Files */,
 				C5105B1416EE90A300E09905 /* GameSettings.h */,
 				C5105B1516EE90A300E09905 /* GameSettings.m */,
-				C532C8A31971AB8800695956 /* DirectionControlsViewController.h */,
-				C532C8A41971AB8800695956 /* DirectionControlsViewController.m */,
-				C532C8A51971AB8800695956 /* DirectionControlsViewController.xib */,
 				C5D117031D8B786800356DBA /* Images.xcassets */,
 			);
 			path = iBrogue_iPad;
@@ -279,6 +260,7 @@
 		C57A964B16D7EB4C00C233F1 /* PlatformCode */ = {
 			isa = PBXGroup;
 			children = (
+				ECE0ECF31F156DA600F65B75 /* Directional Controls */,
 				ECBE68A81EC0D4C600E9F366 /* Cell.swift */,
 				ECBE68A61EC0D4A200E9F366 /* RogueScene.swift */,
 				C57A964D16D7EB4C00C233F1 /* RogueDriver.h */,
@@ -318,6 +300,10 @@
 		C5958C5B174AFFBB00519AD9 /* Image Assets */ = {
 			isa = PBXGroup;
 			children = (
+				C5D5EC6D16FC07F300E9A9AF /* icon_144x144.png */,
+				C5D5EC6B16FC07EB00E9A9AF /* icon_72x72.png */,
+				C5FFC5DC17B9A913007A05F3 /* Default-Landscape@2x~ipad.png */,
+				C5FFC5DE17B9A9DB007A05F3 /* Default-Landscape~ipad.png */,
 				C5958C5C174AFFBB00519AD9 /* about_brogue.png */,
 				C5958C5D174AFFBB00519AD9 /* about_brogue@2x.png */,
 				C5958C5E174AFFBB00519AD9 /* brogue_directionals.png */,
@@ -338,26 +324,14 @@
 			path = "Image Assets";
 			sourceTree = "<group>";
 		};
-		C5EFC0E016ECE398008BD644 /* MagnifyingGlass */ = {
+		ECE0ECF31F156DA600F65B75 /* Directional Controls */ = {
 			isa = PBXGroup;
 			children = (
-				C5EFC0E116ECE398008BD644 /* ACLoupe.h */,
-				C5EFC0E216ECE398008BD644 /* ACLoupe.m */,
-				C5EFC0E316ECE398008BD644 /* ACMagnifyingGlass.h */,
-				C5EFC0E416ECE398008BD644 /* ACMagnifyingGlass.m */,
-				C5EFC0E516ECE398008BD644 /* ACMagnifyingView.h */,
-				C5EFC0E616ECE398008BD644 /* ACMagnifyingView.m */,
-				C5EFC0E716ECE398008BD644 /* Resources */,
+				C532C8A31971AB8800695956 /* DirectionControlsViewController.h */,
+				C532C8A41971AB8800695956 /* DirectionControlsViewController.m */,
+				C532C8A51971AB8800695956 /* DirectionControlsViewController.xib */,
 			);
-			path = MagnifyingGlass;
-			sourceTree = "<group>";
-		};
-		C5EFC0E716ECE398008BD644 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				C5EFC0E816ECE398008BD644 /* kb-loupe-hi.png */,
-			);
-			path = Resources;
+			path = "Directional Controls";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -430,7 +404,6 @@
 				C57A963F16D7EAD500C233F1 /* Default-568h@2x.png in Resources */,
 				C5FFC5DD17B9A913007A05F3 /* Default-Landscape@2x~ipad.png in Resources */,
 				C59B21C716EA48E0007018DE /* MONACO.TTF in Resources */,
-				C5EFC0EC16ECE398008BD644 /* kb-loupe-hi.png in Resources */,
 				C5D5EC6C16FC07EB00E9A9AF /* icon_72x72.png in Resources */,
 				C5D5EC6E16FC07F300E9A9AF /* icon_144x144.png in Resources */,
 				C5958C6C174AFFBB00519AD9 /* about_brogue.png in Resources */,
@@ -489,9 +462,6 @@
 				C52B092316E5848500675CC7 /* GameCenterManager.m in Sources */,
 				ECBE68A71EC0D4A200E9F366 /* RogueScene.swift in Sources */,
 				C52B092516E5848500675CC7 /* UIViewController+UIViewController_GCLeaderBoardView.m in Sources */,
-				C5EFC0E916ECE398008BD644 /* ACLoupe.m in Sources */,
-				C5EFC0EA16ECE398008BD644 /* ACMagnifyingGlass.m in Sources */,
-				C5EFC0EB16ECE398008BD644 /* ACMagnifyingView.m in Sources */,
 				C5105B1616EE90A400E09905 /* GameSettings.m in Sources */,
 				C5B9B66C17D23BEA00D8459E /* Time.mm in Sources */,
 			);

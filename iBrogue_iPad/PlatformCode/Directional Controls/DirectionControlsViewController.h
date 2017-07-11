@@ -21,14 +21,14 @@ typedef NS_ENUM(NSInteger, ControlDirection) {
     ControlDirectionDownLeft,
 };
 
-extern NSString *kUP_Key;
-extern NSString *kRIGHT_key;
-extern NSString *kDOWN_key;
-extern NSString *kLEFT_key;
-extern NSString *kUPLEFT_key;
-extern NSString *kUPRight_key;
-extern NSString *kDOWNLEFT_key;
-extern NSString *kDOWNRIGHT_key;
+extern NSString * _Nonnull kUP_Key;
+extern NSString * _Nonnull kRIGHT_key;
+extern NSString * _Nonnull kDOWN_key;
+extern NSString * _Nonnull kLEFT_key;
+extern NSString * _Nonnull kUPLEFT_key;
+extern NSString * _Nonnull kUPRight_key;
+extern NSString * _Nonnull kDOWNLEFT_key;
+extern NSString * _Nonnull kDOWNRIGHT_key;
 
 @interface DirectionControlsViewController : UIViewController
 
