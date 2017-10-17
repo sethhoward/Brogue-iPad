@@ -47,8 +47,6 @@ extension String {
     }
 }
 
-import UIKit
-
 // MARK: - UIBrogueTouchEvent
 
 final class UIBrogueTouchEvent: NSObject, NSCopying {
@@ -344,7 +342,6 @@ extension BrogueViewController {
             self.magView.hideMagnifier()
         }
     }
-    
 }
 
 extension BrogueViewController {
@@ -465,12 +462,10 @@ extension BrogueViewController {
 
 final class SKMagView: SKView {
     var viewToMagnify: SKViewPort?
-    
     // TODO: magic numbers
     private var size = CGSize(width: 110, height: 110)
     private var offset = CGSize(width: 55, height: -35)
     private let parentNode: SKNode
-    
     private var cells: [Cell]? {
         willSet {
             parentNode.removeAllChildren()
@@ -523,10 +518,8 @@ final class SKMagView: SKView {
     }
     
     private func cellsAtTouch(point: CGPoint) -> [Cell] {
-        guard let viewToMagnify = viewToMagnify else {
-            return [Cell]()
-        }
-        
+        guard let viewToMagnify = viewToMagnify else { return [Cell]() }
+       
         let magnification: CGFloat = 1.0
         let currentCellXY = getCellCoords(at: point)
         let rows = 3 // opposite/flipped
