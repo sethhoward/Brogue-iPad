@@ -24,6 +24,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+// #include "PlatformDefines.h"
 
 // Seth:
 
@@ -39,7 +40,9 @@
 #define kAchievementUTF8PureWarrior "pure_warrior"
 #define kAchievementUTF8Specialist "brogue_specialist"
 
+
 // unicode: comment this line to revert to ASCII
+
 #define USE_UNICODE
 
 // version string -- no more than 16 bytes:
@@ -73,16 +76,12 @@
 // set to false to disable references to keystrokes (e.g. for a tablet port)
 #define KEYBOARD_LABELS true
 
-#define BROGUE_ASSERTS        // introduces several assert()s -- useful to find certain array overruns and other bugs
+//#define BROGUE_ASSERTS  false      // introduces several assert()s -- useful to find certain array overruns and other bugs
 //#define AUDIT_RNG             // VERY slow, but sometimes necessary to debug out-of-sync recording errors
 //#define GENERATE_FONT_FILES    // Displays font in grid upon startup, which can be screen-captured into font files for PC.
 
-#ifdef BROGUE_ASSERTS
-#include <assert.h>
-#define brogueAssert(x)         assert(x)
-#else
+
 #define brogueAssert(x)
-#endif
 
 #define boolean                    char
 
@@ -160,155 +159,154 @@
 
 #ifdef USE_UNICODE
 
-#define FLOOR_CHAR		0x00b7
-#define LIQUID_CHAR		'~'
-// Seth: changing this character... we use a ton of them
-#define CHASM_CHAR		':'  // 0x2237
-#define TRAP_CHAR		0x25c7
-#define FIRE_CHAR		0x22CF
-#define GRASS_CHAR		'"'
-#define BRIDGE_CHAR		'='
-#define DESCEND_CHAR	'>'
-#define ASCEND_CHAR		'<'
-#define WALL_CHAR		'#'
-#define DOOR_CHAR		'+'
-#define OPEN_DOOR_CHAR	'\''
-#define ASH_CHAR		'\''
-#define BONES_CHAR		','
-#define MUD_CHAR		','
-#define WEB_CHAR		':'
-//#define FOLIAGE_CHAR	0x03A8 // lower-case psi
-#define FOLIAGE_CHAR	0x2648 // Aries symbol
+#define FLOOR_CHAR        0x00b7
+#define LIQUID_CHAR        '~'
+#define CHASM_CHAR       ':'  // 0x2237
+#define TRAP_CHAR        0x25c7
+#define FIRE_CHAR        0x22CF
+#define GRASS_CHAR        '"'
+#define BRIDGE_CHAR        '='
+#define DESCEND_CHAR    '>'
+#define ASCEND_CHAR        '<'
+#define WALL_CHAR        '#'
+#define DOOR_CHAR        '+'
+#define OPEN_DOOR_CHAR    '\''
+#define ASH_CHAR        '\''
+#define BONES_CHAR        ','
+#define MUD_CHAR        ','
+#define WEB_CHAR        ':'
+//#define FOLIAGE_CHAR    0x03A8 // lower-case psi
+#define FOLIAGE_CHAR    0x2648 // Aries symbol
 #define VINE_CHAR       ':'
-#define ALTAR_CHAR		'|'
+#define ALTAR_CHAR        '|'
 #define LEVER_CHAR      '/'
 #define LEVER_PULLED_CHAR '\\'
-#define STATUE_CHAR		0x00df
-#define VENT_CHAR		'='
+#define STATUE_CHAR        0x00df
+#define VENT_CHAR        '='
 #define DEWAR_CHAR      '&'
 
-#define TRAMPLED_FOLIAGE_CHAR	'"'		// 0x2034 // 0x2037
+#define TRAMPLED_FOLIAGE_CHAR    '"'        // 0x2034 // 0x2037
 
-#define PLAYER_CHAR		'@'
+#define PLAYER_CHAR        '@'
 
-#define AMULET_CHAR		0x2640
-#define FOOD_CHAR		';'
-#define SCROLL_CHAR		0x266A//'?'		// 0x039E
-//#define RING_CHAR		0x26AA //0xffee
-#define RING_CHAR		0xffee
-#define CHARM_CHAR      0x03DF//0x03DE
-#define POTION_CHAR		'!'
-#define ARMOR_CHAR		'['
-#define WEAPON_CHAR		0x2191
-#define STAFF_CHAR		'\\'
-#define WAND_CHAR		'~'
-#define GOLD_CHAR		'*'
-#define GEM_CHAR		0x25cf
-#define TOTEM_CHAR		0x26b2
-#define TURRET_CHAR		0x25cf
+#define AMULET_CHAR        0x2640
+#define FOOD_CHAR        ';'
+#define SCROLL_CHAR        0x266A//'?'        // 0x039E
+//#define RING_CHAR        0x26AA //0xffee
+#define RING_CHAR        0xffee
+#define CHARM_CHAR      0x03DF
+#define POTION_CHAR        '!'
+#define ARMOR_CHAR        '['
+#define WEAPON_CHAR        0x2191
+#define STAFF_CHAR        '\\'
+#define WAND_CHAR        '~'
+#define GOLD_CHAR        '*'
+#define GEM_CHAR        0x25cf
+#define TOTEM_CHAR        0x26b2
+#define TURRET_CHAR        0x25cf
 #define UNICORN_CHAR    0x00da
-#define KEY_CHAR		'-'
+#define KEY_CHAR        '-'
 #define ELECTRIC_CRYSTAL_CHAR 164
 
-#define UP_ARROW_CHAR		0x2191
-#define DOWN_ARROW_CHAR		0x2193
-#define LEFT_ARROW_CHAR		0x2190
-#define RIGHT_ARROW_CHAR	0x2192
-#define UP_TRIANGLE_CHAR	0x2206
-#define DOWN_TRIANGLE_CHAR	0x2207
-#define OMEGA_CHAR			0x03A9
-#define THETA_CHAR			0x03B8
-#define LAMDA_CHAR			0x03BB
-#define KOPPA_CHAR			0x03DF//0x03DE
-#define LOZENGE_CHAR		0x29EB
-#define CROSS_PRODUCT_CHAR	0x2A2F
+#define UP_ARROW_CHAR        0x2191
+#define DOWN_ARROW_CHAR        0x2193
+#define LEFT_ARROW_CHAR        0x2190
+#define RIGHT_ARROW_CHAR    0x2192
+#define UP_TRIANGLE_CHAR    0x2206
+#define DOWN_TRIANGLE_CHAR    0x2207
+#define OMEGA_CHAR            0x03A9
+#define THETA_CHAR            0x03B8
+#define LAMDA_CHAR            0x03BB
+#define KOPPA_CHAR            0x03DF//0x03DE
+#define LOZENGE_CHAR        0x29EB
+#define CROSS_PRODUCT_CHAR    0x2A2F
 
-#define CHAIN_TOP_LEFT		'\\'
-#define CHAIN_BOTTOM_RIGHT	'\\'
-#define CHAIN_TOP_RIGHT		'/'
-#define CHAIN_BOTTOM_LEFT	'/'
-#define CHAIN_TOP			'|'
-#define CHAIN_BOTTOM		'|'
-#define CHAIN_LEFT			'-'
-#define CHAIN_RIGHT			'-'
+#define CHAIN_TOP_LEFT        '\\'
+#define CHAIN_BOTTOM_RIGHT    '\\'
+#define CHAIN_TOP_RIGHT        '/'
+#define CHAIN_BOTTOM_LEFT    '/'
+#define CHAIN_TOP            '|'
+#define CHAIN_BOTTOM        '|'
+#define CHAIN_LEFT            '-'
+#define CHAIN_RIGHT            '-'
 
 // Seth: the two original defintions are not defined in my font set
-#define BAD_MAGIC_CHAR		0x1ECD
-#define GOOD_MAGIC_CHAR		0x00F2
+#define BAD_MAGIC_CHAR        0x1ECD
+#define GOOD_MAGIC_CHAR        0x00F2
 
 #else
 
-#define FLOOR_CHAR		'.'
-#define LIQUID_CHAR		'~'
-#define CHASM_CHAR		':'
-#define TRAP_CHAR		'%'
-#define FIRE_CHAR		'^'
-#define GRASS_CHAR		'"'
-#define BRIDGE_CHAR		'='
-#define DESCEND_CHAR	'>'
-#define ASCEND_CHAR		'<'
-#define WALL_CHAR		'#'
-#define DOOR_CHAR		'+'
-#define OPEN_DOOR_CHAR	'\''
-#define ASH_CHAR		'\''
-#define BONES_CHAR		','
-#define MUD_CHAR		','
-#define WEB_CHAR		':'
-#define FOLIAGE_CHAR	'&'
+#define FLOOR_CHAR        '.'
+#define LIQUID_CHAR        '~'
+#define CHASM_CHAR        ':'
+#define TRAP_CHAR        '%'
+#define FIRE_CHAR        '^'
+#define GRASS_CHAR        '"'
+#define BRIDGE_CHAR        '='
+#define DESCEND_CHAR    '>'
+#define ASCEND_CHAR        '<'
+#define WALL_CHAR        '#'
+#define DOOR_CHAR        '+'
+#define OPEN_DOOR_CHAR    '\''
+#define ASH_CHAR        '\''
+#define BONES_CHAR        ','
+#define MUD_CHAR        ','
+#define WEB_CHAR        ':'
+#define FOLIAGE_CHAR    '&'
 #define VINE_CHAR       ':'
-#define ALTAR_CHAR		'|'
+#define ALTAR_CHAR        '|'
 #define LEVER_CHAR      '/'
 #define LEVER_PULLED_CHAR '\\'
-#define STATUE_CHAR		'&'
-#define VENT_CHAR		'='
+#define STATUE_CHAR        '&'
+#define VENT_CHAR        '='
 #define DEWAR_CHAR      '&'
 
-#define TRAMPLED_FOLIAGE_CHAR	'"'
+#define TRAMPLED_FOLIAGE_CHAR    '"'
 
-#define PLAYER_CHAR		'@'
+#define PLAYER_CHAR        '@'
 
-#define AMULET_CHAR		','
-#define FOOD_CHAR		';'
-#define SCROLL_CHAR		'?'
-#define RING_CHAR		'='
+#define AMULET_CHAR        ','
+#define FOOD_CHAR        ';'
+#define SCROLL_CHAR        '?'
+#define RING_CHAR        '='
 #define CHARM_CHAR      '+'
-#define POTION_CHAR		'!'
-#define ARMOR_CHAR		'['
-#define WEAPON_CHAR		'('
-#define STAFF_CHAR		'\\'
-#define WAND_CHAR		'~'
-#define GOLD_CHAR		'*'
-#define GEM_CHAR		'+'
-#define TOTEM_CHAR		'0'
-#define TURRET_CHAR		'*'
+#define POTION_CHAR        '!'
+#define ARMOR_CHAR        '['
+#define WEAPON_CHAR        '('
+#define STAFF_CHAR        '\\'
+#define WAND_CHAR        '~'
+#define GOLD_CHAR        '*'
+#define GEM_CHAR        '+'
+#define TOTEM_CHAR        '0'
+#define TURRET_CHAR        '*'
 #define UNICORN_CHAR    'U'
-#define KEY_CHAR		'-'
+#define KEY_CHAR        '-'
 #define ELECTRIC_CRYSTAL_CHAR '$'
 
-#define UP_ARROW_CHAR		'^'
-#define DOWN_ARROW_CHAR		'v'
-#define LEFT_ARROW_CHAR		'<'
-#define RIGHT_ARROW_CHAR	'>'
-#define UP_TRIANGLE_CHAR	'^'
-#define DOWN_TRIANGLE_CHAR	'v'
-#define OMEGA_CHAR			'^'
-#define THETA_CHAR			'0'
-#define LAMDA_CHAR			'\\'
-#define KOPPA_CHAR			'k'
-#define LOZENGE_CHAR		'+'
-#define CROSS_PRODUCT_CHAR	'x'
+#define UP_ARROW_CHAR        '^'
+#define DOWN_ARROW_CHAR        'v'
+#define LEFT_ARROW_CHAR        '<'
+#define RIGHT_ARROW_CHAR    '>'
+#define UP_TRIANGLE_CHAR    '^'
+#define DOWN_TRIANGLE_CHAR    'v'
+#define OMEGA_CHAR            '^'
+#define THETA_CHAR            '0'
+#define LAMDA_CHAR            '\\'
+#define KOPPA_CHAR            'k'
+#define LOZENGE_CHAR        '+'
+#define CROSS_PRODUCT_CHAR    'x'
 
-#define CHAIN_TOP_LEFT		'\\'
-#define CHAIN_BOTTOM_RIGHT	'\\'
-#define CHAIN_TOP_RIGHT		'/'
-#define CHAIN_BOTTOM_LEFT	'/'
-#define CHAIN_TOP			'|'
-#define CHAIN_BOTTOM		'|'
-#define CHAIN_LEFT			'-'
-#define CHAIN_RIGHT			'-'
+#define CHAIN_TOP_LEFT        '\\'
+#define CHAIN_BOTTOM_RIGHT    '\\'
+#define CHAIN_TOP_RIGHT        '/'
+#define CHAIN_BOTTOM_LEFT    '/'
+#define CHAIN_TOP            '|'
+#define CHAIN_BOTTOM        '|'
+#define CHAIN_LEFT            '-'
+#define CHAIN_RIGHT            '-'
 
-#define BAD_MAGIC_CHAR		'+'
-#define GOOD_MAGIC_CHAR		'$'
+#define BAD_MAGIC_CHAR        '+'
+#define GOOD_MAGIC_CHAR        '$'
 
 #endif
 
@@ -1172,11 +1170,8 @@ enum tileFlags {
 | tileCatalog[pmap[x][y].layers[SURFACE]].mechFlags \
 | tileCatalog[pmap[x][y].layers[GAS]].mechFlags)
 
-#ifdef BROGUE_ASSERTS
-boolean cellHasTerrainFlag(short x, short y, unsigned long flagMask);
-#else
+
 #define cellHasTerrainFlag(x, y, flagMask)    ((flagMask) & terrainFlags((x), (y)) ? true : false)
-#endif
 #define cellHasTMFlag(x, y, flagMask)       ((flagMask) & terrainMechFlags((x), (y)) ? true : false)
 
 #define cellHasTerrainType(x, y, terrain)    ((pmap[x][y].layers[DUNGEON] == (terrain) \

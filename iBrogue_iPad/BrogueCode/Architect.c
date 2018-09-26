@@ -26,13 +26,6 @@
 
 short topBlobMinX, topBlobMinY, blobWidth, blobHeight;
 
-#ifdef BROGUE_ASSERTS // otherwise handled as a macro in rogue.h
-boolean cellHasTerrainFlag(short x, short y, unsigned long flagMask) {
-    assert(coordinatesAreInMap(x, y));
-    return ((flagMask) & terrainFlags((x), (y)) ? true : false);
-}
-#endif
-
 boolean checkLoopiness(short x, short y) {
     boolean inString;
     short newX, newY, dir, sdir;
