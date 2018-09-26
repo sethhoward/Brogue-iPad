@@ -109,18 +109,21 @@ fileprivate extension RogueScene {
         
         enum GlyphType {
             case letter
+            case scroll
+            case charm
             case ring
-            case glyph
             case foliage
+            case amulet
+            case glyph
             
             var fontName: String {
                 switch self {
                 case .ring:
                     return "Symbol"
-                case .letter:
-                    return "Monaco"
-                default:
+                case .foliage:
                     return "ArialUnicodeMS"
+                default:
+                    return "Monaco"
                 }
             }
             
@@ -144,12 +147,18 @@ fileprivate extension RogueScene {
                      "A"..."Z",
                      "0"..."9",
                      "!"..."?",
-                     " ", "[", "/", "]", "^", "{", "|", "}", "~", "@":
+                     " ", "[", "/", "]", "^", "{", "|", "}", "~":
                     self = .letter
                 case "\(UnicodeScalar(UInt32(FOLIAGE_CHAR))!)":
                     self = .foliage
+                case "\(UnicodeScalar(UInt32(SCROLL_CHAR))!)":
+                    self = .scroll
+                case "\(UnicodeScalar(UInt32(CHARM_CHAR))!)":
+                    self = .charm
                 case "\(UnicodeScalar(UInt32(RING_CHAR))!)":
                     self = .ring
+                case "\(UnicodeScalar(UInt32(AMULET_CHAR))!)":
+                    self = .amulet
                 default:
                     self = .glyph
                 }
