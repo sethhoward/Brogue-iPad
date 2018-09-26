@@ -52,7 +52,7 @@ extension CGSize {
         let char: NSString = "M" // Good letter to do the base calculations from
         let calcBounds: CGRect = char.boundingRect(with: CGSize(width: 0, height: 0),
                                                    options: [.usesDeviceMetrics, .usesFontLeading],
-                                                   attributes: [NSFontAttributeName: UIFont(name: "Arial Unicode MS", size: 120)!], context: nil)
+                                                   attributes: convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.font): UIFont(name: "Arial Unicode MS", size: 120)!]), context: nil)
         return min(self.cellSize.width / calcBounds.width, self.cellSize.height / calcBounds.height)
     }()
     
@@ -173,10 +173,10 @@ fileprivate extension RogueScene {
         var surface: UIImage {
             // Calculate font scale factor
             var scaleFactor: CGFloat {
-                let calcAttributes = [NSFontAttributeName: calcFont]
+                let calcAttributes = [convertFromNSAttributedStringKey(NSAttributedString.Key.font): calcFont]
                 // If we calculate with the descender, the line height will be centered incorrectly for letters
                 let calcOptions = glyphType.drawingOptions
-                let calcBounds = glyph.boundingRect(with: CGSize(), options: calcOptions, attributes: calcAttributes, context: nil)
+                let calcBounds = glyph.boundingRect(with: CGSize(), options: calcOptions, attributes: convertToOptionalNSAttributedStringKeyDictionary(calcAttributes), context: nil)
                 let rawScaleFactor = min(size.width / calcBounds.width, size.height / calcBounds.height)
                 let clampedScaleFactor = max(maxScaleFactor * 0.8, min(rawScaleFactor, maxScaleFactor * 1.2)) // Within 20% of original
                 
@@ -186,16 +186,16 @@ fileprivate extension RogueScene {
             // Actual font that we're going to render
             let font = UIFont(name: glyphType.fontName, size: fontSize * scaleFactor)!
             let fontAttributes = [
-                NSFontAttributeName: font,
-                NSForegroundColorAttributeName: SKColor.white // White so we can blend it
+                convertFromNSAttributedStringKey(NSAttributedString.Key.font): font,
+                convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor): SKColor.white // White so we can blend it
             ]
             
-            let realBounds: CGRect = glyph.boundingRect(with: CGSize(), options: glyphType.drawingOptions, attributes: fontAttributes, context: nil)
+            let realBounds: CGRect = glyph.boundingRect(with: CGSize(), options: glyphType.drawingOptions, attributes: convertToOptionalNSAttributedStringKeyDictionary(fontAttributes), context: nil)
             let stringOrigin = CGPoint(x: (size.width - realBounds.width)/2 - realBounds.origin.x + 1, y:
                                            font.descender - realBounds.origin.y + (size.height - realBounds.height)/2)
            
             UIGraphicsBeginImageContext(size)
-            glyph.draw(at: stringOrigin, withAttributes: fontAttributes)
+            glyph.draw(at: stringOrigin, withAttributes: convertToOptionalNSAttributedStringKeyDictionary(fontAttributes))
             let surface = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             
@@ -209,4 +209,15 @@ fileprivate extension RogueScene {
         textureMap[glyph] = createTextureFromGlyph(glyph: glyph, size: cellSize)
         return textureMap[glyph]!
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Key) -> String {
+	return input.rawValue
 }
