@@ -2809,7 +2809,7 @@ void waitForAcknowledgment() {
     do {
         nextBrogueEvent(&theEvent, false, false, false);
         if (theEvent.eventType == KEYSTROKE && theEvent.param1 != ACKNOWLEDGE_KEY && theEvent.param1 != ESCAPE_KEY) {
-            flashTemporaryAlert(" -- Press space or click to continue -- ", 500);
+            flashTemporaryAlert(" -- Tap to continue -- ", 500);
         }
     } while (!(theEvent.eventType == KEYSTROKE && (theEvent.param1 == ACKNOWLEDGE_KEY || theEvent.param1 == ESCAPE_KEY)
                || theEvent.eventType == MOUSE_UP));
@@ -3712,7 +3712,7 @@ void printHelpScreen() {
         "             ]  ****display/hide stealth range",
         "   <space/esc>  ****clear message or cancel command",
         "",
-        "        -- press space or click to continue --"
+        "        -- Tap to continue --"
     };
     
     // Replace the "****"s with color escapes.

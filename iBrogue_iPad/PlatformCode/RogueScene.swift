@@ -128,7 +128,14 @@ fileprivate extension RogueScene {
             }
             
             var scaleFactor: CGFloat {
-                return 1
+                switch self {
+                case .scroll:
+                    return 1.2
+                case .foliage:
+                    return 1.1
+                default:
+                    return 1
+                }
             }
             
             var drawingOptions: NSStringDrawingOptions {

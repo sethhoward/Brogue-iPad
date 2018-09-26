@@ -84,7 +84,7 @@ extension BrogueGameEvent {
     
     func handleDirectionControlDisplay(_ directionsViewController: DirectionControlsViewController?) {
         switch self {
-        case .waitingForConfirmation, .actionMenuOpen, .openedInventory, .showTitle, .openGameFinished, .playRecording, .showHighScores, .playBackPanic:
+        case .waitingForConfirmation, .actionMenuOpen, .openedInventory, .showTitle, .openGameFinished, .playRecording, .showHighScores, .playBackPanic, .messagePlayerHasDied, .playerHasDiedMessageAcknowledged, .keyBoardInputRequired:
             directionsViewController?.view.isHidden = true
         default:
             directionsViewController?.view.isHidden = false
@@ -371,6 +371,8 @@ extension BrogueViewController {
                 key = kDOWNRIGHT_key
             case .downLeft:
                 key = kDOWNLEFT_key
+            case .catchAll:
+                return
             }
             
             addKeyEvent(event: key.ascii)
@@ -457,7 +459,9 @@ extension BrogueViewController {
     }
     
     @objc fileprivate func executeKeyCommand(keyCommand: UIKeyCommand) {
-        addKeyEvent(event: keyCommand.input!.ascii)
+        if let key = keyCommand.input?.ascii {
+            addKeyEvent(event: key)
+        }
     }
 }
 

@@ -1097,7 +1097,7 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
                 && theEvent.param1 != ESCAPE_KEY
                 && theEvent.param1 != INVENTORY_KEY) {
                 
-                flashTemporaryAlert(" -- Press space or click to continue, or press 'i' to view inventory -- ", 1500);
+                flashTemporaryAlert(" -- Touch to continue -- ", 1500);
             } else if (theEvent.eventType == KEYSTROKE && theEvent.param1 == INVENTORY_KEY) {
                 for (theItem = packItems->nextItem; theItem != NULL; theItem = theItem->nextItem) {
                     identify(theItem);
