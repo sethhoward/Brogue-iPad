@@ -3217,6 +3217,7 @@ extern "C" {
     } CBrogueGameEvent;
     
     void setBrogueGameEvent(CBrogueGameEvent brogueGameState);
+    void requestKeyboardInput(char *string);
     
 #if defined __cplusplus
 }

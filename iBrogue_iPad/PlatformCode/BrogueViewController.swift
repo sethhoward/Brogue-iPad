@@ -84,7 +84,7 @@ extension BrogueGameEvent {
     
     func handleDirectionControlDisplay(_ directionsViewController: DirectionControlsViewController?) {
         switch self {
-        case .waitingForConfirmation, .actionMenuOpen, .openedInventory, .showTitle, .openGameFinished, .playRecording, .showHighScores, .playBackPanic, .messagePlayerHasDied, .playerHasDiedMessageAcknowledged, .keyBoardInputRequired:
+        case .waitingForConfirmation, .actionMenuOpen, .openedInventory, .showTitle, .openGameFinished, .playRecording, .showHighScores, .playBackPanic, .messagePlayerHasDied, .playerHasDiedMessageAcknowledged, .keyBoardInputRequired, .beginOpenGame:
             directionsViewController?.view.isHidden = true
         default:
             directionsViewController?.view.isHidden = false
@@ -100,6 +100,7 @@ final class BrogueViewController: UIViewController {
     @objc fileprivate var directionsViewController: DirectionControlsViewController?
     fileprivate var keyEvents = [UInt8]()
     fileprivate var magnifierTimer: Timer?
+    fileprivate var inputRequestString: String?
     
     @IBOutlet var skViewPort: SKViewPort!
     @IBOutlet fileprivate weak var magView: SKMagView!
@@ -168,11 +169,9 @@ final class BrogueViewController: UIViewController {
     @objc private func playBrogue() {
         rogueMain()
     }
-    
-    override func motionBegan(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
-        addKeyEvent(event: kESC_Key)
-    }
-    
+}
+ 
+extension BrogueViewController {
     @IBAction func escButtonPressed(_ sender: Any) {
         addKeyEvent(event: kESC_Key)
         inputTextField.resignFirstResponder()
@@ -200,6 +199,10 @@ final class BrogueViewController: UIViewController {
 }
 
 extension BrogueViewController {
+    override func motionBegan(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        addKeyEvent(event: kESC_Key)
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         
@@ -409,6 +412,13 @@ extension BrogueViewController {
 }
 
 extension BrogueViewController: UITextFieldDelegate {
+    @objc func requestTextInput(for string: String) {
+        inputRequestString = string
+        DispatchQueue.main.async {
+            self.inputTextField.becomeFirstResponder()
+        }
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         inputTextField.resignFirstResponder()
         addKeyEvent(event: "\n".ascii)
@@ -417,7 +427,7 @@ extension BrogueViewController: UITextFieldDelegate {
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        inputTextField.text = "Recording"
+        inputTextField.text = inputRequestString ?? ""
         escButton.isHidden = false
     }
     
