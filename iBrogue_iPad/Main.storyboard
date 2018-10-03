@@ -264,6 +264,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="dContainerView" destination="kDi-vu-rSS" id="IyI-SU-V80"/>
                         <outlet property="escButton" destination="do5-dF-Tp3" id="10M-3j-wA3"/>
                         <outlet property="inputTextField" destination="yKE-1T-uLw" id="rjq-EL-Vn9"/>
                         <outlet property="leaderBoardButton" destination="zFH-WA-Xgf" id="SA7-P2-uPO"/>
@@ -477,6 +478,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D6w-03-cmU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="442" y="958"/>
         </scene>
     </scenes>
     <resources>

@@ -114,6 +114,7 @@ final class BrogueViewController: UIViewController {
     @IBOutlet fileprivate weak var leaderBoardButton: UIButton!
     @IBOutlet fileprivate weak var seedButton: UIButton!
    
+    @IBOutlet weak var dContainerView: UIView!
     @objc var seedKeyDown = false
     @objc var lastBrogueGameEvent: BrogueGameEvent = .showTitle {
         didSet {
@@ -156,7 +157,23 @@ final class BrogueViewController: UIViewController {
         magView.hideMagnifier()
         inputTextField.delegate = self
         
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(draggedView(_:)))
+        panGesture.minimumNumberOfTouches = 2
+        dContainerView.addGestureRecognizer(panGesture)
+        
         GameCenterManager.sharedInstance()?.authenticateLocalUser()
+    }
+    
+    @objc func handleDirectionTouch(_ sender: UIPanGestureRecognizer) {
+        directionsViewController?.cancel()
+    }
+    
+    @objc func draggedView(_ sender: UIPanGestureRecognizer) {
+
+        directionsViewController?.cancel()
+        let translation = sender.translation(in: view)
+        dContainerView.center = CGPoint(x: dContainerView.center.x + translation.x, y: dContainerView.center.y + translation.y)
+        sender.setTranslation(CGPoint.zero, in: view)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -206,6 +223,8 @@ extension BrogueViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         
+        guard dContainerView.hitTest(touches.first!.location(in: dContainerView), with: event) == nil else { return }
+        
         for touch in touches {
             let location = touch.location(in: view)
             // handle double tap on began.
@@ -226,6 +245,8 @@ extension BrogueViewController {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesMoved(touches, with: event)
         
+        guard dContainerView.hitTest(touches.first!.location(in: dContainerView), with: event) == nil else { return }
+        
         if let touch = touches.first {
             let location = touch.location(in: view)
             let brogueEvent = UIBrogueTouchEvent(phase: touch.phase, location: location)
@@ -237,6 +258,8 @@ extension BrogueViewController {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
+        
+        guard dContainerView.hitTest(touches.first!.location(in: dContainerView), with: event) == nil else { return }
         
         if let touch = touches.first {
             let location = touch.location(in: view)
@@ -405,8 +428,7 @@ extension BrogueViewController {
         return event
     }
     
-    @objc(hasKeyEvent)
-    func hasKeyEvent() -> Bool {
+    @objc func hasKeyEvent() -> Bool {
         return !keyEvents.isEmpty
     }
 }

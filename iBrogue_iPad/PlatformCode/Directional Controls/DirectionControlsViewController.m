@@ -26,81 +26,15 @@ NSString *kDOWNRIGHT_key = @"n";
 
 @implementation DirectionControlsViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-    [self initGestureRecognizers];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-#pragma mark -
-
-- (void)hideWithAnimation:(BOOL)animation {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [UIView animateWithDuration:0.2 animations:^{
-            self.controlsContainer.transform = CGAffineTransformMakeScale(.0000001, .0000001);
-            [self buttonUp:nil];
-        }];
-    });
-}
-
-- (void)showWithAnimation:(BOOL)animation {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [UIView animateWithDuration:0.2 animations:^{
-            self.controlsContainer.transform = CGAffineTransformMakeScale(1., 1.);
-            [self buttonUp:nil];
-        }];
-    });
-}
-
-- (void)initGestureRecognizers {
-    UIPinchGestureRecognizer *directionalPinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
-    [self.view addGestureRecognizer:directionalPinch];
-}
-
-- (void)handlePinch:(UIPinchGestureRecognizer *)pinch {
-    if (pinch.velocity < 0 && !_areDirectionalControlsHidden) {
-        self.controlsContainer.transform = CGAffineTransformMakeScale(pinch.scale, pinch.scale);
-    }
-    else if(pinch.velocity > 0 && _areDirectionalControlsHidden){
-        self.controlsContainer.transform = CGAffineTransformMakeScale(1 - pinch.scale, 1 - pinch.scale);
-    }
-    
-    if (pinch.state == UIGestureRecognizerStateEnded || pinch.state == UIGestureRecognizerStateCancelled) {
-        if (pinch.scale < 0.6f) {
-            [self hideWithAnimation:YES];
-            
-            _areDirectionalControlsHidden = YES;
-        }
-        else {
-            [self showWithAnimation:YES];
-            
-            _areDirectionalControlsHidden = NO;
-        }
-    }
-}
-
-
 #pragma mark -
 
 - (void)handleRepeatKeyPress {
     // trigger the KVO
     self.directionalButton = self.directionalButton;
+}
+
+- (void)cancel {
+    [self buttonUp:self];
 }
 
 - (IBAction)buttonDown:(id)sender {
