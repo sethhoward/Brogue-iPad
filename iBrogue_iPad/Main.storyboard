@@ -35,10 +35,10 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kDi-vu-rSS">
-                                <rect key="frame" x="10" y="794" width="200" height="200"/>
+                                <rect key="frame" x="10" y="734" width="200" height="260"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="6CN-Pv-4v3"/>
-                                    <constraint firstAttribute="height" constant="200" id="C44-Qh-DfA"/>
+                                    <constraint firstAttribute="height" constant="260" id="C44-Qh-DfA"/>
                                 </constraints>
                                 <connections>
                                     <segue destination="rXF-ml-eLX" kind="embed" id="kbc-yv-Gy8"/>
@@ -153,7 +153,7 @@
                         <viewControllerLayoutGuide type="bottom" id="453-1F-usv"/>
                     </layoutGuides>
                     <view key="view" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="kEO-cl-UhR">
-                        <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                        <rect key="frame" x="0.0" y="0.0" width="200" height="220"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view opaque="NO" alpha="0.60000002384185791" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dc8-6y-7Pb">
@@ -318,15 +318,32 @@
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DjS-Gt-Udj">
+                                <rect key="frame" x="0.0" y="203" width="200" height="19"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Two Fingers to Drag" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LyC-Bm-3ga">
+                                        <rect key="frame" x="23" y="-3" width="154" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="200" height="200"/>
+                    <size key="freeformSize" width="200" height="220"/>
+                    <connections>
+                        <outlet property="dragAreaView" destination="DjS-Gt-Udj" id="8MW-nr-dbT"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K6w-19-yag" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-430" y="1240"/>
+            <point key="canvasLocation" x="-430.01464128843332" y="1239.84375"/>
         </scene>
     </scenes>
     <resources>

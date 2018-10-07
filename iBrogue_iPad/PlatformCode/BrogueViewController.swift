@@ -81,15 +81,6 @@ extension BrogueGameEvent {
             return false
         }
     }
-    
-    func handleDirectionControlDisplay(_ directionsViewController: DirectionControlsViewController?) {
-        switch self {
-        case .waitingForConfirmation, .actionMenuOpen, .openedInventory, .showTitle, .openGameFinished, .playRecording, .showHighScores, .playBackPanic, .messagePlayerHasDied, .playerHasDiedMessageAcknowledged, .keyBoardInputRequired, .beginOpenGame:
-            directionsViewController?.view.isHidden = true
-        default:
-            directionsViewController?.view.isHidden = false
-        }
-    }
 }
 
 // MARK: - BrogueViewController
@@ -139,7 +130,15 @@ final class BrogueViewController: UIViewController {
                 default: ()
                 }
                 
-                self.lastBrogueGameEvent.handleDirectionControlDisplay(self.directionsViewController)
+                // Hide/Show the directions.
+                switch self.lastBrogueGameEvent {
+                case .waitingForConfirmation, .actionMenuOpen, .openedInventory, .showTitle, .openGameFinished, .playRecording, .showHighScores, .playBackPanic, .messagePlayerHasDied, .playerHasDiedMessageAcknowledged, .keyBoardInputRequired, .beginOpenGame:
+                    self.dContainerView.isHidden = true
+                    self.dContainerView.isUserInteractionEnabled = false
+                default:
+                    self.dContainerView.isHidden = false
+                    self.dContainerView.isUserInteractionEnabled = true
+                }
             }
         }
     }

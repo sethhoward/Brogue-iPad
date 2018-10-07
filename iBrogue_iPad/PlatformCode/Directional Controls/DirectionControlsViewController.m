@@ -21,12 +21,38 @@ NSString *kDOWNRIGHT_key = @"n";
 // we use the container to animate hide and show while keeping the parent view on the parent layer
 @property (weak, nonatomic) IBOutlet UIView *controlsContainer;
 @property (nonatomic, assign, getter = isButtonDown) BOOL buttonDown;
+
+@property (weak, nonatomic) IBOutlet UIView *dragAreaView;
 @property (nonatomic, strong) NSTimer *repeatTimer;
 @end
 
 @implementation DirectionControlsViewController
 
 #pragma mark -
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self showDraggableArea];
+}
+
+- (void)showDraggableArea {
+    [UIView animateWithDuration:0.4 animations:^{
+        self.dragAreaView.alpha = 0.4;
+    }];
+}
+
+- (void)hideDraggableArea {
+    if (self.dragAreaView.alpha > 0) {
+        [UIView animateWithDuration:0.4 animations:^{
+            self.dragAreaView.alpha = 0;
+        }];
+    }
+}
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [super touchesEnded:touches withEvent:event];
+    [self hideDraggableArea];
+}
 
 - (void)handleRepeatKeyPress {
     // trigger the KVO
@@ -35,6 +61,7 @@ NSString *kDOWNRIGHT_key = @"n";
 
 - (void)cancel {
     [self buttonUp:self];
+    [self hideDraggableArea];
 }
 
 - (IBAction)buttonDown:(id)sender {
@@ -48,6 +75,8 @@ NSString *kDOWNRIGHT_key = @"n";
             self.repeatTimer = [NSTimer scheduledTimerWithTimeInterval:0.08 target:self selector:@selector(handleRepeatKeyPress) userInfo:nil repeats:YES];
         }
     });
+    
+    [self hideDraggableArea];
 }
 
 - (IBAction)buttonUp:(id)sender {

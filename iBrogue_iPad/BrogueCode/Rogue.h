@@ -46,11 +46,11 @@
 #define USE_UNICODE
 
 // version string -- no more than 16 bytes:
-#define BROGUE_VERSION_STRING "1.7.5d"
+#define BROGUE_VERSION_STRING "1.7.5"
 
 // debug macros -- define DEBUGGING as 1 to enable wizard mode.
 
-#define DEBUGGING                        0
+#define DEBUGGING                        1
 
 #define DEBUG                            if (DEBUGGING)
 #define MONSTERS_ENABLED                (!DEBUGGING || 1) // Quest room monsters can be generated regardless.
