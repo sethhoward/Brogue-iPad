@@ -2806,6 +2806,9 @@ void waitForAcknowledgment() {
         return;
     }
     
+    // Seth:
+    setBrogueGameEvent(CBrogueGameEventWaitingForConfirmation);
+    
     do {
         nextBrogueEvent(&theEvent, false, false, false);
         if (theEvent.eventType == KEYSTROKE && theEvent.param1 != ACKNOWLEDGE_KEY && theEvent.param1 != ESCAPE_KEY) {
@@ -2813,6 +2816,8 @@ void waitForAcknowledgment() {
         }
     } while (!(theEvent.eventType == KEYSTROKE && (theEvent.param1 == ACKNOWLEDGE_KEY || theEvent.param1 == ESCAPE_KEY)
                || theEvent.eventType == MOUSE_UP));
+    
+
 }
 
 void waitForKeystrokeOrMouseClick() {

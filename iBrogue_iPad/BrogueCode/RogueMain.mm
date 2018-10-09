@@ -430,19 +430,19 @@ void initializeRogue(unsigned long seed) {
     identify(theItem);
     theItem = addItemToPack(theItem);
     equipItem(theItem, false);
-    /*
-    theItem = generateItem(SCROLL, SCROLL_ENCHANTING);
-    addItemToPack(theItem);
-    
-    theItem = generateItem(SCROLL, SCROLL_ENCHANTING);
-    addItemToPack(theItem);
-    
-    theItem = generateItem(SCROLL, SCROLL_IDENTIFY);
-    addItemToPack(theItem);
-    
-    theItem = generateItem(SCROLL, SCROLL_IDENTIFY);
-    addItemToPack(theItem);*/
-    
+//    
+//    theItem = generateItem(SCROLL, SCROLL_ENCHANTING);
+//    addItemToPack(theItem);
+//    
+//    theItem = generateItem(SCROLL, SCROLL_ENCHANTING);
+//    addItemToPack(theItem);
+//    
+//    theItem = generateItem(SCROLL, SCROLL_IDENTIFY);
+//    addItemToPack(theItem);
+//    
+//    theItem = generateItem(SCROLL, SCROLL_IDENTIFY);
+//    addItemToPack(theItem);
+//    
     theItem = generateItem(WEAPON, DART);
     theItem->enchant1 = theItem->enchant2 = 0;
     theItem->quantity = 15;
