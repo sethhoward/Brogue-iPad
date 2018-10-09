@@ -37,7 +37,7 @@ NSString *kDOWNRIGHT_key = @"n";
 
 - (void)showDraggableArea {
     [UIView animateWithDuration:0.4 animations:^{
-        self.dragAreaView.alpha = 0.4;
+        self.dragAreaView.alpha = 0.3;
     }];
 }
 

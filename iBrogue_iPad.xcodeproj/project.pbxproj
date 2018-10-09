@@ -62,6 +62,7 @@
 		C59B21C716EA48E0007018DE /* MONACO.TTF in Resources */ = {isa = PBXBuildFile; fileRef = C59B21C616EA48E0007018DE /* MONACO.TTF */; };
 		C5B7FF1B1D8D933D00F04098 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5B7FF1A1D8D933D00F04098 /* Main.storyboard */; };
 		C5B9B66C17D23BEA00D8459E /* Time.mm in Sources */ = {isa = PBXBuildFile; fileRef = C5B9B66B17D23BE900D8459E /* Time.mm */; };
+		C5C7C6B4216D066500E75B55 /* SKMagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C7C6B3216D066500E75B55 /* SKMagView.swift */; };
 		C5D117041D8B786800356DBA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5D117031D8B786800356DBA /* Images.xcassets */; };
 		C5D5EC6C16FC07EB00E9A9AF /* icon_72x72.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D5EC6B16FC07EB00E9A9AF /* icon_72x72.png */; };
 		C5D5EC6E16FC07F300E9A9AF /* icon_144x144.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D5EC6D16FC07F300E9A9AF /* icon_144x144.png */; };
@@ -144,6 +145,7 @@
 		C59B21C616EA48E0007018DE /* MONACO.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = MONACO.TTF; sourceTree = "<group>"; };
 		C5B7FF1A1D8D933D00F04098 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C5B9B66B17D23BE900D8459E /* Time.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Time.mm; sourceTree = "<group>"; };
+		C5C7C6B3216D066500E75B55 /* SKMagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKMagView.swift; sourceTree = "<group>"; };
 		C5D117031D8B786800356DBA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		C5D5EC6B16FC07EB00E9A9AF /* icon_72x72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_72x72.png; sourceTree = "<group>"; };
 		C5D5EC6D16FC07F300E9A9AF /* icon_144x144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_144x144.png; sourceTree = "<group>"; };
@@ -273,6 +275,7 @@
 				C57A964E16D7EB4C00C233F1 /* RogueDriver.mm */,
 				ECBE68A51EC0D45200E9F366 /* iBrogue_iPad-Bridging-Header.h */,
 				ECBE68AA1EC0DB1800E9F366 /* SKViewPort.swift */,
+				C5C7C6B3216D066500E75B55 /* SKMagView.swift */,
 				ECBE68AC1EC0E1C600E9F366 /* BrogueViewController.swift */,
 			);
 			path = PlatformCode;
@@ -452,6 +455,7 @@
 				C532C8A61971AB8800695956 /* DirectionControlsViewController.m in Sources */,
 				C57A966616D7EB5500C233F1 /* Buttons.c in Sources */,
 				C57A966716D7EB5500C233F1 /* Combat.c in Sources */,
+				C5C7C6B4216D066500E75B55 /* SKMagView.swift in Sources */,
 				ECBE68AD1EC0E1C600E9F366 /* BrogueViewController.swift in Sources */,
 				C57A966816D7EB5500C233F1 /* Dijkstra.c in Sources */,
 				C57A966916D7EB5500C233F1 /* Globals.c in Sources */,

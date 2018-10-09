@@ -34,11 +34,11 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kDi-vu-rSS">
-                                <rect key="frame" x="10" y="734" width="200" height="260"/>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kDi-vu-rSS" customClass="DirectionContainerView" customModule="Brogue" customModuleProvider="target">
+                                <rect key="frame" x="10" y="744" width="200" height="240"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="6CN-Pv-4v3"/>
-                                    <constraint firstAttribute="height" constant="260" id="C44-Qh-DfA"/>
+                                    <constraint firstAttribute="height" constant="240" id="C44-Qh-DfA"/>
                                 </constraints>
                                 <connections>
                                     <segue destination="rXF-ml-eLX" kind="embed" id="kbc-yv-Gy8"/>
@@ -125,7 +125,7 @@
                             <constraint firstItem="kDi-vu-rSS" firstAttribute="leading" secondItem="k4p-up-pot" secondAttribute="leadingMargin" constant="-10" id="jJR-za-64l"/>
                             <constraint firstItem="3ab-lz-7c3" firstAttribute="leading" secondItem="zFH-WA-Xgf" secondAttribute="trailing" constant="20" id="kFt-H5-eHk"/>
                             <constraint firstItem="do5-dF-Tp3" firstAttribute="top" secondItem="3ZN-PO-CtL" secondAttribute="bottom" id="oV0-s0-GG7"/>
-                            <constraint firstItem="5iJ-nv-hm4" firstAttribute="top" secondItem="kDi-vu-rSS" secondAttribute="bottom" constant="30" id="trc-JX-Lpz"/>
+                            <constraint firstItem="5iJ-nv-hm4" firstAttribute="top" secondItem="kDi-vu-rSS" secondAttribute="bottom" constant="40" id="trc-JX-Lpz"/>
                             <constraint firstItem="zFH-WA-Xgf" firstAttribute="leading" secondItem="k4p-up-pot" secondAttribute="leadingMargin" id="wTb-GJ-Jcu"/>
                         </constraints>
                     </view>

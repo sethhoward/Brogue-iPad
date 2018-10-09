@@ -1,55 +1,55 @@
  //
-//  BrogueViewController.swift
-//  iBrogue_iPad
-//
-//  This file is part of Brogue.
-//
-//  This program is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU Affero General Public License as
-//  published by the Free Software Foundation, either version 3 of the
-//  License, or (at your option) any later version.
-//
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU Affero General Public License for more details.
-//
-//  You should have received a copy of the GNU Affero General Public License
-//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-//
-
-import UIKit
-import SpriteKit
-
-fileprivate let kESC_Key: UInt8 = 27
-fileprivate let kEnterKey = "\n"
-
-private func synchronized<T>(_ lock: Any, _ body: () throws -> T) rethrows -> T {
+ //  BrogueViewController.swift
+ //  iBrogue_iPad
+ //
+ //  This file is part of Brogue.
+ //
+ //  This program is free software: you can redistribute it and/or modify
+ //  it under the terms of the GNU Affero General Public License as
+ //  published by the Free Software Foundation, either version 3 of the
+ //  License, or (at your option) any later version.
+ //
+ //  This program is distributed in the hope that it will be useful,
+ //  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ //  GNU Affero General Public License for more details.
+ //
+ //  You should have received a copy of the GNU Affero General Public License
+ //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ //
+ 
+ import UIKit
+ import SpriteKit
+ 
+ fileprivate let kESC_Key: UInt8 = 27
+ fileprivate let kEnterKey = "\n"
+ 
+ private func synchronized<T>(_ lock: Any, _ body: () throws -> T) rethrows -> T {
     objc_sync_enter(lock)
     defer { objc_sync_exit(lock) }
     return try body()
-}
-
-fileprivate let COLS = 100
-fileprivate let ROWS = 34
-
-fileprivate func getCellCoords(at point: CGPoint) -> CGPoint {
+ }
+ 
+ fileprivate let COLS = 100
+ fileprivate let ROWS = 34
+ 
+ func getCellCoords(at point: CGPoint) -> CGPoint {
     let cellx = Int(CGFloat(COLS) * point.x / UIScreen.main.bounds.size.width)
     let celly = Int(CGFloat(ROWS) * point.y / UIScreen.main.bounds.size.height)
     
     return CGPoint(x: cellx, y: celly)
-}
-
-// TODO: switch to Character
-extension String {
+ }
+ 
+ // TODO: switch to Character
+ extension String {
     var ascii: UInt8 {
         return (unicodeScalars.map { UInt8($0.value) }).first!
     }
-}
-
-// MARK: - UIBrogueTouchEvent
-
-@objc class UIBrogueTouchEvent: NSObject, NSCopying {
+ }
+ 
+ // MARK: - UIBrogueTouchEvent
+ 
+ @objc class UIBrogueTouchEvent: NSObject, NSCopying {
     @objc let phase: UITouch.Phase
     @objc let location: CGPoint
     
@@ -66,11 +66,11 @@ extension String {
     func copy(with zone: NSZone? = nil) -> Any {
         return type(of:self).init(touchEvent: self)
     }
-}
-
-// MARK: - BrogueGameEvent
-
-extension BrogueGameEvent {
+ }
+ 
+ // MARK: - BrogueGameEvent
+ 
+ extension BrogueGameEvent {
     var canShowMagnifyingGlass: Bool {
         switch self {
         case .startNewGame, .inventoryItemAction, .confirmationComplete, .actionMenuClose, .closedInventory, .openGame:
@@ -79,11 +79,28 @@ extension BrogueGameEvent {
             return false
         }
     }
-}
-
-// MARK: - BrogueViewController
-
-final class BrogueViewController: UIViewController {
+ }
+ 
+ class DirectionContainerView: UIView {
+    func disable(with alpha: CGFloat = 0) {
+        UIView.animate(withDuration: 0.2) {
+            self.alpha = alpha
+        }
+        
+        isUserInteractionEnabled = false
+    }
+    
+    func enable() {
+        UIView.animate(withDuration: 0.2) {
+            self.alpha = 1
+        }
+        isUserInteractionEnabled = true
+    }
+ }
+ 
+ // MARK: - BrogueViewController
+ 
+ final class BrogueViewController: UIViewController {
     fileprivate var touchEvents = [UIBrogueTouchEvent]()
     fileprivate var lastTouchLocation = CGPoint()
     @objc fileprivate var directionsViewController: DirectionControlsViewController?
@@ -98,12 +115,22 @@ final class BrogueViewController: UIViewController {
             escButton.isHidden = true
         }
     }
-    @IBOutlet fileprivate weak var inputTextField: UITextField!
+    @IBOutlet fileprivate weak var inputTextField: UITextField! {
+        didSet {
+            inputTextField.delegate = self
+        }
+    }
     @IBOutlet fileprivate weak var showInventoryButton: UIButton!
     @IBOutlet fileprivate weak var leaderBoardButton: UIButton!
     @IBOutlet fileprivate weak var seedButton: UIButton!
-   
-    @IBOutlet weak var dContainerView: UIView!
+    
+    @IBOutlet weak var dContainerView: DirectionContainerView! {
+        didSet {
+            let panGesture = UIPanGestureRecognizer(target: self, action: #selector(draggedView(_:)))
+            panGesture.minimumNumberOfTouches = 2
+            dContainerView.addGestureRecognizer(panGesture)
+        }
+    }
     @objc var seedKeyDown = false
     @objc var lastBrogueGameEvent: BrogueGameEvent = .showTitle {
         didSet {
@@ -131,11 +158,10 @@ final class BrogueViewController: UIViewController {
                 // Hide/Show the directions.
                 switch self.lastBrogueGameEvent {
                 case .waitingForConfirmation, .actionMenuOpen, .openedInventory, .showTitle, .openGameFinished, .playRecording, .showHighScores, .playBackPanic, .messagePlayerHasDied, .playerHasDiedMessageAcknowledged, .keyBoardInputRequired, .beginOpenGame:
-                    self.dContainerView.isHidden = true
-                    self.dContainerView.isUserInteractionEnabled = false
+                    self.dContainerView.disable()
                 default:
                     self.dContainerView.isHidden = false
-                    self.dContainerView.isUserInteractionEnabled = true
+                    self.dContainerView.enable()
                 }
             }
         }
@@ -143,20 +169,16 @@ final class BrogueViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // TODO: clean this up
+        
         RogueDriver.sharedInstance(with: skViewPort, viewController: self)
-
+        
+        // Up the stack size or we'll overflow.
         let thread = Thread(target: self, selector: #selector(BrogueViewController.playBrogue), object: nil)
         thread.stackSize = 400 * 8192
         thread.start()
         
         magView.viewToMagnify = skViewPort
         magView.hideMagnifier()
-        inputTextField.delegate = self
-        
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(draggedView(_:)))
-        panGesture.minimumNumberOfTouches = 2
-        dContainerView.addGestureRecognizer(panGesture)
         
         GameCenterManager.sharedInstance()?.authenticateLocalUser()
     }
@@ -166,7 +188,6 @@ final class BrogueViewController: UIViewController {
     }
     
     @objc func draggedView(_ sender: UIPanGestureRecognizer) {
-
         directionsViewController?.cancel()
         let translation = sender.translation(in: view)
         dContainerView.center = CGPoint(x: dContainerView.center.x + translation.x, y: dContainerView.center.y + translation.y)
@@ -183,9 +204,9 @@ final class BrogueViewController: UIViewController {
     @objc private func playBrogue() {
         rogueMain()
     }
-}
+ }
  
-extension BrogueViewController {
+ extension BrogueViewController {
     @IBAction func escButtonPressed(_ sender: Any) {
         addKeyEvent(event: kESC_Key)
         inputTextField.resignFirstResponder()
@@ -210,9 +231,9 @@ extension BrogueViewController {
             seedButton.setImage(image, for: .normal)
         }
     }
-}
-
-extension BrogueViewController {
+ }
+ 
+ extension BrogueViewController {
     override func motionBegan(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         addKeyEvent(event: kESC_Key)
     }
@@ -244,10 +265,12 @@ extension BrogueViewController {
         
         guard dContainerView.hitTest(touches.first!.location(in: dContainerView), with: event) == nil else { return }
         
+        dContainerView.disable(with: 0.3)
+        
         if let touch = touches.first {
             let location = touch.location(in: view)
             let brogueEvent = UIBrogueTouchEvent(phase: touch.phase, location: location)
-
+            
             addTouchEvent(event: brogueEvent)
             showMagnifier(at: location)
         }
@@ -257,11 +280,13 @@ extension BrogueViewController {
         super.touchesEnded(touches, with: event)
         
         guard dContainerView.hitTest(touches.first!.location(in: dContainerView), with: event) == nil else { return }
+
+        dContainerView.enable()
         
         if let touch = touches.first {
             let location = touch.location(in: view)
             
-            if pointIsInSideBar(point: location) {
+            if pointIsInSideBar(point: location) && lastBrogueGameEvent != .openedInventory {
                 // side bar
                 if touch.tapCount >= 2 {
                     addTouchEvent(event: UIBrogueTouchEvent(phase: .ended, location: lastTouchLocation))
@@ -272,13 +297,17 @@ extension BrogueViewController {
                 // other touch
                 addTouchEvent(event: UIBrogueTouchEvent(phase: .stationary, location: lastTouchLocation))
                 addTouchEvent(event: UIBrogueTouchEvent(phase: .ended, location: lastTouchLocation))
+                // TODO: got to be a better way. A better way.
+                if pointIsInPlayArea(point: location) && lastBrogueGameEvent != .openedInventory && lastBrogueGameEvent != .inventoryItemAction && lastBrogueGameEvent != .showTitle {
+                    addTouchEvent(event: UIBrogueTouchEvent(phase: .ended, location: lastTouchLocation))
+                }
             }
         }
         
         hideMagnifier()
     }
     
-    fileprivate func pointIsInPlayArea(point: CGPoint) -> Bool {
+    private func pointIsInPlayArea(point: CGPoint) -> Bool {
         let cellCoord = getCellCoords(at: point)
         if cellCoord.x > 20 && cellCoord.y < 32 && cellCoord.y > 3 {
             return true
@@ -330,9 +359,9 @@ extension BrogueViewController {
     @objc func hasTouchEvent() -> Bool {
         return !touchEvents.isEmpty
     }
-}
-
-extension BrogueViewController {
+ }
+ 
+ extension BrogueViewController {
     @objc private func handleMagnifierTimer() {
         if canShowMagnifier(at: lastTouchLocation) {
             magView.showMagnifier(at: lastTouchLocation)
@@ -369,13 +398,13 @@ extension BrogueViewController {
             self.magView.hideMagnifier()
         }
     }
-}
-
-extension BrogueViewController {
+ }
+ 
+ extension BrogueViewController {
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard keyPath == #keyPath(directionsViewController.directionalButton) else { return }
-
+        
         if let tag = directionsViewController?.directionalButton?.tag, let direction = ControlDirection(rawValue: tag) {
             var key: String
             switch direction {
@@ -427,9 +456,9 @@ extension BrogueViewController {
     @objc func hasKeyEvent() -> Bool {
         return !keyEvents.isEmpty
     }
-}
-
-extension BrogueViewController: UITextFieldDelegate {
+ }
+ 
+ extension BrogueViewController: UITextFieldDelegate {
     @objc func requestTextInput(for string: String) {
         inputRequestString = string
         DispatchQueue.main.async {
@@ -460,9 +489,12 @@ extension BrogueViewController: UITextFieldDelegate {
         
         return true
     }
-}
-
-private let keys: [UIKeyCommand]? = {
+ }
+ 
+ 
+ // MARK: Keyboard
+ 
+ private let keys: [UIKeyCommand]? = {
     let lower = (UnicodeScalar("a").value...UnicodeScalar("z").value).map{ String(UnicodeScalar($0)!) }
     let upper = (UnicodeScalar("A").value...UnicodeScalar("Z").value).map{ String(UnicodeScalar($0)!) }
     let alpha = lower + upper + [">", "<", " ", "\\", "]", "?", "~", "&", "\r", "\t", "."]
@@ -474,17 +506,11 @@ private let keys: [UIKeyCommand]? = {
     keys.append(UIKeyCommand(input: UIKeyCommand.inputLeftArrow, modifierFlags: [], action: #selector(BrogueViewController.executeKeyCommand)))
     keys.append(UIKeyCommand(input: UIKeyCommand.inputRightArrow, modifierFlags: [], action: #selector(BrogueViewController.executeKeyCommand)))
     keys.append(UIKeyCommand(input: UIKeyCommand.inputEscape, modifierFlags: [], action: #selector(BrogueViewController.executeKeyCommand)))
-    /* + (alpha.map {
-     UIKeyCommand(input: $0, modifierFlags: [.shift], action: #selector(BrogueViewController.executeKeyCommand))
-     })
-     + ([">", "<", " ", "\\", "]", "?", "~", "&", "\r", "\t", "."].map {
-     UIKeyCommand(input: $0, modifierFlags: [], action: #selector(BrogueViewController.executeKeyCommand)) */
-    //})
     
     return keys
-}()
-
-extension BrogueViewController {
+ }()
+ 
+ extension BrogueViewController {
     override var keyCommands: [UIKeyCommand]? {
         return keys
     }
@@ -494,126 +520,5 @@ extension BrogueViewController {
             addKeyEvent(event: key)
         }
     }
-}
+ }
 
-// MARK: - SKMagView
-
-final class SKMagView: SKView {
-    var viewToMagnify: SKViewPort?
-    // TODO: magic numbers
-    private var size = CGSize(width: 110, height: 110)
-    private var offset = CGSize(width: 55, height: -35)
-    private let parentNode: SKNode
-    private var cells: [Cell]? {
-        willSet {
-            parentNode.removeAllChildren()
-        }
-        didSet {
-            for cell in cells! {
-                parentNode.addChild(cell.background)
-                parentNode.addChild(cell.foreground)
-            }
-        }
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        parentNode = SKSpriteNode(color: .cyan, size: size)
-        super.init(coder: aDecoder)
-        
-        let styleWindow: () -> Void = {
-            self.frame = CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height)
-            self.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.4).cgColor
-            self.layer.borderWidth = 3
-            self.layer.cornerRadius = self.frame.size.width / 2
-            self.layer.masksToBounds = true
-            self.backgroundColor = .black
-        }
-        
-        var scene: SKScene {
-            let scene = SKScene(size: self.size)
-            scene.scaleMode = .aspectFit
-            scene.addChild(self.parentNode)
-            return scene
-        }
-        
-        styleWindow()
-        presentScene(scene)
-    }
-    
-    func showMagnifier(at point: CGPoint) {
-        cells = cellsAtTouch(point: point)
-        center = CGPoint(x: point.x + size.width / 2 - offset.width, y: point.y - size.height / 2 + offset.height)
-        isHidden = false
-    }
-    
-    func updateMagnifier(at point: CGPoint) {
-        showMagnifier(at: point)
-    }
-    
-    func hideMagnifier() {
-        isHidden = true
-        parentNode.removeAllChildren()
-    }
-    
-    private func cellsAtTouch(point: CGPoint) -> [Cell] {
-        guard let viewToMagnify = viewToMagnify else { return [Cell]() }
-       
-        let magnification: CGFloat = 1.0
-        let currentCellXY = getCellCoords(at: point)
-        let rows = 3 // opposite/flipped
-        let cols = 2
-        
-        var cells: [[Cell]] = {
-            var cells = [[Cell]]()
-            
-            for x in -(rows)...rows {
-                var row = [Cell]()
-                for y in -(cols)...cols {
-                    let indexX = Int(currentCellXY.x) + x
-                    let indexY = Int(currentCellXY.y) + y
-                    // don't try to draw anything out of bounds
-                    if indexX < COLS && indexY < ROWS && indexX >= 0 && indexY >= 0 {
-                        let newCell = MagCell(cell: viewToMagnify.rogueScene.cells[indexX][indexY], magnify: magnification)
-                        row.append(newCell)
-                    } else {
-                        let cell = Cell(x: 0, y: 0, size: viewToMagnify.rogueScene.cells[0][0].size)
-                        cell.bgcolor = .black
-                        row.append(cell)
-                    }
-                }
-                cells.append(row);
-            }
-            
-            return cells
-        }()
-        
-        let cellSize = cells[0][0].size
-        
-        // layout cells
-        for x in 0...rows * 2 {
-            for y in 0...cols * 2 {
-                cells[x][y].position = CGPoint(x: (CGFloat(x) * cellSize.width), y: CGFloat(rows - y - 1) * cellSize.height)
-            }
-        }
-        
-        var position: CGPoint {
-            let screenScale = UIScreen.main.scale
-            let magnificationOffset = magnification + 1
-            
-            // take the touch point and figure out how far off from 0,0 inside the node we are. Magical fudge of magoffset ensure we move smoothly from one cell to the next.
-            let xMouseOffset = (point.x - (currentCellXY.x * (viewToMagnify.rogueScene.cells[0][0].size.width / screenScale))) * magnificationOffset
-            let yMouseOffset = (point.y - (currentCellXY.y * (viewToMagnify.rogueScene.cells[0][0].size.height / screenScale))) * magnificationOffset
-            
-            // center cell is 3,2 and should be in the middle of the magnifying glass view. As touches move so does the view need to move to follow.
-            let xFinalOffset = ((CGFloat(rows) * cellSize.width - self.size.width/2) + cellSize.width/2) + xMouseOffset
-            let yFinalOffset = ((CGFloat(rows - cols - 1) * cellSize.height - self.size.height / 2) + cellSize.height / 2) - yMouseOffset
-            
-            return CGPoint(x: -xFinalOffset + cellSize.width / 2, y: -yFinalOffset - cellSize.height / 2)
-        }
-        
-        // offset needs to be offset by the appropriate cellsize.
-        parentNode.position = position
-        
-        return cells.flatMap { $0 }
-    }
-}

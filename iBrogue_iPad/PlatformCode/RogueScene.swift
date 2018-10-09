@@ -120,11 +120,12 @@ fileprivate extension RogueScene {
             case foliage
             case amulet
             case weapon
+            case omega
             case glyph
             
             var fontName: String {
                 switch self {
-                case .foliage, .ring, .weapon:
+                case .foliage, .ring, .weapon, .omega:
                     return "ArialUnicodeMS"
                 default:
                     return "Monaco"
@@ -173,6 +174,8 @@ fileprivate extension RogueScene {
                     self = .amulet
                 case "\(UnicodeScalar(UInt32(WEAPON_CHAR))!)":
                     self = .weapon
+                case "\(UnicodeScalar(UInt32(OMEGA_CHAR)))":
+                    self = .omega
                 default:
                     self = .glyph
                 }
