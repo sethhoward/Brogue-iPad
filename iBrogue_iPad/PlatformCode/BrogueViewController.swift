@@ -298,7 +298,7 @@
                 addTouchEvent(event: UIBrogueTouchEvent(phase: .stationary, location: lastTouchLocation))
                 addTouchEvent(event: UIBrogueTouchEvent(phase: .ended, location: lastTouchLocation))
                 // TODO: got to be a better way. A better way.
-                if pointIsInPlayArea(point: location) && lastBrogueGameEvent != .openedInventory && lastBrogueGameEvent != .inventoryItemAction && lastBrogueGameEvent != .showTitle && lastBrogueGameEvent != .waitingForConfirmation {
+                if pointIsInPlayArea(point: location) && lastBrogueGameEvent != .openedInventory && lastBrogueGameEvent != .inventoryItemAction && lastBrogueGameEvent != .showTitle && lastBrogueGameEvent != .waitingForConfirmation && lastBrogueGameEvent != .actionMenuOpen {
                     addTouchEvent(event: UIBrogueTouchEvent(phase: .ended, location: lastTouchLocation))
                 }
             }
