@@ -158,6 +158,7 @@
                 // Hide/Show the directions.
                 switch self.lastBrogueGameEvent {
                 case .waitingForConfirmation, .actionMenuOpen, .openedInventory, .showTitle, .openGameFinished, .playRecording, .showHighScores, .playBackPanic, .messagePlayerHasDied, .playerHasDiedMessageAcknowledged, .keyBoardInputRequired, .beginOpenGame:
+                    self.dContainerView.isHidden = true
                     self.dContainerView.disable()
                 default:
                     self.dContainerView.isHidden = false
