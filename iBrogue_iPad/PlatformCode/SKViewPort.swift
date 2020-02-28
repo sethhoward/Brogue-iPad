@@ -23,14 +23,12 @@ import SpriteKit
 
 class SKViewPort: SKView {  
     var rogueScene: RogueScene!
-    var hWindow = UIScreen.main.bounds.size.width
-    var vWindow = UIScreen.main.bounds.size.height
     
     required init?(coder aDecoder: NSCoder) {
         let rect = UIScreen.main.bounds
         // go max retina on initial size or scaling of text is ugly
         let scale = UIScreen.main.scale
-        rogueScene = RogueScene(size: CGSize(width: rect.size.width * scale, height: rect.size.height * scale), rows: (34), cols: 100)
+        rogueScene = RogueScene(size: CGSize(width: rect.size.width * scale, height: rect.size.height * scale), rows: (35), cols: 100)
         rogueScene.scaleMode = .fill
         super.init(coder: aDecoder)
         
