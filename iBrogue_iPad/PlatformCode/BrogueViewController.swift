@@ -35,9 +35,27 @@
  
  func getCellCoords(at point: CGPoint) -> CGPoint {
     let cellx = Int(CGFloat(COLS) * point.x / UIScreen.main.bounds.size.width)
-    let celly = Int(CGFloat(ROWS) * point.y / UIScreen.main.bounds.size.height)
+    let celly = Int(CGFloat(ROWS) * point.y / (UIScreen.safeBounds.size.height))
     
     return CGPoint(x: cellx, y: celly)
+ }
+ 
+ // Because of a main thread issue we need to set this.
+ fileprivate var kOffset: CGFloat = 0
+ extension UIScreen {
+     @objc static var safeBounds: CGRect {
+         var offset: CGFloat =  0.0
+         if #available(iOS 11.0, *) {
+             if Thread.isMainThread {
+                 offset = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
+                 kOffset = offset
+             } else {
+                 offset = kOffset
+             }
+         }
+         
+         return CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - offset)
+     }
  }
  
  // TODO: switch to Character

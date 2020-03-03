@@ -15,7 +15,7 @@ final class SKMagView: SKView {
     var viewToMagnify: SKViewPort?
     // TODO: magic numbers
     private var size = CGSize(width: 110, height: 110)
-    private var offset = CGSize(width: 55, height: -35)
+    private var offset = CGSize(width: 55, height: -34)
     private let parentNode: SKNode
     private var cells: [Cell]? {
         willSet {

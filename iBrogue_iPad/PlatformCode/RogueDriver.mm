@@ -114,7 +114,7 @@ boolean pauseForMilliseconds(short milliseconds) {
 void nextKeyOrMouseEvent(rogueEvent *returnEvent, __unused boolean textInput, boolean colorsDance) {
 	short x, y;
     float width = [[UIScreen mainScreen] bounds].size.width;
-    float height = [[UIScreen mainScreen] bounds].size.height;
+    float height = [UIScreen safeBounds].size.height;
     
     for(;;) {
         // we should be ok to block here. We don't seem to call pauseForMilli and this at the same time
