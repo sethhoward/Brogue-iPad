@@ -25,6 +25,7 @@
 #include "Rogue.h"
 #include "IncludeGlobals.h"
 #include <math.h>
+#include <stdint.h>
 
 item *initializeItem() {
     short i;
@@ -710,15 +711,20 @@ void populateItems(short upstairsX, short upstairsY) {
 // Name of this function is a bit misleading -- basically returns true iff the item will stack without consuming an extra slot
 // i.e. if it's a throwing weapon with a sibling already in your pack. False for potions and scrolls.
 boolean itemWillStackWithPack(item *theItem) {
-    item *tempItem;
-    if (!(theItem->quiverNumber)) {
-        return false;
-    } else {
+	item *tempItem;
+    if (theItem->category & GEM) {
         for (tempItem = packItems->nextItem;
-             tempItem != NULL && tempItem->quiverNumber != theItem->quiverNumber;
+             tempItem != NULL && !((tempItem->category & GEM) && theItem->originDepth == tempItem->originDepth);
              tempItem = tempItem->nextItem);
         return (tempItem ? true : false);
-    }
+    } else if (!(theItem->quiverNumber)) {
+		return false;
+	} else {
+		for (tempItem = packItems->nextItem;
+			 tempItem != NULL && tempItem->quiverNumber != theItem->quiverNumber;
+			 tempItem = tempItem->nextItem);
+		return (tempItem ? true : false);
+	}
 }
 
 void removeItemFrom(short x, short y) {
@@ -923,12 +929,12 @@ item *addItemToPack(item *theItem) {
 }
 
 short numberOfItemsInPack() {
-    short theCount = 0;
-    item *theItem;
-    for(theItem = packItems->nextItem; theItem != NULL; theItem = theItem->nextItem) {
-        theCount += (theItem->category & WEAPON ? 1 : theItem->quantity);
-    }
-    return theCount;
+	short theCount = 0;
+	item *theItem;
+	for(theItem = packItems->nextItem; theItem != NULL; theItem = theItem->nextItem) {
+		theCount += (theItem->category & (WEAPON | GEM) ? 1 : theItem->quantity);
+	}
+	return theCount;
 }
 
 char nextAvailableInventoryCharacter() {
@@ -2324,62 +2330,62 @@ void itemDetails(char *buf, item *theItem) {
                         sprintf(buf2, "This staff deals damage to any creature that it hits, unless the creature is immune to fire. (If the staff is enchanted, its average damage will increase by %i%%.) It also sets creatures and flammable terrain on fire.",
                                 (int) (100 * (fp_staffDamageLow(enchant + FP_FACTOR) + fp_staffDamageHigh(enchant + FP_FACTOR)) / (fp_staffDamageLow(enchant) + fp_staffDamageHigh(enchant)) - 100));
                         break;
-                    case STAFF_POISON:
-                        sprintf(buf2, "The bolt from this staff will poison any creature that it hits for %i turns. (If the staff is enchanted, this will increase to %i turns.)",
-                                fp_staffPoison(enchant),
-                                fp_staffPoison(enchant + FP_FACTOR));
-                        break;
-                    case STAFF_TUNNELING:
-                        sprintf(buf2, "The bolt from this staff will dissolve %i layers of obstruction. (If the staff is enchanted, this will increase to %i layers.)",
-                                theItem->enchant1,
-                                theItem->enchant1 + 1);
-                        break;
-                    case STAFF_BLINKING:
-                        sprintf(buf2, "This staff enables you to teleport up to %i spaces. (If the staff is enchanted, this will increase to %i spaces.)",
-                                fp_staffBlinkDistance(enchant),
-                                fp_staffBlinkDistance(enchant + FP_FACTOR));
-                        break;
-                    case STAFF_ENTRANCEMENT:
-                        sprintf(buf2, "This staff will compel its target to mirror your movements for %i turns. (If the staff is enchanted, this will increase to %i turns.)",
-                                fp_staffEntrancementDuration(enchant),
-                                fp_staffEntrancementDuration(enchant + FP_FACTOR));
-                        break;
-                    case STAFF_HEALING:
-                        if (enchant < 10) {
-                            sprintf(buf2, "This staff will heal its target by %i%% of its maximum health. (If the staff is enchanted, this will increase to %i%%.)",
-                                    theItem->enchant1 * 10,
-                                    (theItem->enchant1 + 1) * 10);
-                        } else {
-                            strcpy(buf2, "This staff will completely heal its target.");
-                        }
-                        break;
-                    case STAFF_HASTE:
-                        sprintf(buf2, "This staff will cause its target to move twice as fast for %i turns. (If the staff is enchanted, this will increase to %i turns.)",
-                                fp_staffHasteDuration(enchant),
-                                fp_staffHasteDuration(enchant + FP_FACTOR));
-                        break;
-                    case STAFF_OBSTRUCTION:
-                        strcpy(buf2, "");
-                        break;
-                    case STAFF_DISCORD:
-                        sprintf(buf2, "This staff will cause discord for %i turns. (If the staff is enchanted, this will increase to %i turns.)",
-                                fp_staffDiscordDuration(enchant),
-                                fp_staffDiscordDuration(enchant + FP_FACTOR));
-                        break;
-                    case STAFF_CONJURATION:
-                        sprintf(buf2, "%i phantom blades will be called into service. (If the staff is enchanted, this will increase to %i blades.)",
-                                fp_staffBladeCount(enchant),
-                                fp_staffBladeCount(enchant + FP_FACTOR));
-                        break;
-                    case STAFF_PROTECTION:
-                        sprintf(buf2, "This staff will shield a creature for up to 20 turns against up to %i damage. (If the staff is enchanted, this will increase to %i damage.)",
-                                fp_staffProtection(enchant) / 10,
-                                fp_staffProtection(enchant + FP_FACTOR) / 10);
-                        break;
-                    default:
-                        strcpy(buf2, "No one knows what this staff does.");
-                        break;
-                }
+					case STAFF_POISON:
+						sprintf(buf2, "The bolt from this staff will poison any creature that it hits for %i turns. (If the staff is enchanted, this will increase to %i turns.)",
+								fp_staffPoison(enchant),
+								fp_staffPoison(enchant + FP_FACTOR));
+						break;
+					case STAFF_TUNNELING:
+						sprintf(buf2, "The bolt from this staff will dissolve %i layers of obstruction. (If the staff is enchanted, this will increase to %i layers.)",
+								theItem->enchant1,
+								theItem->enchant1 + 1);
+						break;
+					case STAFF_BLINKING:
+						sprintf(buf2, "This staff enables you to teleport up to %i spaces. (If the staff is enchanted, this will increase to %i spaces.)",
+								fp_staffBlinkDistance(enchant),
+								fp_staffBlinkDistance(enchant + FP_FACTOR));
+						break;
+					case STAFF_ENTRANCEMENT:
+						sprintf(buf2, "This staff will compel its target to mirror your movements for %i turns. (If the staff is enchanted, this will increase to %i turns.)",
+								fp_staffEntrancementDuration(enchant),
+								fp_staffEntrancementDuration(enchant + FP_FACTOR));
+						break;
+					case STAFF_HEALING:
+						if (enchant >> FP_BASE < 10) {
+							sprintf(buf2, "This staff will heal its target by %i%% of its maximum health. (If the staff is enchanted, this will increase to %i%%.)",
+									theItem->enchant1 * 10,
+									(theItem->enchant1 + 1) * 10);
+						} else {
+							strcpy(buf2, "This staff will completely heal its target.");
+						}
+						break;
+					case STAFF_HASTE:
+						sprintf(buf2, "This staff will cause its target to move twice as fast for %i turns. (If the staff is enchanted, this will increase to %i turns.)",
+								fp_staffHasteDuration(enchant),
+								fp_staffHasteDuration(enchant + FP_FACTOR));
+						break;
+					case STAFF_OBSTRUCTION:
+						strcpy(buf2, "");
+						break;
+					case STAFF_DISCORD:
+						sprintf(buf2, "This staff will cause discord for %i turns. (If the staff is enchanted, this will increase to %i turns.)",
+								fp_staffDiscordDuration(enchant),
+								fp_staffDiscordDuration(enchant + FP_FACTOR));
+						break;
+					case STAFF_CONJURATION:
+						sprintf(buf2, "%i phantom blades will be called into service. (If the staff is enchanted, this will increase to %i blades.)",
+								fp_staffBladeCount(enchant),
+								fp_staffBladeCount(enchant + FP_FACTOR));
+						break;
+					case STAFF_PROTECTION:
+						sprintf(buf2, "This staff will shield a creature for up to 20 turns against up to %i damage. (If the staff is enchanted, this will increase to %i damage.)",
+								fp_staffProtection(enchant) / 10,
+								fp_staffProtection(enchant + FP_FACTOR) / 10);
+						break;
+					default:
+						strcpy(buf2, "No one knows what this staff does.");
+						break;
+				}
                 if (buf2[0]) {
                     strcat(buf, "\n\n");
                     strcat(buf, buf2);
@@ -2456,8 +2462,8 @@ void itemDetails(char *buf, item *theItem) {
                             break;
                         case RING_WISDOM:
                             sprintf(buf2, "\n\nWhen worn, your staffs will recharge at %i%% of their normal rate. (If the ring is enchanted, the rate will increase to %i%% of the normal rate.)",
-                                    (int) (100 * fp_ringWisdomMultiplier(enchant) >> FP_BASE),
-                                    (int) (100 * fp_ringWisdomMultiplier(enchant + FP_FACTOR) >> FP_BASE));
+                                    (int) (10 * fp_ringWisdomMultiplier(enchant)),
+                                    (int) (10 * fp_ringWisdomMultiplier(enchant + FP_FACTOR)));
                             strcat(buf, buf2);
                             break;
                         case RING_REAPING:
@@ -7082,34 +7088,34 @@ item *itemAtLoc(short x, short y) {
 }
 
 item *dropItem(item *theItem) {
-    item *itemFromTopOfStack, *itemOnFloor;
-    
-    if (cellHasTerrainFlag(player.xLoc, player.yLoc, T_OBSTRUCTS_ITEMS)) {
-        return NULL;
-    }
-    
-    itemOnFloor = itemAtLoc(player.xLoc, player.yLoc);
-    
-    if (theItem->quantity > 1 && !(theItem->category & WEAPON)) { // peel off the top item and drop it
-        itemFromTopOfStack = generateItem(ALL_ITEMS, -1);
-        *itemFromTopOfStack = *theItem; // clone the item
-        theItem->quantity--;
-        itemFromTopOfStack->quantity = 1;
-        if (itemOnFloor) {
-            itemOnFloor->inventoryLetter = theItem->inventoryLetter; // just in case all letters are taken
-            pickUpItemAt(player.xLoc, player.yLoc);
-        }
-        placeItem(itemFromTopOfStack, player.xLoc, player.yLoc);
-        return itemFromTopOfStack;
-    } else { // drop the entire item
-        removeItemFromChain(theItem, packItems);
-        if (itemOnFloor) {
-            itemOnFloor->inventoryLetter = theItem->inventoryLetter;
-            pickUpItemAt(player.xLoc, player.yLoc);
-        }
-        placeItem(theItem, player.xLoc, player.yLoc);
-        return theItem;
-    }
+	item *itemFromTopOfStack, *itemOnFloor;
+	
+	if (cellHasTerrainFlag(player.xLoc, player.yLoc, T_OBSTRUCTS_ITEMS)) {
+		return NULL;
+	}
+	
+	itemOnFloor = itemAtLoc(player.xLoc, player.yLoc);
+	
+	if (theItem->quantity > 1 && !(theItem->category & (WEAPON | GEM))) { // peel off the top item and drop it
+		itemFromTopOfStack = generateItem(ALL_ITEMS, -1);
+		*itemFromTopOfStack = *theItem; // clone the item
+		theItem->quantity--;
+		itemFromTopOfStack->quantity = 1;
+		if (itemOnFloor) {
+			itemOnFloor->inventoryLetter = theItem->inventoryLetter; // just in case all letters are taken
+			pickUpItemAt(player.xLoc, player.yLoc);
+		}
+		placeItem(itemFromTopOfStack, player.xLoc, player.yLoc);
+		return itemFromTopOfStack;
+	} else { // drop the entire item
+		removeItemFromChain(theItem, packItems);
+		if (itemOnFloor) {
+			itemOnFloor->inventoryLetter = theItem->inventoryLetter;
+			pickUpItemAt(player.xLoc, player.yLoc);
+		}
+		placeItem(theItem, player.xLoc, player.yLoc);
+		return theItem;
+	}
 }
 
 void recalculateEquipmentBonuses() {
